@@ -69,6 +69,9 @@ export class DgConnApplicantRegistrationsComponent {
     private warning2Message: string = '';
     private warning3Message: string = '';
 
+    private sendNotificationsPsswd: string = '';
+    private showNotificationModal: boolean = false;
+
     constructor(private applicationApi: ApplicationApi, private callApi: CallApi, private nutsApi: NutsApi, private activatedRoute: ActivatedRoute, private router: Router, private sharedService: SharedService, private translateService: TranslateService) {
         this.callApi.allCalls().subscribe(
             (calls: CallDTOBase[]) => {
@@ -325,14 +328,14 @@ export class DgConnApplicantRegistrationsComponent {
     }
 
     private displayCorrectionEmailsModal() {
-        if (this.correctionRequestsEmailAvailable)
-            this.displayCorrectionEmails = true;
+       this.showNotificationModal = true;
+       this.sendNotificationsPsswd = '';
     }
 
     private sendCorrectionEmails() {
         if (this.currentCall != null && this.correctionRequestsEmailAvailable) {
             this.sendingCorrectionEmails = true;
-            this.applicationApi.sendCorrectionEmails(this.currentCall.id).subscribe(
+            this.applicationApi.sendCorrectionEmails(this.sendNotificationsPsswd ,this.currentCall.id).subscribe(
                 (response: ResponseDTOBase) => {
                     if (response.success) {
                         if (response.data != null) {
@@ -352,7 +355,9 @@ export class DgConnApplicantRegistrationsComponent {
                         );
                         this.sharedService.growlTranslation('An email has been sent to the representants of the legal entities to supply the legal documents for the registration.', 'dgConn.duplicatedBeneficiaryDetails.requestLegalDocuments.success', 'success');
                     } else {
-                        this.sharedService.growlTranslation('An error occurred while trying to request the legal documents of the registration. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.requestLegalDocuments.error', 'error');
+                        if(response.error.errorCode == 20){
+                          this.sharedService.growlTranslation('An error occurred while sending notifications.', response.error.errorMessage, 'error');
+                        }
                     }
                     this.closeModal();
                 }, error => {
@@ -366,6 +371,7 @@ export class DgConnApplicantRegistrationsComponent {
     private closeModal() {
         this.sendingCorrectionEmails = false;
         this.displayCorrectionEmails = false;
+        this.showNotificationModal = false;
     }
 
     private getCorrectionRequestsEmailData(callId: number) {
