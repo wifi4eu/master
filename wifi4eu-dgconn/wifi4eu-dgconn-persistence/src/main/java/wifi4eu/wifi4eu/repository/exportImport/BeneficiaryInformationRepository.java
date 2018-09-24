@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface BeneficiaryInformationRepository extends CrudRepository<BeneficiaryInformation, Integer> {
 
-	@Query(value = "select r.id as id, "
+	@Query(value = "select distinct r.id as id, "
 			+ "m.id as mun_id, "
 			+ "m.name as mun_name, "
 			+ "concat(m.address, ', ', m.address_num) as mun_address, "
