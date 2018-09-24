@@ -8,6 +8,7 @@ import com.microsoft.azure.storage.blob.BlobRequestOptions;
 import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import wifi4eu.wifi4eu.common.service.encryption.EncrypterService;
 import javax.annotation.PostConstruct;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -65,6 +67,48 @@ public class AzureBlobConnector {
         return container;
     }
 
+    public String uploadText(final String containerName, final String fileName, final String content) {
+        // Returning value
+        String fileUri = null;
+
+        String encodedFileName = null;
+        try {
+            encodedFileName = URLEncoder.encode(fileName, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            LOGGER.error("Error", e);
+        }
+
+        if (encodedFileName != null) {
+
+            // Validating the paramenters
+            this.checkContainerName(containerName);
+            this.checkFileName(encodedFileName);
+
+            CloudBlobContainer container = this.getContainerReference(containerName);
+
+            if (container != null) {
+                //Getting a blob reference
+                CloudBlockBlob blob = null;
+                try {
+                    blob = container.getBlockBlobReference(encodedFileName);
+                } catch (URISyntaxException | StorageException e) {
+                    LOGGER.error("Error", e);
+                }
+
+                if (blob != null) {
+                    try {
+                        blob.uploadText(content);
+                        fileUri = blob.getUri().toString();
+                    } catch (StorageException | IOException e) {
+                        LOGGER.error("Error", e);
+                    }
+                }
+            }
+        }
+
+        return fileUri;
+    }
+
     public String uploadByteArray(final String containerName, final String fileName, final byte[] data) {
         String fileUri = null;
 
@@ -106,43 +150,46 @@ public class AzureBlobConnector {
         return fileUri;
     }
 
-    public String uploadText(final String containerName, final String fileName, final String content) {
-        // Returning value
+    public String upload(final String containerName, final String fileName, final InputStream sourceStream, final long length) {
+
+        checkContainerName(containerName);
+
         String fileUri = null;
 
-        String encodedFileName = null;
-        try {
-            encodedFileName = URLEncoder.encode(fileName, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            LOGGER.error("Error", e);
+        if (StringUtils.isNotEmpty(fileName)) {
+            try {
+                String encodedFileName = URLEncoder.encode(fileName, "UTF-8");
+
+                // Validating the paramenters
+                checkFileName(encodedFileName);
+
+                CloudBlobContainer container = getContainerReference(containerName);
+
+                if (container != null) {
+                    fileUri = upload(container, encodedFileName, sourceStream, length);
+                }
+            } catch (UnsupportedEncodingException e) {
+                LOGGER.error("Error encoding the file name", e);
+
+                throw new IllegalArgumentException(e);
+            }
         }
 
-        if (encodedFileName != null) {
+        return fileUri;
+    }
 
-            // Validating the paramenters
-            this.checkContainerName(containerName);
-            this.checkFileName(encodedFileName);
+    private String upload(final CloudBlobContainer container, String encodedFileName, InputStream sourceStream, long length) {
 
-            CloudBlobContainer container = this.getContainerReference(containerName);
+        String fileUri = null;
 
-            if (container != null) {
-                //Getting a blob reference
-                CloudBlockBlob blob = null;
-                try {
-                    blob = container.getBlockBlobReference(encodedFileName);
-                } catch (URISyntaxException | StorageException e) {
-                    LOGGER.error("Error", e);
-                }
+        try {
+            CloudBlockBlob blob = container.getBlockBlobReference(encodedFileName);
 
-                if (blob != null) {
-                    try {
-                        blob.uploadText(content);
-                        fileUri = blob.getUri().toString();
-                    } catch (StorageException | IOException e) {
-                        LOGGER.error("Error", e);
-                    }
-                }
-            }
+            blob.upload(sourceStream, length);
+            fileUri = blob.getUri().toString();
+
+        } catch (URISyntaxException | StorageException | IOException e) {
+            LOGGER.error("Error uploading to a cloud", e);
         }
 
         return fileUri;
@@ -227,7 +274,7 @@ public class AzureBlobConnector {
     }
 
     public byte[] downloadFileByUri(final String azureUri) {
-        URL aURL = null;
+        URL aURL;
         byte[] content = null;
         LOGGER.info("Downloading from URI [{}]", azureUri);
 
@@ -352,6 +399,10 @@ public class AzureBlobConnector {
         }
 
         return uri;
+    }
+
+    public String uploadLegalFile(final String fileName, final InputStream fileContent, final long length) {
+        return upload(DEFAULT_CONTAINER_NAME, fileName, fileContent, length);
     }
 
     public boolean deleteLegalFile(final String fileName) {
