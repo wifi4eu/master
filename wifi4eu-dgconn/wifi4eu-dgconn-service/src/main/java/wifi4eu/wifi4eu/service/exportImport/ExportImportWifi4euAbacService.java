@@ -890,9 +890,7 @@ public class ExportImportWifi4euAbacService {
                 throw new IllegalStateException("Error parsing a file " + pdfFileName + ". Please, check if Zip file is consistent.");
             }
 
-            // TODO: big files are not accepted?
-            return azureBlobConnector.uploadLegalFile(pdfFileName, new String(pdfFile.getContent()));
-
+            return azureBlobConnector.uploadLegalFile(pdfFileName, new ByteArrayInputStream(pdfFile.getContent()), pdfFile.getContent().length);
         } catch (IOException e) {
             _log.error("Error processing and uploading the file " + pdfFileName, e);
         }
@@ -925,7 +923,7 @@ public class ExportImportWifi4euAbacService {
         return municipalityDocuments;
     }
 
-    private ZipFileReader.ZipFileEntry parseEntryFromFile(ByteArrayInputStream zipFile, String fileName) throws IOException {
+    private ZipFileReader.ZipFileEntry parseEntryFromFile(InputStream zipFile, String fileName) throws IOException {
 
         try (ZipFileReader zipFileReader = new ZipFileReader(zipFile)) {
 
