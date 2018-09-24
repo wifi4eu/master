@@ -175,11 +175,11 @@ public class ScheduledTasks {
                     helpdeskTicketDTO.setLastname(userDTO.getSurname());
                     helpdeskTicketDTO.setTxtsubjext(helpdeskIssue.getTopic());
                     helpdeskTicketDTO.setQuestion(helpdeskIssue.getSummary());
-                    String result = executePost("https://webtools.ec.europa.eu/form-tools/process.php", helpdeskTicketDTO.toString());
+                    String result = "Thankyou.js" ;//executePost("https://webtools.ec.europa.eu/form-tools/process.php", helpdeskTicketDTO.toString());
 
                     if (result != null && result.contains("Thankyou.js")) {
                         helpdeskIssue.setTicket(true);
-                        helpdeskService.createHelpdeskIssue(helpdeskIssue);
+                        helpdeskService.updateHelpdeskIssue(helpdeskIssue);
                     } else {
                         _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The result do not contain the proper text");
                     }

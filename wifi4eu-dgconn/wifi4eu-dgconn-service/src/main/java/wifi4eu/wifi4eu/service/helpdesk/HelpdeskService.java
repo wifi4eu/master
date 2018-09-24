@@ -49,7 +49,7 @@ public class HelpdeskService {
     		_log.warn("Call to a create method with id set, the value has been removed ({})", helpdeskIssueDTO.getId());
     		helpdeskIssueDTO.setId(0);	
     	}
-        return helpdeskIssueMapper.toDTO(helpdeskIssueRepository.save(helpdeskIssueMapper.toEntity(helpdeskIssueDTO)));
+    	return helpdeskIssueMapper.toDTO(helpdeskIssueRepository.save(helpdeskIssueMapper.toEntity(helpdeskIssueDTO)));
 
 /*        if (helpdeskIssueDTO.getComments() != null && helpdeskIssueDTO.getComments().isEmpty()) {
         } else {
@@ -70,6 +70,11 @@ public class HelpdeskService {
         }*/
     }
 
+
+    public HelpdeskIssueDTO updateHelpdeskIssue(HelpdeskIssueDTO helpdeskIssueDTO) {
+        return helpdeskIssueMapper.toDTO(helpdeskIssueRepository.save(helpdeskIssueMapper.toEntity(helpdeskIssueDTO)));
+    }
+    
     public HelpdeskIssueDTO deleteHelpdeskIssue(int helpdeskIssueId) {
         HelpdeskIssueDTO helpdeskIssueDTO = helpdeskIssueMapper.toDTO(helpdeskIssueRepository.findOne(helpdeskIssueId));
         if (helpdeskIssueDTO != null) {
