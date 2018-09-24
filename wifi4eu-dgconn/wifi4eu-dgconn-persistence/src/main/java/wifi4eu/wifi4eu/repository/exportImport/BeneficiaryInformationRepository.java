@@ -1,10 +1,13 @@
 package wifi4eu.wifi4eu.repository.exportImport;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Repository;
 import wifi4eu.wifi4eu.entity.exportImport.BeneficiaryInformation;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -62,7 +65,39 @@ public class BeneficiaryInformationRepository {
 
 
     public List<BeneficiaryInformation> getBeneficiariesInformationSignedAndNotCounterSigned() {
-        return entityManager.createNativeQuery(BENEFICIARY_INFO_QUERY).getResultList();
+        List<Object[]> bcs = entityManager.createNativeQuery(BENEFICIARY_INFO_QUERY).getResultList();
+
+        List<BeneficiaryInformation> beneficiaryInformations = new ArrayList<>();
+
+        if (CollectionUtils.isNotEmpty(bcs)) {
+            for (Object[] object : bcs) {
+                beneficiaryInformations.add(new BeneficiaryInformation(
+                        (Integer) object[0],
+                        object[1] != null ? (object[1] + "") : "",
+                        (String) object[2],
+                        (String) object[14],
+                        (String) object[3],
+                        (String) object[4],
+                        (String) object[5],
+                        (String) object[6],
+                        "",
+                        object[7] != null ? ((Integer) object[7]).longValue() : null,
+                        (String) object[14],
+                        (Integer) object[16],
+                        object[8] != null ? ((Integer) object[8]).longValue() : null,
+                        (String) object[9],
+                        (String) object[9],
+                        (String) object[10],
+                        (Date) object[11],
+                        (Integer) object[12],
+                        "",
+                        "",
+                        (String) object[13]
+                ));
+            };
+        }
+
+        return beneficiaryInformations;
     }
 
 }

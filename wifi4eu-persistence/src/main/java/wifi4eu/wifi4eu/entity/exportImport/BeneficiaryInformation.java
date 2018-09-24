@@ -49,6 +49,30 @@ public class BeneficiaryInformation {
 
 	private String azureUri;
 
+	public BeneficiaryInformation(Integer id, String mun_id, String mun_name, String mun_abacName, String mun_address, String mun_postalCode, String mun_city, String mun_countryCodeISO, String mun_languageCodeISO, Long mun_registrationNumber, String mun_abacReference, Integer mun_callNumber, Long doc_portalId, String doc_name, String doc_fileName, String doc_mimeType, Date doc_date, Integer doc_type, String doc_location, String aresReference, String azureUri) {
+		this.id = id;
+		this.mun_id = mun_id;
+		this.mun_name = mun_name;
+		this.mun_abacName = mun_abacName;
+		this.mun_address = mun_address;
+		this.mun_postalCode = mun_postalCode;
+		this.mun_city = mun_city;
+		this.mun_countryCodeISO = mun_countryCodeISO;
+		this.mun_languageCodeISO = mun_languageCodeISO;
+		this.mun_registrationNumber = mun_registrationNumber;
+		this.mun_abacReference = mun_abacReference;
+		this.mun_callNumber = mun_callNumber;
+		this.doc_portalId = doc_portalId;
+		this.doc_name = doc_name;
+		this.doc_fileName = doc_fileName;
+		this.doc_mimeType = doc_mimeType;
+		this.doc_date = doc_date;
+		this.doc_type = doc_type;
+		this.doc_location = doc_location;
+		this.aresReference = aresReference;
+		this.azureUri = azureUri;
+	}
+
 	public String getMun_id() {
 		return mun_id;
 	}
