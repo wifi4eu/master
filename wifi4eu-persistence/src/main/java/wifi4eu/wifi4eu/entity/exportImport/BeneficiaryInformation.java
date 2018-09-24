@@ -4,14 +4,9 @@ import wifi4eu.wifi4eu.entity.registration.FileType;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-@Entity
 public class BeneficiaryInformation {
 
     // TODO: replace with Long
-    @Id
     private Integer id;
 
 	private String mun_id;
@@ -47,7 +42,7 @@ public class BeneficiaryInformation {
 	private Date doc_date;
 
 	private Integer doc_type;
-	
+
 	private String doc_location;
 
 	private String aresReference;
