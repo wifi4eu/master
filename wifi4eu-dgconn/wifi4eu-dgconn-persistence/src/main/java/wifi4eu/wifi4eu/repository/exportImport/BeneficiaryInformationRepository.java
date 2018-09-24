@@ -88,7 +88,7 @@ public class BeneficiaryInformationRepository {
                         (String) object[9],
                         (String) object[9],
                         (String) object[10],
-                        (Date) object[11],
+                        object[11] != null ? new Date(((Long) object[11])) : null,
                         (Integer) object[12],
                         "",
                         "",
