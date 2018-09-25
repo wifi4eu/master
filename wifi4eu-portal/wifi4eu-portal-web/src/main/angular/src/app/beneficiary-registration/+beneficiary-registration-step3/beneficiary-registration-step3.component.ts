@@ -36,6 +36,8 @@ export class BeneficiaryRegistrationStep3Component {
     @Output() private associationNameChange: EventEmitter<string>;
 
     private css_class_email: string = '';
+    private nullCountry: NutsDTOBase = {}; //IE needs an object to check x.label, if is null has an error
+
 
     constructor(private sharedService: SharedService, private localStorage: LocalStorageService) {
         this.onNext = new EventEmitter<any>();
