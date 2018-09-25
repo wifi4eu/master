@@ -225,7 +225,7 @@ public class ExportImportWifi4euAbacResource {
         try {
             _log.debug("importRegistrationData");
 
-            boolean success = exportImportWifi4euAbacService.importDbBudgFinalList(file.getInputStream());
+            boolean success = exportImportWifi4euAbacService.importAbacReferencesList(file.getInputStream());
 
             return new ResponseDTO(success);
         } catch (AccessDeniedException ade) {

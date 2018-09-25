@@ -333,7 +333,7 @@ public class ExportImportWifi4euAbacService {
     }
 
     @Transactional
-    public boolean importDbBudgFinalList(InputStream inputStream) throws Exception {
+    public boolean importAbacReferencesList(InputStream inputStream) throws Exception {
         _log.debug("importRegistrationData");
 
         try (InputStreamReader inputStreamReader = new InputStreamReader(inputStream)) {
@@ -940,56 +940,55 @@ public class ExportImportWifi4euAbacService {
         }
     }
 
-    public ByteArrayOutputStream exportLegalCommitment() {
-        final String COLUMN_SEPARATOR = ",";
-        final String LINE_SEPARATOR = System.getProperty("line.separator");
+    public ByteArrayOutputStream exportLegalCommitment() throws IOException {
 
         _log.debug("exportLegalCommitment");
 
-        // Preparation for the Beneficiary CSV file
-        StringBuilder builder = new StringBuilder();
-        builder.append("mun_id").append(COLUMN_SEPARATOR)
-                .append("doc_portalId").append(COLUMN_SEPARATOR)
-                .append("doc_name").append(COLUMN_SEPARATOR)
-                .append("doc_fileName").append(COLUMN_SEPARATOR)
-                .append("doc_mimeType").append(COLUMN_SEPARATOR)
-                .append("doc_date").append(COLUMN_SEPARATOR)
-                .append("doc_type").append(COLUMN_SEPARATOR)
-                .append("ares_reference").append(COLUMN_SEPARATOR)
-                .append(LINE_SEPARATOR);
-
-        String file = "";
-
         List<ExportFile> exportFiles = new ArrayList<>();
-        List<ExportImportLegalCommitmentInformation> legalCommitmentsInformations = this.searchLegalCommitments();
-        this._log.info("legalCommitmentsData.size [{}]", legalCommitmentsInformations.size());
 
-        if (CollectionUtils.isNotEmpty(legalCommitmentsInformations)) {
-            for (ExportImportLegalCommitmentInformation legalCommitmentInformation : legalCommitmentsInformations) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try (OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
+             CSVPrinter printer = new CSVPrinter(outputStreamWriter, CSVFormat.EXCEL.withHeader(
+                     "mun_id", "doc_portalId", "doc_name", "doc_fileName", "doc_mimeType", "doc_date", "doc_type", "ares_reference"
+             ))) {
 
-                List<ExportFile> listExportFile = legalCommitmentInformation.getFiles();
+            List<ExportImportLegalCommitmentInformation> legalCommitmentsInformations = searchLegalCommitments();
+            this._log.info("legalCommitmentsData.size [{}]", legalCommitmentsInformations.size());
 
-                for (ExportFile exportFile : listExportFile) {
-                    builder.append(legalCommitmentInformation.getMunicipalityId()).append(COLUMN_SEPARATOR);
-                    builder.append(legalCommitmentInformation.getDocumentId()).append(COLUMN_SEPARATOR);
-                    builder.append(legalCommitmentInformation.getDocumentName()).append(COLUMN_SEPARATOR);
-                    builder.append(legalCommitmentInformation.getZipFileDocumentName()).append(COLUMN_SEPARATOR);
-                    builder.append(legalCommitmentInformation.getDocumentMimeType()).append(COLUMN_SEPARATOR);
-                    builder.append(legalCommitmentInformation.getDocumentSignatureDate()).append(COLUMN_SEPARATOR);
-                    builder.append(legalCommitmentInformation.getDocumentType()).append(COLUMN_SEPARATOR);
-                    builder.append(legalCommitmentInformation.getAresReference()).append(COLUMN_SEPARATOR);
-                    builder.append(LINE_SEPARATOR);
+            if (CollectionUtils.isNotEmpty(legalCommitmentsInformations)) {
+                for (ExportImportLegalCommitmentInformation legalCommitmentInformation : legalCommitmentsInformations) {
 
-                    exportFiles.add(exportFile);
+                    List<ExportFile> listExportFile = legalCommitmentInformation.getFiles();
+
+                    for (ExportFile exportFile : listExportFile) {
+
+                        try {
+                            printer.printRecord(
+                                    legalCommitmentInformation.getMunicipalityId(),
+                                    legalCommitmentInformation.getDocumentId(),
+                                    legalCommitmentInformation.getDocumentName(),
+                                    legalCommitmentInformation.getZipFileDocumentName(),
+                                    legalCommitmentInformation.getDocumentMimeType(),
+                                    legalCommitmentInformation.getDocumentSignatureDate(),
+                                    legalCommitmentInformation.getDocumentType(),
+                                    legalCommitmentInformation.getAresReference()
+                            );
+                        } catch (IOException e) {
+                            _log.error("Error writing a BC record to a CSV file", e);
+                        }
+
+                        exportFiles.add(exportFile);
+                    }
                 }
-            }
 
-            file = builder.toString();
+            }
         }
 
         // Add the Legal Commitment CSV file
-        byte[] fileBytes = file.getBytes();
+        byte[] fileBytes = outputStream.toByteArray();
+
         this._log.info("Exporting to file. FileName [{}]", FILENAME_EXPORT_LEGAL_COMMITMENT_DATA, fileBytes.length);
+
         ExportFile csvLegalCommitmentsFile = new ExportFile(FILENAME_EXPORT_LEGAL_COMMITMENT_DATA, fileBytes);
         exportFiles.add(csvLegalCommitmentsFile);
 
@@ -1041,7 +1040,7 @@ public class ExportImportWifi4euAbacService {
             if (grantAgreement != null) {
                 String documentLocation = grantAgreement.getDocumentLocation();
 
-                byte[] content = null;
+
                 _log.info("Downloading from URI [{}]", documentLocation);
 
                 URL aURL = null;
@@ -1062,7 +1061,7 @@ public class ExportImportWifi4euAbacService {
                     legalCommitmentInformation.setZipFileDocumentName(fileName);
                     legalCommitmentInformation.setDocumentMimeType("application/pdf");
 
-                    String signatureDate = grantAgreement == null ? "" : sdf.format(grantAgreement.getDateSignature());
+                    String signatureDate = sdf.format(grantAgreement.getDateSignature());
                     legalCommitmentInformation.setDocumentSignatureDate(signatureDate);
                     legalCommitmentInformation.setDocumentType("GRANT_AGREEMENT");
                     legalCommitmentInformation.setAresReference("");
