@@ -109,7 +109,7 @@
                     </label>
                     <select [(ngModel)]="initialUser.country" id="country" (ngModelChange)="checkButtonEnabled($event)" name="country" class="form-control" 
                         [disabled]="countries.length < 1 || imMayor" style="height: auto; padding: 0.9rem 1rem;" required>
-                        <option disabled selected [ngValue]="null">
+                        <option disabled selected [ngValue]="nullCountry.label"> <!-- IE needs an object to check x.label, if is null has an error -->
                             {{ 'benefRegistration.registration.selectCountry' | translate }}
                         </option>
                         <option *ngFor="let currentCountry of countries" [ngValue]="currentCountry.label">
