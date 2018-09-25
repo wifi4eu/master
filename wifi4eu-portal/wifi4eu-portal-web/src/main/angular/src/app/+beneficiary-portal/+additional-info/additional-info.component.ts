@@ -235,11 +235,11 @@ export class AdditionalInfoComponent {
                     );
                 }).catch(() => {
                     this.sharedService.growlTranslation('Please, select a valid file.', 'shared.incorrectFormat', 'warn');
-                    this.filesUploaded = false;
+                    this.checkDocuments();
                 });
             } else {
                 this.sharedService.growlTranslation('Please, select a valid file.', 'shared.incorrectFormat', 'warn');
-                this.filesUploaded = false;
+                this.checkDocuments();
             }
         } else {
             this.cleanFile(type);
