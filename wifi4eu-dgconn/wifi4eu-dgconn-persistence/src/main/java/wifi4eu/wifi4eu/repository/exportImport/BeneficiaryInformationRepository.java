@@ -17,7 +17,7 @@ public class BeneficiaryInformationRepository {
     private EntityManager entityManager;
 
 
-    private static final String BENEFICIARY_INFO_QUERY = "select r.id as id, "
+    private static final String BENEFICIARY_INFO_QUERY = "select distinct r.id as id, "
             + "m.id as mun_id, "
             + "m.name as mun_name, "
             + "concat(m.address, ', ', m.address_num) as mun_address, "
@@ -57,7 +57,7 @@ public class BeneficiaryInformationRepository {
             + "left join laus as l on m.lau = l.id "
 
 //			+ "left join GRANT_AGREEMENT as ga on ga.application_id = a.id "
-            + "left join legal_files as lf on lf.registration = r.id "
+            + "inner join legal_files as lf on lf.registration = r.id and lf.type = 1 "
 
             + "inner join voucher_simulations as vs on vs.municipality = m.id "
             + "inner join voucher_assignments as va on va.id = vs.voucher_assignment "

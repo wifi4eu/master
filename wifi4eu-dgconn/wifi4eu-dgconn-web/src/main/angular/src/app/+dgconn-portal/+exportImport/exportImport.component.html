@@ -8,7 +8,7 @@
     </div>
     <span class="ui-g-12"><b>{{'dgConn.importexport.lef' | translate}}</b></span>
     <div class="ui-g-6 ui-lg-6 ui-md-12">
-        <div class="panelItem ui-g-12" (click)="importDbBudgFinalList()">
+        <div class="panelItem ui-g-12 panelDisabled">
             <span class="beneficiaryMayor">{{'dgConn.importexport.lef.import.finallist' | translate}}</span>
             <p>{{'dgConn.importexport.lef.import.finallist.desc' | translate}}</p>
         </div>
@@ -29,7 +29,7 @@
     </div>
     <div class="ui-g-6 ui-lg-6 ui-md-12">
         <!--<div class="panelItem ui-g-12 panelDisabled" (click)="importRegistrationData()">-->
-        <div class="panelItem ui-g-12 panelDisabled">
+        <div class="panelItem ui-g-12" (click)="importAbacReferencesList()">
             <span class="beneficiaryMayor">{{'dgConn.importexport.lef.import.references' | translate}}</span>
             <p>{{ 'dgConn.importexport.lef.import.references.desc' | translate }}</p>
         </div>
