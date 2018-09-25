@@ -102,7 +102,7 @@ export class VoucherComponent {
 
     private loadVoucherDataWithoutCall(callId) {
         this.allRequestCompleted = false;
-        this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id, callId)
+        this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id, callId, new Date().getTime())
             .finally(() => this.allRequestCompleted = true)
             .subscribe(
                 (applyVoucher: ApplyVoucherBase[]) => {
@@ -135,7 +135,7 @@ export class VoucherComponent {
         this.startHour = ('0' + (startDateCall.getUTCHours() + 2)).slice(-2) + ":" + ('0' + startDateCall.getUTCMinutes()).slice(-2);
         this.endDate = ('0' + endDateCall.getUTCDate()).slice(-2) + "/" + ('0' + (endDateCall.getUTCMonth() + 1)).slice(-2) + "/" + endDateCall.getUTCFullYear();
         this.endHour = ('0' + (endDateCall.getUTCHours() + 2)).slice(-2) + ":" + ('0' + endDateCall.getUTCMinutes()).slice(-2);
-        this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id, this.currentCall.id)
+        this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id, this.currentCall.id, new Date().getTime())
             .finally(() => this.allRequestCompleted = true)
             .subscribe(
                 (applyVoucher: ApplyVoucherBase[]) => {
