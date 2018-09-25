@@ -232,10 +232,6 @@ public class VoucherService {
         return excelExportGenerator.exportExcelFile("voucher_simulation").toByteArray();
     }
 
-    public List<VoucherSimulationDTO> getVoucherSimulationsByVoucherAssigmentId(int voucherAssignmentId) {
-        return voucherSimulationMapper.toDTOList(voucherSimulationRepository.findAllByVoucherAssignmentOrderByEuRank(voucherAssignmentId));
-    }
-
     public boolean checkSavePreSelectionEnabled(int voucherAssignmentId) {
         return voucherSimulationRepository.checkIfSimulationIsValid(voucherAssignmentId) == 0;
     }
