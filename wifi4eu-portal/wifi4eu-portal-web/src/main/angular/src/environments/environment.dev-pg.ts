@@ -6,6 +6,6 @@
 export const environment = {
     production: false,
     logoutUrl: "https://ecas.acceptance.ec.europa.eu/cas/logout",
-    applyVoucherUrl: "http://localhost:10000",
+    applyVoucherUrl: "https://wifi4eu-dev1.everincloud.com",
     currentEnvironment: "dev-pg"
 };
