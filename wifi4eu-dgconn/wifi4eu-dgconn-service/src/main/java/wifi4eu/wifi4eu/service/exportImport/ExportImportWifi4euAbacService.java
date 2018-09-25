@@ -7,6 +7,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.util.Strings;
 import org.apache.poi.util.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -193,7 +194,7 @@ public class ExportImportWifi4euAbacService {
         return municipalitiesAbac;
     }
 
-    public ByteArrayOutputStream exportBeneficiaryInformation() {
+    public ByteArrayOutputStream exportLegalEntities() {
         _log.debug("exportBeneficiaryInformation");
 
         // Preparation for the Beneficiary CSV file
@@ -272,22 +273,27 @@ public class ExportImportWifi4euAbacService {
     }
 
     private void processDocumentInformation(BeneficiaryInformation beneficiaryInformation, StringBuilder csvDocumentData, List<ExportFile> exportFiles) {
+        String fileName = getMunicipalityPrefixedFileName(beneficiaryInformation);
         if (StringUtils.isNotBlank(beneficiaryInformation.getAzureUri())) {
             // What if a file is too big?
             String base64FileData = azureBlobConnector.downloadLegalFile(beneficiaryInformation.getAzureUri());
             byte[] fileData = StringUtils.isNotEmpty(base64FileData) ? Base64Utils.decodeFromString(base64FileData) : new byte[0];
-            ExportFile exportFile = new ExportFile(beneficiaryInformation.getDoc_fileName(), fileData);
+            ExportFile exportFile = new ExportFile(fileName, fileData);
             exportFiles.add(exportFile);
         }
         csvDocumentData.append(beneficiaryInformation.getMun_id()).append(ExportFileUtils.SEPARATOR)
                 .append(defaultEmpty(beneficiaryInformation.getDoc_portalId())).append(ExportFileUtils.SEPARATOR)
-                .append(StringUtils.defaultString(beneficiaryInformation.getDoc_name(), beneficiaryInformation.getDoc_fileName())).append(ExportFileUtils.SEPARATOR)
-                .append(defaultEmpty(beneficiaryInformation.getDoc_fileName())).append(ExportFileUtils.SEPARATOR)
+                .append(StringUtils.defaultString(beneficiaryInformation.getDoc_name(), fileName)).append(ExportFileUtils.SEPARATOR)
+                .append(fileName).append(ExportFileUtils.SEPARATOR)
                 .append(defaultEmpty(beneficiaryInformation.getDoc_mimeType())).append(ExportFileUtils.SEPARATOR)
                 .append(dateUtilities.convertDate2String(beneficiaryInformation.getDoc_date())).append(ExportFileUtils.SEPARATOR)
                 .append(defaultEmpty(beneficiaryInformation.getDoc_type())).append(ExportFileUtils.SEPARATOR)
                 .append(defaultEmpty(beneficiaryInformation.getAresReference()));
         csvDocumentData.append("\r\n");
+    }
+
+    private String getMunicipalityPrefixedFileName(BeneficiaryInformation beneficiaryInformation) {
+        return StringUtils.isNotEmpty(beneficiaryInformation.getDoc_fileName()) ? beneficiaryInformation.getMun_id() + "-" + beneficiaryInformation.getDoc_fileName() : Strings.EMPTY;
     }
 
     @Deprecated

@@ -114,7 +114,7 @@ public class ExportImportWifi4euAbacResource {
             headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 
             _log.debug("exportBeneficiaryInformation - generating zip file content");
-            ByteArrayOutputStream file = exportImportWifi4euAbacService.exportBeneficiaryInformation();
+            ByteArrayOutputStream file = exportImportWifi4euAbacService.exportLegalEntities();
             ResponseEntity<byte[]> responseReturn = new ResponseEntity<>(file.toByteArray(), headers, HttpStatus.OK);
 
             _log.info("exportBeneficiaryInformation - csv file exported successfully");
