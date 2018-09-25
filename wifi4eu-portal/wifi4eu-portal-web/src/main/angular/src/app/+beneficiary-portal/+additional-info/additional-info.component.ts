@@ -61,28 +61,28 @@ export class AdditionalInfoComponent {
                             (registration: RegistrationDTOBase) => {
                                 this.registration = registration;
                                 this.filesUploaded = this.registration.allFilesFlag == 1 ? true : false;
-                                this.registrationApi.getHistoryForType(this.registration.id, 1).subscribe(
+                                this.registrationApi.getHistoryForType(this.registration.id, 1, new Date().getTime()).subscribe(
                                     (response: ResponseDTOBase) => {
                                         this.documentFilesType1 = response.data;
                                     }, error => {
 
                                     }
                                 );
-                                this.registrationApi.getHistoryForType(this.registration.id, 2).subscribe(
+                                this.registrationApi.getHistoryForType(this.registration.id, 2, new Date().getTime()).subscribe(
                                     (response: ResponseDTOBase) => {
                                         this.documentFilesType2 = response.data;
                                     }, error => {
 
                                     }
                                 );
-                                this.registrationApi.getHistoryForType(this.registration.id, 3).subscribe(
+                                this.registrationApi.getHistoryForType(this.registration.id, 3, new Date().getTime()).subscribe(
                                     (response: ResponseDTOBase) => {
                                         this.documentFilesType3 = response.data;
                                     }, error => {
 
                                     }
                                 );
-                                this.registrationApi.getHistoryForType(this.registration.id, 4).subscribe(
+                                this.registrationApi.getHistoryForType(this.registration.id, 4, new Date().getTime()).subscribe(
                                     (response: ResponseDTOBase) => {
                                         this.documentFilesType4 = response.data;
                                     }, error => {
