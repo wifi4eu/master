@@ -544,8 +544,8 @@
                 <schemes>https</schemes>
                 <server.address>${server.azure.sec.address}</server.address>
                 <server.dgconn.address>${server.azure.dev.dgconn.address}</server.dgconn.address>
-                <dgconn.name>wifi4eu</dgconn.name>
-                <dgconn.context.name>/wifi4eu</dgconn.context.name>
+                <dgconn.name>dashboard</dgconn.name>
+                <dgconn.context.name>/dashboard</dgconn.context.name>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
                 <enable.security.start>--&gt;</enable.security.start>
                 <enable.security.end>&lt;!--</enable.security.end>
