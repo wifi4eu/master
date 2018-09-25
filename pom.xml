@@ -171,13 +171,15 @@
         <mail.serv.using.cns>true</mail.serv.using.cns>
 
         <!-- CNS -->
-        <cns.notification.service.url>https://webgate.acceptance.ec.europa.eu/cns/services/latest/NotificationWebService</cns.notification.service.url>
-        <cns.user.preferences.service.url>https://webgate.acceptance.ec.europa.eu/cns/services/latest/UserPreferencesWebService</cns.user.preferences.service.url>
         <cns.notification.group.code>WiFi4EU_NOTIF</cns.notification.group.code>
         <cns.client.system.key>KEY-WiFi4EU-HK7hK38a0D</cns.client.system.key>
         <cns.client.system.password>secret</cns.client.system.password>
+        <cns.notification.service.url>https://webgate.acceptance.ec.europa.eu/cns/services/latest/NotificationWebService</cns.notification.service.url>
+        <cns.user.preferences.service.url>https://webgate.acceptance.ec.europa.eu/cns/services/latest/UserPreferencesWebService</cns.user.preferences.service.url>
         <cns.client.system.key.pro>KEY-WiFi4EU-BozICVe1Uj</cns.client.system.key.pro>
         <cns.client.system.password.pro>WiFi4EU-2018-9RG</cns.client.system.password.pro>
+        <cns.notification.service.url.pro>https://webgate.ec.europa.eu/cns/services/latest/NotificationWebService</cns.notification.service.url.pro>
+        <cns.user.preferences.service.url.pro>https://webgate.ec.europa.eu/cns/services/latest/UserPreferencesWebService</cns.user.preferences.service.url.pro>
 
         <!-- Encryption -->
         <secret.key.encryption>IU4zdyNLM3kjUDRzcyExOA==</secret.key.encryption>
@@ -778,6 +780,8 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.pro}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.pro}</azure.blob.legal.files.key>
+                <cns.notification.service.url>${cns.notification.service.url.pro}</cns.notification.service.url>
+                <cns.user.preferences.service.url>${cns.user.preferences.service.url.pro}</cns.user.preferences.service.url>
                 <cns.client.system.key>${cns.client.system.key.pro}</cns.client.system.key>
                 <cns.client.system.password>${cns.client.system.password.pro}</cns.client.system.password>
             </properties>
