@@ -1,5 +1,5 @@
 import { Inject, Injectable, Optional } from '@angular/core';
-import { Http } from '@angular/http';
+import { Headers, Http, RequestMethod, RequestOptions, RequestOptionsArgs, Response, ResponseContentType, URLSearchParams } from '@angular/http';
 import { BASE_PATH } from '../shared/swagger/variables';
 import { Observable } from 'rxjs';
 import { ResponseDTO } from '../shared/swagger/model/ResponseDTO';
@@ -39,4 +39,23 @@ export class LegalEntitiesService {
         return this.http.post(path, fileData).map(response => response.json());
     }
 
+    exportLegalCommitment(): Observable<any> {
+        const path = this.basePath + `/exportImport/exportLegalCommitment`;
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Get,
+            headers: new Headers(),
+            search: new URLSearchParams(),
+            responseType: ResponseContentType.Blob
+        });
+
+        return this.http.request(path, requestOptions)
+            .map((response: Response) => {
+                if (response.status === 204) {
+                    return undefined;
+                } else {
+                    return response.json();
+                }
+            });
+    }
 }

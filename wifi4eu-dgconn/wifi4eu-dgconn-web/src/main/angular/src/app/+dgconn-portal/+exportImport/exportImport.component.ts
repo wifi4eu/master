@@ -8,11 +8,12 @@ import { CallApi } from '../../shared/swagger/api/CallApi';
 import { TranslateService } from 'ng2-translate';
 import * as FileSaver from 'file-saver';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LegalEntitiesService } from '../../services/legal-entities-service';
 
 @Component({
     templateUrl: 'exportImport.component.html',
     styleUrls: ['./exportImport.component.scss'],
-    providers: [CallApi, ApplicationApi, ExportImportApi],
+    providers: [CallApi, ApplicationApi, ExportImportApi, LegalEntitiesService],
     preserveWhitespaces: false,
     animations: [
         trigger(
@@ -34,7 +35,7 @@ export class DgConnExportImportComponent {
     processingOperation: boolean = false;
 
     constructor(private http: Http, private exportImportApi: ExportImportApi, private sharedService: SharedService,
-                private translateService: TranslateService,
+                private translateService: TranslateService, private legalEntitiesService: LegalEntitiesService,
                 private router: Router, private route: ActivatedRoute) {
     }
 
@@ -86,10 +87,11 @@ export class DgConnExportImportComponent {
 
     exportLegalCommitment() {
         this.processingOperation = true;
-        this.exportImportApi.exportLegalCommitment().subscribe(
+        this.legalEntitiesService.exportLegalCommitment().subscribe(
             (response) => {
-                let blob = new Blob([response], { type: 'text/zip' });
+                const blob = new Blob([response], { type: 'text/zip' });
                 FileSaver.saveAs(blob, 'exportLegalCommitment.zip');
+
                 this.sharedService.growlTranslation('Your file have been exported correctly!', 'dgconn.dashboard.card.messageExport', 'success');
                 this.processingOperation = false;
             }, error => {
