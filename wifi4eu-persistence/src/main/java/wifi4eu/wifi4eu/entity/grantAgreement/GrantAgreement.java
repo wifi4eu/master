@@ -70,7 +70,7 @@ public class GrantAgreement {
         return signatureProof;
     }
 
-    public void setSignatureProof(String signatureProof) {
+    public void  setSignatureProof(String signatureProof) {
         this.signatureProof = signatureProof;
     }
 

@@ -10,6 +10,7 @@ end
 
 # script to move configuration files and libraries to Tomcat container
 $script_tomcatConfig = <<-SCRIPT
+docker cp /home/bargee/dev/lib/mssql-jdbc-6.4.0.jre8.jar tomcat:/usr/local/tomcat/lib
 docker cp /home/bargee/dev/lib/jtds-1.3.1.jar tomcat:/usr/local/tomcat/lib
 docker cp /home/bargee/dev/lib/ecas-tomcat-8.0-4.26.0.jar tomcat:/usr/local/tomcat/lib
 docker cp /home/bargee/dev/lib/org tomcat:/usr/local/tomcat/lib

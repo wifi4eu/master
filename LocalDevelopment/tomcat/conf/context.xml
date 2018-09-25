@@ -23,10 +23,18 @@
     <WatchedResource>WEB-INF/web.xml</WatchedResource>
     <WatchedResource>${catalina.base}/conf/web.xml</WatchedResource>
 
+    <!-- connection to SQLServer container using Microsoft jdbc driver -->
+    <Resource name="jdbc/wififoreu" auth="Container" type="javax.sql.DataSource"
+              maxTotal="100" maxIdle="30" maxWaitMillis="10000"
+              username="SA" password="SQLserver1" driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+              url="jdbc:sqlserver://sqlserver\sql1:1433;database=wifi4eu" validationQuery="select 1"/>
+
+    <!-- same for JTDS jdbc driver
     <Resource name="jdbc/wififoreu" auth="Container" type="javax.sql.DataSource"
               maxTotal="100" maxIdle="30" maxWaitMillis="10000"
               username="SA" password="SQLserver1" driverClassName="net.sourceforge.jtds.jdbc.Driver"
               url="jdbc:jtds:sqlserver://sqlserver:1433/wifi4eu;instance=sql1" validationQuery="select 1"/>
+    -->
 
     <!-- Uncomment this to disable session persistence across Tomcat restarts -->
     <!--
