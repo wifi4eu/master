@@ -82,7 +82,7 @@
                     <p-tabPanel *ngFor="let country of selectedCountriesNames;"
                                 header="{{country | slice:0:1 | uppercase }}{{country | slice:1:country.length | lowercase }}">
                     </p-tabPanel>
-                    <p-dataTable #tableRegions [value]="regionsToRender" [paginator]="true" [rows]="10">
+                    <p-dataTable class="ui-g-12" #tableRegions [value]="regionsToRender" [paginator]="true" [rows]="10">
                         <p-column field="label" [sortable]="true"></p-column>
                     </p-dataTable>
                 </p-tabView>

@@ -388,12 +388,18 @@ body {
   font-size: 25px;
   font-weight: bold;
   color: $dark-blue;
+  word-break: normal;
 }
 
 .beneficiaryMayor {
   font-size: 21px;
   font-weight: bold;
   color: $dark-blue;
+  word-break: normal;
+}
+
+.ui-g-12 {
+  word-break: break-word;
 }
 
 .edit {
