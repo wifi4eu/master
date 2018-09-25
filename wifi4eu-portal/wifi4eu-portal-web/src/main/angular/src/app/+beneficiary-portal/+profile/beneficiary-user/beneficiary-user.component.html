@@ -2,56 +2,56 @@
 
     <div *ngIf="isOrganization" class="ui-g-12">
         <span class="ui-g-4 ui-sm-12">{{'registration.nameOrganisation' | translate}}</span>
-        <span class="ui-g-8 ui-sm-12">
+        <span class="ui-g-8 ui-sm-12 profileData">
             <b>{{organizationName}}</b>
         </span>
     </div>
 
     <div class="ui-g-12">
         <span class="ui-g-4 ui-sm-12">{{ 'shared.name.label' | translate }}</span>
-        <span class="ui-g-8 ui-sm-12">
+        <span class="ui-g-8 ui-sm-12 profileData">
             <b>{{user?.name}}</b>
         </span>
     </div>
     <div class="ui-g-12">
         <span class="ui-g-4 ui-sm-12">{{ 'shared.surname.label' | translate }}</span>
-        <span class="ui-g-8 ui-sm-12">
+        <span class="ui-g-8 ui-sm-12 profileData">
             <b>{{user?.surname}}</b>
         </span>
     </div>
     <div class="ui-g-12">
         <span class="ui-g-4 ui-sm-12">{{ 'benefRegistration.townHall.address' | translate }}</span>
-        <span class="ui-g-8 ui-sm-12">
+        <span class="ui-g-8 ui-sm-12 profileData">
             <b>{{user?.address}}</b>
         </span>
     </div>
     <div class="ui-g-12">
         <span class="ui-g-4 ui-sm-12">{{ 'shared.number.label' | translate }}</span>
-        <span class="ui-g-8 ui-sm-12">
+        <span class="ui-g-8 ui-sm-12 profileData">
             <b>{{user?.addressNum}}</b>
         </span>
     </div>
     <div class="ui-g-12">
         <span class="ui-g-4 ui-sm-12">{{ 'shared.postal-code.label' | translate }}</span>
-        <span class="ui-g-8 ui-sm-12">
+        <span class="ui-g-8 ui-sm-12 profileData">
             <b>{{user?.postalCode}}</b>
         </span>
     </div>
     <div class="ui-g-12">
         <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.city.label' | translate }}</span>
-        <span class="ui-g-8 ui-sm-12">
+        <span class="ui-g-8 ui-sm-12 profileData">
             <b>{{user?.city}}</b>
         </span>
     </div>
     <div class="ui-g-12">
         <span class="ui-g-4 ui-sm-12">{{ 'shared.country.label' | translate }}</span>
-        <span class="ui-g-8 ui-sm-12">
+        <span class="ui-g-8 ui-sm-12 profileData">
             <b>{{user?.country}}</b>
         </span>
     </div>
     <div class="ui-g-12">
         <span class="ui-g-4 ui-sm-12">{{ 'shared.email.label' | translate }}</span>
-        <span class="ui-g-8 ui-sm-12">
+        <span class="ui-g-8 ui-sm-12 profileData">
             <b>{{user?.email}}</b>
         </span>
     </div>
