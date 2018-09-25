@@ -173,7 +173,7 @@
                       <p-column field="application.preSelectedFlag" [hidden]="callVoucherAssignment == null || callVoucherAssignment?.hasFreezeListSaved" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.applicationChange' | translate}}"
                         styleClass="text-center">
                         <ng-template let-row="rowData" pTemplate="body">
-                          <span *ngIf="row.application.preSelectedFlag == 0 && callVoucherAssignment?.hasPreListSaved" class="duplicate-warn">{{'dgConn.voucherAssignment.table.applicationChangeNew' | translate}}</span>
+                          <span *ngIf="row.application.preSelectedFlag == 0 && preListLoaded" class="duplicate-warn">{{'dgConn.voucherAssignment.table.applicationChangeNew' | translate}}</span>
                           <span *ngIf="row.application.preSelectedFlag == 1">-</span>
                         </ng-template>
                       </p-column>
