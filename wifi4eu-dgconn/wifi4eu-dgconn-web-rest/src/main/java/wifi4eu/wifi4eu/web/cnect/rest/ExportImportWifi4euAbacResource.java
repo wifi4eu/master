@@ -163,7 +163,6 @@ public class ExportImportWifi4euAbacResource {
         return null;
     }
 
-    @ApiOperation(value = "Export Beneficiary Information")
     @RequestMapping(value = "/exportLegalCommitment", method = RequestMethod.GET, produces = "application/zip")
     @ResponseBody
     public ResponseEntity<byte[]> exportLegalCommitment(final HttpServletResponse response) throws Exception {

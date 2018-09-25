@@ -66,14 +66,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -205,6 +198,7 @@ public class ExportImportWifi4euAbacService {
 
         // Preparation for the Beneficiary CSV file
         StringBuilder csvBeneficiaryData = new StringBuilder();
+        Set<String> loadedMunicipalities = new HashSet<>();
         String csvMunicipalitiesHeaders = exportFileUtilities.getMunicipalitiesCsvHeaders();
         csvBeneficiaryData.append(csvMunicipalitiesHeaders).append("\r\n");
 
@@ -218,7 +212,7 @@ public class ExportImportWifi4euAbacService {
 
         if (CollectionUtils.isNotEmpty(beneficiariesInformation)) {
             beneficiariesInformation.forEach(beneficiaryInformation -> {
-                processBeneficiaryInformation(beneficiaryInformation, csvBeneficiaryData);
+                processBeneficiaryInformation(beneficiaryInformation, loadedMunicipalities, csvBeneficiaryData);
                 processDocumentInformation(beneficiaryInformation, csvDocumentData, exportFiles);
             });
         }
@@ -234,7 +228,15 @@ public class ExportImportWifi4euAbacService {
         return exportFileUtilities.generateZipFileStream(exportFiles);
     }
 
-    private void processBeneficiaryInformation(BeneficiaryInformation beneficiaryInformation, StringBuilder csvBeneficiaryData) {
+    private void processBeneficiaryInformation(BeneficiaryInformation beneficiaryInformation, Set<String> loadedMunicipalities, StringBuilder csvBeneficiaryData) {
+
+        //needed because BeneficiaryInformation is not an entity but a cartesian product of municipalities x legal files, and we don't want to export a municipality more than once
+        if (loadedMunicipalities.contains(beneficiaryInformation.getMun_id())) {
+            return;
+        } else {
+            loadedMunicipalities.add(beneficiaryInformation.getMun_id());
+        }
+
         // Language code is stored as ISO 2 and should be ISO 3
         String langCode = beneficiaryInformation.getMun_languageCodeISO();
         if (langCode != null && !langCode.isEmpty()) {
