@@ -275,6 +275,8 @@ public class GrantAgreementService {
     }
 
     public boolean checkIsLefExportationDone(int applicationId){
+        // TODO
+        // query municipalityAbac count by municipalityId. If > 0 results, let them sign
         return false;
     }
 
