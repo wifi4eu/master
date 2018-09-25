@@ -395,7 +395,7 @@ public class ApplicationService {
                 }
                 break;
                 */
-            case "supportingDocuments":
+            case "supportingdocuments":
                 if (pagingSortingData.getOrderType() == -1) {
                     if (name != null) {
                         if (name.trim().length() > 0) {
