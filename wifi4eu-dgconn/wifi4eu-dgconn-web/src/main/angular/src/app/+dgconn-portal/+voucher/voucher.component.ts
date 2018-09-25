@@ -14,8 +14,10 @@ import { count } from "rxjs/operator/count";
 import { Paginator, MenuItem, DataTable, TabView } from "primeng/primeng";
 import { ActivatedRoute, Router } from "@angular/router";
 import * as FileSaver from "file-saver";
-import { Subscription } from "rxjs";
+import { Subscription, Subject, ReplaySubject } from "rxjs";
 import { AdminActionsDTO, AdminActionsDTOBase } from "../../shared/swagger/model/AdminActionsDTO";
+import { IntervalObservable } from "rxjs/observable/IntervalObservable";
+
 
 @Component({
   templateUrl: 'voucher.component.html',
@@ -114,6 +116,13 @@ export class DgConnVoucherComponent {
   @ViewChild("municipalitySearch") municipalitySearch: ElementRef;
 
   private displayAlreadyLaunched: boolean = false;
+  
+  private ngUnSubscribe: Subject<void> = new Subject<void>();
+  private sessionInterval: any;
+  sessionExpired: Boolean = false;
+
+  private adminAction: AdminActionsDTO;
+  private destroyed: ReplaySubject<boolean> = new ReplaySubject(1);
 
   constructor(private adminActionsApi: AdminactionsApi, private sharedService: SharedService, private callApi: CallApi, private applicationApi: ApplicationApi, private nutsApi: NutsApi,
     private voucherApi: VoucherApi, private router: Router, private route: ActivatedRoute, private registrationWarningApi: RegistrationWarningApi) {
@@ -171,9 +180,9 @@ export class DgConnVoucherComponent {
               if (this.searchedMunicipality.toUpperCase() !== 'ALL') {
                 this.municipalitySearch.nativeElement.value = this.searchedMunicipality;
               }
-              this.tableVoucher.sortColumn = this.tableVoucher.columns.find(col => col.field === this.sortField);
-              this.tableVoucher.sortField = this.sortField;
-              this.tableVoucher.sortOrder = this.sortDirection === 'ASC' ? 1 : -1;
+              //this.tableVoucher.sortColumn = this.tableVoucher.columns.find(col => col.field === this.sortField);
+              //this.tableVoucher.sortField = this.sortField;
+              //this.tableVoucher.sortOrder = this.sortDirection === 'ASC' ? 1 : -1;
               calls.forEach((element, _index) => {
                 if (element.id === this.callSelected.id) {
                   var selectedTab = this.tabCalls.findSelectedTab();
@@ -281,7 +290,30 @@ export class DgConnVoucherComponent {
         }
       }
     )
+
+    this.sessionInterval = IntervalObservable.create(30000);
+    this.startInterval();
   }
+  startInterval() {
+    this.sessionInterval
+        .takeUntil(this.destroyed)
+        .subscribe(execution => {
+          this.adminActionsApi.getByActionName("voucher_simulation").subscribe((response: ResponseDTO) => {
+              if (response.success) {
+                this.adminAction = response.data;
+                this.destroyed.next(this.adminAction.running);                
+                this.destroyed.complete();
+              }                      
+            });
+            console.log("running " , new Date());
+        });
+  }
+
+/*   ngOnDestroy(){
+    this.destroyed.next(true);
+    this.destroyed.complete();
+  } */
+
 
   filterTable() {
     this.router.navigate(['./dgconn-portal/voucher'], { queryParams: { call: this.callSelected.id, page: this.page, size: this.sizePage, municipality: this.searchedMunicipality, country: this.selectedCountry, sortField: this.sortField, sortDirection: this.sortDirection } });
@@ -420,11 +452,13 @@ export class DgConnVoucherComponent {
     if (this.callVoucherAssignment != null && this.callVoucherAssignment.hasFreezeListSaved) {
       return;
     }
-    this.displayConfirmingData = true;
+    this.voucherApi.simulateVoucherAssignment(this.callSelected.id).subscribe();
+    /*
+  this.displayConfirmingData = true;
     this.loadingSimulation = true;
     this.loadingFreezeList = true;
-    this.loadingPreList = true;
-    if (this.callVoucherAssignment == null || this.callVoucherAssignment.status == 1) {
+    this.loadingPreList = true; 
+     if (this.callVoucherAssignment == null || this.callVoucherAssignment.status == 1) {
       this.simulationRequest = this.voucherApi.simulateVoucherAssignment(this.callSelected.id).subscribe((resp: ResponseDTO) => {
         this.displayConfirmingData = false;
         if (this.callVoucherAssignment == null) {
@@ -459,8 +493,8 @@ export class DgConnVoucherComponent {
         this.loadingSimulation = false;
         this.displayConfirmingData = false;
       })
-    }
-  }
+    } 
+  */  }
 
   private chooseCountryApplicationsInfo() {
     this.shownApplicationsInfo = [];
