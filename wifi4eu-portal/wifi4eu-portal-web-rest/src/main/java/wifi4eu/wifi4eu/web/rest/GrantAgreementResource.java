@@ -89,11 +89,11 @@ public class GrantAgreementResource {
         return permissionChecker.checkIfAuthorizedGrantAgreement(applicationId);
     }
 
-    @ApiOperation(value = "Check if lef exportation has been done")
-    @RequestMapping(value = "isLefExportationDone", method = RequestMethod.GET)
+    @ApiOperation(value = "Check if lef import is done")
+    @RequestMapping(value = "isLefImportDone", method = RequestMethod.GET)
     @ResponseBody
-    public Boolean isLefExportationDone(@PathVariable("applicationId") Integer applicationId) {
-        return grantAgreementService.checkIsLefExportationDone(applicationId);
+    public Boolean isLefImportDone(@PathVariable("registrationId") Integer registrationId) {
+        return grantAgreementService.checkIsLefImportDone(registrationId);
     }
 
     @ApiOperation(value = "Create grant agreement")

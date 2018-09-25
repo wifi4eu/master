@@ -35,6 +35,8 @@ import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
 import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobStorage;
 import wifi4eu.wifi4eu.mapper.grantAgreement.GrantAgreementMapper;
 import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
+import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationAuthorizedPersonService;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.location.LauService;
@@ -79,7 +81,13 @@ public class GrantAgreementService {
     LauService lauService;
 
     @Autowired
+    MunicipalityRepository municipalityRepository;
+
+    @Autowired
     ApplicationAuthorizedPersonService applicationAuthorizedPersonService;
+
+    @Autowired
+    RegistrationRepository registrationRepository;
 
     static final HashMap<String, String> languagesMap = new HashMap<>();
 
@@ -274,10 +282,10 @@ public class GrantAgreementService {
         return fileBytes;
     }
 
-    public boolean checkIsLefExportationDone(int applicationId){
+    public boolean checkIsLefImportDone(int municipalityId){
         // TODO
-        // query municipalityAbac count by municipalityId. If > 0 results, let them sign
-        return false;
+        // query municipalityAbac count by municipalityId. If records exists, return true
+        return municipalityRepository.countMunicipalityAbacFromMunicipalityId(registrationRepository.findMunicipalityByRegistrationId(municipalityId)) > 0;
     }
 
 }
