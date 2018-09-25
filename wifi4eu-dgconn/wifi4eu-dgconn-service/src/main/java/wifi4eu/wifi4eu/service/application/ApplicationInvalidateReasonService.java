@@ -172,8 +172,8 @@ public class ApplicationInvalidateReasonService {
         }
         applicationDTO.setStatus(ApplicationStatus.KO.getValue());
         legalFileCorrectionReasonRepository.deleteLegalFileCorrectionByRegistrationId(applicationDTO.getRegistrationId());
-        applicationService.changeStatusRegistrationDocuments(applicationDTO.getId());
         applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+        applicationService.changeStatusRegistrationDocuments(applicationDTO.getId());
 
         updateVoucherSimulationNumDuplicates(applicationDTO);
 
@@ -227,8 +227,8 @@ public class ApplicationInvalidateReasonService {
             applicant_authorizedPersonMapper.toDTO(application_authorizedPersonRepository.save(applicant_authorizedPersonMapper.toEntity(authorizedPersonDTO)));
         }
         legalFileCorrectionReasonRepository.deleteLegalFileCorrectionByRegistrationId(applicationDBO.getRegistrationId());
-        applicationService.changeStatusRegistrationDocuments(applicationDTO.getId());
         ApplicationDTO validatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDBO)));
+        applicationService.changeStatusRegistrationDocuments(applicationDTO.getId());
         /* TODO: The emails are not sent as of the time of this comment, but they will be enabled in the near future.
         updateVoucherSimulationNumDuplicates(applicationDTO);
         RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());

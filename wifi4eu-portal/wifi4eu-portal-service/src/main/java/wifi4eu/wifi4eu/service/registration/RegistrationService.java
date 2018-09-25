@@ -1,17 +1,6 @@
 package wifi4eu.wifi4eu.service.registration;
 
-import java.security.MessageDigest;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.xml.bind.DatatypeConverter;
-
-import org.apache.commons.codec.digest.DigestUtils;
+import com.google.common.collect.Lists;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,26 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.google.common.collect.Lists;
-
-import eu.cec.digit.ecas.org.bouncycastle.jcajce.provider.asymmetric.rsa.DigestSignatureSpi;
 import wifi4eu.wifi4eu.common.dto.mail.MailData;
-import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
-import wifi4eu.wifi4eu.common.dto.model.CallDTO;
-import wifi4eu.wifi4eu.common.dto.model.LegalFileCorrectionReasonDTO;
-import wifi4eu.wifi4eu.common.dto.model.LegalFileDTO;
-import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
-import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
-import wifi4eu.wifi4eu.common.dto.model.ThreadDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
-import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
-import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
+import wifi4eu.wifi4eu.common.enums.*;
 import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.security.UserContext;
@@ -46,6 +21,7 @@ import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
 import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.Application;
+import wifi4eu.wifi4eu.entity.registration.LegalFile;
 import wifi4eu.wifi4eu.entity.registration.LegalFileCorrectionReason;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
@@ -81,6 +57,11 @@ import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.warning.RegistrationWarningService;
 import wifi4eu.wifi4eu.util.RedisUtil;
 import wifi4eu.wifi4eu.util.UserUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.DatatypeConverter;
+import java.security.MessageDigest;
+import java.util.*;
 
 @Service("portalRegistrationService")
 public class RegistrationService {
@@ -284,9 +265,9 @@ public class RegistrationService {
 
     private void uploadDocument (Integer registrationID, LegalFileDTO legalFile, UserDTO userConnected, String ip) throws Exception {
         String legalFileToUpload = legalFile.getFileData();
-        if (legalFileToUpload != null) {
+        if (Validator.isNotNull(legalFileToUpload)) {
             String base64 = LegalFilesService.getBase64Data(legalFileToUpload);
-            if(base64 != null && !base64.isEmpty()) {
+            if(Validator.isNotNull(base64) && Validator.isNotEmpty(base64)) {
                 byte[] byteArray = Base64.getMimeDecoder().decode(base64);
                 String extension = LegalFilesService.getValidFileExtension(legalFileToUpload);
                 if (byteArray.length > 1024000) {
@@ -308,7 +289,11 @@ public class RegistrationService {
                 	String uri = azureBlobConnector.uploadLegalFile(azureFileName, base64);
                     boolean docUploaded = !Validator.isEmpty(uri);
                     legalFile.setAzureUri(uri);
-                    
+                    legalFile.setStatus(LegalFileValidationStatus.UNTOUCHED.getValue());
+                    legalFile.setIsNew(LegalFileStatus.NEW.getValue());
+
+                    List<LegalFile> oldNewFiles = legalFilesRepository.findAllTheNewFiles(legalFile.getFileType(), registrationID);
+
                     if (docUploaded) {
                     	legalFile.setId(0);
                     	legalFile.setRegistration(registrationID);
@@ -319,6 +304,12 @@ public class RegistrationService {
                     	legalFile.setFileSize(byteArray.length);
                     	legalFile.setUserId(userConnected.getId());
                     	legalFile.setFileName(legalFile.getFileName());
+                        if(Validator.isNotNull(oldNewFiles)){
+                            for(LegalFile file: oldNewFiles){
+                                file.setIsNew(LegalFileStatus.RECENT.getValue());
+                                legalFilesRepository.save(file);
+                            }
+                        }
                     	legalFilesRepository.save(legalFilesMapper.toEntity(legalFile));
 
                     	_log.log(Level.getLevel("BUSINESS"), "[ " + ip + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal " +
