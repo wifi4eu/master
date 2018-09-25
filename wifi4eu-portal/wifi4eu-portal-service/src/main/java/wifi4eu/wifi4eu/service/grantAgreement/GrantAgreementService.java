@@ -274,4 +274,8 @@ public class GrantAgreementService {
         return fileBytes;
     }
 
+    public boolean checkIsLefExportationDone(int applicationId){
+        return false;
+    }
+
 }

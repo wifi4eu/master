@@ -59,6 +59,16 @@ export class SignGrantAgreementComponent {
                         return;
                       }
                     })
+                    /*
+                    this.grantAgreementApi.isLefExportationDone(application.id).subscribe((response: boolean) => {
+                        this.contentVisible = response;
+                        if(!response){
+                          this.sharedService.growlTranslation("You cannot sign the grant agreement until a lef exportation has been done", "benefPortal.grantAgreement.lefExportation", "error");              
+                          this.router.navigate(['./beneficiary-portal/my-voucher/grant-agreement']);
+                          return;
+                        }
+                      })
+                      */
                     this.callApi.getCallById(application.callId).subscribe(
                         (call: CallDTOBase) =>{        
                             this.call = call;

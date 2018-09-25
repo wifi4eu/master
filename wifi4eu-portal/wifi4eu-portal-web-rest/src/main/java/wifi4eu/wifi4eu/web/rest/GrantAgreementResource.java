@@ -89,6 +89,13 @@ public class GrantAgreementResource {
         return permissionChecker.checkIfAuthorizedGrantAgreement(applicationId);
     }
 
+    @ApiOperation(value = "Check if lef exportation has been done")
+    @RequestMapping(value = "isLefExportationDone", method = RequestMethod.GET)
+    @ResponseBody
+    public Boolean isLefExportationDone(@PathVariable("applicationId") Integer applicationId) {
+        return grantAgreementService.checkIsLefExportationDone(applicationId);
+    }
+
     @ApiOperation(value = "Create grant agreement")
     @RequestMapping(value = "/createGrantAgreement", method = RequestMethod.POST)
     @ResponseBody
