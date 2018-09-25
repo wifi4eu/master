@@ -52,7 +52,6 @@ public class BatchSchedulerConfig {
 
     @Scheduled(cron = "${batch.legalentity.create.crontable}")
     public void createLegalEntitiesInABAC() {
-        log.info("hi {}", Calendar.getInstance().getTime());
         //check-update the LE status for ABAC (change from IMPORTED to READY_FOR_ABAC)
         legalEntityService.checkLegalEntityReadyForAbac();
         //submit LE to ABAC
