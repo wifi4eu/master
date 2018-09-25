@@ -37,11 +37,11 @@
                         </span>
                         <span *ngIf="applications[i].status == 1" class="entity-subtitle" style="margin-left: 0.5em;">
                             <i class="fa fa-times" style="color: red;"></i>
-                            <i>{{ 'dgConn.status.invalid' | translate }}</i>
+                            <i>{{ 'dgConn.status.invalidated' | translate }}</i>
                         </span>
                         <span *ngIf="applications[i].status == 2" class="entity-subtitle" style="margin-left: 0.5em;">
                             <i class="fa fa-check" style="color: green;"></i>
-                            <i>{{ 'dgConn.status.valid' | translate }}</i>
+                            <i>{{ 'dgConn.status.validated' | translate }}</i>
                         </span>
                         <span *ngIf="applications[i].status == 3" class="entity-subtitle" style="margin-left: 0.5em;">
                             <i class="fa fa-info"></i>
@@ -58,8 +58,7 @@
                         <br>
                         <br>
                         <span class="entity-subtitle">
-                            {{ 'dgConn.beneficiaries.applied' | translate }}: {{ applications[i].date/1000000 | date:'yyyy-MM-dd'}} {{ applications[i].date/1000000
-                            | date:'shortTime'}}
+                            {{ 'dgConn.beneficiaries.applied' | translate }}: {{ applications[i].date | date:'dd-MM-yyyy'}} {{ applications[i].date | date:'shortTime'}}
                         </span>
                     </span>
                     <!-- Validate & Invalidate application buttons -->
@@ -117,15 +116,35 @@
                                     <p class="applicantDetailsNoMargin municipality-name profileData">
                                         <span class="ui-g-12">{{ 'benefRegistration.yourDetails.title' | translate }}</span>
                                     </p>
-                                    <p class="applicantDetailsNoMargin">
+                                    <p class="applicantDetailsNoMargin" *ngIf="users?.name">
                                         <span class="ui-g-3 ui-sm-6">{{ 'shared.name.label' | translate }}</span>
                                         <span class="ui-g-9 ui-sm-6 profileData">{{ users?.name }}</span>
                                     </p>
-                                    <p class="applicantDetailsNoMargin">
+                                    <p class="applicantDetailsNoMargin" *ngIf="users?.surname">
                                         <span class="ui-g-3 ui-sm-6">{{ 'shared.surname.label' | translate }}</span>
                                         <span class="ui-g-9 ui-sm-6 profileData">{{ users?.surname }}</span>
                                     </p>
-                                    <p class="applicantDetailsNoMargin">
+                                    <p class="applicantDetailsNoMargin" *ngIf="users?.address">
+                                        <span class="ui-g-3 ui-sm-6">{{ 'benefPortal.granAgreement.addressLabel' | translate }}</span>
+                                        <span class="ui-g-9 ui-sm-6 profileData">{{ users?.address }}</span>
+                                    </p>
+                                    <p class="applicantDetailsNoMargin" *ngIf="users?.addressNum">
+                                        <span class="ui-g-3 ui-sm-6">{{ 'shared.number.label' | translate }}</span>
+                                        <span class="ui-g-9 ui-sm-6 profileData">{{ users?.addressNum }}</span>
+                                    </p>
+                                    <p class="applicantDetailsNoMargin" *ngIf="users?.postalCode">
+                                        <span class="ui-g-3 ui-sm-6">{{ 'shared.postal-code.label' | translate }}</span>
+                                        <span class="ui-g-9 ui-sm-6 profileData">{{ users?.postalCode }}</span>
+                                    </p>
+                                    <p class="applicantDetailsNoMargin" *ngIf="users?.city">
+                                        <span class="ui-g-3 ui-sm-6">{{ 'suppRegistration.city.label' | translate }}</span>
+                                        <span class="ui-g-9 ui-sm-6 profileData">{{ users?.city }}</span>
+                                    </p>
+                                    <p class="applicantDetailsNoMargin" *ngIf="users?.country">
+                                        <span class="ui-g-3 ui-sm-6">{{ 'dgConn.beneficiaries.country' | translate }}</span>
+                                        <span class="ui-g-9 ui-sm-6 profileData">{{ users?.country }}</span>
+                                    </p>
+                                    <p class="applicantDetailsNoMargin" *ngIf="users?.ecasEmail">
                                         <span class="ui-g-3 ui-sm-6">{{ 'shared.email.label' | translate }}</span>
                                         <span class="ui-g-9 ui-sm-6 profileData">{{ users?.ecasEmail }}</span>
                                     </p>
@@ -138,12 +157,13 @@
                                         </span>
                                         <div class="innerOptions">
                                             <div>
-                                                <p-radioButton name="{{applications[i]?.id + z}}" value="{{users?.id}}" label="Yes" [(ngModel)]="applications[i].authorizedPerson"
+                                                <p-radioButton name="{{applications[i]?.id + z}}" [value]="true" label="Yes" [(ngModel)]="users.authorized"
                                                     inputId="preopt1" pTooltip="{{'dgConn.applicationDetails.auth.tooltip' | translate:{name:users?.name,surname:users?.surname}
-                                                }}" tooltipPosition="bottom" onChange = "changeUser(z)"></p-radioButton>
+                                                }}" tooltipPosition="bottom" (onClick)="userAuthorisation(i, users)" ></p-radioButton>
                                             </div>
                                             <div>
-                                                <p-radioButton name="{{applications[i]?.id +z}}" value="{{users?.id}}-1" label="No" [(ngModel)]="applications[i].authorizedPerson" inputId="preopt2"></p-radioButton>
+                                                <p-radioButton name="{{applications[i]?.id +z}}" [value]="false" label="No" [(ngModel)]="users.authorized" inputId="preopt2"
+                                                (onClick)="userAuthorisation(i, users)"></p-radioButton>
                                             </div>
                                         </div>
                                     </div>
@@ -200,7 +220,7 @@
                                             </p-column>
                                             <p-column field="uploadTime" [sortable]="true" header="{{ 'dgConn.dateRecieved' | translate }}" styleClass="text-center">
                                                 <ng-template let-row="rowData" pTemplate="body">
-                                                    <span *ngIf="row.uploadTime">{{ row.uploadTime | date:'dd/MM/yyyy' }}</span>
+                                                    <span *ngIf="row.uploadTime">{{ row.uploadTime | date:'dd/MM/yyyy HH:mm' }}</span>
                                                     <span *ngIf="!row.uploadTime">-</span>
                                                 </ng-template>
                                             </p-column>
@@ -212,8 +232,8 @@
                                              </p-column>
                                             <p-column field="requestCorrectionDate" [sortable]="true" header="{{ 'dgConn.requestCorrectionDate' | translate }}" styleClass="text-center">
                                                 <ng-template let-row="rowData" pTemplate="body">
-                                                    <span *ngIf="row.requestCorrectionDate != null">{{ row.requestCorrectionDate | date:'dd/MM/yyyy' }}</span>
-                                                    <span *ngIf="row.requestCorrectionDate == null">-</span>
+                                                    <span *ngIf="row.requestCorrectionDate != null && row.correctionReason != null">{{ row.requestCorrectionDate | date:'dd/MM/yyyy HH:mm'}}</span>
+                                                    <span *ngIf="row.correctionReason == null ||  row.correctionReason == null">-</span>
                                                 </ng-template>
                                              </p-column>
                                             <p-column [sortable]="false" header="{{ 'dgConn.actions' | translate }}" styleClass="text-center">
@@ -306,9 +326,9 @@
                                                     </ng-template>
                                                 </p-column>
                                                 <p-column [style]="{'width':'53%'}" field="comment" header="{{ 'dgConn.applicantDetails.comments.table.comment' | translate }}"
-                                                    styleClass="padding-cell">
+                                                    styleClass="padding-cell text-adjust">
                                                     <ng-template let-row="rowData" pTemplate="body">
-                                                        <p style="margin: 0px; white-space: pre-wrap;word-break: break-all;">{{ row.comment }}</p>
+                                                        <p style="margin: 0px; white-space: pre-wrap;">{{ row.comment }}</p>
                                                     </ng-template>
                                                 </p-column>
                                             </p-dataTable>
@@ -534,7 +554,7 @@
                         </div>
                         <div class="col-sm-6">
                             <button type="submit" class="btn btn-primary publish-button" [disabled]="processingRequest || !commentConfirmationForm.valid">
-                                {{ 'shared.confirm.button' | translate }}
+                                {{ 'shared.save' | translate }}
                                 <i *ngIf="processingRequest" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
                             </button>
                         </div>
@@ -566,7 +586,7 @@
                         <span class="ui-g-12" style="margin-bottom: 1em;">
                             <select [(ngModel)]="selectedReasonTypes[selectedIndex][index]" (ngModelChange)="selectCorrectionReason($event)" [id]="'invalidateReason'+index"
                                 [name]="'invalidateReason'+index" class="form-control">
-                                <option *ngIf="selectedReasonTypes[selectedIndex][index]  != null" [ngValue]="-1">
+                                <option *ngIf="file.requestCorrection" [ngValue]="-1">
                                     -
                                 </option>
                                 <option *ngFor="let invalidateReason of invalidateReasonsList; let reasonIndex = index" [ngValue]="reasonIndex">
@@ -595,7 +615,7 @@
         </form>
     </p-dialog>
     <p-dialog [(visible)]="displaySimulation" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="!processingRequest" (onAfterHide)="closeModal()">
-        <form (ngSubmit)="rerunVoucherSimulation()" #validateConfirmationForm="ngForm">
+        <form (ngSubmit)="closeModal()" #validateConfirmationForm="ngForm">
             <div class="form-group">
                 <div style="padding: 2em; padding-top: 0em;" class="center">
                     <p [innerHTML]="'dgConn.applicantDetails.invalidateApplication.rerunVoucherSimulation' | translate"></p>

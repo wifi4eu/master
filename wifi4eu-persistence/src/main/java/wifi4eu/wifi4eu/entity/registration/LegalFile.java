@@ -22,7 +22,7 @@ public class LegalFile {
 	private int fileType;
 
 	@Column(name = "upload_time")
-	private Date uploadTime;
+	private Long uploadTime;
 
 	@Column(name = "id_user")
 	private Integer userId;
@@ -36,11 +36,13 @@ public class LegalFile {
 	@Column(name = "file_name")
 	private String fileName;
 
+	@Column(name = "azure_uri")
+	private String azureUri;
 
 	public LegalFile() {
 	}
 
-    public LegalFile(int registration, String fileData, int fileType, Date uploadTime, Integer userId, int fileSize, String fileMime, String fileName) {
+    public LegalFile(int registration, String fileData, int fileType, Long uploadTime, Integer userId, int fileSize, String fileMime, String fileName) {
         this.registration = registration;
         this.fileData = fileData;
         this.fileType = fileType;
@@ -83,11 +85,11 @@ public class LegalFile {
 		this.fileType = fileType;
 	}
 
-	public Date getUploadTime() {
+	public Long getUploadTime() {
 		return uploadTime;
 	}
 
-	public void setUploadTime(Date uploadTime) {
+	public void setUploadTime(Long uploadTime) {
 		this.uploadTime = uploadTime;
 	}
 
@@ -122,4 +124,12 @@ public class LegalFile {
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
+
+	public String getAzureUri() {
+		return azureUri;
+	}
+
+	public void setAzureUri(String azureUri) {
+		this.azureUri = azureUri;
+	}
 }

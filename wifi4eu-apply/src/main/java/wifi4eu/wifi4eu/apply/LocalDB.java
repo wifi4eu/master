@@ -10,7 +10,7 @@ public class LocalDB {
 
     private Connection db;
 
-    private final String insertSQL = "INSERT INTO applications (redis_id, r, u, m, ip, data) VALUES (?,?,?,?,?,?)";
+    private final String insertSQL = "INSERT INTO applications (redis_id, r, u, m, ip, data, call_id) VALUES (?,?,?,?,?,?,?)";
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -71,6 +71,7 @@ public class LocalDB {
         ps.setString(4, app.m);
         ps.setString(5, app.ip);
         ps.setString(6, app.data);
+        ps.setInt(7, 1);
 
         ps.executeUpdate();
 

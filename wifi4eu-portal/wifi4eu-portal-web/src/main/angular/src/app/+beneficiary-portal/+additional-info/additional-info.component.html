@@ -94,7 +94,7 @@
                                     <span>{{documentFilesType1[i].fileName}}</span>
                                     <span *ngIf="!file?.uploadTime">
                                         <!-- new file -->
-                                        <a sclass="link-label" (click)="removeFile(1)">
+                                        <a sclass="link-label" (click)="openDeleteModal(1)">
                                             <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
                                     </span>
                                     <span *ngIf="file?.uploadTime">
@@ -105,8 +105,8 @@
                                             <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
                                         </a>
                                         <span class="attachment-label">
-                                            <br />{{ 'shared.supportingDocuments.attachment' | translate:{uploadTime:documentFilesType1[i].uploadTime
-                                            | date : "h:mm a, d MMM y"} }}
+                                            <br />{{ 'shared.supportingDocuments.attachment' | translate:{date:documentFilesType1[i].uploadTime|
+                                            date : "dd/MM/yyyy", time:documentFilesType1[i].uploadTime| date : "HH:mm"} }}
                                         </span>
                                     </span>
                                 </span>
@@ -150,7 +150,7 @@
                                     <span>{{documentFilesType3[i].fileName}}</span>
                                     <span *ngIf="!file?.uploadTime">
                                         <!-- new file -->
-                                        <a sclass="link-label" (click)="removeFile(3)">
+                                        <a sclass="link-label" (click)="openDeleteModal(3)">
                                             <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
                                     </span>
                                     <span *ngIf="file?.uploadTime">
@@ -161,8 +161,8 @@
                                             <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
                                         </a>
                                         <span class="attachment-label">
-                                            <br />{{ 'shared.supportingDocuments.attachment' | translate:{uploadTime:documentFilesType3[i].uploadTime
-                                            | date : "h:mm a, d MMM y"} }}
+                                            <br />{{ 'shared.supportingDocuments.attachment' | translate:{date:documentFilesType3[i].uploadTime|
+                                            date : "dd/MM/yyyy", time:documentFilesType3[i].uploadTime| date : "HH:mm"} }}
                                         </span>
                                     </span>
                                 </span>
@@ -171,7 +171,7 @@
                     </span>
                 </div>
             </div>
-
+           
             <div class="row" *ngIf="!isMayor">
 
                 <div class="row">
@@ -179,6 +179,10 @@
                         <hr class="beneficiaryHr marginHr">
                     </div>
                 </div>
+
+                 <p class="labelModal profileData">
+                    {{ 'shared.supportingDocuments.provide.optional' | translate }}
+                </p>
 
                 <div class="col-offset-12">
                     <label class="label" for="document4" [innerHTML]="'benefPortal.request.additionalInfo.doc3.label' | translate"></label>
@@ -207,7 +211,7 @@
                                     <span>{{documentFilesType4[i].fileName}}</span>
                                     <span *ngIf="!file?.uploadTime">
                                         <!-- new file -->
-                                        <a sclass="link-label" (click)="removeFile(4)">
+                                        <a sclass="link-label" (click)="openDeleteModal(4)">
                                             <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
                                     </span>
                                     <span *ngIf="file?.uploadTime">
@@ -217,9 +221,10 @@
                                         <a class="link-label" href="{{fileURL}}{{registration.id}}/{{file.id}}" target="_blank">
                                             <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
                                         </a>
+
                                         <span class="attachment-label">
-                                            <br />{{ 'shared.supportingDocuments.attachment' | translate:{uploadTime:documentFilesType4[i].uploadTime
-                                            | date : "h:mm a, d MMM y"} }}
+                                            <br />{{ 'shared.supportingDocuments.attachment' | translate:{date:documentFilesType4[i].uploadTime|
+                                            date : "dd/MM/yyyy", time:documentFilesType4[i].uploadTime| date : "HH:mm"} }}
                                         </span>
                                     </span>
                                 </span>
@@ -233,9 +238,7 @@
                     </div>
                 </div>
 
-                <p class="labelModal profileData">
-                    {{ 'shared.supportingDocuments.provide.optional' | translate }}
-                </p>
+       
 
                 <div class="col-offset-12">
                     <label class="label" for="document2" [innerHTML]="'benefPortal.request.additionalInfo.doc4.label' | translate"></label>
@@ -264,7 +267,7 @@
                                     <span>{{documentFilesType2[i].fileName}}</span>
                                     <span *ngIf="!file?.uploadTime">
                                         <!-- new file -->
-                                        <a sclass="link-label" (click)="removeFile(2)">
+                                        <a sclass="link-label" (click)="openDeleteModal(2)">
                                             <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
                                     </span>
                                     <span *ngIf="file?.uploadTime">
@@ -275,8 +278,8 @@
                                             <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
                                         </a>
                                         <span class="attachment-label">
-                                            <br />{{ 'shared.supportingDocuments.attachment' | translate:{uploadTime:documentFilesType2[i].uploadTime
-                                            | date : "h:mm a, d MMM y"} }}
+                                            <br />{{ 'shared.supportingDocuments.attachment' | translate:{date:documentFilesType2[i].uploadTime|
+                                            date : "dd/MM/yyyy", time:documentFilesType2[i].uploadTime| date : "HH:mm"} }}
                                         </span>
                                     </span>
                                 </span>
@@ -304,7 +307,7 @@
                 </button>
             </div>
             <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                <button type="submit" class="btn btn-primary publish-button" [disabled]="!legalForm.form.valid || !filesUploaded">
+                <button type="submit" class="btn btn-primary publish-button" [disabled]="!legalForm.form.valid || !filesUploaded || !changedDocs > 0">
                     {{ 'shared.confirm.button' | translate }}
                 </button>
             </div>
@@ -324,11 +327,9 @@
                 </button>
             </div>
             <div class="ui-g-6 ui-md-6 ui-lg-4" style="text-align: center !important">
-                <a routerLink="../.." routerLinkActive="active">
-                    <button type="button" class="btn btn-primary cancel-button">
-                        {{ 'shared.yes' | translate }}
-                    </button>
-                </a>
+                <button type="button" class="btn btn-primary cancel-button" (click)="goBack()">
+                    {{ 'shared.yes' | translate }}
+                </button>
             </div>
 
             <div class="ui-lg-2"></div>
@@ -345,5 +346,28 @@
         <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title' | translate }}</h1>
         <p class="ModalpConfirmation">{{ 'shared.loading.modal.title3' | translate }}</p>
     </p-dialog>
+
+    <p-dialog [(visible)]="displayConfirmDelete" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="false"
+        [closeOnEscape]="false">
+        <div class="form-group ui-g">
+            <div class="col-sm-12 center" style="padding-bottom:1em; color: #004494; font-size:20px; font-weight: bold;">
+                <span>{{ 'shared.supportingDocuments.removeDocument' | translate}}</span>
+            </div>
+            <div class="col-sm-12 center" style="padding-bottom:1em;">
+                <span style="line-height: 1.25; font-size: 16px;">{{ 'shared.supportingDocuments.removeModalAreYouSure' | translate}}</span>
+            </div>
+            <div class="col-sm-12 center">
+                <div class="offset-lg-2 col-sm-6 col-g-6 col-md-6 col-lg-4">
+                    <button (click)="cancelBack()" class="btn btn-primary publish-button">{{ 'shared.cancel.button' | translate }} </button>
+                </div>
+                <div class="col-sm-6 col-g-6 col-md-6 col-lg-4">
+                    <button (click)="removeFile()" type="button" class="btn btn-primary cancel-button">
+                        {{ 'shared.confirm.button' | translate }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </p-dialog>
+
     <helpdesk-form-component portal="beneficiary-additional-info"></helpdesk-form-component>
 </div>

@@ -25,7 +25,7 @@
 
     <session-config>
         <session-timeout>
-            30
+            -1
         </session-timeout>
         <cookie-config>
             <http-only>true</http-only>
@@ -70,6 +70,7 @@
     <filter>
         <filter-name>userFilter</filter-name>
         <filter-class>${user.filter.path}</filter-class>
+        <!--<filter-class>wifi4eu.wifi4eu.web.filter.UserFilterMocked</filter-class>-->
     </filter>
 
     <filter-mapping>

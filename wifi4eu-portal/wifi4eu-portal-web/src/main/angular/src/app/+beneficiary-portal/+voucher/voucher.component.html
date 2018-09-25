@@ -10,29 +10,40 @@
 </div>
 <!-- Timer & "Apply For Voucher" -->
 <div id="middle-block" class="ui-g-12 center" style="background-color: #EAEEF2;">
-    <div class="ui-g-12 right">
-        <a routerLink="../profile">
-            <i class="fa fa-share"></i> {{'benefPortal.profile.title' | translate }}</a>
+    <div class="timer-height-block">
+        <div class="ui-g-12 right">
+            <a routerLink="../profile">
+                <i class="fa fa-share"></i> {{'benefPortal.profile.title' | translate }}</a>
+        </div>
+        <h2 *ngIf="voucherCompetitionState == 1" class="beneficiaryTitle marginTop">
+            {{ 'home.part3.text4' | translate }}
+        </h2>
+        <h2 *ngIf="voucherCompetitionState == 2 || voucherCompetitionState == 3" class="beneficiaryTitle marginTop">
+            {{ 'benefPortal.voucher.statusmessage4' | translate }}
+        </h2>
+        <p *ngIf="voucherCompetitionState == 0">
+            {{ 'benefPortal.voucher.step2' | translate }}
+        </p>
+        <p *ngIf="voucherCompetitionState == 2 || voucherCompetitionState == 3" class="offset-lg-3 ui-lg-6" [innerHTML]="
+            'benefPortal.voucher.counterSubtitle' | translate:{date:startDate, hour:startHour, endDate:endDate, endHour:endHour}">
+        </p>
+        <timer-component *ngIf="voucherCompetitionState == 1" class="ui-g-12 center" (timerEvent)="openApplyForVoucher()"
+            [expirationTimestamp]="currentCall.startDate" [baseURLApi] ="baseURI">
+        </timer-component>
     </div>
-    <h2 *ngIf="voucherCompetitionState == 1" class="beneficiaryTitle marginTop">
-        {{ 'home.part3.text4' | translate }}
-    </h2>
-    <h2 *ngIf="voucherCompetitionState == 2 || voucherCompetitionState == 3" class="beneficiaryTitle marginTop">
-        {{ 'benefPortal.voucher.statusmessage4' | translate }}
-    </h2>
-    <p *ngIf="voucherCompetitionState == 0">
-        {{ 'benefPortal.voucher.step2' | translate }}
-    </p>
-    <p *ngIf="voucherCompetitionState == 2 || voucherCompetitionState == 3" class="offset-lg-3 ui-lg-6" [innerHTML]="
-        'benefPortal.voucher.counterSubtitle' | translate:{startDate:startDate, startHour:startHour, endDate:endDate, endHour:endHour}">
-    </p>
-    <timer-component *ngIf="voucherCompetitionState == 1" class="ui-g-12 center" (timerEvent)="openApplyForVoucher()"
-        [expirationTimestamp]="currentCall.startDate" [baseURLApi] ="baseURI">
-    </timer-component>
     <div class="ui-g-12 ui-md-8 offset-md-2">
         <div class="marginTop registrationPanel">
-            <p-dataTable [value]="applyVouchersData" [expandableRows]="true" [expandedRows]="applyVouchersData">
-                <p-column field="name" header="{{ 'shared.municipality.label' | translate }}" [sortable]="true" styleClass="label">
+            <p-dataTable [value]="applyVouchersData" [expandableRows]="true" [expandedRows]="applyVouchersData" [class.table-disabled]="!allRequestCompleted">
+                <p-column field="municipality" [sortable]="allRequestCompleted ? true : false" styleClass="label whiteTableBackground">
+                    <ng-template pTemplate="header">
+                        <span *ngIf="!allRequestCompleted">
+                            {{ 'shared.loading.modal.title' | translate }}
+                            <i class="fa fa-spinner fa-spin" *ngIf="!allRequestCompleted"></i>
+                        </span>
+                        <span *ngIf="allRequestCompleted">
+                            {{ 'shared.municipality.label' | translate }}
+                        </span>
+                    </ng-template>  
                     <template pTemplate="body" let-data="rowData" let-i="rowIndex">
                         <span>
                             <img alt="" class="municipality-icon" src="assets/images/account-balance-material-icons-regular.png">
@@ -42,38 +53,43 @@
                         </span>
                     </template>
                 </p-column>
-                <p-column header="" styleClass="label">
+                <p-column header="" styleClass="label whiteTableBackground">
                     <template pTemplate="body" let-data="rowData" let-i="rowIndex">
                         <button *ngIf="!data.filesUploaded" class="btn btn-primary" id="muncicipalityButton"
                                 (click)="goToDocuments(data.idMunicipality)">{{ 'shared.uploadDocuments' | translate}}
                         </button>
-                        <span *ngIf="data.filesUploaded">
+                        <span *ngIf="data.filesUploaded" [style.margin-right]="voucherCompetitionState == 0 ? '4em' : '0em'" style="display: inline-block;">
                             <i class="fa fa-check" aria-hidden="true" style="color: #298B59"></i>
                             <span>{{ 'shared.documentsSubmitted' | translate:{date:uploadDateTime[data.idMunicipality],time:uploadHourTime[data.idMunicipality]} }}.</span>
                             <a alt="" class="municipality-name" (click)="goToDocuments(data.idMunicipality)">{{ 'shared.link.seeDetails' | translate }}</a>
                         </span>
                     </template>
                 </p-column>
-                <p-column header="" styleClass="label">
+                <p-column header="" styleClass="label whiteTableBackground" >
                     <template pTemplate="body" let-data="rowData" let-i="rowIndex">
-                        <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(data)" *ngIf="!isVoucherApplied(data.idRegistration) && !data.numberApplicant" [disabled]="!data.filesUploaded || !data.conditionAgreement">
-                            {{ 'benefPortal.voucher.applyforvoucher' | translate }}
-                        </button>
-                        <span *ngIf="data.numberApplicant || isVoucherApplied(data.idRegistration)">
+                          <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(data)" *ngIf="!isVoucherApplied(data.idRegistration) && !data.numberApplicant" [disabled]="!data.filesUploaded || !data.conditionAgreement || voucherCompetitionState == null || voucherCompetitionState == 0">
+                              {{ 'benefPortal.voucher.applyforvoucher' | translate }}
+                          </button>
+                          <span *ngIf="(data.numberApplicant || isVoucherApplied(data.idRegistration)) && ((voucherCompetitionState != null && voucherCompetitionState != 0) || data.applyTime == 0)">
+                              <i class="fa fa-check" aria-hidden="true" style="color: #298B59"></i>
+                              {{ 'benefPortal.voucher.applied' | translate }}
+                          </span>
+                          <span *ngIf="(data.numberApplicant || isVoucherApplied(data.idRegistration)) && (voucherCompetitionState == null || voucherCompetitionState == 0) && data.applyTime != 0">
                             <i class="fa fa-check" aria-hidden="true" style="color: #298B59"></i>
-                            {{ 'benefPortal.voucher.applied' | translate }}
+                            {{ 'benefPortal.voucher.applied.callEnded' | translate:{date:applyDateTime[data.idMunicipality],hour:applyHourTime[data.idMunicipality]} }} 
                         </span>
                     </template>
                 </p-column>
                 <template let-data pTemplate="rowexpansion" let-i="rowIndex">
-                    <div class="ui-grid ui-grid-responsive ui-fluid">
+                    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="voucherCompetitionState != null && voucherCompetitionState != 0" >
                         <div class="row conditions-agreement">
                             <div class="col-sm-1 col-md-1 col-lg-1">
-                                <i *ngIf="!data.conditionAgreement" class="fa fa-square-o" aria-hidden="true" (click)="changeConditionsAgreement(data)"></i>
-                                <i *ngIf="data.conditionAgreement" class="fa fa-check-square-o" aria-hidden="true" (click)="changeConditionsAgreement(data)"></i>
+                                <i *ngIf="!data.conditionAgreement && !(data.numberApplicant || isVoucherApplied(data.idRegistration))" class="fa fa-square-o" aria-hidden="true" (click)="changeConditionsAgreement(data)"></i>
+                                <i *ngIf="data.conditionAgreement && !(data.numberApplicant || isVoucherApplied(data.idRegistration))" class="fa fa-check-square-o" aria-hidden="true" (click)="changeConditionsAgreement(data)"></i>
+                                <i *ngIf="data.numberApplicant || isVoucherApplied(data.idRegistration)" class="fa fa-check-square-o" aria-hidden="true" ></i>
                             </div>
                             <div class="col-sm-11 col-md-11 col-lg-11">
-                                <div [innerHTML]="'benefPortal.voucher.conditionsAgreement' | translate"></div>
+                                <div class="forceBlueColorOnLinks" [innerHTML]="'benefPortal.voucher.conditionsAgreement' | translate"></div>
                             </div>
                         </div>
                     </div>

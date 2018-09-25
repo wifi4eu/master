@@ -1,6 +1,13 @@
 package wifi4eu.wifi4eu.service.registration;
 
-import com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -8,17 +15,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.collect.Lists;
+
 import wifi4eu.wifi4eu.common.Constant;
-import wifi4eu.wifi4eu.common.cns.CNSManager;
-import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.mail.MailData;
+import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
+import wifi4eu.wifi4eu.common.dto.model.LegalFileCorrectionReasonDTO;
+import wifi4eu.wifi4eu.common.dto.model.LegalFileDTO;
+import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
+import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
+import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
+import wifi4eu.wifi4eu.common.dto.model.ThreadDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
+import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.Application;
+import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.supplier.Supplier;
@@ -31,6 +51,7 @@ import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
+import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
@@ -47,12 +68,7 @@ import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.warning.RegistrationWarningService;
-import wifi4eu.wifi4eu.util.MailService;
 import wifi4eu.wifi4eu.util.UserUtils;
-
-import javax.servlet.http.HttpServletRequest;
-import java.text.MessageFormat;
-import java.util.*;
 
 @Service("portalRegistrationService")
 public class RegistrationService {
@@ -75,9 +91,6 @@ public class RegistrationService {
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    MailService mailService;
 
     @Autowired
     MunicipalityService municipalityService;
@@ -110,7 +123,7 @@ public class RegistrationService {
     LegalFileCorrectionReasonRepository legalFileCorrectionReasonRepository;
 
     @Autowired
-    CNSManager cnsManager;
+    MailService mailService;
 
     @Autowired
     ApplicationRepository applicationRepository;
@@ -135,6 +148,9 @@ public class RegistrationService {
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    LogEmailRepository logEmailRepository;
 
     public List<RegistrationDTO> getAllRegistrations() {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
@@ -259,7 +275,9 @@ public class RegistrationService {
         }
         //if beneficiary indicator and wifi indicator are true we send a confirmation email
         if (registration.getInstallationSiteConfirmation() != null) {
-            cnsManager.sendInstallationConfirmationFromBeneficiary(email, name, beneficiaryName, locale);
+            MailData mailData = MailHelper.buildMailInstallationConfirmationFromBeneficiary(email, name, beneficiaryName, locale);
+        	mailService.sendMail(mailData, true);
+        	
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Confirmation email for registration " + registration.getId() + " sent to " + email);
             return true;
         } else {
@@ -270,8 +288,12 @@ public class RegistrationService {
                 User user = userRepository.findMainUserFromRegistration(registration.getId());
                 String ccName = user.getName();
                 String ccEmail = user.getEmail();
-                cnsManager.sendInstallationRejectionFromBeneficiary(email, name, beneficiaryName, ccEmail,
-                        ccName, locale);
+                
+                MailData mailDataSupplier = MailHelper.buildMailInstallationRejectionFromBeneficiary(email, name, beneficiaryName, locale);
+            	mailService.sendMail(mailDataSupplier, true);
+                MailData mailDataUser = MailHelper.buildMailInstallationRejectionFromBeneficiary(ccEmail, ccName, beneficiaryName, locale);
+            	mailService.sendMail(mailDataUser, true);
+                
                 _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Rejection email for registration " + registration.getId() + " sent to " + email);
                 return true;
             }
@@ -336,15 +358,13 @@ public class RegistrationService {
                 if (user.getLang() != null) {
                     locale = new Locale(user.getLang());
                 }
-                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                String subject = bundle.getString("mail.dgConn.requestDocuments.subject");
-                String msgBody = bundle.getString("mail.dgConn.requestDocuments.body");
+
                 String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/voucher";
-                msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
-                _log.info("additionalInfoUrl: " + additionalInfoUrl + " msgBody: " + msgBody + " language: " + locale.getLanguage());
-                if (!userService.isLocalHost()) {
-                    mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, registration.getMunicipalityId(), "requestLegalDocuments");
-                }
+                MailData mailData = MailHelper.buildMailRequestSupportingDocumentsForRegistration(
+                		user.getEcasEmail(), MailService.FROM_ADDRESS, additionalInfoUrl, 
+                		registration.getMunicipalityId(), "requestLegalDocuments", locale);
+            	mailService.sendMail(mailData, false);
+
                 return true;
             }
         }
@@ -404,7 +424,7 @@ public class RegistrationService {
 
     @Transactional
     public LegalFileCorrectionReasonDTO saveLegalFile(LegalFileCorrectionReasonDTO legalFileDTO) throws Exception {
-        legalFileDTO.setRequestCorrectionDate(new Date());
+        legalFileDTO.setRequestCorrectionDate(new Date().getTime());
         if (legalFileDTO.getCorrectionReason() == null) {
             legalFileDTO.setRequestCorrection(false);
         }
@@ -440,7 +460,6 @@ public class RegistrationService {
      * Gets all documents independent of user and type.
      * If type is not null it returns all documents uploaded for that type.
      * @param registrationId
-     * @param type
      * @return
      */
     public List<LegalFileDTO> getHistoryDocuments(Integer registrationId) {
@@ -467,6 +486,14 @@ public class RegistrationService {
     }
 
     public List<Integer> findTypeFilesWaitingUploadByRegistration(Integer registrationId){
-        return registrationRepository.findTypeFilesWaitingUploadByRegistration(registrationId);
+        LogEmail lastEmailSent = logEmailRepository.findTopByActionOrderBySentDateDesc(Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS);
+        if(lastEmailSent == null){
+            return new ArrayList<Integer>();
+        }
+        return legalFileCorrectionReasonRepository.findTypeFilesWaitingUploadByRegistration(lastEmailSent.getSentDate(),registrationId);
+    }
+
+    private Long getDateOfLogEmail(LogEmail logEmail){
+        return logEmail == null ? 0 : logEmail.getSentDate();
     }
 }

@@ -1,6 +1,17 @@
 package wifi4eu.wifi4eu.service.registration;
 
-import com.google.common.collect.Lists;
+import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.DatatypeConverter;
+
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -8,23 +19,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wifi4eu.wifi4eu.common.cns.CNSManager;
-import wifi4eu.wifi4eu.common.dto.model.*;
+
+import com.google.common.collect.Lists;
+
+import eu.cec.digit.ecas.org.bouncycastle.jcajce.provider.asymmetric.rsa.DigestSignatureSpi;
+import wifi4eu.wifi4eu.common.dto.mail.MailData;
+import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
+import wifi4eu.wifi4eu.common.dto.model.CallDTO;
+import wifi4eu.wifi4eu.common.dto.model.LegalFileCorrectionReasonDTO;
+import wifi4eu.wifi4eu.common.dto.model.LegalFileDTO;
+import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
+import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
+import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
+import wifi4eu.wifi4eu.common.dto.model.ThreadDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
-import wifi4eu.wifi4eu.common.enums.FileTypes;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
+import wifi4eu.wifi4eu.common.helper.Validator;
+import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
+import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.Application;
-import wifi4eu.wifi4eu.entity.registration.LegalFile;
-import wifi4eu.wifi4eu.entity.registration.LegalFileCorrectionReason;import wifi4eu.wifi4eu.entity.registration.Registration;
+import wifi4eu.wifi4eu.entity.registration.LegalFileCorrectionReason;
+import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.supplier.Supplier;
 import wifi4eu.wifi4eu.entity.user.User;
+import wifi4eu.wifi4eu.entity.user.UserContactDetails;
 import wifi4eu.wifi4eu.mapper.registration.LegalFileCorrectionReasonMapper;
 import wifi4eu.wifi4eu.mapper.registration.RegistrationMapper;
 import wifi4eu.wifi4eu.mapper.registration.legal_files.LegalFilesMapper;
@@ -37,6 +64,7 @@ import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonReposito
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
+import wifi4eu.wifi4eu.repository.user.UserContactDetailsRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.call.CallService;
@@ -51,12 +79,8 @@ import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.warning.RegistrationWarningService;
-import wifi4eu.wifi4eu.util.MailService;
+import wifi4eu.wifi4eu.util.RedisUtil;
 import wifi4eu.wifi4eu.util.UserUtils;
-
-import javax.servlet.http.HttpServletRequest;
-import java.text.MessageFormat;
-import java.util.*;
 
 @Service("portalRegistrationService")
 public class RegistrationService {
@@ -79,9 +103,6 @@ public class RegistrationService {
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    MailService mailService;
 
     @Autowired
     MunicipalityService municipalityService;
@@ -114,7 +135,7 @@ public class RegistrationService {
     LegalFileCorrectionReasonRepository legalFileCorrectionReasonRepository;
 
     @Autowired
-    CNSManager cnsManager;
+    MailService mailService;
 
     @Autowired
     ApplicationRepository applicationRepository;
@@ -143,6 +164,15 @@ public class RegistrationService {
     @Autowired
     CallService callService;
 
+    @Autowired
+    UserContactDetailsRepository userContactDetailsRepository;
+
+    @Autowired
+    private RedisUtil redisUtil;
+    
+    @Autowired
+    AzureBlobConnector azureBlobConnector;
+
     public List<RegistrationDTO> getAllRegistrations() {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
     }
@@ -170,7 +200,11 @@ public class RegistrationService {
         registrationUsers.setStatus(RegistrationUsersStatus.REGISTERED.getValue());
         registrationUsers.setCreationDate(new Date());
         registrationUsers.setContactEmail(userConnected.getEcasEmail());
-        registrationUsersRepository.save(registrationUsers);
+        registrationUsers = registrationUsersRepository.save(registrationUsers);
+        if (Validator.isNotNull(registrationUsers)) {
+            redisUtil.sync(userConnected.getId());
+        }
+
         registrationWarningService.createWarningsByRegistration(registrationCreated);
         return registrationCreated;
     }
@@ -182,7 +216,7 @@ public class RegistrationService {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         if(!legalFile.isEmpty()){
             for( int i = 0 ; i < legalFile.size() ; i++){
-                uploadDocument(registrationID, legalFile.get(i), userConnected, RequestIpRetriever.getIp(request));
+                uploadDocument(registrationID, legalFile.get(i), userConnected, (request == null ? "" : RequestIpRetriever.getIp(request)));
             }
         }
 
@@ -192,7 +226,11 @@ public class RegistrationService {
         } else {
             registration.setAllFilesFlag(0);
         }
-        registrationRepository.save(registration);
+        registration = registrationRepository.save(registration);
+
+        if (Validator.isNotNull(registration)) {
+            redisUtil.sync(userConnected.getId());
+        }
 
         //if user doesn't have any documents as requested for correction we put its status on HOLD
         //this is only relevant if the registration has applied to a call!
@@ -227,6 +265,20 @@ public class RegistrationService {
                 }
             }
         }
+        //DUPLICATED CODE, PLEASE WHEN UNCOMMENTING THIS MAKE IT RIGHT
+        // application has a correction request, set sent_email and sent_email_date to null to enable again the dgconn to validate/invalidate application according to new uploaded documents
+//        CallDTO lastCall = callService.getLastCallClosed();
+//        if(lastCall != null) {
+//            Application applicationDB = applicationRepository.findTopByRegistrationIdAndCallId(registrationID, lastCall.getId());
+//            if(applicationDB != null) {
+//                applicationDB.setSentEmail(false);
+//                applicationDB.setSentEmailDate(null);
+//                applicationRepository.save(applicationDB);
+//                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected
+//                        .getEcasUsername() + " - Changing applicant sent_email and sent_email_date to null, as it has documents requested for " +
+//                        "correction. Dgconn can again validate/invalidate application. Application id: " + applicationDB.getId() + ". Registration id: " + registrationID);
+//            }
+//        }
         return new ResponseDTO(true, "sucess", null);
     }
 
@@ -246,30 +298,49 @@ public class RegistrationService {
                 } else if (legalFile.getFileName().isEmpty()) {
                     _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File doesn't have a name");
                     throw new Exception("File must have a valid extension.");
-                } else{
-                    //file name also comes from front input
-                    legalFile.setId(0);
-                    legalFile.setRegistration(registrationID);
-                    legalFile.setFileData(LegalFilesService.getBase64Data(legalFileToUpload));
-                    legalFile.setUploadTime(new Date());
-                    legalFile.setFileMime(LegalFilesService.getMimeType(legalFileToUpload));
-                    legalFile.setFileSize(byteArray.length);
-                    legalFile.setUserId(userConnected.getId());
-                    legalFilesRepository.save(legalFilesMapper.toEntity(legalFile));
-                    _log.log(Level.getLevel("BUSINESS"), "[ " + ip + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal " +
-                            "document number type:" + legalFile.getFileType());
+                } else {
+                	long uploadTimeUTC = System.currentTimeMillis();
+                	MessageDigest msdDigest = MessageDigest.getInstance("SHA-1");
+                    msdDigest.update(legalFile.getFileName().getBytes("UTF-8"), 0, legalFile.getFileName().length());
+                    String codeName = DatatypeConverter.printHexBinary(msdDigest.digest());                	
+                    String azureFileName = String.valueOf(registrationID) + "_" + codeName + "_" + uploadTimeUTC;
 
-                    List<LegalFileCorrectionReason> legalFilesCorrectionReasons = legalFileCorrectionReasonRepository.findAllCorrectionByRegistrationAndUserAndType(legalFile.getRegistration(),legalFile.getFileType());
+                	String uri = azureBlobConnector.uploadLegalFile(azureFileName, base64);
+                    boolean docUploaded = !Validator.isEmpty(uri);
+                    legalFile.setAzureUri(uri);
+                    
+                    if (docUploaded) {
+                    	legalFile.setId(0);
+                    	legalFile.setRegistration(registrationID);
+                    	//legalFile.setFileData(LegalFilesService.getBase64Data(legalFileToUpload));
+                    	legalFile.setFileData("");
+                    	legalFile.setUploadTime(uploadTimeUTC);
+                    	legalFile.setFileMime(LegalFilesService.getMimeType(legalFileToUpload));
+                    	legalFile.setFileSize(byteArray.length);
+                    	legalFile.setUserId(userConnected.getId());
+                    	legalFile.setFileName(legalFile.getFileName());
+                    	legalFilesRepository.save(legalFilesMapper.toEntity(legalFile));
 
-                    for(LegalFileCorrectionReason legalFileCorrectionReason: legalFilesCorrectionReasons){
-                        legalFileCorrectionReason.setCorrectionReason(null);
-                        legalFileCorrectionReason.setRequestCorrection(false);
-                        legalFileCorrectionReason.setRequestCorrectionDate(null);
+                    	_log.log(Level.getLevel("BUSINESS"), "[ " + ip + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal " +
+                    			"document number type:" + legalFile.getFileType());
+
+                    	List<LegalFileCorrectionReason> legalFilesCorrectionReasons = legalFileCorrectionReasonRepository.findAllCorrectionByRegistrationAndUserAndType(legalFile.getRegistration(),legalFile.getFileType());
+
+                    	for(LegalFileCorrectionReason legalFileCorrectionReason: legalFilesCorrectionReasons){
+                    		legalFileCorrectionReason.setCorrectionReason(null);
+                    		legalFileCorrectionReason.setRequestCorrection(false);
+                    	}
+
+                    	try {
+                    		_log.info("Saving legal file entry on Database");
+                    		legalFileCorrectionReasonRepository.save(legalFilesCorrectionReasons);
+                    	} catch (Exception e) {
+                    		_log.error("Error saving legal_files", e);
+                    		azureBlobConnector.deleteLegalFile(legalFile.getFileName());
+                    	}
                     }
-
-                    legalFileCorrectionReasonRepository.save(legalFilesCorrectionReasons);
                 }
-            }else{
+            } else {
                 _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Trying to upload a file its data is in incorrect format");
                 throw new Exception("Data is in incorrect format");
             }
@@ -384,8 +455,10 @@ public class RegistrationService {
         }
         //if beneficiary indicator and wifi indicator are true we send a confirmation email
         if (registration.getInstallationSiteConfirmation() != null) {
-            cnsManager.sendInstallationConfirmationFromBeneficiary(email, name, beneficiaryName, locale);
-            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Confirmation email for registration " + registration.getId() + " sent to " + email);
+            MailData mailData = MailHelper.buildMailInstallationConfirmationFromBeneficiary(email, name, beneficiaryName, locale);
+        	mailService.sendMail(mailData, true);
+
+        	_log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Confirmation email for registration " + registration.getId() + " sent to " + email);
             return true;
         } else {
             Date dateSubmission = registration.getInstallationSiteSubmission();
@@ -395,8 +468,12 @@ public class RegistrationService {
                 User user = userRepository.findMainUserFromRegistration(registration.getId());
                 String ccName = user.getName();
                 String ccEmail = user.getEmail();
-                cnsManager.sendInstallationRejectionFromBeneficiary(email, name, beneficiaryName, ccEmail,
-                        ccName, locale);
+                
+                MailData mailDataSupplier = MailHelper.buildMailInstallationRejectionFromBeneficiary(email, name, beneficiaryName, locale);
+            	mailService.sendMail(mailDataSupplier, true);
+                MailData mailDataUser = MailHelper.buildMailInstallationRejectionFromBeneficiary(ccEmail, ccName, beneficiaryName, locale);
+            	mailService.sendMail(mailDataUser, true);
+
                 _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Rejection email for registration " + registration.getId() + " sent to " + email);
                 return true;
             }
@@ -461,15 +538,13 @@ public class RegistrationService {
                 if (user.getLang() != null) {
                     locale = new Locale(user.getLang());
                 }
-                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                String subject = bundle.getString("mail.dgConn.requestDocuments.subject");
-                String msgBody = bundle.getString("mail.dgConn.requestDocuments.body");
+                
                 String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/voucher";
-                msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
-                _log.info("additionalInfoUrl: " + additionalInfoUrl + " msgBody: " + msgBody + " language: " + locale.getLanguage());
-                if (!userService.isLocalHost()) {
-                    mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, registration.getMunicipalityId(), "requestLegalDocuments");
-                }
+                MailData mailData = MailHelper.buildMailRequestSupportingDocumentsForRegistration(
+                		user.getEcasEmail(), MailService.FROM_ADDRESS, additionalInfoUrl, 
+                		registration.getMunicipalityId(), "requestLegalDocuments", locale);
+            	mailService.sendMail(mailData, false);
+
                 return true;
             }
         }
@@ -556,6 +631,19 @@ public class RegistrationService {
         return false;
     }
 
+    public List<UserContactDetails> findUsersContactDetailsByRegistrationId(Integer registrationId){
+        return userContactDetailsRepository.findUsersContactDetailsByRegistrationId(registrationId);
+    }
+
+    public List<UserContactDetails> findUsersContactDetailsByOrganisationId(Integer organizationId){
+        return userContactDetailsRepository.findUsersContactDetailsByOrganisationId(organizationId);
+    }
+
+    public List<Registration> findRegistrationsByOrganisationId(Integer organizationId){
+        return registrationRepository.findByOrganisationId(organizationId);
+    }
+
+
     public List<UserDTO> getUsersFromRegistration(Integer registrationId){
         List<UserDTO> users = userMapper.toDTOList(userRepository.findUsersByRegistrationId(registrationId));
         return users;
@@ -596,5 +684,16 @@ public class RegistrationService {
             return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryRequiredType(registrationId, type));
         }
         return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryForType(registrationId, userId, type));
+    }
+
+    public List<RegistrationDTO> updateAssociationName(String associationName, Integer userId) {
+        List<RegistrationDTO> originalRegistrations = getRegistrationsByUserId(userId);
+        List<RegistrationDTO> newRegistrations = new ArrayList<>();
+        for (RegistrationDTO reg : originalRegistrations) {
+            RegistrationDTO newReg = reg;
+            newReg.setAssociationName(associationName);
+            newRegistrations.add(saveRegistration(newReg));
+        }
+        return newRegistrations;
     }
 }

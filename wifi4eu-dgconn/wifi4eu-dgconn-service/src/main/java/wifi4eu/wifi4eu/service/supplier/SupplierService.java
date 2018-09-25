@@ -1,6 +1,9 @@
 package wifi4eu.wifi4eu.service.supplier;
 
-import com.google.common.collect.Lists;
+import java.util.Base64;
+import java.util.List;
+import java.util.Locale;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +13,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.collect.Lists;
+
+import wifi4eu.wifi4eu.common.dto.mail.MailData;
 import wifi4eu.wifi4eu.common.dto.model.SuppliedRegionDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierListItemDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
-import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.common.utils.SupplierValidator;
+import wifi4eu.wifi4eu.common.mail.MailHelper;
+import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierListItemMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
@@ -28,10 +34,6 @@ import wifi4eu.wifi4eu.repository.supplier.SupplierUserRepository;
 import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
-import wifi4eu.wifi4eu.util.MailService;
-
-import java.text.MessageFormat;
-import java.util.*;
 
 @Service("portalSupplierService")
 public class SupplierService {
@@ -133,8 +135,8 @@ public class SupplierService {
         return supplierMapper.toDTOList(supplierRepository.findSimilarSuppliers(supplierId));
     }
 
-    public ResponseDTO findSimilarSuppliersPaged(int supplierId, int offset, int size){
-        List<SupplierDTO> suppliers = supplierMapper.toDTOList(supplierRepository.findSimilarSuppliersPaged(supplierId, offset , size));
+    public ResponseDTO findSimilarSuppliersPaged(int supplierId, int offset, int size) {
+        List<SupplierDTO> suppliers = supplierMapper.toDTOList(supplierRepository.findSimilarSuppliersPaged(supplierId, offset, size));
         Integer countQuery = supplierRepository.countSimilarSuppliersPaged(supplierId);
         ResponseDTO response = new ResponseDTO();
         response.setXTotalCount(countQuery);
@@ -152,14 +154,12 @@ public class SupplierService {
                 if (user.getLang() != null) {
                     locale = new Locale(user.getLang());
                 }
-                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                String subject = bundle.getString("mail.dgConn.requestDocuments.subject");
-                String msgBody = bundle.getString("mail.dgConn.requestDocuments.body");
                 String additionalInfoUrl = userService.getBaseUrl() + "supplier-portal/additional-info";
-                msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
-                if (!userService.isLocalHost()) {
-                    mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-                }
+
+                MailData mailData = MailHelper.buildMailRequestSupportingDocumentsForRegistration(
+                		user.getEcasEmail(), MailService.FROM_ADDRESS, additionalInfoUrl, locale);
+            	mailService.sendMail(mailData, false);
+
                 return true;
             }
         }
@@ -175,18 +175,17 @@ public class SupplierService {
     public SupplierDTO invalidateSupplier(SupplierDTO supplierDTO) {
         supplierDTO.setStatus(1);
         supplierDTO = updateSupplier(supplierDTO);
-        UserDTO user = userService.getUserById( getUserIdFromSupplier(supplierDTO.getId()));
+        UserDTO user = userService.getUserById(getUserIdFromSupplier(supplierDTO.getId()));
         if (user != null) {
             Locale locale = new Locale(UserConstants.DEFAULT_LANG);
             if (user.getLang() != null) {
                 locale = new Locale(user.getLang());
             }
-            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-            String subject = bundle.getString("mail.dgConn.invalidateSupplier.subject");
-            String msgBody = bundle.getString("mail.dgConn.invalidateSupplier.body");
-            if (!userService.isLocalHost()) {
-                mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-            }
+            String company = supplierDTO.getName();    
+            
+            MailData mailData = MailHelper.buildMailInvalidRegistration(
+            		user.getEcasEmail(), MailService.FROM_ADDRESS, company, locale);
+        	mailService.sendMail(mailData, false);
         }
         return supplierDTO;
     }
@@ -200,29 +199,37 @@ public class SupplierService {
             direction = Direction.ASC;
         }
 
-        if(name == null || name.trim().isEmpty()){
+        if (name == null || name.trim().isEmpty()) {
             name = "";
         }
         List<SupplierListItemDTO> suppliers;
 
-        switch(orderField){
+        switch (orderField) {
             case "website":
-                if(direction.equals(Direction.ASC)) {
+                if (direction.equals(Direction.ASC)) {
                     suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByWebsiteAsc(name, page * count, count));
                 } else {
                     suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByWebsiteDesc(name, page * count, count));
                 }
                 break;
             case "vat":
-                if(direction.equals(Direction.ASC)) {
+                if (direction.equals(Direction.ASC)) {
                     suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByVatAsc(name, page * count, count));
                 } else {
                     suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByVatDesc(name, page * count, count));
                 }
 
                 break;
+            case "numberRegistrations":
+                if (direction.equals(Direction.ASC)) {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByNumberRegistrationsAsc(name, page * count, count));
+                } else {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByNumberRegistrationsDesc(name, page * count, count));
+                }
+
+                break;
             case "status":
-                if(direction.equals(Direction.ASC)) {
+                if (direction.equals(Direction.ASC)) {
                     suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByStatusAsc(name, page * count, count));
                 } else {
                     suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByStatusDesc(name, page * count, count));
@@ -231,7 +238,7 @@ public class SupplierService {
                 break;
             case "name":
             default:
-                if(direction.equals(Direction.ASC)) {
+                if (direction.equals(Direction.ASC)) {
                     suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByNameAsc(name, page * count, count));
                 } else {
                     suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByNameDesc(name, page * count, count));
@@ -257,11 +264,11 @@ public class SupplierService {
         return supplierRepository.findSuppliersByRegion(regionId, pageable);
     }
 
-    public int getUserIdFromSupplier(int supplierId){
+    public int getUserIdFromSupplier(int supplierId) {
         return supplierUserRepository.findUserIdBySupplierId(supplierId);
     }
 
-    private boolean checkHasNoNotBeingRegisteredBefore(String userEmail, Integer supplierId){
+    private boolean checkHasNoNotBeingRegisteredBefore(String userEmail, Integer supplierId) {
         return supplierUserRepository.findByEmailAndSupplierId(userEmail, supplierId).isEmpty();
     }
 }

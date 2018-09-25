@@ -1,6 +1,12 @@
 package wifi4eu.wifi4eu.service.supplier;
 
-import com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,22 +14,42 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wifi4eu.wifi4eu.common.dto.model.*;
+
+import com.google.common.collect.Lists;
+
+import wifi4eu.wifi4eu.common.Constant;
+import wifi4eu.wifi4eu.common.dto.mail.MailData;
+import wifi4eu.wifi4eu.common.dto.model.SuppliedRegionDTO;
+import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
+import wifi4eu.wifi4eu.common.dto.model.SupplierListItemDTO;
+import wifi4eu.wifi4eu.common.dto.model.SupplierUserDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.enums.SupplierContactStatus;
+import wifi4eu.wifi4eu.common.enums.InvitationContactStatus;
+import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
 import wifi4eu.wifi4eu.common.enums.SupplierUserStatus;
 import wifi4eu.wifi4eu.common.enums.SupplierUserType;
+import wifi4eu.wifi4eu.common.helper.Validator;
+import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.common.utils.SupplierValidator;
 import wifi4eu.wifi4eu.common.utils.UserValidator;
+import wifi4eu.wifi4eu.entity.invitationContacts.InvitationContact;
+import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.entity.supplier.SupplierUser;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierListItemMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierUserMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
+import wifi4eu.wifi4eu.repository.invitationContacts.InvitationContactRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierListItemRepository;
@@ -31,12 +57,10 @@ import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierUserRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
-import wifi4eu.wifi4eu.util.MailService;
-
-import java.text.MessageFormat;
-import java.util.*;
+import wifi4eu.wifi4eu.util.RegistrationUtils;
 
 @Service("portalSupplierService")
 public class SupplierService {
@@ -78,6 +102,16 @@ public class SupplierService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    InvitationContactRepository invitationContactRepository;
+
+    @Autowired
+    RegistrationUtils registrationUtils;
+
+    @Autowired
+    PermissionChecker permissionChecker;
+
 
     private final Logger _log = LogManager.getLogger(SupplierService.class);
 
@@ -130,9 +164,21 @@ public class SupplierService {
         return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(finalSupplier)));
     }
 
+    public boolean isSupplierEditable(UserDTO userConnected){
+        SupplierDTO supplier = getSupplierByUserId(userConnected.getId());
+        boolean access = false;
+        for (UserDTO user : supplier.getUsers()) {
+            if (user.getId() == userConnected.getId()) {
+                return true;
+            }
+
+        }
+        return false;
+    }
+
 
     @Transactional
-    public List<UserDTO> updateContactDetails(SupplierDTO supplierDTO) {
+    public List<UserDTO> updateContactDetails(SupplierDTO supplierDTO) throws Exception {
 //        UserDTO userDTO = new UserDTO();
 //        UserContext userContext = UserHolder.getUser();
         List<UserDTO> userDBOList = userMapper.toDTOList(userRepository.findUsersBySupplierId(supplierDTO.getId()));
@@ -141,8 +187,9 @@ public class SupplierService {
                 if (userSupplier.getId() == user.getId()) {
                     user.setName(userSupplier.getName());
                     user.setSurname(userSupplier.getSurname());
-                    user.setPhone_number(userSupplier.getPhone_number());
-                    user.setPhone_prefix(userSupplier.getPhone_prefix());
+                    user.setPhoneNumber(userSupplier.getPhoneNumber());
+                    user.setPhonePrefix(userSupplier.getPhonePrefix());
+                    UserValidator.validateUserContact(user);
                     break;
                 }
             }
@@ -154,11 +201,11 @@ public class SupplierService {
     }
 
     @Transactional
-    public SupplierDTO updateSupplierDetails(SupplierDTO supplierDTO, String name, String address, String vat, String bic, String accountNumber, String website, String logo) throws Exception {
+    public SupplierDTO updateSupplierDetails(SupplierDTO supplierDTO, String name, String address, String accountNumber, String website, String logo) throws Exception {
         supplierDTO.setName(name);
         supplierDTO.setAddress(address);
-        supplierDTO.setVat(vat);
-        supplierDTO.setBic(bic);
+//        supplierDTO.setVat(vat);
+//        supplierDTO.setBic(bic);
         supplierDTO.setAccountNumber(accountNumber);
         if (website != null) {
             supplierDTO.setWebsite(website);
@@ -201,7 +248,6 @@ public class SupplierService {
     @Transactional
     public SupplierDTO submitSupplierRegistration(SupplierDTO supplierDTO) throws Exception {
         UserDTO userDTO;
-        SupplierValidator.validateSupplier(supplierDTO);
         UserContext userContext = UserHolder.getUser();
         userDTO = userService.getUserByUserContext(userContext);
 
@@ -214,31 +260,29 @@ public class SupplierService {
                 userDTO.setName(userSupplier.getName());
                 userDTO.setSurname(userSupplier.getSurname());
                 userDTO.setEmail(userSupplier.getEmail());
-                userDTO.setPhone_number(userSupplier.getPhone_number());
-                userDTO.setPhone_prefix(userSupplier.getPhone_prefix());
+                userDTO.setPhoneNumber(userSupplier.getPhoneNumber());
+                userDTO.setPhonePrefix(userSupplier.getPhonePrefix());
                 userDTO.setCreateDate(new Date().getTime());
-                userDTO.setType(1);
+                userDTO.setType((int) Constant.ROLE_SUPPLIER);
                 userDTO.setVerified(false);
                 userDTO.setLang(supplierDTO.getLang());
-                userDTO.setPhone_number(supplierDTO.getContactNumber());
-                userDTO.setPhone_prefix(supplierDTO.getContactPrefix());
-
-
+                userDTO.setPhoneNumber(supplierDTO.getContactNumber());
+                userDTO.setPhonePrefix(supplierDTO.getContactPrefix());
                 userDTO.setEmail(supplierDTO.getContactEmail());
-                if (userDTO.getEcasEmail() == null || userDTO.getEcasEmail().isEmpty()) {
+                if (Validator.isNull(userDTO.getEcasEmail()) || userDTO.getEcasEmail().trim().isEmpty()) {
                     userDTO.setEcasEmail(supplierDTO.getContactEmail());
+                    userDTO.setEmail(supplierDTO.getContactEmail());
                 }
-
                 break;
             }
         }
-        UserValidator.validateUser(userDTO);
         userDTO = userService.saveUserChanges(userDTO);
-        userService.sendActivateAccountMail(userDTO);
         supplierDTO = createSupplier(supplierDTO);
 
         createSupplierUser(supplierDTO.getId(), userDTO.getId(), userDTO.getEmail(), true);
+        userService.sendSupplierRegistrationEmail(userDTO);
         return supplierDTO;
+
     }
 
     public SupplierDTO getSupplierByUserId(int userId) {
@@ -272,14 +316,12 @@ public class SupplierService {
                 if (user.getLang() != null) {
                     locale = new Locale(user.getLang());
                 }
-                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                String subject = bundle.getString("mail.dgConn.requestDocuments.subject");
-                String msgBody = bundle.getString("mail.dgConn.requestDocuments.body");
+                
                 String additionalInfoUrl = userService.getBaseUrl() + "supplier-portal/additional-info";
-                msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
-                if (!userService.isLocalHost()) {
-                    mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-                }
+                MailData mailData = MailHelper.buildMailRequestSupportingDocumentsForRegistration(
+                		user.getEcasEmail(), MailService.FROM_ADDRESS, additionalInfoUrl, locale);
+                mailService.sendMail(mailData, false);
+                
                 return true;
             }
         }
@@ -287,7 +329,7 @@ public class SupplierService {
     }
 
     @Transactional
-    public SupplierDTO updateSupplier(SupplierDTO supplierDTO) {
+    public SupplierDTO updateSupplier(SupplierDTO supplierDTO) throws Exception {
         SupplierDTO supplierDBO = getSupplierById(supplierDTO.getId());
         supplierDBO.setName(supplierDTO.getName());
         supplierDBO.setAddress(supplierDTO.getAddress());
@@ -295,6 +337,7 @@ public class SupplierService {
         supplierDBO.setWebsite(supplierDTO.getWebsite());
         supplierDBO.setLogo(supplierDTO.getLogo());
         supplierDBO.setSuppliedRegions(updateSuppliedRegions(supplierDBO.getSuppliedRegions(), supplierDTO.getSuppliedRegions()));
+        SupplierValidator.validateSupplierUpdate(supplierDBO);
         return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDBO)));
     }
 
@@ -341,7 +384,7 @@ public class SupplierService {
     }
 
     @Transactional
-    public SupplierDTO invalidateSupplier(SupplierDTO supplierDTO) {
+    public SupplierDTO invalidateSupplier(SupplierDTO supplierDTO) throws Exception {
         supplierDTO.setStatus(1);
         supplierDTO = updateSupplier(supplierDTO);
         UserDTO user = userService.getUserById(getUserIdFromSupplier(supplierDTO.getId()));
@@ -350,12 +393,11 @@ public class SupplierService {
             if (user.getLang() != null) {
                 locale = new Locale(user.getLang());
             }
-            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-            String subject = bundle.getString("mail.dgConn.invalidateSupplier.subject");
-            String msgBody = bundle.getString("mail.dgConn.invalidateSupplier.body");
-            if (!userService.isLocalHost()) {
-                mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-            }
+            String company = supplierDTO.getName(); 
+            
+            MailData mailData = MailHelper.buildMailInvalidRegistration(
+            		user.getEcasEmail(), MailService.FROM_ADDRESS, company, locale);
+            mailService.sendMail(mailData, false);
         }
         return supplierDTO;
     }
@@ -518,15 +560,16 @@ public class SupplierService {
             throw new Exception("This contact has been added to this supplier before.");
 
         } else { // ALL OK
-            String urlSent = userService.getEcasUrl() + "/cas/eim/external/register.cgi?email=" + newUserEmail.trim();
+            String additionalInfoUrl = userService.getEcasUrl() + "/cas/eim/external/register.cgi?email=" + newUserEmail.trim();
+            String registrationUrl = userService.getServerAddress() + "/wifi4eu/#/supplier-portal/profile";
+            
+            // TODO maybe is not the correct mail data, 
+            // originally was recovering message from 'sendNewUserSupplier' tag without replacing all the values
+            MailData mailData = MailHelper.buildMailNewUserSupplier(
+            		newUserEmail.trim(), MailService.FROM_ADDRESS, 
+            		"", "", additionalInfoUrl, "",  registrationUrl, locale);
+            mailService.sendMail(mailData, false);
 
-            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-            String subject = bundle.getString("mail.sendNewUserSupplier.subject");
-            String msgBody = bundle.getString("mail.sendNewUserSupplier.body");
-            msgBody = MessageFormat.format(msgBody, urlSent);
-            if (!userService.isLocalHost()) {
-                mailService.sendEmail(newUserEmail.trim(), MailService.FROM_ADDRESS, subject, msgBody);
-            }
             return true;
         }
     }
@@ -539,26 +582,92 @@ public class SupplierService {
         return supplierUserRepository.findByEmailAndSupplierId(userEmail, supplierId).isEmpty();
     }
 
-    public SupplierUserDTO deactivateSupplierContact(Integer userId) throws Exception {
-        List<SupplierUser> supplierUsers = supplierUserRepository.findByUserId(userId);
-        SupplierUser supplierUserToSave = null;
-        for (SupplierUser supplierUser : supplierUsers) {
-            if (supplierUser.getUserId().equals(userId)) {
+    public ResponseDTO deactivateSupplierContact(Integer supplierId, Integer userId, String logInfo) throws Exception {
+        ResponseDTO responseDTO = new ResponseDTO();
+        //supplier has more than one user associated?
+        if(supplierUserRepository.countSupplierUserBySupplierIdAndStatusNot(supplierId, SupplierUserStatus.DEACTIVATED.getStatus())> 1) {
+            //supplier user status to deactivated
+            SupplierUser supplierUser = supplierUserRepository.findByUserIdAndSupplierId(userId, supplierId);
+            if(supplierUser.getStatus() != RegistrationUsersStatus.DEACTIVATED.getValue()) {
                 supplierUser.setStatus(SupplierUserStatus.DEACTIVATED.getStatus());
-                supplierUserToSave = supplierUser;
-                break;
+                supplierUserRepository.save(supplierUser);
+
+                //user type to -1
+                userService.setUserTypeToDeactivate(userId);
+
+                //taking off user rights
+                permissionChecker.dropTablePermissions(userId, Integer.toString(userId), RightConstants.USER_TABLE);
+
+                responseDTO.setSuccess(true);
+                responseDTO.setData("success");
+                _log.info("ECAS Username: " + logInfo + "- Supplier contact deactivated successfully");
+                _log.info("Deactivated user: " + userId + "- Supplier contact deactivated successfully");
+            }else{
+                responseDTO.setSuccess(false);
+                responseDTO.setData("");
+                responseDTO.setError(new ErrorDTO(1, "User already deactivated."));
+                _log.info("ECAS Username: " + logInfo + "- User "+userId+ " already deactivated.");
             }
+        }else{
+            responseDTO.setSuccess(false);
+            responseDTO.setData("");
+            responseDTO.setError(new ErrorDTO(1, "There has to be minimum 1 user per registration."));
         }
-        if (supplierUserToSave == null) {
-            throw new Exception("Incorrect userId");
+        return responseDTO;
+    }
+
+    public ResponseDTO invitateContactSupplier(UserDTO userConnected, int supplierId, String newContactEmail){
+        ResponseDTO responseDTO = new ResponseDTO();
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new supplier contact - START");
+        if (Validator.isNotNull(supplierId) && Validator.isNotNull(newContactEmail) && !newContactEmail.isEmpty() && Validator.isNotNull(supplierRepository.findByUserIdAndSupplierId(userConnected.getId(), supplierId))){
+            if (Validator.isNull(invitationContactRepository.findByEmailInvitedAndIdUserRequestNotIn(newContactEmail,userConnected.getId())) && registrationUtils.enableInvitateContactByUserIdRequested(newContactEmail)){
+                InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndIdUserRequest(newContactEmail,userConnected.getId());
+                Date today = new Date();
+                if (Validator.isNull(invitationContact)){
+                    invitationContact = new InvitationContact();
+                    invitationContact.setEmailInvited(newContactEmail);
+                    invitationContact.setIdSupplier(supplierId);
+                    invitationContact.setIdUserRequest(userConnected.getId());
+                    invitationContact.setType((int) Constant.ROLE_SUPPLIER);
+                    invitationContact.setStatus(InvitationContactStatus.PENDING.getValue());
+                    invitationContact.setCreateDate(today);
+                } else if (invitationContact.getIdSupplier().intValue() != supplierId){
+                    _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new supplier contact - This user has already been invitated. Please, try another user email");
+                    responseDTO.setSuccess(false);
+                    responseDTO.setData("This user has already been invitated. Please, try another user email");
+                    responseDTO.setError(new ErrorDTO(400, "shared.profile.addContact.exists"));
+                    return responseDTO;
+                }
+
+                invitationContact.setLastModified(today);
+                Locale locale = userConnected.getLang() == null ? new Locale(UserConstants.DEFAULT_LANG) : new Locale(userConnected.getLang());
+                String supplierName = getSupplierById(supplierId).getName();
+                String userName = userConnected.getName() + ' ' + userConnected.getSurname();
+                String additionalInfoUrl = userService.getEcasUrl() + "/cas/eim/external/register.cgi?email=";
+                String registrationUrl = userService.getServerAddress() + "/wifi4eu/#/supplier-portal/profile";
+
+                MailData mailData = MailHelper.buildMailNewUserSupplier(
+                		newContactEmail, MailService.FROM_ADDRESS, 
+                		userName, supplierName, additionalInfoUrl, newContactEmail, registrationUrl, locale);
+                mailService.sendMail(mailData, false);
+                
+                invitationContactRepository.save(invitationContact);
+                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - Successfully");
+                responseDTO.setSuccess(true);
+                responseDTO.setData("shared.email.sent");
+            } else {
+                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - This user has already been invitated. Please, try another user email");
+                responseDTO.setSuccess(false);
+                responseDTO.setData("This user has already been invitated. Please, try another user email");
+                responseDTO.setError(new ErrorDTO(400, "shared.profile.addContact.exists"));
+            }
         } else {
-            supplierUserRepository.save(supplierUserToSave);
-            UserDTO contactDeactivated = userService.getUserById(userId);
-            contactDeactivated.setType(SupplierContactStatus.DEACTIVATED.getStatus());
-            userService.saveUserChanges(contactDeactivated);
+            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new supplier contact - Some fields are null or empty. Please, complete all the fields");
+            responseDTO.setSuccess(false);
+            responseDTO.setData("Some fields are null or empty. Please, complete all the fields");
+            responseDTO.setError(new ErrorDTO(400, "shared.profile.addContact.emptyOrNull"));
         }
-
-        return supplierUserMapper.toDTO(supplierUserToSave);
-
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new supplier contact - END");
+        return responseDTO;
     }
 }

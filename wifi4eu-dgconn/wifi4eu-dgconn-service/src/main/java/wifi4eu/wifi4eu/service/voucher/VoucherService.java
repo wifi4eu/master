@@ -1,48 +1,72 @@
 package wifi4eu.wifi4eu.service.voucher;
 
-import com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wifi4eu.wifi4eu.common.dto.model.*;
+
+import com.google.common.collect.Lists;
+
+import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
+import wifi4eu.wifi4eu.common.dto.model.CallDTO;
+import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
+import wifi4eu.wifi4eu.common.dto.model.RegistrationWarningDTO;
+import wifi4eu.wifi4eu.common.dto.model.SimpleLauDTO;
+import wifi4eu.wifi4eu.common.dto.model.SimpleMunicipalityDTO;
+import wifi4eu.wifi4eu.common.dto.model.SimpleRegistrationDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentAuxiliarDTO;
+import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentDTO;
+import wifi4eu.wifi4eu.common.dto.model.VoucherManagementDTO;
+import wifi4eu.wifi4eu.common.dto.model.VoucherSimulationDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.SelectionStatus;
 import wifi4eu.wifi4eu.common.enums.VoucherAssignmentStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.admin.AdminActions;
 import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
+import wifi4eu.wifi4eu.entity.voucher.VoucherAssignmentAuxiliar;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
-import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherAssignmentAuxiliarMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherAssignmentMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherSimulationMapper;
+import wifi4eu.wifi4eu.repository.admin.AdminActionsRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
-import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentAuxiliarRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherSimulationRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.call.CallService;
-import wifi4eu.wifi4eu.service.location.LauService;
-import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.security.INEAPermissionChecker;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
-import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.warning.RegistrationWarningService;
-import wifi4eu.wifi4eu.util.MailService;
 import wifi4eu.wifi4eu.util.SendNotificationsAsync;
 import wifi4eu.wifi4eu.util.VoucherSimulationExportGenerator;
 
+import javax.annotation.PostConstruct;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -91,12 +115,6 @@ public class VoucherService {
     ApplicationMapper applicationMapper;
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    MailService mailService;
-
-    @Autowired
     private SimpleRegistrationService simpleRegistrationService;
 
     @Autowired
@@ -112,16 +130,28 @@ public class VoucherService {
     MunicipalityService municipalityService;
 
     @Autowired
-    LauService lauService;
-
-    @Autowired
     ApplicationRepository applicationRepository;
 
     @Autowired
-    NutsService nutsService;
+    ApplicationContext context;
 
     @Autowired
-    UserMapper userMapper;
+    TaskExecutor taskExecutor;
+
+    @Autowired
+    AdminActionsRepository adminActionsRepository;
+
+    @PostConstruct
+    public void init() {
+        AdminActions adminActions = adminActionsRepository.findOneByAction("voucher_send_notifications");
+        if (Validator.isNotNull(adminActions)) {
+            adminActions.setAction("voucher_send_notifications");
+            adminActions.setStartDate(null);
+            adminActions.setRunning(false);
+            adminActions.setEndDate(null);
+            adminActionsRepository.save(adminActions);
+        }
+    }
 
     public List<VoucherAssignmentDTO> getAllVoucherAssignment() {
         return voucherAssignmentMapper.toDTOList(Lists.newArrayList(voucherAssignmentRepository.findAll()));
@@ -139,12 +169,12 @@ public class VoucherService {
         return voucherAssignmentAuxiliarMapper.toDTO(voucherAssignmentAuxiliarRepository.findByCallIdAndStatusAux(callId, status));
     }
 
-    public int checkIfApplicationInFreeze(Integer applicationId){
+    public int checkIfApplicationInFreeze(Integer applicationId) {
         ApplicationDTO applicationDTO = applicationService.getApplicationById(applicationId);
         return voucherSimulationRepository.checkIfApplicationIsFreeze(applicationDTO.getId(), applicationDTO.getCallId(), VoucherAssignmentStatus.FREEZE_LIST.getValue());
     }
 
-    public int checkIfApplicationInSimulation(Integer applicationId){
+    public int checkIfApplicationInSimulation(Integer applicationId) {
         ApplicationDTO applicationDTO = applicationService.getApplicationById(applicationId);
         return voucherSimulationRepository.checkIfSimulationExistByCallId(applicationDTO.getCallId(), VoucherAssignmentStatus.SIMULATION.getValue(), VoucherAssignmentStatus.PRE_LIST.getValue());
     }
@@ -234,7 +264,11 @@ public class VoucherService {
     }
 
     @Transactional
-    public VoucherAssignmentDTO saveFreezeListSimulation(int voucherAssignmentId, int callId) {
+    public ResponseDTO saveFreezeListSimulation(String freezePsswd, int voucherAssignmentId, int callId) {
+
+        if (!INEAPermissionChecker.freezePsswd.equals(freezePsswd)) {
+            return new ResponseDTO(false, null, new ErrorDTO(20, "dgConn.voucherAssignment.error.incorrectPassword"));
+        }
 
         CallDTO callDTO = callService.getCallById(callId);
 
@@ -285,12 +319,16 @@ public class VoucherService {
         }
 
         result.setVoucherSimulations(simulationDTOSet);
-        return voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(result)));
+        return new ResponseDTO(true, voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(result))), null);
     }
 
     @Transactional
-    public VoucherAssignmentDTO savePreListSimulation(int voucherAssignmentId, int callId) {
+    public ResponseDTO savePreListSimulation(String savePrelistPsswd, int voucherAssignmentId, int callId) {
         CallDTO callDTO = callService.getCallById(callId);
+        
+        if (!INEAPermissionChecker.savePrelistPsswd.equals(savePrelistPsswd)) {
+            return new ResponseDTO(false, null, new ErrorDTO(20, "dgConn.voucherAssignment.error.incorrectPassword"));
+        }
 
         if (callDTO == null) {
             throw new AppException("Call not exists");
@@ -343,7 +381,7 @@ public class VoucherService {
             result = voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(result)));
 
             voucherSimulationRepository.updateApplicationsInVoucherSimulationByVoucherAssignment(1, result.getId());
-            return result;
+            return new ResponseDTO(true, result, null);
         } else {
             throw new AppException("Error saving pre-selected list");
         }
@@ -389,7 +427,7 @@ public class VoucherService {
             List<String> participatingCountries = new ArrayList<>();
 
             // List<ApplicationDTO> listOfApplications = applicationService.getApplicationsByCallFiFoOrder(call.getId());
-            long dateNanoSeconds = call.getStartDate() * 1000000;
+            long dateNanoSeconds = call.getStartDate();
             List<ApplicationDTO> listOfApplications = applicationService.findByCallIdOrderByDateBeforeCallDateAsc(call.getId(), dateNanoSeconds);
 
             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Initializing municipalities, laus & registrations");
@@ -400,7 +438,7 @@ public class VoucherService {
             VoucherAssignmentDTO voucherAssignment = getVoucherAssignmentByCall(call.getId());
             boolean hasPreList = getVoucherAssignmentByCallAndStatus(callId, VoucherAssignmentStatus.PRE_LIST.getValue()) != null;
 
-            if (voucherAssignment != null) {
+            if (voucherAssignment != null && hasPreList) {
                 for (VoucherSimulationDTO simulationDTO : voucherAssignment.getVoucherSimulations()) {
                     voucherSimulationDTOHashMap.put(simulationDTO.getApplication().getId(), simulationDTO);
                 }
@@ -485,7 +523,7 @@ public class VoucherService {
                             removeFromLOA(supportLOAlist, applicationDTO);
                             continue;
                         }
-                        if (applicationDTO.getRejected()) {
+                        if (applicationDTO.getRejected() && hasPreList) {
                             rejectedApplications.add(applicationDTO);
                             removeFromLOA(supportLOAlist, applicationDTO);
                             continue;
@@ -529,7 +567,7 @@ public class VoucherService {
                         removeFromLOA(supportLOAlist, applicationDTO);
                         continue;
                     }
-                    if (applicationDTO.getRejected()) {
+                    if (applicationDTO.getRejected() && hasPreList) {
                         rejectedApplications.add(applicationDTO);
                         removeFromLOA(supportLOAlist, applicationDTO);
                         continue;
@@ -599,7 +637,7 @@ public class VoucherService {
                                 removeFromLOA(supportLOAlist, application);
                                 continue;
                             }
-                            if (application.getRejected()) {
+                            if (application.getRejected() && hasPreList) {
                                 rejectedApplications.add(application);
                                 removeFromLOA(supportLOAlist, application);
                                 continue;
@@ -832,18 +870,32 @@ public class VoucherService {
         return false;
     }
 
-    public void sendNotificationForApplicants(int callId) {
-
+    public ResponseDTO sendNotificationForApplicants(String psswdNotification, int callId) {
+        if (!INEAPermissionChecker.notificationsPsswd.equals(psswdNotification)) {
+            return new ResponseDTO(false, null, new ErrorDTO(20, "dgConn.voucherAssignment.error.incorrectPassword"));
+        }
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         if (!permissionChecker.checkIfDashboardUser()) {
             throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
         }
 
+        VoucherAssignmentAuxiliar voucherAssignment = voucherAssignmentAuxiliarRepository
+                .findByCallIdAndStatusAux(callId, VoucherAssignmentStatus.FREEZE_LIST.getValue());
 
-        SendNotificationsAsync sendNotificationsAsync = new SendNotificationsAsync(callId, userConnected);
-        Thread threadSendNotifications = new Thread(sendNotificationsAsync);
-        threadSendNotifications.start();
+        if (voucherAssignment.getNotifiedDate() != null) {
+            return new ResponseDTO(false, voucherAssignment, null);
+        } else {
+            AdminActions adminActions = adminActionsRepository.findOneByAction("voucher_send_notifications");
+            if (adminActions != null && adminActions.isRunning()) {
+                return new ResponseDTO(false, adminActions, null);
+            }
+        }
+
+        // Let the task executor manage the execution of the new thread to send the mails
+        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Launched notification for applicants, starting thread...");
+        taskExecutor.execute(context.getBean(SendNotificationsAsync.class, callId, userConnected));
+        return new ResponseDTO(true, null, null);
     }
 
 }

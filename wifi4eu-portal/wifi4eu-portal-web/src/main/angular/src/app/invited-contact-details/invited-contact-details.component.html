@@ -1,0 +1,146 @@
+<div *ngIf="user && user.userInvitedFor != 0 " class="container">
+  <div id="step2-title" class="ui-g">
+      <div class="ui-g-12 center">
+          <div id="component-title">
+              <h3 class="beneficiaryTitle labelModal">
+                  {{ 'invitate.contact.details.title' | translate }}
+              </h3>
+          </div>
+      </div>
+  </div>
+  <form>
+        <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="ui-g-6">
+                        <div class="form-group">
+                            <label class="label floatLeft" for="address">{{ 'shared.name.label' |
+                                translate }}</label>
+                            <input type="text" class="form-control paddingInput" min="1" 
+                                id="name" name="name" [(ngModel)]="userInvited.name"  maxlength="255" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)" required>
+                        </div>
+                    </div>
+                    <div class="ui-g-6">
+                        <div class="form-group">
+                            <label class="label floatLeft" for="address">{{ 'shared.surname.label' |
+                                translate }}</label>
+                            <input type="text" class="form-control paddingInput" min="1" 
+                                id="surname" name="surname" [(ngModel)]="userInvited.surname"  maxlength="255" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)" required>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <div *ngIf="user.userInvitedFor == 1" class="ui-g">
+                <div class="ui-g-4">
+                    <div class="form-group ui-g">
+                        <div class="ui-g-12">
+                            <div class="form-group">
+                                    <div class="form-group">
+                                            <label class="label floatLeft" for="phonePrefix">{{ 'suppRegistration.prefix.number' | translate
+                                                }}</label>
+                                            <input class="form-control paddingInput" type="text" maxlength="255"
+                                                   id="phonePrefix" name="phonePrefix" pattern="[0-9]{1,4}"
+                                                   [(ngModel)]="userInvited.phonePrefix" #contactPhonePrefix="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                <br>
+                </div>
+                <div class="ui-g-8">
+                        <div class="form-group ui-g">
+                            <div class="ui-g-12">
+                                    <label class="label floatLeft" for="address">{{ 'suppRegistration.phone.number' |
+                                            translate }}</label>
+                                        <input type="text" class="form-control paddingInput" min="1" pattern="[0-9]{1,}"
+                                            id="phoneNumber" name="phoneNumber" [(ngModel)]="userInvited.phoneNumber"  maxlength="255" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)" required>
+                            </div>
+                        </div>
+                    <br>
+                    </div>
+
+        </div>
+      <div *ngIf="user.userInvitedFor == 3">
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="ui-g-12">
+                        <div class="form-group ui-g">
+                            <div class="ui-g-12">
+                                <label class="label" for="country">{{ 'shared.country.label' | translate }}</label>
+                                <select [(ngModel)]="userInvited.country" (ngModelChange)="checkButtonEnabled($event)"  id="country" name="country" class="form-control" ng-options="option.value as option.name for option in typeOptions"
+                                    [disabled]="countries.length < 1">
+                                    <option disabled selected [ngValue]="null">
+                                        {{ 'benefRegistration.registration.selectCountry' | translate }}
+                                    </option>
+                                    <option *ngFor="let currentCountry of countries" [ngValue]="currentCountry.label">
+                                        {{currentCountry.label}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="ui-g-6">
+                        <div class="form-group">
+                            <label class="label floatLeft" for="address">{{ 'suppRegistration.city.label' |
+                                translate }}</label>
+                            <input type="text" class="form-control paddingInput" min="1" 
+                                id="city" name="city" [(ngModel)]="userInvited.city"  maxlength="255" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)" required>
+                        </div>
+                    </div>
+                    <div class="ui-g-6">
+                        <div class="form-group">
+                            <label class="label floatLeft" for="address">{{ 'shared.postal-code.label' |
+                                translate }}</label>
+                            <input type="text" class="form-control paddingInput" min="1" 
+                                id="postalCode" name="postalCode" [(ngModel)]="userInvited.postalCode"  maxlength="255" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-g">
+                <div class="ui-g-12">
+                        <div class="ui-g-6">
+                            <div class="form-group">
+                                <label class="label floatLeft" for="address">{{ 'benefRegistration.townHall.address' |
+                                    translate }}</label>
+                                <input type="text" class="form-control paddingInput" min="1" 
+                                        id="address" name="address" [(ngModel)]="userInvited.address"  maxlength="255" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)" required>
+                            </div>
+                        </div>
+                        <div class="ui-g-6">
+                            <div class="form-group">
+                                <label class="label floatLeft" for="address">{{ 'shared.number.label' | translate
+                                    }}</label>
+                                <input type="text" class="form-control paddingInput"
+                                    id="addressNum" name="addressNum" [(ngModel)]="userInvited.addressNum" maxlength="255" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)"
+                                    required>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+      <div class="ui-g-6 ui-md-6 ui-lg-3">
+          <button type="button" (click)="sendInvitedContactDetails()" class="btn btn-primary publish-button"
+                  [disabled]="!enableButton">
+              {{ 'shared.send.button' | translate }}
+          </button>
+      </div>
+  </form>
+</div>
+
+<div *ngIf="user && user.userInvitedFor == 0" class="container">
+    <div id="step2-title" class="ui-g">
+        <div class="ui-g-12 center">
+            <div id="component-title">
+                <h3 class="beneficiaryTitle labelModal">
+                    {{ 'invitate.contact.details.expired' | translate }}
+                </h3>
+            </div>
+        </div>
+    </div>
+</div>

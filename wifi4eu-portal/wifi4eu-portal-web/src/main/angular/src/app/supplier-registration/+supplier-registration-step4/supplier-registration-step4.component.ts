@@ -44,7 +44,8 @@ export class SupplierRegistrationStep4Component {
     }
 
     check(legalChecks: boolean[]){
-        if(!legalChecks[1]|| !legalChecks[2] || !legalChecks[3] || !legalChecks[4]){
+        // removed "!legalChecks[4]" from conditional in issue WIFIFOREU-3347
+        if(!legalChecks[1]|| !legalChecks[2] || !legalChecks[3]){
             return false;
         }else{
             return true;

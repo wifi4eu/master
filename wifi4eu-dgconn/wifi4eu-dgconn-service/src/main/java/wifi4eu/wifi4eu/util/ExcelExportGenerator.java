@@ -47,26 +47,24 @@ public class ExcelExportGenerator<T> {
                 for (int i = 0; i < fieldNames.size(); i++) {
                     Cell cell = row.createCell(i);
                     Field field;
-
-                    if(fieldNames.get(i).equalsIgnoreCase("issueStatus")){
+                    if (fieldNames.get(i).equalsIgnoreCase("issueStatus")) {
                         ApplicantListItemDTO applicationListItem = (ApplicantListItemDTO) obj;
                         List<String> wList = new ArrayList<String>();
-                        if(applicationListItem.getWarning1()){
+                        if (applicationListItem.getWarning1()) {
                             wList.add("WARNING 1");
                         }
-                        if(applicationListItem.getWarning2()){
+                        if (applicationListItem.getWarning2()) {
                             wList.add("WARNING 2");
                         }
-                        if(applicationListItem.getWarning3()){
+                        if (applicationListItem.getWarning3()) {
                             wList.add("WARNING 3");
                         }
-                      cell.setCellValue(String.join(", ", wList));
-                    }else{
+                        cell.setCellValue(String.join(", ", wList));
+                    } else {
                         field = obj.getClass().getDeclaredField(fieldNames.get(i));
                         field.setAccessible(true);
                         cell.setCellValue(generateCellValue(field, obj));
                     }
-
                 }
                 rowIndex++;
             }
@@ -96,8 +94,8 @@ public class ExcelExportGenerator<T> {
             displayedFieldNames.add("Number of registrations");
             fieldNames.add("status");
             displayedFieldNames.add("Status");
-            fieldNames.add("mediation");
-            displayedFieldNames.add("Mediation");
+            // fieldNames.add("mediation");
+            // displayedFieldNames.add("Mediation");
 //            fieldNames.add("issueStatus");
 //            displayedFieldNames.add("Issue");
         } else if (dataClass == ApplicantListItem.class || dataClass == ApplicantListItemDTO.class) {
@@ -111,14 +109,14 @@ public class ExcelExportGenerator<T> {
             displayedFieldNames.add("Number of applications");
             fieldNames.add("status");
             displayedFieldNames.add("Status");
-            fieldNames.add("mediation");
-            displayedFieldNames.add("Mediation");
+            // fieldNames.add("mediation");
+            // displayedFieldNames.add("Mediation");
             fieldNames.add("issueStatus");
             displayedFieldNames.add("Issue Status");
             fieldNames.add("applicationDate");
             displayedFieldNames.add("Date/Time of Application");
-            fieldNames.add("invalidateReason");
-            displayedFieldNames.add("Invalidate Reason");
+//            fieldNames.add("invalidateReason");
+//            displayedFieldNames.add("Invalidate Reason");
         } else {
             for (Field field : dataClass.getDeclaredFields()) {
                 String fieldName = field.getName();
@@ -144,6 +142,7 @@ public class ExcelExportGenerator<T> {
                             value = "Registered";
                         }
                         break;
+                        /*
                     case "mediation":
                         if ((boolean) field.get(objectData)) {
                             value = "YES";
@@ -151,6 +150,7 @@ public class ExcelExportGenerator<T> {
                             value = "NO";
                         }
                         break;
+                        */
                     case "issueStatus":
                         int issueStatus = (int) field.get(objectData);
                         switch (issueStatus) {
@@ -190,6 +190,7 @@ public class ExcelExportGenerator<T> {
                                 break;
                         }
                         break;
+                        /*
                     case "mediation":
                         if ((boolean) field.get(objectData)) {
                             value = "YES";
@@ -197,6 +198,7 @@ public class ExcelExportGenerator<T> {
                             value = "NO";
                         }
                         break;
+                        */
                     case "issueStatus":
                         int issueStatus = (int) field.get(objectData);
                         switch (issueStatus) {

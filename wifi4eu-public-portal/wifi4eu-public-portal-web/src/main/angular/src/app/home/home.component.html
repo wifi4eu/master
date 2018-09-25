@@ -25,7 +25,7 @@
                 <br> {{ 'home.part1.date' | translate }}</p>
             <a class="btn btn-primary video-button changePassword"
                href="http://ec.europa.eu/avservices/video/player.cfm?ref=I152883" target="_blank">{{
-                'home.whatch.video' | translate }}</a>
+                'home.watch.video' | translate }}</a>
         </div>
         <div id="img-europeans">
             <img src="assets/images/copy-2.png" alt="">
@@ -36,16 +36,19 @@
     <div class="row contenedor">
         <div class="col-xl-6">
             <h1 class="benefit">{{ 'home.part2.title' | translate }}</h1>
-            <p *ngIf="showTimeline" class="europeans-text"
+            <p *ngIf="callState == 1" class="europeans-text"
                [innerHTML]="'home.part2.text1' | translate:{date:dateNumber,hour:hourNumber}">
             </p>
-            <p *ngIf="!showTimeline" class="europeans-text"
+            <p *ngIf="callState == 2 || callState == 3" class="europeans-text"
                [innerHTML]="'benefPortal.voucher.call.label1' | translate">
             </p>
+            <p *ngIf="callState == 0" class="europeans-text"
+               [innerHTML]="'benefPortal.voucher.noCall' | translate">
+            </p>
             <p class="europeans-text">{{ 'home.part2.subtitle4' | translate}}</p>
-            <ul class="europeans-text benefLandingList">
-                <li>{{ 'home.part2.list1' | translate}}</li>
-                <li>{{ 'home.part2.list2' | translate}}</li>
+            <ul class="europeans-text">
+                <li><span>{{ 'home.part2.list1' | translate}}</span></li>
+                <li><span>{{ 'home.part2.list2' | translate}}</span></li>
             </ul>
             <a href="https://ec.europa.eu/digital-single-market/news-redirect/613784">
                 <p class="europeans-text underline" [innerHTML]="'home.part2.subtitle5' | translate"></p>
@@ -70,13 +73,12 @@
         <div class="col-xl-6">
             <h2 class="apply">{{ 'home.part3.title' | translate }} </h2>
             <p class="apply-text">{{ 'home.part3.text1' | translate }}</p>
-            <ul class="europeans-text benefLandingList">
-                <li>{{ 'home.part3.list1' | translate}}</li>
-                <li>{{ 'home.part3.list2' | translate}}</li>
+            <ul class="europeans-text">
+                <li><span>{{ 'home.part3.list1' | translate}}</span></li>
+                <li><span>{{ 'home.part3.list2' | translate}}</span></li>
             </ul>
             <div *ngIf="showTimer">
                 <p class="apply-text">{{ 'home.part3.text3' | translate }}</p>
-                <p class="apply-text">{{ 'home.part3.text4' | translate }}</p>
                 <timer-component class="timelineBenefLanding" (timerEvent)="hideTimer()"
                                  [expirationTimestamp]="currentCall.startDate"></timer-component>
             </div>
@@ -84,8 +86,9 @@
         <div class="col-xl-6">
             <h2 class="apply">{{ 'home.part3.title.1' | translate }} </h2>
             <p class="apply-text">{{ 'home.part3.text2' | translate }}</p>
-
+            <p class="apply-text">{{ 'home.part3.text5' | translate }}</p>
         </div>
+
     </div>
 
 

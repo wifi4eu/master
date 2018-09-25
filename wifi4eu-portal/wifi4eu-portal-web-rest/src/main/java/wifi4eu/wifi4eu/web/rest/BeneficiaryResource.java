@@ -19,6 +19,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.BeneficiaryValidator;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
@@ -277,31 +278,20 @@ public class BeneficiaryResource {
             return null;
         }
     }
-
-    @ApiOperation(value = "sendEmailToNewContact")
-    @RequestMapping(value = "/sendEmailToNewContact", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseDTO sendEmailToNewContact(@RequestBody final UserRegistrationDTO userRegistrationDTO, HttpServletResponse response) throws IOException {
+//      ADD CONTACT
+//    @ApiOperation(value = "Generate invitation to be a beneficiary contact")
+//    @RequestMapping(value = "/invitation-contact-beneficiary", method = RequestMethod.POST)
+//    @ResponseBody
+    public ResponseDTO invitateContactBeneficiary(@RequestParam("idMunicipality") final int idMunicipality, @RequestParam("newContactEmail") final String newContactEmail, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         try {
-            if (userRegistrationDTO.getEmail().equals(userContext.getEmail())) {
-                throw new AppException("Incorrect email");
+            if (Validator.isNull(userConnected) || userConnected.getType() != 3){
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            if (!beneficiaryService.checkContactEmailWithMunicipality(userRegistrationDTO.getEmail(), userRegistrationDTO.getMunicipalityId())) {
-                UserDTO newUser = userService.getUserByEmail(userRegistrationDTO.getEmail());
-
-                if (newUser == null || newUser.getType() == 3) {
-                    beneficiaryService.sendEmailToContacts(userRegistrationDTO);
-                    return new ResponseDTO(true, userRegistrationDTO, null);
-                } else {
-                    throw new AppException("User already registered");
-                }
-            } else {
-                throw new AppException("Already sent to this email");
-            }
+            return beneficiaryService.invitateContactBeneficiary(userConnected,idMunicipality,newContactEmail.trim());
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Incorrect request when adding contacts for suppliers", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Incorrect request when adding contacts for beneficiaries", e.getMessage());
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }

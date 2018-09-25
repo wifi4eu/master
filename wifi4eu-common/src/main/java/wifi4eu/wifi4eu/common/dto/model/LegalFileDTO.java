@@ -8,17 +8,18 @@ public class LegalFileDTO implements Serializable {
 	private int registration;
 	private String fileData;
 	private int fileType;
-	private Date uploadTime;
+	private Long uploadTime;
 	private Integer userId;
 	private int fileSize;
 	private String fileMime;
 	private String fileName;
+	private String azureUri;
 
 	public LegalFileDTO() {
-    this.uploadTime = new Date();
+    this.uploadTime = new Date().getTime();
 	}
 
-	public LegalFileDTO(int registration, String fileData, int fileType, Date uploadTime, Integer userId, int fileSize, String fileMime, String
+	public LegalFileDTO(int registration, String fileData, int fileType, Long uploadTime, Integer userId, int fileSize, String fileMime, String
 			fileName) {
 		this.registration = registration;
 		this.fileData = fileData;
@@ -62,11 +63,11 @@ public class LegalFileDTO implements Serializable {
 		this.fileType = fileType;
 	}
 
-	public Date getUploadTime() {
+	public Long getUploadTime() {
 		return uploadTime;
 	}
 
-	public void setUploadTime(Date uploadTime) {
+	public void setUploadTime(Long uploadTime) {
 		this.uploadTime = uploadTime;
 	}
 
@@ -100,6 +101,14 @@ public class LegalFileDTO implements Serializable {
 
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
+	}
+
+	public String getAzureUri() {
+		return azureUri;
+	}
+
+	public void setAzureUri(String azureUri) {
+		this.azureUri = azureUri;
 	}
 
 }

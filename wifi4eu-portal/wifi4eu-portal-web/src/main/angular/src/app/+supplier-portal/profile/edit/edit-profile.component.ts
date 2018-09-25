@@ -53,14 +53,22 @@ export class SupplierEditProfileComponent {
     private savingData: boolean = false;
     private isLogoUploaded: boolean = false;
     private savingDataSubscription: Subscription = new Subscription();
-    private addContact: boolean = false;
-    private addUser: boolean = false;
     private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
-    private newUserEmail: string = '';
     private users: UserDTOBase[] = [];
     private contactIndex: number;
     private displayAddContactModal: boolean = false;
- 
+    private buttonCompanyEnabled: boolean = true;
+    private buttonUserEnabled: boolean = true;
+    private buttonEnabled: boolean = false;
+//    private areRegionsSelected: boolean = false;
+    private buttonRegionsEnabled: boolean = true;
+    private addContact: boolean = false;
+    private newUserEmail: string = '';
+    private addUser: boolean = false;
+    private displayDeactivatemodal : boolean = false;
+
+    private prefixRegex = new RegExp('^[+]?[1-9]{1}[0-9]{1,2}$');
+    private phoneNumberRegex = new RegExp('^[0-9]{1,}$');
 
     constructor(private localStorageService: LocalStorageService, private sharedService: SharedService, private supplierApi: SupplierApi, private nutsApi: NutsApi, private location: Location, private router: Router, private activatedRoute: ActivatedRoute) {
         let allow = true;
@@ -81,9 +89,10 @@ export class SupplierEditProfileComponent {
         this.supplierApi.getSupplierByUserId(this.user.id).subscribe(
             (supplier: SupplierDTOBase) => {
                 if (supplier != null) {
-                  
                     this.supplier = supplier;
-                    this.users = this.supplier.users;
+                    // ADD CONTACT 
+                    //this.users = this.supplier.users; //uncomment
+                    this.users.push(this.user); //delete
                     if (this.supplier.logo != null)
                         this.isLogoUploaded = true;
                     this.nutsApi.getNutsByLevel(0).subscribe(
@@ -145,6 +154,7 @@ export class SupplierEditProfileComponent {
             let image = new Image();
             image.onload = function () {
                 imageStatus = 'correct';
+                
             };
             image.onerror = function () {
                 imageStatus = 'wrong';
@@ -164,6 +174,11 @@ export class SupplierEditProfileComponent {
                     }
                 }
             );
+            if (imageStatus = 'correct') {
+                this.enableButton();
+                for (let i = 0; i < this.users.length; i++)
+                    this.enableButtonUser(i);
+            }
         }
         return null;
     }
@@ -203,16 +218,13 @@ export class SupplierEditProfileComponent {
     private saveSupplierData(i) {
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
-
         this.savingData = true;
-        var newRegions = [];
-
+        let newRegions = [];
         this.selectedCountries.forEach(selectedCountry => {
-            if(typeof this.selectedRegions[selectedCountry.label] !== "undefined") {
+            if (typeof this.selectedRegions[selectedCountry.label] !== "undefined") {
                 newRegions[selectedCountry.label] = this.selectedRegions[selectedCountry.label];
             }
         });
-
         this.supplier.suppliedRegions = [];
         for (let selectedCountry in newRegions) {
             for (let selectedRegion of this.selectedRegions[selectedCountry]) {
@@ -229,7 +241,7 @@ export class SupplierEditProfileComponent {
                         this.supplierApi.updateContactDetails(this.supplier).subscribe(
                             (user: UserDTOBase) =>{
                                 this.savingData = false;
-                                this.sharedService.growlTranslation('Your profile data was updated successfully.', 'suppPortal.editProfile.save.success', 'success');
+                                this.sharedService.growlTranslation('Your profile data was updated successfully.', 'shared.editProfile.save.success' , 'success');
                                 this.goBack();
                             }, error =>{
                                 this.savingData = false;
@@ -239,61 +251,137 @@ export class SupplierEditProfileComponent {
                         )            
                 } else {
                     this.savingData = false;
-                    this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'suppPortal.editProfile.save.error', 'error');
+                    this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
                 }
             }, error => {
                 this.savingData = false;
-                this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'suppPortal.editProfile.save.error', 'error');
+                this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
             }
         );
-
     }
 
-    private closeModal(){
+    private closeModal() {
         this.addContact = false;
-        this.addUser = false;      
-        this.displayAddContactModal = false;  
-        }
-    
-        private addNewContact(){       
-        this.addContact = true; 
-           this.supplierApi.sendEmailToNewContact(this.newUserEmail).subscribe(
-                (responseDTO: ResponseDTOBase) => {
-                    this.sharedService.growlTranslation('Email sent successfully', 'shared.email.sent', 'success');
-                    this.closeModal();
-                }, error => {
-                    this.sharedService.growlTranslation('An error occurred. This contact has been added to this supplier before or has related registrations.', 'shared.email.error', 'error');
-                    this.closeModal();
-                }
-            );
-        }
-    
-    
-        
-        /* New contact funciontality */
-        private sendMailToUser(){
+        this.displayAddContactModal = false;
+        this.displayDeactivatemodal = false;
+    }
+
+/* ADD CONTACT
+
+    private sendMailToUser(){
         this.newUserEmail = '';
         this.addUser = true;
-        }
+    }
 
-        private deactivateContactModal(){
-            this.closeModal();
-            this.supplierApi.deactivateSupplierContact(this.users[this.contactIndex].id).subscribe(
-                (responseDTO: ResponseDTOBase) => {
-                    this.sharedService.growlTranslation('Deactivate contact successfully', 'shared.email.sent', 'success');
-                    this.closeModal();
-                    this.goBack();
+    private deactivateContactModal() {
+        this.supplierApi.deactivateSupplierContact(this.supplier.id, this.users[this.contactIndex].id).subscribe(
+            (responseDTO: ResponseDTOBase) => {
+                this.sharedService.growlTranslation('Deactivate contact successfully', 'shared.deactivate.sucess', 'success');
+                this.closeModal();
+                this.goBack();
+            }, error => {
+                this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.error.api.generic', 'error');
+                this.closeModal();
+            }
+        );
+        this.closeModal();
+    }
+
+    private deactivateShowModal(i) {
+        this.contactIndex = i;
+        this.displayDeactivatemodal= true;
+    }
+*/
+ 
+    private enableButton() {
+        this.buttonEnabled = false;
+        if (this.supplier.name != null && this.supplier.address != null
+            && this.supplier.vat != null && this.supplier.name.trim() != "" && this.supplier.address.trim() != ""
+            &&  this.supplier.vat.trim() != "") {
+            if (this.supplier.website != null && this.supplier.website.trim() != "") {
+                let pattern = new RegExp(this.websitePattern);
+                this.buttonCompanyEnabled = pattern.test(this.supplier.website);
+            } else {
+                this.buttonCompanyEnabled = true;
+            }
+        } else {
+            this.buttonCompanyEnabled = false;
+        }
+        if (this.buttonUserEnabled && this.buttonCompanyEnabled)
+            this.buttonEnabled = true;
+    }
+
+    private enableButtonUser(i) {
+        this.buttonEnabled = false;
+        if (this.users[i]['phoneNumber'] != null && this.users[i]['phonePrefix'] != null
+            && this.users[i]['surname'] != null  && this.users[i]['name'] != null
+            && this.users[i]['phoneNumber'].trim() != "" && this.users[i]['phonePrefix'].trim() != ""
+            && this.users[i]['surname'].trim() != "" && this.users[i]['name'].trim() != "" && this.checkPrefixAndNumberRegex(i))
+            this.buttonUserEnabled = true;
+        else
+            this.buttonUserEnabled = false;
+        if (this.buttonUserEnabled && this.buttonCompanyEnabled)
+            this.buttonEnabled = true;
+    }
+
+    private checkPrefixAndNumberRegex(i) : boolean{
+        return this.users[i]['phonePrefix'].trim().match(this.prefixRegex) != null && this.users[i]['phoneNumber'].trim().match(this.phoneNumberRegex) != null;
+    }
+
+    private checkRegions(event: any) {
+        this.buttonRegionsEnabled = true;
+        if (this.selectedCountries.length > 0) {
+            for (let selectedCountry of this.selectedCountries) {
+                if (this.selectedRegions[selectedCountry.label] != null) {
+                    if (this.selectedRegions[selectedCountry.label].length == 0) {
+                        this.buttonRegionsEnabled = false;
+                    }
+                } else {
+                    this.buttonRegionsEnabled = false;
+                }
+            }
+        } else {
+            this.buttonRegionsEnabled = false;
+        }
+        this.enableButton();
+        for (let i = 0; i < this.users.length; i++)
+            this.enableButtonUser(i);
+    }
+/* ADD CONTACT
+    private closeAddNewContactModal(){
+        this.newUserEmail = '';
+        this.addUser = false;
+    }
+
+    private addNewContactToSupplier(){
+        this.addUser = true;
+    }
+
+    private addNewContact(){
+        if (this.newUserEmail.trim() != '' && this.supplier.id != 0){
+            this.addContact = true;
+            this.supplierApi.invitateContactSupplier(this.supplier.id, this.newUserEmail).subscribe(
+                (response: ResponseDTOBase) => {
+                    if (response.success){
+                        this.sharedService.growlTranslation('Email sent successfully', response.data, 'success');
+                        this.addContact = false;
+                        this.addUser = false;
+                        this.closeModal();
+                    } else {
+                        this.addContact = false;
+                        this.sharedService.growlTranslation(response.data, response.error.errorMessage, 'error');
+                        this.closeModal();
+                    }
                 }, error => {
+                    this.addContact = false;
                     this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.email.error', 'error');
                     this.closeModal();
                 }
             );
-
+            this.newUserEmail = '';
+        } else {
+            this.sharedService.growlTranslation('Please, complete the email field to add a new contact', 'supplierPortal.profile.addNewContact.empty', 'error');
         }
-
-        private deactivateShowModal(i){
-            this.contactIndex = i;
-            this.displayAddContactModal = true;
-        }
-        
+    }
+*/
 }

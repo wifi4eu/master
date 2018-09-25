@@ -41,3 +41,8 @@ cleanEnv.sh
 .settings/*
 .project
 bin
+.factorypath
+**/.settings/
+**/.settings/**
+.classpath
+.project
