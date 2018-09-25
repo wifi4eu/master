@@ -50,7 +50,7 @@ export class DgConnExportImportComponent {
         this.router.navigate(['lc'], { relativeTo: this.route });
     }
 
-    importDbBudgFinalList() {
+    importAbacReferencesList() {
         this.router.navigate(['dgBudg'], { relativeTo: this.route });
     }
 
@@ -88,8 +88,8 @@ export class DgConnExportImportComponent {
         this.processingOperation = true;
         this.exportImportApi.exportLegalCommitment().subscribe(
             (response) => {
-                let blob = new Blob([response], { type: 'text/csv' });
-                FileSaver.saveAs(blob, 'portal_exportLegalCommitment.zip');
+                let blob = new Blob([response], { type: 'text/zip' });
+                FileSaver.saveAs(blob, 'exportLegalCommitment.zip');
                 this.sharedService.growlTranslation('Your file have been exported correctly!', 'dgconn.dashboard.card.messageExport', 'success');
                 this.processingOperation = false;
             }, error => {
