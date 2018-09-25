@@ -327,6 +327,9 @@ UPDATE laus SET name_national=N'ΔΗΜΟΣ ΩΡΑΙΟΚΑΣΤΡΟΥ', name_latin
 UPDATE laus SET name_national=N'ΔΗΜΟΣ ΩΡΩΠΟΥ', name_latin=N'Municipality of Oropos', abac_name=N'DEMOS OROPOU', display_name=N'ΔΗΜΟΣ ΩΡΩΠΟΥ-Municipality of Oropos' WHERE id=21297;
 
 
---326
+--327
 --select nuts3, lau1, name_national, name_latin, abac_name, display_name, id 
 --from laus where country_code = 'EL' order by name1 asc
+
+
+update laus set nuts3='EL527' where id=21383;
