@@ -48,7 +48,8 @@ public class BeneficiaryInformationRepository {
 
             + "ma.abacReference as mun_abacReference, "
             + "ma.abacStandarName as mun_abacName, "
-            + "va.call as mun_callNumber "
+            + "va.call as mun_callNumber, "
+            + "u.lang as user_lang "
 
             + "from applications as a "
             + "left join registrations as r on a.registration = r.id "
@@ -61,6 +62,8 @@ public class BeneficiaryInformationRepository {
 
             + "inner join voucher_simulations as vs on vs.municipality = m.id "
             + "inner join voucher_assignments as va on va.id = vs.voucher_assignment "
+            + "left join registration_users as ru on r.id = ru.registration "
+            + "left join users as u on u.id = ru._user "
             + "where m.name is not null and va.status = 3";
 
 
@@ -81,7 +84,7 @@ public class BeneficiaryInformationRepository {
                         (String) object[4],
                         (String) object[5],
                         (String) object[6],
-                        "",
+                        (String) object[17],
                         object[7] != null ? ((Integer) object[7]).longValue() : null,
                         (String) object[14],
                         (Integer) object[16],
