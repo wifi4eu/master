@@ -299,9 +299,9 @@ public class VoucherResource {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("Access denied: savePreListSimulation");
             }
-            VoucherAssignmentDTO result = voucherService.savePreListSimulation(assignmentId, callId);
+            voucherService.savePreListSimulation(assignmentId, callId);
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Success on saving simulation");
-            return new ResponseDTO(true, result, null);
+            return new ResponseDTO(true, null, null);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to save simulation", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());

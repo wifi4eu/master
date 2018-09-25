@@ -1,13 +1,6 @@
 package wifi4eu.wifi4eu.service.voucher;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.google.common.collect.Lists;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,21 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.google.common.collect.Lists;
-
-import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
-import wifi4eu.wifi4eu.common.dto.model.CallDTO;
-import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationWarningDTO;
-import wifi4eu.wifi4eu.common.dto.model.SimpleLauDTO;
-import wifi4eu.wifi4eu.common.dto.model.SimpleMunicipalityDTO;
-import wifi4eu.wifi4eu.common.dto.model.SimpleRegistrationDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
-import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentAuxiliarDTO;
-import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentDTO;
-import wifi4eu.wifi4eu.common.dto.model.VoucherManagementDTO;
-import wifi4eu.wifi4eu.common.dto.model.VoucherSimulationDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.SelectionStatus;
@@ -42,7 +21,6 @@ import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.admin.AdminActions;
-import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
 import wifi4eu.wifi4eu.entity.voucher.VoucherAssignmentAuxiliar;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
@@ -62,11 +40,11 @@ import wifi4eu.wifi4eu.service.security.INEAPermissionChecker;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.warning.RegistrationWarningService;
+import wifi4eu.wifi4eu.util.SavePreselectionListAsync;
 import wifi4eu.wifi4eu.util.SendNotificationsAsync;
 import wifi4eu.wifi4eu.util.VoucherSimulationExportGenerator;
 
 import javax.annotation.PostConstruct;
-import java.text.MessageFormat;
 import java.util.*;
 
 @Service("portalVoucherService")
@@ -322,61 +300,27 @@ public class VoucherService {
     }
 
     @Transactional
-    public VoucherAssignmentDTO savePreListSimulation(int voucherAssignmentId, int callId) {
+    public void savePreListSimulation(int voucherAssignmentId, int callId) {
         CallDTO callDTO = callService.getCallById(callId);
 
         if (callDTO == null) {
             throw new AppException("Call not exists");
         }
 
-        if (checkSavePreSelectionEnabled(voucherAssignmentId)) {
+        if (!checkSavePreSelectionEnabled(voucherAssignmentId)) {
 
             VoucherAssignmentAuxiliarDTO auxiliarDTO = voucherAssignmentAuxiliarMapper.toDTO(voucherAssignmentAuxiliarRepository.findByCallIdAndStatusAux(callId, 1));
             if (auxiliarDTO == null) {
                 throw new AppException("Voucher assigment not found");
             }
-            List<VoucherSimulationDTO> simulationList = getVoucherSimulationsByVoucherAssigmentId(auxiliarDTO.getId());
 
-            VoucherAssignmentDTO voucherAssignment = voucherAssignmentMapper.toDTO(voucherAssignmentRepository.findByCallIdAndStatusEquals(callId, 2));
+            VoucherAssignmentDTO voucherAssignment = voucherAssignmentMapper.toDTO(voucherAssignmentRepository.findByCallIdAndStatusEquals(callId, SelectionStatus.REJECTED.getValue()));
 
             if (voucherAssignment != null) {
-                //voucherAssignmentRepository.delete(voucherAssignmentMapper.toEntity(voucherAssignment));
                 throw new AppException("Existing Pre-selection list for callId: " + callId);
             }
 
-            voucherAssignment = new VoucherAssignmentDTO();
-            voucherAssignment.setCall(callService.getCallById(callId));
-            voucherAssignment.setUser(userService.getUserByUserContext(UserHolder.getUser()));
-            voucherAssignment.setExecutionDate(new Date().getTime());
-
-            voucherAssignment.setStatus(VoucherAssignmentStatus.PRE_LIST.getValue());
-
-            Set<VoucherSimulationDTO> simulationsPreSave = new HashSet<>();
-
-            VoucherAssignmentDTO result = voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(voucherAssignment)));
-
-            for (VoucherSimulationDTO voucherSimulation : simulationList) {
-                VoucherSimulationDTO voucherSimulationDTO = new VoucherSimulationDTO();
-                voucherSimulationDTO.setApplication(voucherSimulation.getApplication());
-                voucherSimulationDTO.setCountry(voucherSimulation.getCountry());
-                voucherSimulationDTO.setCountryRank(voucherSimulation.getCountryRank());
-                voucherSimulationDTO.setEuRank(voucherSimulation.getEuRank());
-                voucherSimulationDTO.setLau(voucherSimulation.getLau());
-                voucherSimulationDTO.setMunicipality(voucherSimulation.getMunicipality());
-                voucherSimulationDTO.setMunicipalityName(voucherSimulation.getMunicipalityName());
-                voucherSimulationDTO.setNumApplications(voucherSimulation.getNumApplications());
-                voucherSimulationDTO.setSelectionStatus(voucherSimulation.getSelectionStatus());
-                voucherSimulationDTO.setRejected(voucherSimulation.getRejected());
-                voucherSimulationDTO.setVoucherAssignment(result.getId());
-                simulationsPreSave.add(voucherSimulationDTO);
-            }
-
-            result.setVoucherSimulations(simulationsPreSave);
-
-            result = voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(result)));
-
-            voucherSimulationRepository.updateApplicationsInVoucherSimulationByVoucherAssignment(1, result.getId());
-            return result;
+            taskExecutor.execute(context.getBean(SavePreselectionListAsync.class, callId, auxiliarDTO.getId()));
         } else {
             throw new AppException("Error saving pre-selected list");
         }
