@@ -1,15 +1,6 @@
 package wifi4eu.wifi4eu.service.application;
 
-import java.text.MessageFormat;
-import java.time.DateTimeException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.google.common.collect.Lists;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,9 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.google.common.collect.Lists;
-
 import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.mail.MailData;
 import wifi4eu.wifi4eu.common.dto.model.*;
@@ -43,11 +31,7 @@ import wifi4eu.wifi4eu.mapper.application.CorrectionRequestEmailMapper;
 import wifi4eu.wifi4eu.mapper.registration.LegalFileCorrectionReasonMapper;
 import wifi4eu.wifi4eu.mapper.registration.legal_files.LegalFilesMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
-import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
-import wifi4eu.wifi4eu.repository.application.ApplicationInvalidateReasonRepository;
-import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
-import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
-import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
+import wifi4eu.wifi4eu.repository.application.*;
 import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
@@ -65,6 +49,11 @@ import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.voucher.VoucherService;
 import wifi4eu.wifi4eu.util.ExcelExportGenerator;
+
+import javax.servlet.http.HttpServletRequest;
+import java.text.MessageFormat;
+import java.time.DateTimeException;
+import java.util.*;
 
 @Service
 public class ApplicationService {
@@ -407,7 +396,7 @@ public class ApplicationService {
                 }
                 break;
                 */
-            case "supportingdocuments":
+            case "supportingDocuments":
                 if (pagingSortingData.getOrderType() == -1) {
                     if (name != null) {
                         if (name.trim().length() > 0) {
@@ -679,7 +668,9 @@ public class ApplicationService {
         if (!legalFileDTOS.isEmpty()) {
             for (LegalFileDTO legalFileDTO : legalFileDTOS) {
                 if (legalFileDTO.getIsNew() == LegalFileStatus.RECENT.getValue()) {
-                    legalFileDTO.setIsNew(LegalFileStatus.OLD.getValue());
+                    if(legalFilesRepository.checkIfNewFile(legalFileDTO.getFileType(), legalFileDTO.getRegistration()) != 0){
+                        legalFileDTO.setIsNew(LegalFileStatus.OLD.getValue());
+                    }
                 }
                 if (legalFileDTO.getIsNew() == LegalFileStatus.NEW.getValue()) {
                     if (applicationDTO.getStatus() == ApplicationStatus.KO.getValue()) {

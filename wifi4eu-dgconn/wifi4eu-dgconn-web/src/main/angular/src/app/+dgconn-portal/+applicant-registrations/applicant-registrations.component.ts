@@ -68,6 +68,7 @@ export class DgConnApplicantRegistrationsComponent {
     private warning1Message: string = '';
     private warning2Message: string = '';
     private warning3Message: string = '';
+    private hasNew: boolean = false;
 
     private sendNotificationsPsswd: string = '';
     private showNotificationModal: boolean = false;
