@@ -68,7 +68,6 @@ export class DgConnApplicantRegistrationsComponent {
     private warning1Message: string = '';
     private warning2Message: string = '';
     private warning3Message: string = '';
-    private hasNew: boolean = false;
 
     constructor(private applicationApi: ApplicationApi, private callApi: CallApi, private nutsApi: NutsApi, private activatedRoute: ActivatedRoute, private router: Router, private sharedService: SharedService, private translateService: TranslateService) {
         this.callApi.allCalls().subscribe(
