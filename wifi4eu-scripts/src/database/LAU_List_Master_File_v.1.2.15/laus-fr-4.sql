@@ -4370,4 +4370,8 @@ UPDATE laus SET name_national=N'Zudausques', name_latin=N'Zudausques', abac_name
 UPDATE laus SET name_national=N'Zutkerque', name_latin=N'Zutkerque', abac_name=N'Zutkerque', display_name=N'Zutkerque' WHERE id=54191;
 UPDATE laus SET name_national=N'Zuydcoote', name_latin=N'Zuydcoote', abac_name=N'Zuydcoote', display_name=N'Zuydcoote' WHERE id=52220;
 UPDATE laus SET name_national=N'Zuytpeene', name_latin=N'Zuytpeene', abac_name=N'Zuytpeene', display_name=N'Zuytpeene' WHERE id=52221;
---4372
+--4373
+
+--Keep the extra NUTS 3 FRZZZ in the list of NUTS codes, and call it: “Autres territoires d’outre-mer”
+insert into nuts (code, label, level, country_code, _order, sorting) values
+('FRZZZ', 'Autres territoires d’outre-mer', 3, 'FR', (select top 1 _order from nuts where country_code='FR'), (select top 1 sorting +1 from nuts order by sorting desc));

@@ -423,6 +423,9 @@ UPDATE laus SET name_national=N'Vinje', name_latin=N'Vinje', abac_name=N'Vinje',
 UPDATE laus SET name_national=N'Volda', name_latin=N'Volda', abac_name=N'Volda', display_name=N'Volda' WHERE id=78323;
 UPDATE laus SET name_national=N'Voss', name_latin=N'Voss', abac_name=N'Voss', display_name=N'Voss' WHERE id=78324;
 
---422
+--423
 --select nuts3, lau1, name_national, name_latin, abac_name, display_name, id 
 --from laus where country_code = 'NO' order by name1 asc
+
+--In the v15 file, there is only one NOZZZ: Faerder; put this LAU into the NO033 Vestfold.
+update laus set nuts3='NO033' where id=88451;

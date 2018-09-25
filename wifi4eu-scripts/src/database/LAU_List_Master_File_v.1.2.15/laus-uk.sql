@@ -404,3 +404,39 @@ UPDATE laus SET name_national=N'York', name_latin=N'York', abac_name=N'York', di
 
 --select nuts3, lau1, name_national, name_latin, abac_name, display_name, id 
 --from laus where country_code = 'UK' order by name1 asc
+
+
+--UK
+DECLARE  @uk varchar(3);
+SET @uk = 'UK';
+DECLARE  @countryCode nvarchar(255);
+SET @countryCode = (select top 1 _order from nuts where country_code=@uk);
+
+insert into nuts (code, label, level, country_code, _order, sorting) values ('UKM71', 'Angus and Dundee City', 3, @uk, @countryCode, (select top 1 sorting +1 from nuts order by sorting desc));
+insert into nuts (code, label, level, country_code, _order, sorting) values ('UKM72', 'Clackmannanshire and Fife', 3, @uk, @countryCode, (select top 1 sorting +1 from nuts order by sorting desc));
+insert into nuts (code, label, level, country_code, _order, sorting) values ('UKM73', 'East Lothian and Midlothian', 3, @uk, @countryCode, (select top 1 sorting +1 from nuts order by sorting desc));
+insert into nuts (code, label, level, country_code, _order, sorting) values ('UKM75', 'Edinburgh, City of', 3, @uk, @countryCode, (select top 1 sorting +1 from nuts order by sorting desc));
+insert into nuts (code, label, level, country_code, _order, sorting) values ('UKM76', 'Falkirk', 3, @uk, @countryCode, (select top 1 sorting +1 from nuts order by sorting desc));
+insert into nuts (code, label, level, country_code, _order, sorting) values ('UKM77', 'Perth & Kinross and Stirling', 3, @uk, @countryCode, (select top 1 sorting +1 from nuts order by sorting desc));
+insert into nuts (code, label, level, country_code, _order, sorting) values ('UKM78', 'West Lothian', 3, @uk, @countryCode, (select top 1 sorting +1 from nuts order by sorting desc));
+insert into nuts (code, label, level, country_code, _order, sorting) values ('UKM81', 'East Dunbartonshire, West Dunbartonshire and Helensburgh & Lomond', 3, @uk, @countryCode, (select top 1 sorting +1 from nuts order by sorting desc));
+insert into nuts (code, label, level, country_code, _order, sorting) values ('UKM82', 'Glasgow City', 3, @uk, @countryCode, (select top 1 sorting +1 from nuts order by sorting desc));
+insert into nuts (code, label, level, country_code, _order, sorting) values ('UKM83', 'Inverclyde, East Renfrewshire and Renfrewshire', 3, @uk, @countryCode, (select top 1 sorting +1 from nuts order by sorting desc));
+insert into nuts (code, label, level, country_code, _order, sorting) values ('UKM84', 'North Lanarkshire', 3, @uk, @countryCode, (select top 1 sorting +1 from nuts order by sorting desc));
+insert into nuts (code, label, level, country_code, _order, sorting) values ('UKM91', 'Scottish Borders', 3, @uk, @countryCode, (select top 1 sorting +1 from nuts order by sorting desc));
+insert into nuts (code, label, level, country_code, _order, sorting) values ('UKM92', 'Dumfries & Galloway', 3, @uk, @countryCode, (select top 1 sorting +1 from nuts order by sorting desc));
+insert into nuts (code, label, level, country_code, _order, sorting) values ('UKM93', 'East Ayrshire and North Ayrshire mainland', 3, @uk, @countryCode, (select top 1 sorting +1 from nuts order by sorting desc));
+insert into nuts (code, label, level, country_code, _order, sorting) values ('UKM94', 'South Ayrshire', 3, @uk, @countryCode, (select top 1 sorting +1 from nuts order by sorting desc));
+insert into nuts (code, label, level, country_code, _order, sorting) values ('UKM95', 'South Lanarkshire', 3, @uk, @countryCode, (select top 1 sorting +1 from nuts order by sorting desc));
+insert into nuts (code, label, level, country_code, _order, sorting) values ('UKN06', 'Belfast', 3, @uk, @countryCode, (select top 1 sorting +1 from nuts order by sorting desc));
+insert into nuts (code, label, level, country_code, _order, sorting) values ('UKN07', 'Armagh City, Banbridge and Craigavon', 3, @uk, @countryCode, (select top 1 sorting +1 from nuts order by sorting desc));
+insert into nuts (code, label, level, country_code, _order, sorting) values ('UKN08', 'Newry, Mourne and Down', 3, @uk, @countryCode, (select top 1 sorting +1 from nuts order by sorting desc));
+insert into nuts (code, label, level, country_code, _order, sorting) values ('UKN09', 'Ards and North Down ', 3, @uk, @countryCode, (select top 1 sorting +1 from nuts order by sorting desc));
+insert into nuts (code, label, level, country_code, _order, sorting) values ('UKN10', 'Derry City and Strabane', 3, @uk, @countryCode, (select top 1 sorting +1 from nuts order by sorting desc));
+insert into nuts (code, label, level, country_code, _order, sorting) values ('UKN11', 'Mid Ulster', 3, @uk, @countryCode, (select top 1 sorting +1 from nuts order by sorting desc));
+insert into nuts (code, label, level, country_code, _order, sorting) values ('UKN12', 'Causeway Coast and Glens            ', 3, @uk, @countryCode, (select top 1 sorting +1 from nuts order by sorting desc));
+insert into nuts (code, label, level, country_code, _order, sorting) values ('UKN13', 'Antrim and Newtownabbey', 3, @uk, @countryCode, (select top 1 sorting +1 from nuts order by sorting desc));
+insert into nuts (code, label, level, country_code, _order, sorting) values ('UKN14', 'Lisburn and Castlereagh', 3, @uk, @countryCode, (select top 1 sorting +1 from nuts order by sorting desc));
+insert into nuts (code, label, level, country_code, _order, sorting) values ('UKN15', 'Mid and East Antrim', 3, @uk, @countryCode, (select top 1 sorting +1 from nuts order by sorting desc));
+insert into nuts (code, label, level, country_code, _order, sorting) values ('UKN16', 'Fermanagh and Omagh', 3, @uk, @countryCode, (select top 1 sorting +1 from nuts order by sorting desc));
+
