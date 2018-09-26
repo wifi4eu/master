@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Base64Utils;
 import wifi4eu.wifi4eu.common.dto.model.ExportImportRegistrationDataDTO;
@@ -198,6 +199,7 @@ public class ExportImportWifi4euAbacService {
         return municipalitiesAbac;
     }
 
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public ByteArrayOutputStream exportLegalEntities() {
         _log.debug("exportBeneficiaryInformation");
 
@@ -941,6 +943,7 @@ public class ExportImportWifi4euAbacService {
         }
     }
 
+    @Transactional(readOnly = true)
     public ByteArrayOutputStream exportLegalCommitment() throws IOException {
 
         _log.debug("exportLegalCommitment");
@@ -1000,7 +1003,7 @@ public class ExportImportWifi4euAbacService {
     private List<ExportImportLegalCommitmentInformation> searchLegalCommitments() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-        List<BudgetaryCommitment> listBudgetaryCommitment = this.budgetaryCommitmentRepository.findByAbacBcKeyIsNotNullAndAbacLcKeyIsNull();
+        List<BudgetaryCommitment> listBudgetaryCommitment = budgetaryCommitmentRepository.findByAbacBcKeyIsNotNullAndAbacLcKeyIsNull();
         this._log.info("listBudgetaryCommitment.size [{}]", listBudgetaryCommitment.size());
         List<Application> listApplications = new ArrayList<>();
 
