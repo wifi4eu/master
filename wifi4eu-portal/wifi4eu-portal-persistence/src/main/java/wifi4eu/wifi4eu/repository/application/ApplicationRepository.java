@@ -72,7 +72,7 @@ public interface ApplicationRepository extends CrudRepository<Application, Integ
     @Query(value = "SELECT a.* FROM applications a INNER JOIN registrations r ON a.registration = r.id INNER JOIN registration_users ru ON ru.registration = r.id INNER JOIN users u ON ru._user = u.id WHERE a.id IN (SELECT vs.application FROM voucher_simulations vs WHERE vs.voucher_assignment = ?1 AND vs.selection_status = ?2)", nativeQuery = true)
     List<Application> getApplicationsSelectedInVoucherAssignment(Integer voucherAssignmentId, Integer selectionStatus);
 
-    @Query(value = "SELECT a.* FROM applications a WHERE a.voucher_awarded = 1 AND a.call_id = ?#{[0]} AND a.registration = ?#{[1]}", nativeQuery = true)
+    @Query(value = "SELECT a.* FROM applications a WHERE a.call_id = ?#{[0]} AND a.registration = ?#{[1]} AND a.id IN (SELECT vs.application FROM voucher_simulations vs where selection_status = 3)", nativeQuery = true)
     Application findVoucherApplicationByCallIdAndRegistrationId(Integer callId, Integer registrationId);
 
 }

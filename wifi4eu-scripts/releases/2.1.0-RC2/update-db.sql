@@ -287,3 +287,15 @@ DROP TABLE IF EXISTS dbo.VALIDATED_BC;
 DROP TABLE IF EXISTS dbo.NUTCALLCUSTOM;
 DROP TABLE IF EXISTS dbo.USERAUTHORIZEDPERSON;
 DROP TABLE IF EXISTS dbo.USERCONTACTDETAILS;
+
+-- Add new column for laus
+ALTER TABLE laus ADD name_national nvarchar(255) NULL;
+ALTER TABLE laus ADD name_latin nvarchar(255) NULL;
+ALTER TABLE laus ADD abac_name nvarchar(255) NULL;
+ALTER TABLE laus ADD display_name nvarchar(255) NULL;
+
+-- Place name1 and name2 to name_latin,name_national,abac_name,display_name for testing
+UPDATE laus
+    SET name_latin=l2.name2, name_national=l2.name1, abac_name=l2.name2, display_name=l2.name2
+    FROM laus l2 WHERE id = l2.id
+

@@ -41,10 +41,22 @@ public class Lau {
     @Column(name = "physical_address")
     private String physicalAddress;
 
+    @Column(name = "name_national")
+    private String nationalName;
+
+    @Column(name = "name_latin")
+    private String latinName;
+
+    @Column(name = "abac_name")
+    private String abacName;
+
+    @Column(name = "display_name")
+    private String displayName;
+
     public Lau() {
     }
 
-    public Lau(Integer id, String countryCode, String nuts3, String lau1, String lau2, String change, String name1, String name2, Integer pop, Integer area, String physicalAddress) {
+    public Lau(Integer id, String countryCode, String nuts3, String lau1, String lau2, String change, String name1, String name2, Integer pop, Integer area, String physicalAddress, String nationalName, String latinName, String abacName, String displayName) {
         this.id = id;
         this.countryCode = countryCode;
         this.nuts3 = nuts3;
@@ -56,6 +68,10 @@ public class Lau {
         this.pop = pop;
         this.area = area;
         this.physicalAddress = physicalAddress;
+        this.nationalName = nationalName;
+        this.latinName = latinName;
+        this.abacName = abacName;
+        this.displayName = displayName;
     }
 
     public Integer getId() {
@@ -144,5 +160,37 @@ public class Lau {
 
     public void setPhysicalAddress(String physicalAddress) {
         this.physicalAddress = physicalAddress;
+    }
+
+    public String getNationalName() {
+        return nationalName;
+    }
+
+    public void setNationalName(String nationalName) {
+        this.nationalName = nationalName;
+    }
+
+    public String getLatinName() {
+        return latinName;
+    }
+
+    public void setLatinName(String latinName) {
+        this.latinName = latinName;
+    }
+
+    public String getAbacName() {
+        return abacName;
+    }
+
+    public void setAbacName(String abacName) {
+        this.abacName = abacName;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 }
