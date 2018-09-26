@@ -3,16 +3,15 @@ package wifi4eu.wifi4eu.util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentDTO;
 import wifi4eu.wifi4eu.common.dto.model.VoucherSimulationDTO;
-import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.VoucherAssignmentStatus;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherAssignmentMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherSimulationMapper;
 import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherSimulationRepository;
 import wifi4eu.wifi4eu.service.call.CallService;
-import wifi4eu.wifi4eu.service.user.UserService;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -25,17 +24,16 @@ public class SavePreselectionListAsync implements Runnable{
 
     private int callId;
     private int voucherAssignmentAuxiliarId;
+    private UserDTO userDTO;
 
-    public SavePreselectionListAsync(int callId, int voucherAssignmentAuxiliarId) {
+    public SavePreselectionListAsync(int callId, int voucherAssignmentAuxiliarId, UserDTO userDTO) {
         this.callId = callId;
         this.voucherAssignmentAuxiliarId = voucherAssignmentAuxiliarId;
+        this.userDTO = userDTO;
     }
 
     @Autowired
     CallService callService;
-
-    @Autowired
-    UserService userService;
 
     @Autowired
     VoucherAssignmentMapper voucherAssignmentMapper;
@@ -53,7 +51,7 @@ public class SavePreselectionListAsync implements Runnable{
     public void run() {
         VoucherAssignmentDTO voucherAssignment = new VoucherAssignmentDTO();
         voucherAssignment.setCall(callService.getCallById(callId));
-        voucherAssignment.setUser(userService.getUserByUserContext(UserHolder.getUser()));
+        voucherAssignment.setUser(userDTO);
         voucherAssignment.setExecutionDate(new Date().getTime());
 
         voucherAssignment.setStatus(VoucherAssignmentStatus.PRE_LIST.getValue());

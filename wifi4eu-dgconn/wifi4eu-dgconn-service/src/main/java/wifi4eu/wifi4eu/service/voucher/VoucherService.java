@@ -316,7 +316,8 @@ public class VoucherService {
                 throw new AppException("Existing Pre-selection list for callId: " + callId);
             }
 
-            taskExecutor.execute(context.getBean(SavePreselectionListAsync.class, callId, auxiliarDTO.getId()));
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            taskExecutor.execute(context.getBean(SavePreselectionListAsync.class, callId, auxiliarDTO.getId(), userDTO));
         } else {
             throw new AppException("Error saving pre-selected list");
         }
