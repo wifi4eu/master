@@ -64,6 +64,7 @@ import wifi4eu.wifi4eu.service.security.INEAPermissionChecker;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.warning.RegistrationWarningService;
+import wifi4eu.wifi4eu.util.FreezeListAsync;
 import wifi4eu.wifi4eu.util.SendNotificationsAsync;
 import wifi4eu.wifi4eu.util.SimulateVoucherAsync;
 import wifi4eu.wifi4eu.util.VoucherSimulationExportGenerator;
@@ -270,61 +271,34 @@ public class VoucherService {
 
     @Transactional
     public ResponseDTO saveFreezeListSimulation(String freezePsswd, int voucherAssignmentId, int callId) {
-
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         if (!INEAPermissionChecker.freezePsswd.equals(freezePsswd)) {
             return new ResponseDTO(false, null, new ErrorDTO(20, "dgConn.voucherAssignment.error.incorrectPassword"));
         }
-
-        CallDTO callDTO = callService.getCallById(callId);
-
-        if (callDTO == null) {
-            throw new AppException("Call not exists");
-        }
-
-        if (!checkApplicationAreValidForFreezeList(callId)) {
-            throw new AppException("Not all applications are validated to save the freeze list");
-        }
-
-        VoucherAssignmentAuxiliarDTO voucherAssignmentAuxiliarDTO = voucherAssignmentAuxiliarMapper.toDTO(voucherAssignmentAuxiliarRepository.findByCallIdAndStatusAux(callDTO.getId(), VoucherAssignmentStatus.FREEZE_LIST.getValue()));
-
-        if (voucherAssignmentAuxiliarDTO != null) {
-            throw new AppException("Freeze list already exist for call " + callId);
-        }
-
-        List<VoucherSimulationDTO> simulationDTOS = voucherSimulationMapper.toDTOList(voucherSimulationRepository.findAllByVoucherAssignmentAndStatusOrderByEuRank(voucherAssignmentId));
-        Set<VoucherSimulationDTO> simulationDTOSet = new HashSet<>();
-
-        VoucherAssignmentDTO freezeVoucherAssignment = new VoucherAssignmentDTO();
-        freezeVoucherAssignment.setStatus(VoucherAssignmentStatus.FREEZE_LIST.getValue());
-        freezeVoucherAssignment.setExecutionDate(new Date().getTime());
-        freezeVoucherAssignment.setUser(userService.getUserByUserContext(UserHolder.getUser()));
-        freezeVoucherAssignment.setCall(callDTO);
-
-        VoucherAssignmentDTO result = voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(freezeVoucherAssignment)));
-
-        for (VoucherSimulationDTO voucherSimulation : simulationDTOS) {
-            VoucherSimulationDTO voucherSimulationDTO = new VoucherSimulationDTO();
-            voucherSimulationDTO.setApplication(voucherSimulation.getApplication());
-            voucherSimulationDTO.setCountry(voucherSimulation.getCountry());
-            voucherSimulationDTO.setCountryRank(voucherSimulation.getCountryRank());
-            voucherSimulationDTO.setEuRank(voucherSimulation.getEuRank());
-            voucherSimulationDTO.setLau(voucherSimulation.getLau());
-            voucherSimulationDTO.setMunicipality(voucherSimulation.getMunicipality());
-            voucherSimulationDTO.setMunicipalityName(voucherSimulation.getMunicipalityName());
-            voucherSimulationDTO.setNumApplications(voucherSimulation.getNumApplications());
-            voucherSimulationDTO.setSelectionStatus(voucherSimulation.getSelectionStatus());
-            if (voucherSimulation.getSelectionStatus() == SelectionStatus.MAIN_LIST.getValue()) {
-                voucherSimulationDTO.setSelectionStatus(SelectionStatus.SELECTED.getValue());
+        AdminActions adminActions = adminActionsRepository.findOneByAction("freeze_voucher");
+        if (Validator.isNull(adminActions)) {
+            adminActions = new AdminActions();
+            adminActions.setAction("freeze_voucher");
+            adminActions.setStartDate(new Date());
+            adminActions.setRunning(true);
+            adminActions.setUser(userMapper.toEntity(userConnected));
+            adminActions = adminActionsRepository.save(adminActions);
+        } else {
+            if (adminActions.isRunning()) {
+                throw new AppException("Freeze List is running...");
             }
-            voucherSimulationDTO.setRejected(voucherSimulation.getRejected());
-            voucherSimulationDTO.setVoucherAssignment(result.getId());
-            if (voucherSimulationDTO.getSelectionStatus() != SelectionStatus.REJECTED.getValue()) {
-                simulationDTOSet.add(voucherSimulationDTO);
-            }
+            adminActions.setStartDate(new Date());
+            adminActions.setRunning(true);
+            adminActions.setEndDate(null);
+            adminActions.setUser(userMapper.toEntity(userConnected));
+            adminActions = adminActionsRepository.save(adminActions);
         }
+        // Let the task executor manage the execution of the new thread to send the mails
+        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Lanunched freeze voucher simulations, starting thread...");
+        taskExecutor.execute(context.getBean(FreezeListAsync.class, voucherAssignmentId, callId, userConnected));
+        return new ResponseDTO(true, null, null);
 
-        result.setVoucherSimulations(simulationDTOSet);
-        return new ResponseDTO(true, voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(result))), null);
     }
 
     @Transactional

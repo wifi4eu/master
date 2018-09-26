@@ -124,6 +124,8 @@ export class DgConnVoucherComponent {
   private adminAction: AdminActionsDTO;
   private destroyed: ReplaySubject<boolean> = new ReplaySubject(1);
 
+  private displayConfirmingDataFreeze: boolean = false;
+
   constructor(private adminActionsApi: AdminactionsApi, private sharedService: SharedService, private callApi: CallApi, private applicationApi: ApplicationApi, private nutsApi: NutsApi,
     private voucherApi: VoucherApi, private router: Router, private route: ActivatedRoute, private registrationWarningApi: RegistrationWarningApi) {
    
@@ -212,6 +214,7 @@ export class DgConnVoucherComponent {
                 this.adminAction = response.data;
                 if(this.adminAction.running){
                   this.startInterval();
+                  this.startIntervalFreeze();
                   this.displayConfirmingData = true;
                 }            
               }                      
@@ -244,6 +247,24 @@ export class DgConnVoucherComponent {
                   this.destroyed.next(true);   
                   this.reloadData();
                   this.displayConfirmingData = false;
+                }            
+              }                      
+            });
+        });
+  }
+
+  startIntervalFreeze() {
+    this.sessionInterval
+        .takeUntil(this.destroyed)
+        .subscribe(execution => {
+          this.adminActionsApi.getByActionName("freeze_voucher").subscribe((response: ResponseDTO) => {
+              if (response.success) {
+                this.adminAction = response.data;
+                if(!this.adminAction.running){
+                  this.destroyed.next(true);   
+                  this.reloadData();
+                  this.displayConfirmingDataFreeze = false;
+
                 }            
               }                      
             });
@@ -534,36 +555,25 @@ export class DgConnVoucherComponent {
   }
 
   private saveFreezeList(saveFreezeBtn) {
-    this.loadingFreezeList = true;
-    this.confirmFreezeBtn = false;
-    
-    this.voucherApi.saveFreezeListSimulation(this.psswdFreeze, this.callVoucherAssignment.id, this.callSelected.id).finally(() => {
-      this.loadingFreezeList = false;
-      this.confirmFreezeBtn = true;
-      this.psswdFreeze = '';
-    }).subscribe((response: ResponseDTO) => {
+    this.displayConfirmingDataFreeze = true;
+    this.voucherApi.saveFreezeListSimulation(this.psswdFreeze, this.callVoucherAssignment.id, this.callSelected.id).subscribe((response: ResponseDTO) => {
       if(!response.success){
         if(response.error.errorCode == 20){
           this.sharedService.growlTranslation('An error occurred while freezing the list.', response.error.errorMessage, 'error');
+          this.psswdFreeze = '';
+          this.displayConfirmingDataFreeze = false;
         }
       }else{
-        this.displayFreezeConfirmation = false;
-        this.callVoucherAssignment.id = response.data.id;
-        this.callVoucherAssignment.hasFreezeListSaved = true;
-        this.callVoucherAssignment.executionDate = response.data.executionDate;
-        this.callVoucherAssignment.freezeLisExecutionDate = response.data.executionDate;
-        let date = new Date(this.callVoucherAssignment.freezeLisExecutionDate);
-        this.dateNumberFreeze = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
-        this.hourNumberFreeze = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
-        this.loadPage();
-      }      
-      this.showFreezeModal = false;
-      this.displayConfirmingData = false;
+       this.startIntervalFreeze();
+       this.showFreezeModal = false;
+        this.psswdFreeze = '';
+      }
     }, error => {
       this.sharedService.growlTranslation('An error occurred while freezing the list.', 'dgConn.voucherAssignment.error.savingFreezeList', 'error');
       this.showFreezeModal = false;
-      this.displayConfirmingData = false;
+      this.displayConfirmingDataFreeze = false;
     });
+ 
   }
 
   private sendNotificationToApplicants() {
