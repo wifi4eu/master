@@ -1,5 +1,10 @@
 package wifi4eu.wifi4eu.service.application;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
 import java.text.MessageFormat;
 import java.time.DateTimeException;
 import java.util.ArrayList;
@@ -15,6 +20,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +49,7 @@ import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
+import wifi4eu.wifi4eu.entity.admin.AdminActions;
 import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
 import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
 import wifi4eu.wifi4eu.entity.registration.Registration;
@@ -72,6 +80,8 @@ import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.voucher.VoucherService;
 import wifi4eu.wifi4eu.util.ExcelExportGenerator;
+import wifi4eu.wifi4eu.util.ExcelExportGeneratorAsync;
+import wifi4eu.wifi4eu.util.SendNotificationsAsync;
 
 @Service
 public class ApplicationService {
@@ -154,6 +164,14 @@ public class ApplicationService {
 
     @Autowired
     LegalFileCorrectionReasonMapper legalFileCorrectionReasonMapper;
+
+    @Autowired
+    ApplicationContext context;
+
+    @Autowired
+    TaskExecutor taskExecutor;
+
+    public static final String TMP_DIR = System.getProperty("java.io.tmpdir");
 
     public ApplicationDTO getApplicationById(int applicationId) {
         return applicationMapper.toDTO(applicationRepository.findOne(applicationId));
@@ -322,9 +340,9 @@ public class ApplicationService {
     }
 
     public List<ApplicantListItemDTO> findDgconnApplicantsList(Integer callId, String country, String name, PagingSortingDTO pagingSortingData) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving applicants");
+//        UserContext userContext = UserHolder.getUser();
+//        UserDTO userConnected = userService.getUserByUserContext(userContext);
+//        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving applicants");
         List<ApplicantListItemDTO> applicantsList;
         if (country == null) {
             country = "%";
@@ -491,16 +509,24 @@ public class ApplicationService {
     public byte[] exportExcelDGConnApplicantsList(Integer callId, String country) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Exporting excel");
+        /*_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Exporting excel");
         PagingSortingDTO pagingSortingData = new PagingSortingDTO(0,
                 municipalityService.getCountDistinctMunicipalitiesThatAppliedCall(callId, country), "lauId", 1);
         List<ApplicantListItemDTO> applicants = findDgconnApplicantsList(callId, country, null, pagingSortingData);
 
         ExcelExportGenerator excelExportGenerator = new ExcelExportGenerator(applicants, ApplicantListItemDTO.class);
         _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Excel exported");
-        return excelExportGenerator.exportExcelFile("applicants").toByteArray();
-    }
+        return excelExportGenerator.exportExcelFile("applicants").toByteArray();*/
 
+        /*AdminActions adminActions = adminActionsRepository.findOneByAction("voucher_send_notifications");
+        if (adminActions != null && adminActions.isRunning()) {
+            return new ResponseDTO(false, adminActions, null);
+        }*/
+
+        taskExecutor.execute(context.getBean(ExcelExportGeneratorAsync.class, callId, country, userConnected, ApplicantListItemDTO.class));
+        return new ByteArrayOutputStream().toByteArray();
+    }
+    
     public byte[] exportExcelDGConnApplicantsListContainingName(Integer callId, String country, String name) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
