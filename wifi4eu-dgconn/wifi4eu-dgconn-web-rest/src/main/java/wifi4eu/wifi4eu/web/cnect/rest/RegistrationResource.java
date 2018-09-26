@@ -42,6 +42,7 @@ import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.registration.LegalFile;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
+import wifi4eu.wifi4eu.mapper.registration.legal_files.LegalFilesMapper;
 import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
@@ -75,6 +76,9 @@ public class RegistrationResource {
 
 	@Autowired
 	private AzureBlobConnector azureBlobConnector;
+
+	@Autowired
+	private LegalFilesMapper legalFilesMapper;
 
 	Logger _log = LogManager.getLogger(RegistrationResource.class);
 
@@ -539,6 +543,33 @@ public class RegistrationResource {
 		return response;
 	}
 
+	@ApiOperation(value = "LegalFile downloaded")
+	@RequestMapping(value = "/LegalFileDownloaded/{fileId}", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public ResponseDTO getDownloadedLegalFile(@PathVariable ("fileId") Integer fileId) {
+		UserContext userContext = UserHolder.getUser();
+		UserDTO userConnected = userService.getUserByUserContext(userContext);
+		LegalFileDTO legalFileDTO = legalFilesMapper.toDTO(legalFilesRepository.findOne(fileId));
+		_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Downloading file");
+		try {
+			if (!permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + legalFileDTO.getRegistration())) {
+				throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+			}
+			legalFilesService.setNotNewFile(legalFileDTO);
+			_log.info("ECAS Username: "
+					+ userConnected.getEcasUsername() + "- Legal files downloaded successfully");
+			return new ResponseDTO(true, legalFileDTO, null);
+		} catch (AccessDeniedException ade) {
+			_log.error("ECAS Username: " + userConnected.getEcasUsername()
+					+ "- You have no permissions to download legal files", ade.getMessage());
+			return new ResponseDTO(true, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+		} catch (Exception e) {
+			_log.error("ECAS Username: " + userConnected.getEcasUsername() + "- These legal file cannot been downloaded", e);
+			return new ResponseDTO(false, null,
+					new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+		}
+	}
+
 	@ApiOperation(value = "Get legal files types with correction request disabled by registration id")
 	@RequestMapping(value = "/getTypesDisabled/{registrationId}", method = RequestMethod.GET)
 	@ResponseBody
@@ -572,5 +603,7 @@ public class RegistrationResource {
 					new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
 		}
 	}
+
+
 
 }

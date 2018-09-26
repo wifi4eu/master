@@ -289,7 +289,7 @@ public class RegistrationService {
                 	String uri = azureBlobConnector.uploadLegalFile(azureFileName, base64);
                     boolean docUploaded = !Validator.isEmpty(uri);
                     legalFile.setAzureUri(uri);
-                    legalFile.setStatus(LegalFileValidationStatus.UNTOUCHED.getValue());
+                    legalFile.setStatus(LegalFileValidationStatus.PENDING.getValue());
                     legalFile.setIsNew(LegalFileStatus.NEW.getValue());
 
                     List<LegalFile> oldNewFiles = legalFilesRepository.findAllTheNewFiles(legalFile.getFileType(), registrationID);

@@ -667,18 +667,15 @@ public class ApplicationService {
         List<LegalFileDTO> legalFileDTOS = legalFilesMapper.toDTOList(legalFilesRepository.findByRegistration(applicationDTO.getRegistrationId()));
         if (!legalFileDTOS.isEmpty()) {
             for (LegalFileDTO legalFileDTO : legalFileDTOS) {
-                if (legalFileDTO.getIsNew() == LegalFileStatus.RECENT.getValue()) {
-                    if(legalFilesRepository.checkIfNewFile(legalFileDTO.getFileType(), legalFileDTO.getRegistration()) != 0){
-                        legalFileDTO.setIsNew(LegalFileStatus.OLD.getValue());
-                    }
+                if (legalFileDTO.getIsNew() == LegalFileStatus.RECENT.getValue() && legalFilesRepository.checkIfNewFile(legalFileDTO.getFileType(), legalFileDTO.getRegistration()) != 0) {
+                    legalFileDTO.setIsNew(LegalFileStatus.OLD.getValue());
                 }
-                if (legalFileDTO.getIsNew() == LegalFileStatus.NEW.getValue()) {
+                if (legalFileDTO.getIsNew() == LegalFileStatus.NEW.getValue() || (legalFileDTO.getIsNew() == LegalFileStatus.RECENT.getValue() && legalFilesRepository.checkIfNewFile(legalFileDTO.getFileType(), legalFileDTO.getRegistration()) != 0)) {
                     if (applicationDTO.getStatus() == ApplicationStatus.KO.getValue()) {
                         legalFileDTO.setStatus(LegalFileValidationStatus.INVALID.getValue());
                     } else if (applicationDTO.getStatus() == ApplicationStatus.OK.getValue()) {
                         legalFileDTO.setStatus(LegalFileValidationStatus.VALID.getValue());
                     }
-                    legalFileDTO.setIsNew(LegalFileStatus.RECENT.getValue());
                 }
                 legalFilesRepository.save(legalFilesMapper.toEntity(legalFileDTO));
             }

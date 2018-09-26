@@ -1,7 +1,7 @@
 package wifi4eu.wifi4eu.common.enums;
 
 public enum LegalFileValidationStatus {
-    UNTOUCHED(0),
+    PENDING(0),
     INVALID(1),
     VALID(2);
 
