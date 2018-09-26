@@ -40,9 +40,9 @@
                     <div class="row panelMunicipality">
                         <ux-panel label="{{ 'shared.municipality.label' | translate }} {{municipality?.name}} - #{{ i + 1 }}" [isExpandable]="true" [isExpanded]="i == 0" tagLabel="show">
                             <div class="container whitePanelBeneficiary">
-                            <div class="ui-g-12" *ngIf="checkHasDiscussion(municipality)">
+                              <div class="ui-g-12" *ngIf="checkHasDiscussion(municipality)">
                                     <div class="ui-g-12">
-                                        <div *ngIf="orderedUserThreads[i]" class="col-sm-12 margin-top discussionWarningBox discussionWarning-icon">
+                                        <div class="col-sm-12 margin-top discussionWarningBox discussionWarning-icon">
                                             <div class="row">
                                                 <div class="ui-g-2">
                                                     <i class="fa fa-exclamation-triangle"></i>
@@ -53,7 +53,7 @@
                                             </div>
                                         </div>
                                         <div style="text-align: center !important">
-                                            <button *ngIf="orderedUserThreads[i]" class="btn btn-primary discussionWarnigButton" id="muncicipalityButton" (click)="goToDiscussion(i)">
+                                            <button class="btn btn-primary discussionWarnigButton" id="muncicipalityButton" (click)="goToDiscussion(i)">
                                                 {{'discussionForum.beneficiary.goDiscussion' | translate }}
                                             </button>
                                         </div>

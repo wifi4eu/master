@@ -49,7 +49,7 @@ export class SharedService {
 
     growlTranslation(translatedString: string, keyToTranslate: any, type: string, params?: any, life?: number) {
         if (life === undefined || !life) {
-            life = 10000;
+            life = 1000;
         }
 
         const successSummary = this.translateService.instant('summary.success');

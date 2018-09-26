@@ -27,9 +27,16 @@ export class SupplierRegistrationStep1Component {
     }
 
     private submit() {
+        this.trimFields();
         this.supplierChange.emit(this.supplier);
         this.logoUrlChange.emit(this.logoUrl);
         this.onNext.emit();
+    }
+
+    private trimFields(){
+        this.supplier.name = this.supplier.name.trim();
+        this.supplier.address = this.supplier.address.trim();
+        this.supplier.vat = this.supplier.vat.trim();
     }
 
     private changeLogo(event) {
