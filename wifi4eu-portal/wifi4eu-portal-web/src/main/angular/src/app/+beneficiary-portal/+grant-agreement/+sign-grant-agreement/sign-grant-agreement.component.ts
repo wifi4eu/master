@@ -66,8 +66,8 @@ export class SignGrantAgreementComponent {
                                 (application: ApplicationDTOBase) => {
                                     this.application = application;
                                     this.applicationAuthorizedPersonApi.findByApplication(this.application.id).subscribe(
-                                        (response: ResponseDTO  ) =>{
-                                            if(response.success){
+                                        (response: ResponseDTO) =>{
+                                            if(response.success && response.data){
                                                 this.userApi.getUserById(this.user.id).subscribe(
                                                     (user: UserDTOBase) => {
                                                         this.authorizedUser = user;
