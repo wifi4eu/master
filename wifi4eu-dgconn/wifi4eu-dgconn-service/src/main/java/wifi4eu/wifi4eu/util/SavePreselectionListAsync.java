@@ -1,6 +1,8 @@
 package wifi4eu.wifi4eu.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentDTO;
 import wifi4eu.wifi4eu.common.dto.model.VoucherSimulationDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
@@ -17,6 +19,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Component
+@Scope("prototype")
 public class SavePreselectionListAsync implements Runnable{
 
     private int callId;

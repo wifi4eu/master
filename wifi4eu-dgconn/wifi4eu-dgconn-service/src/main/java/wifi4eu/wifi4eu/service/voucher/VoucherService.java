@@ -303,7 +303,7 @@ public class VoucherService {
             throw new AppException("Call not exists");
         }
 
-        if (!checkSavePreSelectionEnabled(voucherAssignmentId)) {
+        if (checkSavePreSelectionEnabled(voucherAssignmentId)) {
 
             VoucherAssignmentAuxiliarDTO auxiliarDTO = voucherAssignmentAuxiliarMapper.toDTO(voucherAssignmentAuxiliarRepository.findByCallIdAndStatusAux(callId, 1));
             if (auxiliarDTO == null) {
@@ -558,7 +558,7 @@ public class VoucherService {
                         country = country.toUpperCase();
                     }
 
-                    if (countryReserveListCounter.get(country) >= numReserveList) {
+                    if (countryReserveListCounter.get(country) == null || countryReserveListCounter.get(country) >= numReserveList) {
                         continue;
                     }
 
