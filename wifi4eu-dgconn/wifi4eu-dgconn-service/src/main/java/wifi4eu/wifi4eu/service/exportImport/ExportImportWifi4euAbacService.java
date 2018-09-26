@@ -67,7 +67,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -231,20 +239,11 @@ public class ExportImportWifi4euAbacService {
 
     private void processBeneficiaryInformation(BeneficiaryInformation beneficiaryInformation, Set<String> loadedMunicipalities, StringBuilder csvBeneficiaryData) {
 
-        //needed because BeneficiaryInformation is not an entity but a cartesian product of municipalities x legal files, and we don't want to export a municipality more than once
+        // needed because BeneficiaryInformation is not an entity but a cartesian product of municipalities x legal files, and we don't want to export a municipality more than once
         if (loadedMunicipalities.contains(beneficiaryInformation.getMun_id())) {
             return;
         } else {
             loadedMunicipalities.add(beneficiaryInformation.getMun_id());
-        }
-
-        // Language code is stored as ISO 2 and should be ISO 3
-        String langCode = beneficiaryInformation.getMun_languageCodeISO();
-        if (langCode != null && !langCode.isEmpty()) {
-            Locale locale = new Locale(langCode);
-            beneficiaryInformation.setMun_languageCodeISO(locale.getISO3Language());
-        } else {
-            _log.warn("No language was specified for register: " + beneficiaryInformation.getMun_registrationNumber());
         }
 
         // Address include the address street and number, and must be between quotes to escape the comma ","
@@ -293,7 +292,7 @@ public class ExportImportWifi4euAbacService {
     }
 
     private String getMunicipalityPrefixedFileName(BeneficiaryInformation beneficiaryInformation) {
-        return StringUtils.isNotEmpty(beneficiaryInformation.getDoc_fileName()) ? beneficiaryInformation.getMun_id() + "-" + beneficiaryInformation.getDoc_fileName() : Strings.EMPTY;
+        return StringUtils.isNotEmpty(beneficiaryInformation.getDoc_fileName()) ? beneficiaryInformation.getDoc_portalId() + "-" + beneficiaryInformation.getDoc_fileName() : Strings.EMPTY;
     }
 
     @Deprecated
