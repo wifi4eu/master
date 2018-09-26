@@ -61,8 +61,8 @@ public class LegalCommitmentService {
 				byte[] countersignedFile = essiService.signDocument(grantAgreement, userService.getUserByUsername(legalCommitment.getGrantAgreementCounterSignatureUser()), userService.getUserByUsername(persistedPropertyService.findPropertyByKey("GA_COUNTERSIGN_OFFICER_UID")));
 
 				Document counterSignedGrantAgreement = new Document();
-				counterSignedGrantAgreement.setName("countersigned_"+ grantAgreement.getName());
-				counterSignedGrantAgreement.setFileName("countersigned_"+ grantAgreement.getFileName());
+				counterSignedGrantAgreement.setName("MID_"+ grantAgreement.getLegalEntity().getMid() + "_countersigned_"+ grantAgreement.getName());
+				counterSignedGrantAgreement.setFileName("MID_"+ grantAgreement.getLegalEntity().getMid() + "_countersigned_"+ grantAgreement.getFileName());
 				counterSignedGrantAgreement.setMimetype(grantAgreement.getMimetype());
 				counterSignedGrantAgreement.setType(DocumentType.COUNTERSIGNED_GRANT_AGREEMENT);
 				counterSignedGrantAgreement.setWfStatus(DocumentWorkflowStatus.COUNTERSIGNED);

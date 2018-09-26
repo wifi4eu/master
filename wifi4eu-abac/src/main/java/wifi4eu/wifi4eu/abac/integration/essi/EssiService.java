@@ -48,8 +48,8 @@ public class EssiService {
 
 
         String sinatureDetails = (currentUser.getUserName().equalsIgnoreCase(officerAppointed.getUserName()))
-                                    ? String.format("Digitally signed by %s %s\nDN:\nemail=%s\no=European Commission\nDate: %s", currentUser.getLastName(), currentUser.getFirstName(), currentUser.getEmail(), new Date())
-                                    : String.format("Digitally signed by %s %s\n on behalf of\n %s %s \nDN:\nemail=%s\no=European Commission\nDate: %s", currentUser.getLastName(), currentUser.getFirstName(), officerAppointed.getLastName(), officerAppointed.getFirstName(), currentUser.getEmail(), new Date());
+                                    ? String.format("Digitally signed by %s %s\nDate: %s", currentUser.getLastName(), currentUser.getFirstName(), new Date())
+                                    : String.format("Digitally signed by %s %s\n on behalf of %s %s \nDate: %s", currentUser.getLastName(), currentUser.getFirstName(), officerAppointed.getLastName(), officerAppointed.getFirstName(), new Date());
 
 
         PadesSigner psigner = new PadesSigner(essiClientConfiguration);
