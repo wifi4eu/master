@@ -92,15 +92,11 @@ public class DocumentService {
 		hermesDocumentServiceClient.createFile(document);
 		hermesDocumentServiceClient.createDocument(document);
 		hermesDocumentServiceClient.uploadAttachment(document);
-		//hermesDocumentServiceClient.fileDocument(document); THIS IS FAILING
+		hermesDocumentServiceClient.fileDocument(document);
 		hermesDocumentServiceClient.registerDocument(document);
 
         return saveDocument(document);
     }
-
-
-
-
 
 	public List<Document> getDocumentsByTypeAndStatus(DocumentType grantAgreement, DocumentWorkflowStatus waitingCountersignature) {
     	return documentRepository.findByTypeAndWfStatus(grantAgreement, waitingCountersignature);
