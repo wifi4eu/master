@@ -18,4 +18,7 @@ public interface RegistrationRepository extends CrudRepository<Registration, Int
     Iterable<Registration> findByIpRegistration(String ipRegistration);
 
     List<Registration> findByOrganisationId(Integer organisationId);
+
+    @Query(value = "SELECT municipality FROM registrations WHERE id = ?1", nativeQuery = true)
+    Integer findMunicipalityByRegistrationId(Integer registrationId);
 }
