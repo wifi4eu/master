@@ -36,6 +36,7 @@ export class SignGrantAgreementComponent {
     private enableButtonFront: boolean = false;
     private displaySignAgreement: boolean = false;
     private contentVisible: boolean = false;
+    private lefValidated: boolean = false;
     private showPermissionsModal: boolean = false;
 
     constructor(private signApi: SignatureApi, private applicationAuthorizedPersonApi: ApplicationauthorizedPersonApi, private uxEuLanguages: UxEuLanguages, private uxLanguage: UxLanguage, private grantAgreementApi: GrantAgreementApi, private callApi: CallApi, private applicationApi: ApplicationApi, private userApi: UserApi, private registrationApi: RegistrationApi, private mayorApi: MayorApi, private municipalityApi: MunicipalityApi, private sharedService: SharedService, private router: Router, private route: ActivatedRoute, private localStorageService: LocalStorageService) {
@@ -59,6 +60,19 @@ export class SignGrantAgreementComponent {
                         return;
                       }
                     })
+                    this.grantAgreementApi.isApplicationMunicipalityValidForSign(application.id).subscribe(
+                      (response: ResponseDTO) => {
+                          if(response.success){
+                            if(response.data){
+                              this.lefValidated = response.data;
+                            } else {
+                              this.sharedService.growlTranslation('The LEF must be validated in order to proceed with the electronic signature of the municipality', 'benefPortal.municipality.lef.novalidated', 'error', null, 5000);
+                            }
+                          }                         
+                      }, error => {
+                        this.sharedService.growlTranslation("An error occurred while trying to retrieve the data from the server. Please, try again later.", "shared.error.api.generic", "error");
+                      }
+                    )   
                     this.callApi.getCallById(application.callId).subscribe(
                         (call: CallDTOBase) =>{        
                             this.call = call;
@@ -109,6 +123,7 @@ export class SignGrantAgreementComponent {
                             console.log(error);
                         }
                     );
+                    
                 }, error =>{
                     console.log(error);
                 }
@@ -204,5 +219,4 @@ export class SignGrantAgreementComponent {
         this.closeModal();
       })
     }
-
 }

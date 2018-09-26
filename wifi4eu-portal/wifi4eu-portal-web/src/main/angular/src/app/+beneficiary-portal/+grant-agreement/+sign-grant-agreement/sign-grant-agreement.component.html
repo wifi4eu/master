@@ -170,7 +170,7 @@
         <p style="font-size: 14px;">{{ 'shared.download.grantAgreementPDF' | translate}}</p>
         <p style="font-size: 14px;"><input type="checkbox" style="margin-right: 3px;" (click)="enableButton()">{{ 'benefPortal.grantAgreement.confirmCheckbox' | translate}}</p>
         <br>
-        <button class="btn btn-primary" style="font-size: 14px;" (click)="openModal()" [disabled]="!enableButtonFront || inputGrantAgreement?.dateSignature">{{ 'benefPortal.myVoucher.datatable.signGrantAgreement' | translate}}</button>
+        <button class="btn btn-primary" style="font-size: 14px;" (click)="openModal()" [disabled]="!lefValidated || !enableButtonFront || inputGrantAgreement?.dateSignature">{{ 'benefPortal.myVoucher.datatable.signGrantAgreement' | translate}}</button>
     </div>
 
 </div>

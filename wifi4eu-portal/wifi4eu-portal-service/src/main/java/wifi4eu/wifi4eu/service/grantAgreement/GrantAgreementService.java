@@ -22,13 +22,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 
-import wifi4eu.wifi4eu.common.dto.model.ApplicationAuthorizedPersonDTO;
-import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
-import wifi4eu.wifi4eu.common.dto.model.GrantAgreementDTO;
-import wifi4eu.wifi4eu.common.dto.model.LauDTO;
-import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
@@ -38,6 +32,7 @@ import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationAuthorizedPersonService;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.location.LauService;
+import wifi4eu.wifi4eu.service.municipality.MunicipalitiesAbacService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserService;
@@ -77,6 +72,9 @@ public class GrantAgreementService {
 
     @Autowired
     LauService lauService;
+
+    @Autowired
+    MunicipalitiesAbacService municipalitiesAbacService;
 
     @Autowired
     ApplicationAuthorizedPersonService applicationAuthorizedPersonService;
@@ -244,6 +242,12 @@ public class GrantAgreementService {
             outputStream.close();
         }
 
+    }
+
+    public boolean validateLEFBeforeSign(Integer applicationId){
+        ApplicationDTO applicationDTO = applicationService.getApplicationById(applicationId);
+        RegistrationDTO registrationDTO = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
+        return municipalitiesAbacService.isMunicipalityLefValidated(registrationDTO.getMunicipalityId());
     }
 
     public ByteArrayOutputStream downloadGrantAgreementPdf() {

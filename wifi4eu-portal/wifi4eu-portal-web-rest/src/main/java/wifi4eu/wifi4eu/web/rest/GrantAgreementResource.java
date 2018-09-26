@@ -17,11 +17,14 @@ import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationAuthorizedPersonDTO;
 import wifi4eu.wifi4eu.common.dto.model.GrantAgreementDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.service.application.ApplicationAuthorizedPersonService;
 import wifi4eu.wifi4eu.service.grantAgreement.GrantAgreementService;
+import wifi4eu.wifi4eu.service.municipality.MunicipalitiesAbacService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 
@@ -47,6 +50,9 @@ public class GrantAgreementResource {
 
     @Autowired
     ApplicationAuthorizedPersonService applicationAuthorizedPersonService;
+
+    @Autowired
+    MunicipalitiesAbacService municipalitiesAbacService;
 
     @Autowired
     PermissionChecker permissionChecker;
@@ -145,6 +151,18 @@ public class GrantAgreementResource {
         String filename = "grant_agreement_" + applicationId + "_"+ grantAgreementDTO.getDocumentLanguage() + "_signed.pdf";
         headers.setContentDispositionFormData("filename", filename);
         return new ResponseEntity<>(file, headers, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Check municipality LEF is valid before sign")
+    @RequestMapping(value = "/validate-lef/by/application/{applicationId}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseDTO isApplicationMunicipalityValidForSign(@PathVariable("applicationId") Integer applicationId) {
+        try{
+            Boolean valid = grantAgreementService.validateLEFBeforeSign(applicationId);
+            return new ResponseDTO(true, valid, null);
+        }catch (Exception e) {
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
     }
 
 }

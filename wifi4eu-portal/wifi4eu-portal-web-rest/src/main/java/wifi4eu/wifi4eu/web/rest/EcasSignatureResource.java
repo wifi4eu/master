@@ -76,6 +76,9 @@ public class EcasSignatureResource {
             if(!permissionChecker.checkIfAuthorizedGrantAgreement(grantAgreementDTO.getApplicationId())){
                 throw new AccessDeniedException("The user is not authorized to sign grant agreement");
             }
+            if(!grantAgreementService.validateLEFBeforeSign(grantAgreementDTO.getApplicationId())){
+                throw new AppException("The LEF must be validated in order to proceed with the signature of the municipality");
+            }
 
             if (grantAgreement == null) {
                 grantAgreement = grantAgreementService.initializeGrantAgreement(grantAgreementDTO);

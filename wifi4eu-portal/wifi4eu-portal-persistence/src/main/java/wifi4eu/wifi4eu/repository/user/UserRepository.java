@@ -24,15 +24,11 @@ public interface UserRepository extends CrudRepository<User, Integer> {
     @Query(value = "select u.* from users u inner join supplier_users su on su.user_id = u.id where su.supplier_id= ?#{[0]}", nativeQuery = true)
     List<User> findUsersBySupplierId(Integer supplierId);
 
-    @Query(value = "SELECT a.voucher_awarded FROM applications a " +
-            "INNER JOIN registration_users ru ON a.registration = ru.registration " +
-            "WHERE ru._user = ?#{[0]}", nativeQuery = true)
-    List<Integer> getIfUserHasVouchersAwarded2(Integer userId);
-
     @Query(value = "SELECT count(*) from applications a " +
             "INNER JOIN registration_users ru " +
             "ON a.registration = ru.registration " +
-            "WHERE ru._user = ?#{[0]} AND a.id IN (SELECT vs.application FROM voucher_simulations vs where selection_status = 3)", nativeQuery = true)
+            "WHERE ru._user = ?#{[0]} AND a.id IN (SELECT vs.application FROM voucher_simulations vs " +
+            "inner join voucher_assignments va ON va.id = vs.voucher_assignment where selection_status = 3 and va.status = 3 and va.notified_date IS NOT NULL)", nativeQuery = true)
     List<Integer> getIfUserHasVouchersAwarded(Integer userId);
 
     @Query(value = "SELECT  \n" +
