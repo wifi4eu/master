@@ -126,7 +126,9 @@ export class DgConnVoucherComponent {
 
   constructor(private adminActionsApi: AdminactionsApi, private sharedService: SharedService, private callApi: CallApi, private applicationApi: ApplicationApi, private nutsApi: NutsApi,
     private voucherApi: VoucherApi, private router: Router, private route: ActivatedRoute, private registrationWarningApi: RegistrationWarningApi) {
-    this.callApi.allCalls().subscribe(
+   
+      this.sessionInterval = IntervalObservable.create(30000);
+      this.callApi.allCalls().subscribe(
       (calls: CallDTOBase[]) => {
         this.callsLoaded = true;
         this.calls = calls;
@@ -229,7 +231,6 @@ export class DgConnVoucherComponent {
       }
     )
 
-    this.sessionInterval = IntervalObservable.create(30000);
 
   }
   startInterval() {
