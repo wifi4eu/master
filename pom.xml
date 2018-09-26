@@ -202,6 +202,14 @@
         <azure.blob.legal.files.key.acchf>W2+UHoitjN9ctD4DhGh6r7s6uJLH24q+X1CGxdkR1l6eZsNXqhY0uZKFQTvcXHHmcS4sFNGIv2ydjyHg5FYOzgFfyUYPuRKSED4ZgwPic6FK5ikOhzrXF0NgsS8Qc4xRVFADyGCGp1iBs6mwN4GVk2ngM2o4da0u5d8qBCwRm/m7RBKanGfwWlldYDKxZiD0zXbCl70LFaDMtrNhmgVtPgfGlot7f2S+yKSB52/TPgT6SePqnye6tmmajYhpNXMGxQL6KpxDfymPSFmKv/IEKw==</azure.blob.legal.files.key.acchf>
         <azure.blob.legal.files.key.pro>9GCRl1rzZFa+p3vnZX+rcQvIZExBSry601fDXJ+a1QjrQ1amhTtjNju/aPaOq5vlUrFfMUJ9vQYJfgEtn3ES7w3HYVclvtr8iK1MzizNWsTjlb2YxZjWsnruv4Djw3ksmThnwHbgkVE/3ucgmy6lt/R2dRN7b9mRHFNShVxvU+epRCbq6WS+I/W2EUWjKkzc4S1WAnaycqxYy5U/Ly910iemAXN2DqF1LvzPdSdUwYAQucutNNsTVsfDiBT7PE8dKrz2oFcAgbKPGjLaF0sAFA==</azure.blob.legal.files.key.pro>
 
+        <!-- Help desk SERCO -->
+        <serco.helpdesk.endpoint>https://webgate.acceptance.ec.europa.eu/fpfis/webtools/form-tools/process.php</serco.helpdesk.endpoint>
+        <serco.helpdesk.endpoint.test>https://webgate.acceptance.ec.europa.eu/fpfis/webtools/form-tools/process.php</serco.helpdesk.endpoint.test>        
+        <serco.helpdesk.endpoint.prod>https://webtools.ec.europa.eu/form-tools/process.php</serco.helpdesk.endpoint.prod>        
+        <serco.helpdesk.formid>1047</serco.helpdesk.formid>
+        <serco.helpdesk.formid.test>1047</serco.helpdesk.formid.test>        
+        <serco.helpdesk.formid.prod>1047</serco.helpdesk.formid.prod>        
+
         <!-- RabbitMQ - TODO not in use -->
         <rabbitmq.host>localhost</rabbitmq.host>
         <rabbitmq.username>guest</rabbitmq.username>
@@ -212,7 +220,6 @@
         <redis.sentinel.uris>10.0.2.31,10.0.2.32,10.0.2.33</redis.sentinel.uris>
 
     </properties>
-
 
     <profiles>
 
@@ -780,6 +787,8 @@
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.pro}</azure.blob.legal.files.key>
                 <cns.client.system.key>${cns.client.system.key.pro}</cns.client.system.key>
                 <cns.client.system.password>${cns.client.system.password.pro}</cns.client.system.password>
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.prod}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.prod}</serco.helpdesk.formid>        
             </properties>
         </profile>
     </profiles>

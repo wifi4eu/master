@@ -65,6 +65,12 @@ public class ScheduledTasks {
 
     @Value("${rabbitmq.password}")
     private String rabbitPassword;
+    
+	@Value("${serco.helpdesk.endpoint}")
+	private String sercoHelpdeskEndpoint;
+
+    @Value("${serco.helpdesk.formid}")
+    private String helpdeskFormId;
 
     @Autowired
     private HelpdeskService helpdeskService;
@@ -92,7 +98,7 @@ public class ScheduledTasks {
 
     @Autowired
     DateUtils dateUtils;
-
+    
     /**
      * This cron method consumes the messages from the RabbitMQ
      */
@@ -157,38 +163,53 @@ public class ScheduledTasks {
 
     //-- DGCONN-NOT-NECESSARY @Scheduled(cron = "0 0 9,17 * * MON-FRI")
     public void scheduleHelpdeskIssues() {
+        _log.debug("Running Scheduled Task - HelpDeskIssues");
+
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Starting helpdesk issues scheduled");
         List<HelpdeskIssueDTO> helpdeskIssueDTOS = helpdeskService.getAllHelpdeskIssueNoSubmited();
-        for (HelpdeskIssueDTO helpdeskIssue : helpdeskIssueDTOS) {
 
-            try {
-                HelpdeskTicketDTO helpdeskTicketDTO = new HelpdeskTicketDTO();
-                helpdeskTicketDTO.setEmailAdress(helpdeskIssue.getFromEmail());
-                helpdeskTicketDTO.setEmailAdressconf(helpdeskTicketDTO.getEmailAdress());
-                helpdeskTicketDTO.setUuid("wifi4eu_" + helpdeskIssue.getId());
-                UserDTO userDTO = userService.getUserByEcasEmail(helpdeskIssue.getFromEmail());
+        if (helpdeskIssueDTOS != null) {
+        	_log.info("helpdeskIssueDTOS.size() [{}]", helpdeskIssueDTOS.size());
 
-                if (userDTO != null) {
-                    helpdeskTicketDTO.setFirstname(userDTO.getName());
-                    helpdeskTicketDTO.setLastname(userDTO.getSurname());
-                    helpdeskTicketDTO.setTxtsubjext(helpdeskIssue.getTopic());
-                    helpdeskTicketDTO.setQuestion(helpdeskIssue.getSummary());
-                    String result = "Thankyou.js" ;//executePost("https://webtools.ec.europa.eu/form-tools/process.php", helpdeskTicketDTO.toString());
+        	for (HelpdeskIssueDTO helpdeskIssue : helpdeskIssueDTOS) {
+        		_log.info("Processing ticket id[{}]", helpdeskIssue.getId());
 
-                    if (result != null && result.contains("Thankyou.js")) {
-                        helpdeskIssue.setTicket(true);
-                        helpdeskService.updateHelpdeskIssue(helpdeskIssue);
-                    } else {
-                        _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The result do not contain the proper text");
-                    }
-                } else {
-                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot retrieve the user for this helpdesk issue");
-                }
-            } catch (Exception e) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot process this helpdesk issue", e);
-            }
+        		try {
+        			HelpdeskTicketDTO helpdeskTicketDTO = new HelpdeskTicketDTO();
+        			helpdeskTicketDTO.setForm_tools_form_id(this.helpdeskFormId);
+        			helpdeskTicketDTO.setEmailAdress(helpdeskIssue.getFromEmail());
+        			helpdeskTicketDTO.setEmailAdressconf(helpdeskTicketDTO.getEmailAdress());
+        			helpdeskTicketDTO.setUuid("wifi4eu_" + helpdeskIssue.getId());
+        			UserDTO userDTO = userService.getUserByEcasEmail(helpdeskIssue.getFromEmail());
+
+        			if (userDTO != null) {
+        				helpdeskTicketDTO.setFirstname(userDTO.getName());
+        				helpdeskTicketDTO.setLastname(userDTO.getSurname());
+        				helpdeskTicketDTO.setTxtsubjext(helpdeskIssue.getTopic());
+        				helpdeskTicketDTO.setQuestion(helpdeskIssue.getSummary());
+        				String result = executePost(sercoHelpdeskEndpoint, helpdeskTicketDTO.toString());
+
+        				_log.info("Result posting to queue [{}]", result);
+
+        				if (result != null && result.contains("Thankyou.js")) {
+        					_log.info("Updating Helpdesk issue");
+
+        					helpdeskIssue.setTicket(true);
+        					helpdeskService.createOrUpdateHelpdeskIssue(helpdeskIssue);
+
+        					_log.info("Helpdesk issue updated");
+        				} else {
+        					_log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The result do not contain the proper text");
+        				}
+        			} else {
+        				_log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot retrieve the user for this helpdesk issue");
+        			}
+        		} catch (Exception e) {
+        			_log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot process this helpdesk issue", e);
+        		}
+        	}
         }
     }
 
@@ -223,6 +244,9 @@ public class ScheduledTasks {
 
     public static String executePost(String targetURL, String urlParameters) {
         HttpURLConnection connection = null;
+        
+        _log.info("targetUrl [{}] urlParameters.length[{}], urlParameters[{}]", targetURL, (urlParameters == null ? "NULL" : urlParameters.length()), (urlParameters.length() <= 100 ? urlParameters : urlParameters.substring(0, 100)));
+        
         try {
             URL url = new URL(targetURL);
             connection = (HttpURLConnection) url.openConnection();

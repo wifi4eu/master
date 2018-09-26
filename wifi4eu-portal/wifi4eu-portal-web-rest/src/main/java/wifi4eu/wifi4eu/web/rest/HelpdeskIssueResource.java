@@ -56,6 +56,11 @@ public class HelpdeskIssueResource {
             if (!userDTO.getEcasEmail().equals(helpdeskIssueDTO.getFromEmail())) {
                 throw new AccessDeniedException("Invalid access");
             }
+            
+            if (helpdeskIssueDTO != null && helpdeskIssueDTO.getSummary() != null) {
+                _log.info("Summary size [{}], summary [{}]", helpdeskIssueDTO.getSummary().length(), (helpdeskIssueDTO.getSummary().length() <= 20 ? helpdeskIssueDTO.getSummary() : helpdeskIssueDTO.getSummary().substring(0, 20))); 
+            }
+
             List<NutsDTO> nuts = nutsService.getNutsByLevel(0);
             HelpdeskIssueValidator.validateHelpdeskIssue(helpdeskIssueDTO, nuts);
             helpdeskIssueDTO.setCreateDate(new Date().getTime());

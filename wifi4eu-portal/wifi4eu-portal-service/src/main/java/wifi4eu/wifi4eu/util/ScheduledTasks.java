@@ -93,6 +93,12 @@ public class ScheduledTasks {
     @Value("${rabbitmq.password}")
     private String rabbitPassword;
 
+	@Value("${serco.helpdesk.endpoint}")
+	private String sercoHelpdeskEndpoint;
+
+    @Value("${serco.helpdesk.formid}")
+    private String helpdeskFormId;
+
     /**
      * This cron method consumes the messages from the RabbitMQ
      */
@@ -161,6 +167,7 @@ public class ScheduledTasks {
 
             try {
                 HelpdeskTicketDTO helpdeskTicketDTO = new HelpdeskTicketDTO();
+    			helpdeskTicketDTO.setForm_tools_form_id(this.helpdeskFormId);
                 helpdeskTicketDTO.setEmailAdress(helpdeskIssue.getFromEmail());
                 helpdeskTicketDTO.setEmailAdressconf(helpdeskTicketDTO.getEmailAdress());
                 helpdeskTicketDTO.setUuid("wifi4eu_" + helpdeskIssue.getId());
@@ -171,7 +178,7 @@ public class ScheduledTasks {
                     helpdeskTicketDTO.setLastname(userDTO.getSurname());
                     helpdeskTicketDTO.setTxtsubjext(helpdeskIssue.getTopic());
                     helpdeskTicketDTO.setQuestion(helpdeskIssue.getSummary());
-                    String result = executePost("https://webtools.ec.europa.eu/form-tools/process.php", helpdeskTicketDTO.toString());
+                    String result = executePost(this.sercoHelpdeskEndpoint, helpdeskTicketDTO.toString());
 
                     if (result != null && result.contains("Thankyou.js")) {
                         helpdeskIssue.setTicket(true);

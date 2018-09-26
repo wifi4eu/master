@@ -71,7 +71,7 @@ public class HelpdeskService {
     }
 
 
-    public HelpdeskIssueDTO updateHelpdeskIssue(HelpdeskIssueDTO helpdeskIssueDTO) {
+    public HelpdeskIssueDTO createOrUpdateHelpdeskIssue(HelpdeskIssueDTO helpdeskIssueDTO) {
         return helpdeskIssueMapper.toDTO(helpdeskIssueRepository.save(helpdeskIssueMapper.toEntity(helpdeskIssueDTO)));
     }
     
