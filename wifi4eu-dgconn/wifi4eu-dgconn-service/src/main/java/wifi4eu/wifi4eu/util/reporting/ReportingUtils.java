@@ -6,8 +6,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import wifi4eu.wifi4eu.util.reports.ReportCallOpen;
-import wifi4eu.wifi4eu.util.reports.ReportTypesInstallation;
+import wifi4eu.wifi4eu.util.reports.*;
 
 import java.util.Iterator;
 
@@ -20,12 +19,33 @@ public class ReportingUtils {
     @Autowired
     ReportCallOpen reportCallOpen;
 
+    @Autowired
+    ReportPreSelection reportPreSelection;
+
+    @Autowired
+    ReportNotificationsSentOut reportNotificationsSentOut;
+
+    @Autowired
+    ReportTimeToInform reportTimeToInform;
+
     public void generateTypesInstallationReport(HSSFWorkbook workbook) {
         reportTypesInstallation.generate(workbook);
     }
 
     public void generateCallOpenReporting(HSSFWorkbook workbook) {
         reportCallOpen.generate(workbook);
+    }
+
+    public void generatePreSelectionReporting(HSSFWorkbook workbook) {
+        reportPreSelection.generate(workbook);
+    }
+
+    public void generateNotificationsSentOutReporting(HSSFWorkbook workbook) {
+        reportNotificationsSentOut.generate(workbook);
+    }
+
+    public void generateTimeToInformReporting(HSSFWorkbook workbook) {
+        reportTimeToInform.generate(workbook);
     }
 
     public static void autoSizeColumns(HSSFWorkbook workbook) {

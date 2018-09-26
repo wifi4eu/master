@@ -24,6 +24,18 @@ public class GenerateReports {
                 reportingUtils.generateCallOpenReporting(workbook);
                 break;
 
+            case Constant.REPORTING_PRE_SELECTION:
+                reportingUtils.generatePreSelectionReporting(workbook);
+                break;
+
+            case Constant.REPORTING_NOTIFICATIONS_SENT_OUT:
+                reportingUtils.generateNotificationsSentOutReporting(workbook);
+                break;
+
+            case Constant.REPORTING_TIME_TO_INFORM:
+                reportingUtils.generateTimeToInformReporting(workbook);
+                break;
+
             case Constant.REPORTING_TYPES_INSTALLATION_REPORT:
                 reportingUtils.generateTypesInstallationReport(workbook);
                 break;

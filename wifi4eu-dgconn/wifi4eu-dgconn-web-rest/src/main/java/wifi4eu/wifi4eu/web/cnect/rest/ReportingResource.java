@@ -27,6 +27,27 @@ public class ReportingResource {
         return reportingService.generateCallOpenReport();
     }
 
+    @ApiOperation(value = "Pre Selection Lisr")
+    @RequestMapping(value  = "/pre-selection", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO generatePreSelectionReport(){
+        return reportingService.generatePreSelectionReport();
+    }
+
+    @ApiOperation(value = "Notifications Sent Out")
+    @RequestMapping(value  = "/notifications-sent-out", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO generateNotificationsSentOutReport(){
+        return reportingService.generateNotificationSentOutReport();
+    }
+
+    @ApiOperation(value = "KPI - Time to Inform")
+    @RequestMapping(value  = "/time-to-inform", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO generateTimeToInformReport(){
+        return reportingService.generateTimeToInformReport();
+    }
+
     @ApiOperation(value = "Types IR")
     @RequestMapping(value  = "/types-ir", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody

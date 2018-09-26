@@ -29,6 +29,18 @@ export class ReportingComponent implements OnInit {
           this.firstReport();
         break;
 
+        case "second":
+          this.secondReport();
+        break;
+
+        case "third":
+          this.thirdReport();
+        break;
+
+        case "fourth":
+          this.fourthReport();
+        break;
+
         /*
         case "eight":
           this.eightReport();
@@ -39,6 +51,42 @@ export class ReportingComponent implements OnInit {
   
   private firstReport(){
     this.reportingApi.generateCallOpenReport().subscribe(data => {
+      if (data['success'] && data['data']) {
+        this.sharedService.growlTranslation('Request sent successfully', data['data'], 'success');
+      } else {
+        this.sharedService.growlTranslation('An error ocurred while generating the report', data['data'], 'error');
+      }
+    }, (error: Error) => {
+      this.sharedService.growlTranslation('An error occurred while generating the report', 'reports.generate.error', 'error');
+    });
+  }
+
+  private secondReport(){
+    this.reportingApi.generatePreSelectionReport().subscribe(data => {
+      if (data['success'] && data['data']) {
+        this.sharedService.growlTranslation('Request sent successfully', data['data'], 'success');
+      } else {
+        this.sharedService.growlTranslation('An error ocurred while generating the report', data['data'], 'error');
+      }
+    }, (error: Error) => {
+      this.sharedService.growlTranslation('An error occurred while generating the report', 'reports.generate.error', 'error');
+    });
+  }
+
+  private thirdReport(){
+    this.reportingApi.generateNotificationsSentOutReport().subscribe(data => {
+      if (data['success'] && data['data']) {
+        this.sharedService.growlTranslation('Request sent successfully', data['data'], 'success');
+      } else {
+        this.sharedService.growlTranslation('An error ocurred while generating the report', data['data'], 'error');
+      }
+    }, (error: Error) => {
+      this.sharedService.growlTranslation('An error occurred while generating the report', 'reports.generate.error', 'error');
+    });
+  }
+
+  private fourthReport(){
+    this.reportingApi.generateTimeToInformReport().subscribe(data => {
       if (data['success'] && data['data']) {
         this.sharedService.growlTranslation('Request sent successfully', data['data'], 'success');
       } else {

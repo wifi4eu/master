@@ -75,6 +75,18 @@ public class AzureBlobStorageUtils {
                 filename = millis+"_Calls-Open.xls";
                 break;
 
+            case Constant.REPORTING_PRE_SELECTION:
+                filename = millis+"_Pre-Selection.xls";
+                break;
+
+            case Constant.REPORTING_NOTIFICATIONS_SENT_OUT:
+                filename = millis+"_Notifications-Sent-Out.xls";
+                break;
+
+            case Constant.REPORTING_TIME_TO_INFORM:
+                filename = millis+"_Time-To-Inform.xls";
+                break;
+
             case Constant.REPORTING_TYPES_INSTALLATION_REPORT:
                 filename = millis+"_Types-InstallationReport.xls";
                 break;
