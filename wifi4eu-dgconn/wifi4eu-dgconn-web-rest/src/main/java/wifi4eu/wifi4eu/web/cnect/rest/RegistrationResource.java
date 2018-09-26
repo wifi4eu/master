@@ -603,7 +603,4 @@ public class RegistrationResource {
 					new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
 		}
 	}
-
-
-
 }
