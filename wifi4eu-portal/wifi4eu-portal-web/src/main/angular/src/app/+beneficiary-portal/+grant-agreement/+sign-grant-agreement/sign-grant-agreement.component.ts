@@ -42,8 +42,6 @@ export class SignGrantAgreementComponent {
         let id;
         this.languagesArray = UxEuLanguages.getLanguages(this.languageCodeArray);
         this.route.params.subscribe(params => id = params['id']);
-  
-    
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         //TODO GET REGISTRATION ID FROM ROUTING
@@ -62,7 +60,7 @@ export class SignGrantAgreementComponent {
                     this.grantAgreementApi.isLefImportDone(registrationId).subscribe((response: boolean) => {
                         this.contentVisible = response;
                         if(!response){
-                          this.sharedService.growlTranslation("You cannot sign the grant agreement until a lef exportation has been done", "benefPortal.grantAgreement.lefExportation", "error");              
+                          this.sharedService.growlTranslation("You cannot sign the grant agreement until the lef import has been done", "benefPortal.grantAgreement.lefImport", "error");              
                           this.router.navigate(['./beneficiary-portal/my-voucher/grant-agreement']);
                           return;
                         }

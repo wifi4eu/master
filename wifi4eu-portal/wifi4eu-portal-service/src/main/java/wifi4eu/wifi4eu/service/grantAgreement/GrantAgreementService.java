@@ -284,7 +284,6 @@ public class GrantAgreementService {
 
     public boolean checkIsLefImportDone(int municipalityId){
         // TODO
-        // query municipalityAbac count by municipalityId. If records exists, return true
         return municipalityRepository.countMunicipalityAbacFromMunicipalityId(registrationRepository.findMunicipalityByRegistrationId(municipalityId)) > 0;
     }
 

@@ -90,7 +90,7 @@ public class GrantAgreementResource {
     }
 
     @ApiOperation(value = "Check if lef import is done")
-    @RequestMapping(value = "isLefImportDone", method = RequestMethod.GET)
+    @RequestMapping(value = "/isLefImportDone/{registrationId}", method = RequestMethod.GET)
     @ResponseBody
     public Boolean isLefImportDone(@PathVariable("registrationId") Integer registrationId) {
         return grantAgreementService.checkIsLefImportDone(registrationId);
