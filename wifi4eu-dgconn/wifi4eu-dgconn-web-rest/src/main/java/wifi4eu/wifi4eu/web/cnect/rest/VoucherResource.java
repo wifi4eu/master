@@ -291,7 +291,7 @@ public class VoucherResource {
     @ApiOperation(value = "Save simulation to pre-selected list")
     @RequestMapping(value = "/assignment/save-prelist", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public ResponseDTO savePreListSimulation(@RequestParam("assignmentId") Integer assignmentId, @RequestParam("callId") Integer callId, HttpServletResponse response) throws IOException {
+    public ResponseDTO savePreListSimulation(@RequestParam("savePrelistPsswd") final String savePrelistPsswd, @RequestParam("assignmentId") Integer assignmentId, @RequestParam("callId") Integer callId, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Saving simulation to pre-selected list with assignment id " + assignmentId + " and call id " + callId);
@@ -299,9 +299,9 @@ public class VoucherResource {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("Access denied: savePreListSimulation");
             }
-            voucherService.savePreListSimulation(assignmentId, callId);
+            ResponseDTO result = voucherService.savePreListSimulation(savePrelistPsswd, assignmentId, callId);
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Success on saving simulation");
-            return new ResponseDTO(true, null, null);
+            return result;
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to save simulation", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
@@ -348,9 +348,9 @@ public class VoucherResource {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("Access denied: saveFreezeListSimulation");
             }
-            VoucherAssignmentDTO result = voucherService.saveFreezeListSimulation(freezePsswd, assignmentId, callId);
+            ResponseDTO result = voucherService.saveFreezeListSimulation(freezePsswd, assignmentId, callId);
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Success on freezing simulation list");
-            return new ResponseDTO(true, result, null);
+            return result;
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to freeze simulation", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());

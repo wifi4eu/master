@@ -63,6 +63,7 @@ export class DgConnVoucherComponent {
   private listAssignment: VoucherSimulationDTO[] = [];
   private municipalityMunicipality = null;
   private simulationRequest = null;
+  private preListLoaded = false;
 
   private indexTab = 0;
   private totalRecords: number = null;
@@ -102,6 +103,9 @@ export class DgConnVoucherComponent {
   private confirmFreezeBtn : boolean = true;
   private confirmNotificationsBtn: boolean = true;
   private showNotificationModal : boolean = false;
+
+  private showPrelistModal: boolean =  false;
+  private psswdPrelist: string = '';
 
   @ViewChild("paginator") paginator: Paginator;
   @ViewChild("tableVoucher") tableVoucher: DataTable;
@@ -197,6 +201,7 @@ export class DgConnVoucherComponent {
                 this.loadingPreList = true;
                 this.loadingFreezeList = true;
                 this.callVoucherAssignment = data;
+                this.preListLoaded = data.hasPreListSaved;
                 let date = new Date(this.callVoucherAssignment.preListExecutionDate);
                 this.dateNumberPreList = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
                 this.hourNumberPreList = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
@@ -360,24 +365,35 @@ export class DgConnVoucherComponent {
     });
   }
 
-  savePreList(savePreListBtn) {
-    savePreListBtn.disabled = true;
+  private savePrelistPopup(){
+    this.showPrelistModal = true;
+    this.psswdPrelist = '';
+  }
+
+ private savePreList() {
     if (this.callVoucherAssignment.hasPreListSaved) {
       return;
     }
-    this.voucherApi.savePreListSimulation(this.callVoucherAssignment.id, this.callSelected.id).subscribe((response: ResponseDTO) => {
-      this.preSelectedEnabled = null;
-      this.callVoucherAssignment.hasPreListSaved = true;
-      this.callVoucherAssignment.preListExecutionDate = response.data.executionDate;
-      let date = new Date(this.callVoucherAssignment.preListExecutionDate);
-      this.freezeButtonEnabled = true;
-      this.filterTable();
-      this.dateNumberPreList = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
-      this.hourNumberPreList = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
-      savePreListBtn.disabled = false;
-    }, error => {
-      this.sharedService.growlTranslation('An error ocurred while saving pre-list', 'dgConn.voucherAssignment.error.savingPreList', 'error');
-    })
+    this.voucherApi.savePreListSimulation(this.psswdPrelist, this.callVoucherAssignment.id, this.callSelected.id).subscribe((response: ResponseDTO) => {
+      if(!response.success){
+        if(response.error.errorCode == 20){
+          this.sharedService.growlTranslation('An error occurred while freezing the list.', response.error.errorMessage, 'error');
+        }
+      }else{
+        this.preSelectedEnabled = null;
+        this.callVoucherAssignment.hasPreListSaved = true;
+        this.callVoucherAssignment.preListExecutionDate = response.data.executionDate;
+        let date = new Date(this.callVoucherAssignment.preListExecutionDate);
+        this.freezeButtonEnabled = true;
+        this.filterTable();
+        this.dateNumberPreList = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
+        this.hourNumberPreList = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
+        this.showPrelistModal = false;
+      }
+      }, error => {
+        this.sharedService.growlTranslation('An error ocurred while saving pre-list', 'dgConn.voucherAssignment.error.savingPreList', 'error');
+        this.showPrelistModal = false;
+      });
   }
 
   sortTable(event) {
@@ -519,17 +535,23 @@ export class DgConnVoucherComponent {
     this.voucherApi.saveFreezeListSimulation(this.psswdFreeze, this.callVoucherAssignment.id, this.callSelected.id).finally(() => {
       this.loadingFreezeList = false;
       this.confirmFreezeBtn = true;
-      
+      this.psswdFreeze = '';
     }).subscribe((response: ResponseDTO) => {
-      this.displayFreezeConfirmation = false;
-      this.callVoucherAssignment.id = response.data.id;
-      this.callVoucherAssignment.hasFreezeListSaved = true;
-      this.callVoucherAssignment.executionDate = response.data.executionDate;
-      this.callVoucherAssignment.freezeLisExecutionDate = response.data.executionDate;
-      let date = new Date(this.callVoucherAssignment.freezeLisExecutionDate);
-      this.dateNumberFreeze = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
-      this.hourNumberFreeze = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
-      this.loadPage();
+      if(!response.success){
+        if(response.error.errorCode == 20){
+          this.sharedService.growlTranslation('An error occurred while freezing the list.', response.error.errorMessage, 'error');
+        }
+      }else{
+        this.displayFreezeConfirmation = false;
+        this.callVoucherAssignment.id = response.data.id;
+        this.callVoucherAssignment.hasFreezeListSaved = true;
+        this.callVoucherAssignment.executionDate = response.data.executionDate;
+        this.callVoucherAssignment.freezeLisExecutionDate = response.data.executionDate;
+        let date = new Date(this.callVoucherAssignment.freezeLisExecutionDate);
+        this.dateNumberFreeze = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
+        this.hourNumberFreeze = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
+        this.loadPage();
+      }      
       this.showFreezeModal = false;
       this.displayConfirmingData = false;
     }, error => {
@@ -549,13 +571,20 @@ export class DgConnVoucherComponent {
       return;
     }
     this.pressedNotificationButton = true;
-    this.voucherApi.sendNotificationForApplicants(this.psswdNotification, this.callSelected.id).subscribe((response: ResponseDTO) => {
+    this.voucherApi.sendNotificationForApplicants(this.psswdNotification, this.callSelected.id)
+    .finally(() => {
+      this.psswdNotification = '';
+    })
+    .subscribe((response: ResponseDTO) => {
       if (response.success) {
         this.pressedNotificationButton = true;
         this.showNotificationModal = false;
         this.sharedService.growlTranslation('The process of sending notifications has started.', 'dgConn.voucherAssignment.success.sendingNotifications', 'success');
         this.router.navigate(['../voucher'], { relativeTo: this.route });
       } else {
+        if(response.error.errorCode == 20){
+          this.sharedService.growlTranslation('An error occurred while sending notifications.', response.error.errorMessage, 'error');
+        }
         if (response.data != null && (response.data["running"] || response.data["notifiedDate"])) {
           if (response.data["running"]) {
             let dateStartSending = new Date(response.data["startDate"]);
