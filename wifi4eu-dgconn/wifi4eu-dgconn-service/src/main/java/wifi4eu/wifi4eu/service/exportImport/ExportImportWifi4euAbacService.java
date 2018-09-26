@@ -41,7 +41,6 @@ import wifi4eu.wifi4eu.repository.exportImport.ExportImportRegistrationDataRepos
 import wifi4eu.wifi4eu.repository.exportImport.GlobalCommitmentRepository;
 import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
-import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.service.exportImport.file.CreateFile;
 import wifi4eu.wifi4eu.service.location.LauService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
@@ -82,6 +81,7 @@ import java.util.stream.Collectors;
  * @author jlopezri
  */
 @Service
+@Transactional
 public class ExportImportWifi4euAbacService {
 
     private final Logger _log = LoggerFactory.getLogger(ExportImportWifi4euAbacService.class);
@@ -150,12 +150,8 @@ public class ExportImportWifi4euAbacService {
     private GrantAgreementRepository grantAgreementRepository;
 
     @Autowired
-    private RegistrationRepository registrationRepository;
-
-    @Autowired
     private ApplicationRepository applicationRepository;
 
-    @Transactional
     public boolean importLegalEntityFBCValidate(InputStream fileDataStream) throws IOException {
         _log.debug("importLegalEntityFBCValidate");
 
@@ -339,7 +335,6 @@ public class ExportImportWifi4euAbacService {
         cF.createExcelFileRegistrationData(header, document, "ExportRegistrationData.xlsx");
     }
 
-    @Transactional
     public boolean importAbacReferencesList(InputStream inputStream) throws Exception {
         _log.debug("importRegistrationData");
 
@@ -794,7 +789,6 @@ public class ExportImportWifi4euAbacService {
         return issueType;
     }
 
-    @Transactional
     public boolean importBudgetaryCommitment(InputStream fileDataStream) throws IOException {
         _log.debug("importBudgetaryCommitment");
 
@@ -1008,7 +1002,7 @@ public class ExportImportWifi4euAbacService {
 
         List<BudgetaryCommitment> listBudgetaryCommitment = this.budgetaryCommitmentRepository.findByAbacBcKeyIsNotNullAndAbacLcKeyIsNull();
         this._log.info("listBudgetaryCommitment.size [{}]", listBudgetaryCommitment.size());
-        List<Application> listApplications = null;
+        List<Application> listApplications = new ArrayList<>();
 
         // TODO Change this query logic
         for (BudgetaryCommitment budgetaryCommitment : listBudgetaryCommitment) {
@@ -1016,7 +1010,10 @@ public class ExportImportWifi4euAbacService {
             List<Registration> listRegistrations = municipality.getRegistrations();
 
             List<Integer> registrationIds = listRegistrations.stream().map(Registration::getId).collect(Collectors.toList());
-            listApplications = this.applicationRepository.findByRegistrationIdIn(registrationIds);
+            List<Application> applications = applicationRepository.findByRegistrationIdIn(registrationIds);
+            if (CollectionUtils.isNotEmpty(applications)) {
+                listApplications.addAll(applications);
+            }
         }
 
         int listApplicationsSize = listApplications.size();
@@ -1030,12 +1027,7 @@ public class ExportImportWifi4euAbacService {
 
             this._log.info("Processing applications. Application.Id [{}]. Progress [{}]/[{}]", applicationId, ++i, listApplicationsSize);
 
-            Integer registrationId = application.getRegistrationId();
-            Registration registration = this.registrationRepository.findOne(registrationId);
-
-            this._log.info("Registration. registration.Id [{}]", registrationId);
-
-            List<GrantAgreement> listGrantAgreement = this.grantAgreementRepository.findByApplicationId(applicationId);
+            List<GrantAgreement> listGrantAgreement = application.getGrantAgreements();
             this._log.info("   listGrantAgreement.size()[{}]", listGrantAgreement.size());
 
             GrantAgreement grantAgreement = !listGrantAgreement.isEmpty() ? listGrantAgreement.get(0) : null;
@@ -1046,7 +1038,6 @@ public class ExportImportWifi4euAbacService {
 
             if (grantAgreement != null) {
                 String documentLocation = grantAgreement.getDocumentLocation();
-
 
                 _log.info("Downloading from URI [{}]", documentLocation);
 
@@ -1062,10 +1053,10 @@ public class ExportImportWifi4euAbacService {
 
                     String fileName = path.substring(path.lastIndexOf("/") + 1);
 
-                    legalCommitmentInformation.setMunicipalityId(registration.getMunicipality().getId().longValue());
+                    legalCommitmentInformation.setMunicipalityId(application.getRegistration().getMunicipality().getId().longValue());
                     legalCommitmentInformation.setDocumentId(grantAgreement.getId().longValue());
                     legalCommitmentInformation.setDocumentName(fileName);
-                    legalCommitmentInformation.setZipFileDocumentName(fileName);
+                    legalCommitmentInformation.setZipFileDocumentName(grantAgreement.getId() + "-" + fileName);
                     legalCommitmentInformation.setDocumentMimeType("application/pdf");
 
                     String signatureDate = sdf.format(grantAgreement.getDateSignature());
@@ -1077,7 +1068,7 @@ public class ExportImportWifi4euAbacService {
 
                     byte[] fileData = fileContent == null ? new byte[0] : fileContent;
                     this._log.info("   Downloaded fileContent.length [{}] bytes", fileContent == null ? "NULL" : fileContent.length);
-                    ExportFile exportFile = new ExportFile(legalCommitmentInformation.getDocumentName(), fileData);
+                    ExportFile exportFile = new ExportFile(legalCommitmentInformation.getZipFileDocumentName(), fileData);
 
                     legalCommitmentInformation.getFiles().add(exportFile);
                 }
