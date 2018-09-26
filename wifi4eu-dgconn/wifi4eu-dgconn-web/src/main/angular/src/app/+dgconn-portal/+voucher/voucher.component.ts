@@ -180,9 +180,9 @@ export class DgConnVoucherComponent {
               if (this.searchedMunicipality.toUpperCase() !== 'ALL') {
                 this.municipalitySearch.nativeElement.value = this.searchedMunicipality;
               }
-              //this.tableVoucher.sortColumn = this.tableVoucher.columns.find(col => col.field === this.sortField);
-              //this.tableVoucher.sortField = this.sortField;
-              //this.tableVoucher.sortOrder = this.sortDirection === 'ASC' ? 1 : -1;
+              this.tableVoucher.sortColumn = this.tableVoucher.columns.find(col => col.field === this.sortField);
+              this.tableVoucher.sortField = this.sortField;
+              this.tableVoucher.sortOrder = this.sortDirection === 'ASC' ? 1 : -1;
               calls.forEach((element, _index) => {
                 if (element.id === this.callSelected.id) {
                   var selectedTab = this.tabCalls.findSelectedTab();
@@ -205,78 +205,16 @@ export class DgConnVoucherComponent {
               });
             });
             this.pressedNotificationButton = true;
-            this.voucherApi.getVoucherAssignmentAuxiliarByCall(this.callSelected.id).subscribe((data: VoucherAssignmentAuxiliarDTO) => {
-              if (data != null) {
-                this.loadingPreList = true;
-                this.loadingFreezeList = true;
-                this.callVoucherAssignment = data;
-                this.preListLoaded = data.hasPreListSaved;
-                let date = new Date(this.callVoucherAssignment.preListExecutionDate);
-                this.dateNumberPreList = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
-                this.hourNumberPreList = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
-                this.voucherApi.checkSavePreSelectionEnabled(this.callVoucherAssignment.id)
-                  .finally(() => {
-                    this.loadingPreList = false;
-                  })
-                  .subscribe((response: boolean) => {
-                    this.preSelectedEnabledButton = response;
-                  }, (error) => {
-                    this.sharedService.growlTranslation('An error occured while checking if pre-list is enabled', 'dgConn.voucherAssignment.error.checkPreList', 'error');
-                  })
-                this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id, new Date().getTime())
-                  .finally(() => {
-                    this.loadingFreezeList = false;
-                  })
-                  .subscribe((enabled) => {
-                    this.freezeButtonEnabled = enabled;
-                  }, (error) => {
-                    this.sharedService.growlTranslation('An error occured while checking if freeze list is enabled', 'dgConn.voucherAssignment.error.checkFreezeList', 'error');
-                  });
-                if (data.hasFreezeListSaved) {
-                  this.voucherApi.getVoucherAssignmentByCallAndStatus(this.callSelected.id, 3).subscribe(
-                    (response: VoucherAssignmentAuxiliarDTO) => {
-                      if (response != null) {
-                        this.callVoucherAssignment.id = response.id;
-                        let date = new Date(this.callVoucherAssignment.freezeLisExecutionDate);
-                        this.dateNumberFreeze = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
-                        this.hourNumberFreeze = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
-
-                        if (response.notifiedDate != null) {
-                          let dateNotified = new Date(response.notifiedDate);
-                          this.dateNumberNotified = ('0' + dateNotified.getUTCDate()).slice(-2) + "/" + ('0' + (dateNotified.getUTCMonth() + 1)).slice(-2) + "/" + dateNotified.getUTCFullYear();
-                          this.hourNumberNotified = ('0' + (dateNotified.getUTCHours() + 2)).slice(-2) + ":" + ('0' + dateNotified.getUTCMinutes()).slice(-2);
-                        }
-                        this.adminActionsApi.getByActionName("voucher_send_notifications").subscribe((response: ResponseDTO) => {
-                          if (response.success) {
-                            let adminAction = <AdminActionsDTO>response.data;
-                            if (adminAction != null) {
-                              if (adminAction.running) {
-                                let dateStartSending = new Date(adminAction['startDate']);
-                                this.startSendingNotifications['startSendingDate'] = ('0' + dateStartSending.getUTCDate()).slice(-2) + "/" + ('0' + (dateStartSending.getUTCMonth() + 1)).slice(-2) + "/" + dateStartSending.getUTCFullYear();
-                                this.startSendingNotifications['startSendingHour'] = ('0' + (dateStartSending.getUTCHours() + 2)).slice(-2) + ":" + ('0' + dateStartSending.getUTCMinutes()).slice(-2);
-                              }
-                              this.pressedNotificationButton = adminAction.running;
-                            } else {
-                              this.pressedNotificationButton = false;
-                            }
-                          }
-                        })
-                        this.loadPage();
-                      }
-                    }, error => {
-                      this.sharedService.growlTranslation('Error retrieving list.', 'dgConn.voucherAssignment.error.retrievingList', 'error');
-                    });
-                }
-                else {
-                  this.loadPage();
-                }
-              }
-              else {
-                this.loadingSimulation = false;
-                this.listAssignment = [];
-                this.sharedService.growlTranslation('Voucher assignment list not found for this call', 'dgConn.voucherAssignment.warning.noVoucherForCall', 'warn');
-              }
-            })
+            this.adminActionsApi.getByActionName("voucher_simulation").subscribe((response: ResponseDTO) => {
+              if (response.success) {
+                this.adminAction = response.data;
+                if(this.adminAction.running){
+                  this.startInterval();
+                  this.displayConfirmingData = true;
+                }            
+              }                      
+            });
+            this.reloadData();
             this.applicationApi.countValidatedApplications(this.callSelected.id).subscribe((ResponseDTO: ResponseDTOBase) => {
               this.validApplications = ResponseDTO.data;
             })
@@ -292,7 +230,7 @@ export class DgConnVoucherComponent {
     )
 
     this.sessionInterval = IntervalObservable.create(30000);
-    this.startInterval();
+
   }
   startInterval() {
     this.sessionInterval
@@ -301,22 +239,93 @@ export class DgConnVoucherComponent {
           this.adminActionsApi.getByActionName("voucher_simulation").subscribe((response: ResponseDTO) => {
               if (response.success) {
                 this.adminAction = response.data;
-                this.destroyed.next(this.adminAction.running);                
-                this.destroyed.complete();
+                if(!this.adminAction.running){
+                  this.destroyed.next(true);   
+                  this.reloadData();
+                  this.displayConfirmingData = false;
+                }            
               }                      
             });
-            console.log("running " , new Date());
         });
   }
 
-/*   ngOnDestroy(){
-    this.destroyed.next(true);
-    this.destroyed.complete();
-  } */
+  private reloadData(){
+    this.voucherApi.getVoucherAssignmentAuxiliarByCall(this.callSelected.id).subscribe((data: VoucherAssignmentAuxiliarDTO) => {
+      if (data != null) {
+        this.loadingPreList = true;
+        this.loadingFreezeList = true;
+        this.callVoucherAssignment = data;
+        this.preListLoaded = data.hasPreListSaved;
+        let date = new Date(this.callVoucherAssignment.preListExecutionDate);
+        this.dateNumberPreList = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
+        this.hourNumberPreList = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
+        this.voucherApi.checkSavePreSelectionEnabled(this.callVoucherAssignment.id)
+          .finally(() => {
+            this.loadingPreList = false;
+          })
+          .subscribe((response: boolean) => {
+            this.preSelectedEnabledButton = response;
+          }, (error) => {
+            this.sharedService.growlTranslation('An error occured while checking if pre-list is enabled', 'dgConn.voucherAssignment.error.checkPreList', 'error');
+          })
+        this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id, new Date().getTime())
+          .finally(() => {
+            this.loadingFreezeList = false;
+          })
+          .subscribe((enabled) => {
+            this.freezeButtonEnabled = enabled;
+          }, (error) => {
+            this.sharedService.growlTranslation('An error occured while checking if freeze list is enabled', 'dgConn.voucherAssignment.error.checkFreezeList', 'error');
+          });
+        if (data.hasFreezeListSaved) {
+          this.voucherApi.getVoucherAssignmentByCallAndStatus(this.callSelected.id, 3).subscribe(
+            (response: VoucherAssignmentAuxiliarDTO) => {
+              if (response != null) {
+                this.callVoucherAssignment.id = response.id;
+                let date = new Date(this.callVoucherAssignment.freezeLisExecutionDate);
+                this.dateNumberFreeze = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
+                this.hourNumberFreeze = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
 
+                if (response.notifiedDate != null) {
+                  let dateNotified = new Date(response.notifiedDate);
+                  this.dateNumberNotified = ('0' + dateNotified.getUTCDate()).slice(-2) + "/" + ('0' + (dateNotified.getUTCMonth() + 1)).slice(-2) + "/" + dateNotified.getUTCFullYear();
+                  this.hourNumberNotified = ('0' + (dateNotified.getUTCHours() + 2)).slice(-2) + ":" + ('0' + dateNotified.getUTCMinutes()).slice(-2);
+                }
+                this.adminActionsApi.getByActionName("voucher_send_notifications").subscribe((response: ResponseDTO) => {
+                  if (response.success) {
+                    let adminAction = <AdminActionsDTO>response.data;
+                    if (adminAction != null) {
+                      if (adminAction.running) {
+                        let dateStartSending = new Date(adminAction['startDate']);
+                        this.startSendingNotifications['startSendingDate'] = ('0' + dateStartSending.getUTCDate()).slice(-2) + "/" + ('0' + (dateStartSending.getUTCMonth() + 1)).slice(-2) + "/" + dateStartSending.getUTCFullYear();
+                        this.startSendingNotifications['startSendingHour'] = ('0' + (dateStartSending.getUTCHours() + 2)).slice(-2) + ":" + ('0' + dateStartSending.getUTCMinutes()).slice(-2);
+                      }
+                      this.pressedNotificationButton = adminAction.running;
+                    } else {
+                      this.pressedNotificationButton = false;
+                    }
+                  }
+                })
+                this.loadPage();
+              }
+            }, error => {
+              this.sharedService.growlTranslation('Error retrieving list.', 'dgConn.voucherAssignment.error.retrievingList', 'error');
+            });
+        }
+        else {
+          this.loadPage();
+        }
+      }
+      else {
+        this.loadingSimulation = false;
+        this.listAssignment = [];
+        this.sharedService.growlTranslation('Voucher assignment list not found for this call', 'dgConn.voucherAssignment.warning.noVoucherForCall', 'warn');
+      }
+    })
+  }
 
   filterTable() {
-    this.router.navigate(['./dgconn-portal/voucher'], { queryParams: { call: this.callSelected.id, page: this.page, size: this.sizePage, municipality: this.searchedMunicipality, country: this.selectedCountry, sortField: this.sortField, sortDirection: this.sortDirection } });
+  this.router.navigate(['./dgconn-portal/voucher'], { queryParams: { call: this.callSelected.id, page: this.page, size: this.sizePage, municipality: this.searchedMunicipality, country: this.selectedCountry, sortField: this.sortField, sortDirection: this.sortDirection } });
   }
 
   selectCountry(country: NutsDTOBase) {
@@ -453,48 +462,9 @@ export class DgConnVoucherComponent {
       return;
     }
     this.voucherApi.simulateVoucherAssignment(this.callSelected.id).subscribe();
-    /*
-  this.displayConfirmingData = true;
-    this.loadingSimulation = true;
-    this.loadingFreezeList = true;
-    this.loadingPreList = true; 
-     if (this.callVoucherAssignment == null || this.callVoucherAssignment.status == 1) {
-      this.simulationRequest = this.voucherApi.simulateVoucherAssignment(this.callSelected.id).subscribe((resp: ResponseDTO) => {
-        this.displayConfirmingData = false;
-        if (this.callVoucherAssignment == null) {
-          this.callVoucherAssignment = resp.data;
-        } else {
-          this.callVoucherAssignment.id = resp.data.id;
-        }
-        if (!this.callVoucherAssignment.hasPreListSaved) {
-          this.voucherApi.checkSavePreSelectionEnabled(this.callVoucherAssignment.id)
-            .finally(() => {
-              this.loadingPreList = false;
-            })
-            .subscribe((response: boolean) => {
-              this.preSelectedEnabledButton = response;
-            }, (error) => {
-              this.sharedService.growlTranslation('An error occured while checking if pre-list is enabled', 'dgConn.voucherAssignment.error.checkPreList', 'error');
-            })
-        }
-        this.loadPage();
-        this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id, new Date().getTime())
-          .finally(() => {
-            this.loadingFreezeList = false;
-          })
-          .subscribe((enabled) => {
-            this.freezeButtonEnabled = enabled;
-          }, (error) => {
-            this.sharedService.growlTranslation('An error occured while checking if freeze list is enabled', 'dgConn.voucherAssignment.error.checkFreezeList', 'error');
-          });
-        this.loadingSimulation = false;
-      }, (error) => {
-        this.sharedService.growlTranslation('An error occurred while simulating.', 'dgConn.voucherAssignment.error.runningSimulation', 'error');
-        this.loadingSimulation = false;
-        this.displayConfirmingData = false;
-      })
-    } 
-  */  }
+    this.startInterval();
+    this.displayConfirmingData = true;
+    }
 
   private chooseCountryApplicationsInfo() {
     this.shownApplicationsInfo = [];
