@@ -219,7 +219,7 @@
                       </p-column>
                       <p-column header="{{'dgConn.voucherAssignment.table.action' | translate}}" styleClass="text-center not-hide-overflow">
                         <ng-template let-rowData="rowData" pTemplate="body">
-                          <div style="position:relative; cursor: pointer;" (click)="op.show($event)" >
+                          <div style="position:relative; cursor: pointer;" (click)="op.show($event)" *ngIf="!callVoucherAssignment?.hasFreezeListSaved">
                             <p-overlayPanel #op>
                               <div class="row">
                                 <a (click)="goToMunicipality(rowData.lau)">
