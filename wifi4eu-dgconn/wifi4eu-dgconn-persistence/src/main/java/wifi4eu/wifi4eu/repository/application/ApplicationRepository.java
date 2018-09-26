@@ -168,6 +168,17 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
             "WHERE cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000 BETWEEN start_date AND end_date AND n.level = 0 AND n.id = ?1", nativeQuery = true)
     long countApplicationsForCurrentCall(int idNut);
 
+    @Query(value = "SELECT count(a.id) FROM applications a WHERE a.call_id = ?#{[0]}", nativeQuery = true)
+    Integer countApplicationsForSelectedCall(Integer callId);
+
+    @Query(value = "SELECT count(a.id) FROM applications a " +
+            "INNER JOIN registrations r ON r.id = a.registration " +
+            "INNER JOIN municipalities m ON m.id = r.municipality " +
+            "INNER JOIN laus l ON l.id = m.lau " +
+            "INNER JOIN nuts n ON l.country_code = n.country_code " +
+            "WHERE a.call_id = ?#{[0]} AND n.level = 0 AND n.id = ?#{[1]}", nativeQuery = true)
+    Integer countApplicationsForSelectedCall(Integer callId, Integer idNut);
+
     @Query(value = "SELECT count(a.id) FROM applications a " +
             "INNER JOIN calls c ON c.id = a.call_id " +
             "INNER JOIN registrations r ON r.id = a.registration " +
@@ -238,4 +249,33 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
 
     @Query(value = "SELECT count(*) FROM applications ap WHERE ap._status = 2 AND ap.call_id = ?1", nativeQuery = true)
     Integer countValidatedApplicationsByCall(Integer callId);
+
+
+    @Query(value = "SELECT count(*) FROM applications ap WHERE ap._pre_selected_flag = 1 AND ap.call_id = ?#{[0]}", nativeQuery = true)
+    Integer countPreSelectedApplicationsByCall(Integer callId);
+
+    @Query(value = "SELECT count(*) FROM applications ap " +
+            "INNER JOIN registrations r ON r.id = ap.registration " +
+            "INNER JOIN municipalities m ON m.id = r.municipality " +
+            "INNER JOIN laus l ON l.id = m.lau " +
+            "INNER JOIN nuts n ON l.country_code = n.country_code " +
+            "WHERE ap.pre_selected_flag = 1 AND ap.call_id = ?#{[0]} AND n.level = 0 AND n.id = ?#{[1]} ", nativeQuery = true)
+    Integer countPreSelectedApplicationsByCall(Integer callId, Integer idNut);
+
+
+    @Query(value = "SELECT count(*) FROM applications ap " +
+            "INNER JOIN voucher_simulations vs ON vs.application = ap.id " +
+            "WHERE ap.call_id = ?#{[0]} AND vs.selection_status = ?#{[1]}", nativeQuery = true)
+    Integer countApplicationsSelectedInVoucherAssignmentByCall(Integer callId, Integer status);
+
+    @Query(value = "SELECT count(*) FROM applications ap " +
+            "INNER JOIN voucher_simulations vs ON vs.application = ap.id " +
+            "INNER JOIN registrations r ON r.id = ap.registration " +
+            "INNER JOIN municipalities m ON m.id = r.municipality " +
+            "INNER JOIN laus l ON l.id = m.lau " +
+            "INNER JOIN nuts n ON l.country_code = n.country_code " +
+            "WHERE ap.call_id = ?#{[0]} AND n.level = 0 AND n.id = ?#{[1]} AND vs.selection_status = ?#{[2]} ", nativeQuery = true)
+    Integer countApplicationsSelectedInVoucherAssignmentByCall(Integer callId, Integer idNut, Integer status);
+
+
 }

@@ -5,9 +5,11 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import wifi4eu.wifi4eu.common.enums.SelectionStatus;
 import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.utils.Utils;
 import wifi4eu.wifi4eu.entity.location.NutCallCustom;
+import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.call.CallRepository;
 import wifi4eu.wifi4eu.repository.location.NutCallCustomRepository;
 import wifi4eu.wifi4eu.util.reporting.ReportingUtils;
@@ -17,6 +19,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ReportPreSelection {
+
+    @Autowired
+    ApplicationRepository applicationRepository;
 
     @Autowired
     CallRepository callRepository;
@@ -41,8 +46,8 @@ public class ReportPreSelection {
                 row = sheet.createRow((short) i);
                 row.createCell(0).setCellValue(fields[i - 1]);
             }
-            generateTotalValues(sheet, 0);
-            putCountriesCallOpen(sheet, firstRow, 2);
+            generateTotalValues(sheet, 0,0);
+            putCountriesByCall(sheet, firstRow, 2, 0);
             ReportingUtils.autoSizeColumns(workbook);
         } else {
             // send email notifying that no open call is available?
@@ -50,9 +55,9 @@ public class ReportPreSelection {
         }
     }
 
-    private void generateTotalValues(HSSFSheet sheet, int idNut) {
+    private void generateTotalValues(HSSFSheet sheet, Integer callId, Integer idNut) {
         int column = 1;
-        Map<String, Object> allValues = getAllValues(idNut);
+        Map<String, Object> allValues = getAllValues(callId, idNut);
         HSSFRow row;
         int takeNumber = 0;
         for (int i = 1; i <= totalValues.length; i++) {
@@ -64,15 +69,16 @@ public class ReportPreSelection {
         }
     }
 
-    private void putCountriesCallOpen(HSSFSheet sheet, HSSFRow row, int numColumn) {
+    private void putCountriesByCall(HSSFSheet sheet, HSSFRow row, int numColumn, Integer callId) {
         ArrayList<NutCallCustom> nuts = nutCallCustomRepository.findNutsAndCallNameByCurrentCall();
-        HSSFRow intialRow = row;
+        HSSFRow initialRow = row;
         int[] passedNuts = new int[nuts.size()];
         int a = 0;
+
         for (NutCallCustom nut : nuts) {
             if (!Utils.contains(passedNuts, nut.getId())) {
                 row.createCell(numColumn).setCellValue(nut.getLabel());
-                Map<String, Object> allValues = getAllValues(nut.id);
+                Map<String, Object> allValues = getAllValues(callId, nut.id);
                 String[] totalValues = {"applicants", "preSelectedApplicants", "reservedApplicants", "unsuccessfulApplicants", "duplicates", "duplicatesInvalidated", "followUp", "invalidatedReason1", "invalidatedReason2", "invalidatedReason3", "invalidatedReason4", "invalidatedReason5", "invalidatedReason6", "invalidatedReason7", "invalidatedReason8", "invalidatedReason9"};
                 int takeNumber = 0;
                 for (int i = 1; i <= totalValues.length; i++) {
@@ -82,7 +88,7 @@ public class ReportPreSelection {
                     takeNumber++;
                 }
                 numColumn++;
-                row = intialRow;
+                row = initialRow;
                 passedNuts[a] = nut.getId();
                 a++;
             }
@@ -90,24 +96,24 @@ public class ReportPreSelection {
     }
 
     @Transactional
-    private Map<String, Object> getAllValues(int idNut) {
+    private Map<String, Object> getAllValues(Integer callId, Integer idNut) {
         Map<String, Object> mapResult = new HashMap<>();
-        int applicants = getAllApplicants(idNut);
-        int preselectedApplicants = getPreselectedApplicants(idNut);
-        int reservedApplicants = getReservedApplicants(idNut);
-        int unsuccessfulApplicants = getUnsuccessfulApplicant(idNut);
-        int duplicates = getDuplicates(idNut);
-        int duplicatesInvalidated = getApplicantsWithWarnings(2, idNut);
-        int followUp = getApplicantsWithWarnings(3, idNut);
-        int invalidatedReason1 = getNumberDuplicates(idNut);
-        int invalidatedReason2 = getNumberDuplicatesInvalidated(idNut);
-        int invalidatedReason3 = getNumberInvalidatedByReason(1, idNut);
-        int invalidatedReason4 = getNumberInvalidatedByReason(2, idNut);
-        int invalidatedReason5 = getNumberInvalidatedByReason(5, idNut);
-        int invalidatedReason6 = getNumberInvalidatedByReason(6, idNut);
-        int invalidatedReason7 = getNumberInvalidatedByReason(7, idNut);
-        int invalidatedReason8 = getNumberInvalidatedByReason(8, idNut);
-        int invalidatedReason9 = getNumberInvalidatedByReason(9, idNut);
+        Integer applicants = getAllApplicants(callId, idNut);
+        Integer preselectedApplicants = getPreselectedApplicants(callId,idNut);
+        Integer reservedApplicants = getReservedApplicants(callId, idNut);
+        Integer unsuccessfulApplicants = getUnsuccessfulApplicants(callId, idNut);
+        Integer duplicates = getDuplicates(idNut);
+        Integer duplicatesInvalidated = getduplicatesInvalidated(2, idNut);
+        Integer followUp = getfollowUp(3, idNut);
+        Integer invalidatedReason1 = getinvalidatedReason1(1, idNut);
+        Integer invalidatedReason2 = getinvalidatedReason1(2, idNut);
+        Integer invalidatedReason3 = getinvalidatedReason1(3, idNut);
+        Integer invalidatedReason4 = getinvalidatedReason1(4, idNut);
+        Integer invalidatedReason5 = getinvalidatedReason1(5, idNut);
+        Integer invalidatedReason6 = getinvalidatedReason1(6, idNut);
+        Integer invalidatedReason7 = getinvalidatedReason1(7, idNut);
+        Integer invalidatedReason8 = getinvalidatedReason1(8, idNut);
+        Integer invalidatedReason9 = getinvalidatedReason1(9, idNut);
         mapResult.put("applicants", applicants);
         mapResult.put("preSelectedApplicants", preselectedApplicants);
         mapResult.put("reservedApplicants", reservedApplicants);
@@ -128,11 +134,38 @@ public class ReportPreSelection {
     }
 
     @Transactional
-    private int getAllApplicants(int idNut) {
+    private Integer getAllApplicants(Integer callId, Integer idNut) {
         if (idNut != 0) {
-            return (int) applicationRepository.countApplicationsForCurrentCall(idNut);
+            return applicationRepository.countApplicationsForSelectedCall(callId, idNut);
         } else {
-            return (int) applicationRepository.countApplicationsForCurrentCall();
+            return applicationRepository.countApplicationsForSelectedCall(callId);
+        }
+    }
+
+    @Transactional
+    private Integer getPreselectedApplicants(Integer callId, Integer idNut){
+        if (idNut != 0){
+            return applicationRepository.countPreSelectedApplicationsByCall(callId, idNut);
+        }else {
+            return applicationRepository.countPreSelectedApplicationsByCall(callId);
+        }
+    }
+
+    @Transactional
+    private Integer getReservedApplicants(Integer callId, Integer idNut){
+        if (idNut != 0){
+            return applicationRepository.countApplicationsSelectedInVoucherAssignmentByCall(callId, idNut, SelectionStatus.RESERVE_LIST.getValue());
+        }else {
+            return applicationRepository.countApplicationsSelectedInVoucherAssignmentByCall(callId, SelectionStatus.RESERVE_LIST.getValue());
+        }
+    }
+
+    @Transactional
+    private Integer getUnsuccessfulApplicants(Integer callId, Integer idNut){
+        if (idNut != 0){
+            return applicationRepository.countApplicationsSelectedInVoucherAssignmentByCall(callId, idNut, SelectionStatus.REJECTED.getValue());
+        }else {
+            return applicationRepository.countApplicationsSelectedInVoucherAssignmentByCall(callId, SelectionStatus.REJECTED.getValue());
         }
     }
 
