@@ -51,11 +51,11 @@ public class ExportImportWifi4euAbacResource {
 
     @RequestMapping(value = "/importLegalEntityFBCValidate", method = RequestMethod.POST, produces = "application/JSON")
     @ResponseBody
-    public ResponseDTO importLegalEntityFBCValidate(@Validated @NotNull @RequestParam("importFile") MultipartFile file) {
+    public ResponseDTO importLegalEntitiesFromAbac(@Validated @NotNull @RequestParam("importFile") MultipartFile file) {
         try {
             _log.debug("importLegalEntityFBCValidate: file size = {}", file.getSize());
 
-            boolean success = exportImportWifi4euAbacService.importLegalEntityFBCValidate(file.getInputStream());
+            boolean success = exportImportWifi4euAbacService.importLegalEntitiesFromAbac(file.getInputStream());
 
             _log.debug("Import of the LEF result: {}", success);
 

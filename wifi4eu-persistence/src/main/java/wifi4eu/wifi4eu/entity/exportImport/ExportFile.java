@@ -1,50 +1,42 @@
 package wifi4eu.wifi4eu.entity.exportImport;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-@Entity
+//TODO: This is not an entity, therefore it should be moved to another location
 public class ExportFile {
 
-	@Id
-	private Integer id;
+    private Integer id;
 
-	private String filename;
+    private String filename;
 
-	private byte[] data;
+    private byte[] data;
 
-	public ExportFile() {
+    public ExportFile(String filename, byte[] data) {
+        super();
+        this.filename = filename;
+        this.data = data;
+    }
 
-	}
+    public String getFilename() {
+        return filename;
+    }
 
-	public ExportFile(String filename, byte[] data) {
-		super();
-		this.filename = filename;
-		this.data = data;
-	}
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
 
-	public String getFilename() {
-		return filename;
-	}
+    public byte[] getData() {
+        return data;
+    }
 
-	public void setFilename(String filename) {
-		this.filename = filename;
-	}
+    public void setData(byte[] data) {
+        this.data = data;
+    }
 
-	public byte[] getData() {
-		return data;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setData(byte[] data) {
-		this.data = data;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
 }

@@ -1,5 +1,6 @@
 package wifi4eu.wifi4eu.util;
 
+import org.apache.commons.csv.CSVFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -45,8 +46,8 @@ public class ExportFileUtils {
         return baos;
     }
 
-    public String getMunicipalitiesCsvHeaders() {
-        return generateCSVHeaders(new String[]{
+    public CSVFormat getMunicipalitiesCsvHeaders() {
+        return CSVFormat.EXCEL.withHeader(
                 LegalEntityCSVColumn.MUNICIPALITY_PORTAL_ID.getValue(),
                 LegalEntityCSVColumn.MUNICIPALITY_NAME.getValue(),
                 LegalEntityCSVColumn.MUNICIPALITY_ABAC_LATIN_NAME.getValue(),
@@ -57,11 +58,11 @@ public class ExportFileUtils {
                 LegalEntityCSVColumn.MUNICIPALITY_LANGUAGE_CODE.getValue(),
                 LegalEntityCSVColumn.MUNICIPALITY_REGISTRATION_NUMBER.getValue(),
                 LegalEntityCSVColumn.MUNICIPALITY_ABAC_REFERENCE.getValue(),
-                LegalEntityCSVColumn.MUNICIPALITY_CALL_NUMBER.getValue()});
+                LegalEntityCSVColumn.MUNICIPALITY_CALL_NUMBER.getValue());
     }
 
-    public String getMunicipalitiesDocCsvHeaders() {
-        return generateCSVHeaders(new String[]{
+    public CSVFormat getMunicipalitiesDocCsvHeaders() {
+        return CSVFormat.EXCEL.withHeader(
                 LegalEntityDocumentCSVColumn.MUNICIPALITY_PORTAL_ID.getValue(),
                 LegalEntityDocumentCSVColumn.DOCUMENT_PORTAL_ID.getValue(),
                 LegalEntityDocumentCSVColumn.DOCUMENT_NAME.getValue(),
@@ -69,7 +70,7 @@ public class ExportFileUtils {
                 LegalEntityDocumentCSVColumn.DOCUMENT_MIMETYPE.getValue(),
                 LegalEntityDocumentCSVColumn.DOCUMENT_DATE.getValue(),
                 LegalEntityDocumentCSVColumn.DOCUMENT_TYPE.getValue(),
-                LegalEntityDocumentCSVColumn.ARES_REFERENCE.getValue()});
+                LegalEntityDocumentCSVColumn.ARES_REFERENCE.getValue());
     }
 
     /**
