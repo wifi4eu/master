@@ -95,6 +95,8 @@ public class ExportImportWifi4euAbacService {
     // TODO: externalize
     private static final String AIRGAP_EXPORT_BENEFICIARY_DOCUMENTS_CSV = "airgap_exportBeneficiaryDocuments.csv";
 
+    private static final String THE_RECORD_WAS_SKIPPED_AS_ITS_STATUS_IS_NOT_VALID = "The record was skipped as its status is not valid";
+
     private static final String FILENAME_EXPORT_DOCUMENTS_DATA = "portal_exportBeneficiaryDocuments.csv";
 
     private static final String FILENAME_EXPORT_BENEFICIARIES_DATA = "portal_exportBeneficiaryInformation.csv";
@@ -826,7 +828,7 @@ public class ExportImportWifi4euAbacService {
 
     private BudgetaryCommitment parseBudgetaryCommitment(CSVRecord csvRecord) {
 
-        AbacStatus abacStatus = AbacStatus.valueOf(csvRecord.get(BudgetaryCommitmentCSVColumn.ABAC_STATUS));
+        AbacStatus abacStatus = AbacStatus.fromValue(csvRecord.get(BudgetaryCommitmentCSVColumn.ABAC_STATUS));
         if (abacStatus == AbacStatus.ABAC_VALID) {
             String municipalityId = csvRecord.get(BudgetaryCommitmentCSVColumn.MUNICIPALITY_ID);
             String commitmentLevel2Position = csvRecord.get(BudgetaryCommitmentCSVColumn.COMMITMENT_LEVEL2_POSITION);
@@ -844,6 +846,8 @@ public class ExportImportWifi4euAbacService {
 
                 return budgetaryCommitment;
             }
+        } else {
+            _log.warn(THE_RECORD_WAS_SKIPPED_AS_ITS_STATUS_IS_NOT_VALID);
         }
 
         return null;
@@ -864,9 +868,11 @@ public class ExportImportWifi4euAbacService {
             CSVParser csvParser = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(inputStreamReader);
             csvParser.forEach(csvRecord -> {
 
-                AbacStatus abacStatus = AbacStatus.valueOf(csvRecord.get(LegalCommitmentCSVColumn.ABAC_STATUS));
+                AbacStatus abacStatus = AbacStatus.fromValue(csvRecord.get(LegalCommitmentCSVColumn.ABAC_STATUS));
                 if (abacStatus == AbacStatus.ABAC_VALID) {
                     updateGrantAgreement(csvRecord, municipalityDocuments, zipFile);
+                } else {
+                    _log.warn(THE_RECORD_WAS_SKIPPED_AS_ITS_STATUS_IS_NOT_VALID);
                 }
             });
         }
