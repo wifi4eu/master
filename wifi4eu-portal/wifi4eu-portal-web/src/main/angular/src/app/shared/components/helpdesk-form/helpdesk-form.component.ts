@@ -47,7 +47,7 @@ export class HelpdeskFormComponent {
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         let language = this.localStorage.get('lang');
-        this.nutsApi.getNutsByLevel(0).subscribe(
+        this.nutsApi.getNutsByLevel(0, new Date().getTime()).subscribe(
             nuts => {
                 this.countries = nuts;
             },

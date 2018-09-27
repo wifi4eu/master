@@ -26,7 +26,7 @@ export class InvitedContactDetailsComponent {
     this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
     this.userInvited.name = this.user.name;
     this.userInvited.surname = this.user.surname;
-    this.nutsApi.getNutsByLevel(0).subscribe(
+    this.nutsApi.getNutsByLevel(0, new Date().getTime()).subscribe(
       (nuts: NutsDTOBase[]) => {
           this.countries = nuts;
       }, error => {

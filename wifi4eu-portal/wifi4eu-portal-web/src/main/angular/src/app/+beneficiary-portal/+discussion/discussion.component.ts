@@ -63,11 +63,11 @@ export class DiscussionComponent {
                 let threadId;
                 this.route.params.subscribe(params => threadId = params['threadId']);
                 if (threadId != null) {
-                    this.threadApi.getThreadById(threadId).subscribe(
+                    this.threadApi.getThreadById(threadId, new Date().getTime()).subscribe(
                         (thread: ThreadDTOBase) => {
                             if (thread != null) {
                                 this.thread = thread;
-                                this.userThreadsApi.getUserThreadsByThreadId(this.thread.id).subscribe(
+                                this.userThreadsApi.getUserThreadsByThreadId(this.thread.id, new Date().getTime()).subscribe(
                                     (userThreads: UserThreadsDTOBase[]) => {
                                         let allowUser = false;
                                         if (userThreads.length > 1) {

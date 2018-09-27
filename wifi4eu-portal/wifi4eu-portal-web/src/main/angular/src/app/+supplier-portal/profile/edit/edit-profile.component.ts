@@ -86,7 +86,7 @@ export class SupplierEditProfileComponent {
     }
 
     private getSupplierData() {
-        this.supplierApi.getSupplierByUserId(this.user.id).subscribe(
+        this.supplierApi.getSupplierByUserId(this.user.id, new Date().getTime()).subscribe(
             (supplier: SupplierDTOBase) => {
                 if (supplier != null) {
                     this.supplier = supplier;
@@ -95,7 +95,7 @@ export class SupplierEditProfileComponent {
                     this.users.push(this.user); //delete
                     if (this.supplier.logo != null)
                         this.isLogoUploaded = true;
-                    this.nutsApi.getNutsByLevel(0).subscribe(
+                    this.nutsApi.getNutsByLevel(0, new Date().getTime()).subscribe(
                         (countries: NutsDTOBase[]) => {
                             for (let i = 0; i < countries.length; i++) {
                                 let country = countries[i];
@@ -106,7 +106,7 @@ export class SupplierEditProfileComponent {
                                 };
                                 this.countryOptions.push(countryOption);
                                 this.regionOptions[country.label] = [];
-                                this.nutsApi.getNutsByCountryCodeAndLevelOrderByLabelAsc(country.countryCode, 3).subscribe(
+                                this.nutsApi.getNutsByCountryCodeAndLevelOrderByLabelAsc(country.countryCode, 3, new Date().getTime()).subscribe(
                                     (regions: NutsDTOBase[]) => {
                                         for (let j = 0; j < regions.length; j++) {
                                             let region = regions[j];

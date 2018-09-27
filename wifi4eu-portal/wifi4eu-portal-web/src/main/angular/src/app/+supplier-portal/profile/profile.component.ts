@@ -86,12 +86,12 @@ export class SupplierProfileComponent {
     }
 
     private fetchData() {
-        this.supplierApi.getSupplierByUserId(this.user.id).subscribe(
+        this.supplierApi.getSupplierByUserId(this.user.id, new Date().getTime()).subscribe(
             (supplier: SupplierDTOBase) => {
                 if (supplier != null) {
                     this.supplier = supplier;
                     Object.assign(this.editedSupplier, this.supplier);
-                    this.nutsApi.getNutsByLevel(0).subscribe(
+                    this.nutsApi.getNutsByLevel(0, new Date().getTime()).subscribe(
                         (countries: NutsDTOBase[]) => {
                             this.supplier.suppliedRegions;
                             for (let country of countries) {

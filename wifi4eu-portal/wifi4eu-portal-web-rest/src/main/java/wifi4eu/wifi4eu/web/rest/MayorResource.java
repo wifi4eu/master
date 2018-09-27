@@ -78,7 +78,8 @@ public class MayorResource {
     @ApiOperation(value = "Get mayor by specific municipality id")
     @RequestMapping(value = "/municipalityId/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public MayorDTO getMayorByMunicipalityId(@PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse response) throws IOException {
+    public MayorDTO getMayorByMunicipalityId(@PathVariable("municipalityId") final Integer municipalityId,
+                                             @RequestParam("date") final Long timestamp, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting mayor by municipality id " + municipalityId);

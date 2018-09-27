@@ -119,9 +119,9 @@ export class BeneficiaryProfileComponent {
                         this.associationName = registration.associationName;
                     this.allDocumentsUploaded.push(registration.allFilesFlag == 1);
                     this.isRegisterHold = (registration.status == 0); // 0 status is HOLD
-                    this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
+                    this.municipalityApi.getMunicipalityById(registration.municipalityId, new Date().getTime()).subscribe(
                         (municipality: MunicipalityDTOBase) => {
-                            this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
+                            this.mayorApi.getMayorByMunicipalityId(municipality.id, new Date().getTime()).subscribe(
                                 (mayor: MayorDTOBase) => {
                                     this.municipalities.push(municipality);
                                     this.mayors.push(mayor);
@@ -140,7 +140,7 @@ export class BeneficiaryProfileComponent {
                             );
                         }
                     );
-                    this.userApi.getUsersFromRegistration(registration.id).subscribe(
+                    this.userApi.getUsersFromRegistration(registration.id, new Date().getTime()).subscribe(
                         (users: UserContactDetailsBase[]) => {
                             this.users[registration.municipalityId] = users;
                             if (users != null)
@@ -151,13 +151,13 @@ export class BeneficiaryProfileComponent {
                 this.fetchingData = false;
             }
         );
-        this.userThreadsApi.getUserThreadsByUserId(this.user.id).subscribe(
+        this.userThreadsApi.getUserThreadsByUserId(this.user.id, new Date().getTime()).subscribe(
                         (utsByUser: UserThreadsDTOBase[]) => {
                             for (let utByUser of utsByUser) {
-                                this.threadApi.getThreadById(utByUser.threadId).subscribe(
+                                this.threadApi.getThreadById(utByUser.threadId, new Date().getTime()).subscribe(
                                     (thread: ThreadDTOBase) => {
                                         if (thread != null) {
-                                            this.userThreadsApi.getUserThreadsByThreadId(thread.id).subscribe(
+                                            this.userThreadsApi.getUserThreadsByThreadId(thread.id, new Date().getTime()).subscribe(
                                                 (utsByThread: UserThreadsDTOBase[]) => {
                                                     this.discussionThreads.push(thread);
                                                     if (utsByThread.length > 1) {

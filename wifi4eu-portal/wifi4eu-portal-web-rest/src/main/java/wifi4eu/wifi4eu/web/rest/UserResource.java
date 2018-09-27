@@ -76,14 +76,15 @@ public class UserResource {
     }
 
     @ApiOperation(value = "Update user details")
-    @RequestMapping(value = "/update-user-details" , method = RequestMethod.POST)
+    @RequestMapping(value = "/update-user-details", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO updateUserDetails(@RequestBody final Map<String,Object> users, HttpServletResponse response) throws IOException {
+    public ResponseDTO updateUserDetails(@RequestBody final Map<String, Object> users, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         //Permissions
         ObjectMapper mapper = new ObjectMapper();
-        List<UserContactDetails> usersList = mapper.convertValue(users.get("users"), new TypeReference<ArrayList<UserContactDetails>>(){});
+        List<UserContactDetails> usersList = mapper.convertValue(users.get("users"), new TypeReference<ArrayList<UserContactDetails>>() {
+        });
         for (UserContactDetails user : usersList) {
             try {
                 _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating user details by id " + user.getId());
@@ -262,7 +263,7 @@ public class UserResource {
     @ApiOperation(value = "Get all users from registration")
     @RequestMapping(value = "/registrationUsers/{registrationId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<UserContactDetails> getUsersFromRegistration(@PathVariable("registrationId") Integer registrationId, HttpServletResponse response) throws IOException {
+    public List<UserContactDetails> getUsersFromRegistration(@PathVariable("registrationId") Integer registrationId, @RequestParam("date") final Long timestamp, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving users from registration");
@@ -344,9 +345,9 @@ public class UserResource {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         ResponseDTO responseDTO = new ResponseDTO();
-        try{
-            if(Validator.isNotNull(userConnected)){
-                if(userConnected.getType() != 3){
+        try {
+            if (Validator.isNotNull(userConnected)) {
+                if (userConnected.getType() != 3) {
                     throw new AccessDeniedException("");
                 }
                 responseDTO.setSuccess(true);
@@ -356,7 +357,7 @@ public class UserResource {
                 responseDTO.setData("");
                 responseDTO.setError(new ErrorDTO(400, "User not found"));
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- User cannot been checked", e);
             responseDTO.setSuccess(false);
             responseDTO.setData("");

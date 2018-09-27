@@ -32,7 +32,7 @@ export class SupplierRegistrationComponent {
     private user: UserDTOBase;
 
     constructor(private localStorageService: LocalStorageService, private nutsApi: NutsApi, private supplierApi: SupplierApi, private sharedService: SharedService, private translateService: TranslateService) {
-        this.nutsApi.getNutsByLevel(0).subscribe(
+        this.nutsApi.getNutsByLevel(0, new Date().getTime()).subscribe(
             (countries: NutsDTOBase[]) => {
                 for (let country of countries) {
                     let countryName = country.label.substring(0, 1).toUpperCase() + country.label.substring(1, country.label.length).toLowerCase();
@@ -43,7 +43,7 @@ export class SupplierRegistrationComponent {
                     this.allCountriesSelect.push(selectCountry);
                     this.allRegionsSelect[country.label] = [];
                     this.selectedRegions[country.label] = [];
-                    this.nutsApi.getNutsByCountryCodeAndLevelOrderByLabelAsc(country.countryCode, 3).subscribe(
+                    this.nutsApi.getNutsByCountryCodeAndLevelOrderByLabelAsc(country.countryCode, 3, new Date().getTime()).subscribe(
                         (regions: NutsDTOBase[]) => {
                             for (let region of regions) {
                                 let selectRegion = {

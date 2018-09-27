@@ -56,7 +56,7 @@ public class SupplierResource {
     @ApiOperation(value = "Get supplier by specific id")
     @RequestMapping(value = "/{supplierId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public SupplierDTO getSupplierById(@PathVariable("supplierId") final Integer supplierId, HttpServletResponse response) throws IOException {
+    public SupplierDTO getSupplierById(@PathVariable("supplierId") final Integer supplierId, @RequestParam("date") final Long timestamp, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("User ID: " + userConnected.getEcasUsername() + " - Getting supplier by id " + supplierId);
@@ -127,12 +127,11 @@ public class SupplierResource {
             if (!access) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }*/
-            if(Validator.isNotNull(supplier)) {
+            if (Validator.isNotNull(supplier)) {
                 if (supplierDTO.getId() != supplier.getId()) {
                     throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
                 }
-            }
-            else{
+            } else {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             List<UserDTO> resSupplier = supplierService.updateContactDetails(supplierDTO);
@@ -205,7 +204,7 @@ public class SupplierResource {
     @ApiOperation(value = "Get supplier by specific user id")
     @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public SupplierDTO getSupplierByUserId(@PathVariable("userId") final Integer userId, HttpServletResponse response) throws IOException {
+    public SupplierDTO getSupplierByUserId(@PathVariable("userId") final Integer userId, @RequestParam("date") final Long timestamp, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting supplier by user id " + userId);
@@ -418,7 +417,7 @@ public class SupplierResource {
                 return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
             }
 
-            return new ResponseDTO(true, supplierService.deactivateSupplierContact(supplierId,userIdToDeactivate, userConnected.getEcasUsername()), null);
+            return new ResponseDTO(true, supplierService.deactivateSupplierContact(supplierId, userIdToDeactivate, userConnected.getEcasUsername()), null);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to deactivate this supplier contact", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
@@ -438,7 +437,7 @@ public class SupplierResource {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         try {
-            if (Validator.isNull(userConnected) || userConnected.getType() != 1){
+            if (Validator.isNull(userConnected) || userConnected.getType() != 1) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             return supplierService.invitateContactSupplier(userConnected, supplierId, newContactEmail.trim());

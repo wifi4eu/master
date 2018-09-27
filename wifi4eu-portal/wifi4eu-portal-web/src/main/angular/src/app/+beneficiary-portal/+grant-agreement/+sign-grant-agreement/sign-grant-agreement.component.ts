@@ -117,10 +117,10 @@ export class SignGrantAgreementComponent {
            
             this.registrationApi.getRegistrationById(registrationId).subscribe(
                 (registration: RegistrationDTOBase) => {
-                    this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
+                    this.municipalityApi.getMunicipalityById(registration.municipalityId, new Date().getTime()).subscribe(
                         (municipality: MunicipalityDTOBase) =>{
                             this.municipality = municipality;
-                            this.mayorApi.getMayorByMunicipalityId(registration.municipalityId).subscribe(
+                            this.mayorApi.getMayorByMunicipalityId(registration.municipalityId, new Date().getTime()).subscribe(
                                 (mayor: MayorDTOBase) => {
                                     this.mayor = mayor;
                                 }, error => {

@@ -103,7 +103,7 @@ export class MyVoucherComponent {
                                     (response : ResponseDTO) => {
                                         if (response.data.id != 0) {
                                             
-                                            this.municipalityApi.getMunicipalityById(registrations[i].municipalityId).subscribe(
+                                            this.municipalityApi.getMunicipalityById(registrations[i].municipalityId, new Date().getTime()).subscribe(
                                                 (municipality : MunicipalityDTOBase) => {
                                                     this.applications.push(response.data);
                                                     this.grantAgreementApi.getGrantAgreementByApplicationId(response.data.id).subscribe(

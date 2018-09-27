@@ -44,7 +44,7 @@ export class BeneficiaryRegistrationComponent {
     private buttonEnabledStep2: boolean = false;
 
     constructor(private beneficiaryApi: BeneficiaryApi, private nutsApi: NutsApi, private organizationApi: OrganizationApi, private router: Router, private sharedService: SharedService, private translateService: TranslateService) {
-        this.nutsApi.getNutsByLevel(0).subscribe(
+        this.nutsApi.getNutsByLevel(0, new Date().getTime()).subscribe(
             (nuts: NutsDTOBase[]) => {
                 this.countries = nuts;
             }, error => {

@@ -64,7 +64,7 @@ export class ListSuppliersComponent implements OnInit {
         }
       );
     });
-    this.nutsApi.getNutsByLevel(0).subscribe(
+    this.nutsApi.getNutsByLevel(0, new Date().getTime()).subscribe(
       (countries: NutsDTOBase[]) => {
         this.countries = countries;
         if(countries.length > 0){
@@ -86,7 +86,7 @@ export class ListSuppliersComponent implements OnInit {
   selectCountry(country){
       this.region = null;
     this.searched = false;
-    this.nutsApi.getNutsByCountryCodeAndLevelOrderByLabelAsc(country.code, 3).subscribe(
+    this.nutsApi.getNutsByCountryCodeAndLevelOrderByLabelAsc(country.code, 3, new Date().getTime()).subscribe(
       (regions: NutsDTOBase[]) => {
         this.regions = [this.defaultRegion, ...regions];
       }

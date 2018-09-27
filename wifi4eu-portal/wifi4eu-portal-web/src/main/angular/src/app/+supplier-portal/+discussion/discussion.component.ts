@@ -69,7 +69,7 @@ export class DiscussionComponent {
         this.hasAuthor = false;
 
 
-        this.threadApi.getThreadById(this.threadId).subscribe(
+        this.threadApi.getThreadById(this.threadId, new Date().getTime()).subscribe(
             (thread : ThreadDTOBase) => {
                 this.thread = thread;
                 this.hasMediation = thread.mediation;
@@ -87,7 +87,7 @@ export class DiscussionComponent {
         if (this.user != null) {
             if (this.user.type == 1) {
                 /*GET DATA FROM API TO PRINT ON HTML*/
-                this.supplierApi.getSupplierByUserId(this.user.id).subscribe(
+                this.supplierApi.getSupplierByUserId(this.user.id, new Date().getTime()).subscribe(
                     (mySupplier: SupplierDTOBase) => {
                         this.ownSupplier = mySupplier;
 
@@ -96,11 +96,11 @@ export class DiscussionComponent {
                     }
                 );
 
-                this.userThreadsApi.getUserThreadsByThreadId(this.threadId).subscribe(
+                this.userThreadsApi.getUserThreadsByThreadId(this.threadId, new Date().getTime()).subscribe(
                     (userThread: UserThreadsDTOBase[]) => {
                         for (var i = 0; i < userThread.length; i++) {
                             this.userThreads = userThread;
-                            this.supplierApi.getSupplierByUserId(this.userThreads[i].userId).subscribe(
+                            this.supplierApi.getSupplierByUserId(this.userThreads[i].userId, new Date().getTime()).subscribe(
                                 (suppliers: SupplierDTOBase) => {
                                     this.supplierApi.getUserIdFromSupplier(this.ownSupplier.id).subscribe(
                                         (supplierId : number) =>{

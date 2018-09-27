@@ -66,7 +66,7 @@ public class NutsResource {
     })
     @RequestMapping(value = "/level/{level}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<NutsDTO> getNutsByLevel(@PathVariable("level") final Integer level) {
+    public List<NutsDTO> getNutsByLevel(@PathVariable("level") final Integer level, @RequestParam("date") final Long timestamp) {
         return nutsService.getNutsByLevel(level);
     }
 
@@ -86,7 +86,7 @@ public class NutsResource {
     })
     @RequestMapping(value = "/countryCode/{countryCode}/level/{level}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<NutsDTO> getNutsByCountryCodeAndLevelOrderByLabelAsc(@PathVariable("countryCode") final String countryCode, @PathVariable("level") final Integer level) {
+    public List<NutsDTO> getNutsByCountryCodeAndLevelOrderByLabelAsc(@PathVariable("countryCode") final String countryCode, @PathVariable("level") final Integer level, @RequestParam("date") final Long timestamp) {
         return nutsService.getNutsByCountryCodeAndLevelOrderByLabelAsc(countryCode, level);
     }
 }

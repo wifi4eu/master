@@ -54,7 +54,7 @@ export class AdditionalInfoComponent {
             let municipalityId;
             this.route.params.subscribe(params => municipalityId = params['municipalityId']);
             if (municipalityId != null) {
-                this.municipalityApi.getMunicipalityById(municipalityId).subscribe(
+                this.municipalityApi.getMunicipalityById(municipalityId, new Date().getTime()).subscribe(
                     (municipality: MunicipalityDTOBase) => {
                         this.municipality = municipality;
                         this.registrationApi.getRegistrationByMunicipalityId(this.municipality.id).subscribe(
@@ -99,7 +99,7 @@ export class AdditionalInfoComponent {
                 this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
                     (registrations: RegistrationDTOBase[]) => {
                         if (registrations.length == 1) {
-                            this.mayorApi.getMayorByMunicipalityId(municipalityId).subscribe(
+                            this.mayorApi.getMayorByMunicipalityId(municipalityId, new Date().getTime()).subscribe(
                                 (mayor: MayorDTOBase) => {
                                     this.mayor = mayor;
                                     if (this.mayor.name == this.user.name && this.mayor.surname == this.user.surname) {

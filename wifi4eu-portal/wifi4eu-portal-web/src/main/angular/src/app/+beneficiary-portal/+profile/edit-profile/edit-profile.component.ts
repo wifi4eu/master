@@ -127,7 +127,7 @@ export class BeneficiaryEditProfileComponent {
         this.newMunicipalities = [];
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
-        this.nutsApi.getNutsByLevel(0).subscribe(
+        this.nutsApi.getNutsByLevel(0, new Date().getTime()).subscribe(
             (nuts: NutsDTOBase[]) => {
                 this.countries = nuts;
             }, error => {
@@ -173,9 +173,9 @@ export class BeneficiaryEditProfileComponent {
                                             continue;
                                         this.allDocumentsUploaded.push(registration.allFilesFlag == 1);
                                         this.isRegisterHold = (registration.status == 0); // 0 status is HOLD
-                                        this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
+                                        this.municipalityApi.getMunicipalityById(registration.municipalityId, new Date().getTime()).subscribe(
                                             (municipality: MunicipalityDTOBase) => {
-                                                this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
+                                                this.mayorApi.getMayorByMunicipalityId(municipality.id, new Date().getTime()).subscribe(
                                                     (mayor: MayorDTOBase) => {
                                                         this.municipalities.push(municipality);
                                                         this.checkEditPermissionMunicipality(municipality.id);
@@ -195,7 +195,7 @@ export class BeneficiaryEditProfileComponent {
                                                 );
                                             }
                                         );
-                                        this.userApi.getUsersFromRegistration(registration.id).subscribe(
+                                        this.userApi.getUsersFromRegistration(registration.id, new Date().getTime()).subscribe(
                                             (users: UserContactDetailsBase[]) => {
                                                 this.users[registration.municipalityId] = users;
                                                 this.userMain = users.find(x => x.main === 1);
@@ -215,14 +215,14 @@ export class BeneficiaryEditProfileComponent {
                     this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later."', 'shared.error.api.generic', 'error');
                 }
             );
-            this.userThreadsApi.getUserThreadsByUserId(this.user.id).subscribe(
+            this.userThreadsApi.getUserThreadsByUserId(this.user.id, new Date().getTime()).subscribe(
                 (utsByUser: UserThreadsDTOBase[]) => {
                     for (let utByUser of utsByUser) {
-                        this.threadApi.getThreadById(utByUser.threadId).subscribe(
+                        this.threadApi.getThreadById(utByUser.threadId, new Date().getTime()).subscribe(
                             (thread: ThreadDTOBase) => {
                                 if (thread != null) {
                                     this.userThreads.push(thread);
-                                    this.userThreadsApi.getUserThreadsByThreadId(thread.id).subscribe(
+                                    this.userThreadsApi.getUserThreadsByThreadId(thread.id, new Date().getTime()).subscribe(
                                         (utsByThread: UserThreadsDTOBase[]) => {
                                             this.discussionThreads.push(thread);
                                             if (utsByThread.length > 1) {

@@ -278,7 +278,8 @@ public class BeneficiaryResource {
             return null;
         }
     }
-//      ADD CONTACT
+
+    //      ADD CONTACT
 //    @ApiOperation(value = "Generate invitation to be a beneficiary contact")
 //    @RequestMapping(value = "/invitation-contact-beneficiary", method = RequestMethod.POST)
 //    @ResponseBody
@@ -286,10 +287,10 @@ public class BeneficiaryResource {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         try {
-            if (Validator.isNull(userConnected) || userConnected.getType() != 3){
+            if (Validator.isNull(userConnected) || userConnected.getType() != 3) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            return beneficiaryService.invitateContactBeneficiary(userConnected,idMunicipality,newContactEmail.trim());
+            return beneficiaryService.invitateContactBeneficiary(userConnected, idMunicipality, newContactEmail.trim());
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Incorrect request when adding contacts for beneficiaries", e.getMessage());
             response.sendError(HttpStatus.BAD_REQUEST.value());
@@ -314,7 +315,7 @@ public class BeneficiaryResource {
     @ApiOperation(value = "Get application by call and registration id")
     @RequestMapping(value = "/history/{userId}/call/{callId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<UserHistoryActionDTO> getUserHistoryActionsByUserIdAnCallId(@PathVariable("userId") final Integer userId, @PathVariable("callId") final Integer callId, HttpServletResponse response) throws IOException {
+    public List<UserHistoryActionDTO> getUserHistoryActionsByUserIdAnCallId(@PathVariable("userId") final Integer userId, @PathVariable("callId") final Integer callId, @RequestParam("date") final Long timestamp, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting beneficiary actions history by call id " + callId + " and user id " + userId);

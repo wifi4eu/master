@@ -61,7 +61,7 @@ export class MyHistoryComponent {
     }
 
     private fetchHistoryData() {
-        this.beneficiaryApi.getUserHistoryActionsByUserIdAnCallId(this.user.id, this.calls[this.currentIndex].id).subscribe(
+        this.beneficiaryApi.getUserHistoryActionsByUserIdAnCallId(this.user.id, this.calls[this.currentIndex].id, new Date().getTime()).subscribe(
             (actions : UserHistoryActionDTOBase[]) => {
                 for (let action of actions) {
                     if (this.municipalities.indexOf(action.municipality) == -1) {

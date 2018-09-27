@@ -49,7 +49,8 @@ public class UserThreadsResource {
     @ApiOperation(value = "Get Threads by specific user id")
     @RequestMapping(value = "/userId/{userId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<UserThreadsDTO> getUserThreadsByUserId(@PathVariable("userId") final Integer userId) {
+    public List<UserThreadsDTO> getUserThreadsByUserId(@PathVariable("userId") final Integer userId,
+                                                       @RequestParam("date") final Long timestamp) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving threads by user id " + userId);
@@ -60,7 +61,8 @@ public class UserThreadsResource {
     @ApiOperation(value = "Get User by specific thread id")
     @RequestMapping(value = "/threadId/{threadId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<UserThreadsDTO> getUserThreadsByThreadId(@PathVariable("threadId") final Integer threadId, HttpServletResponse response) throws IOException {
+    public List<UserThreadsDTO> getUserThreadsByThreadId(@PathVariable("threadId") final Integer threadId,
+                                                         @RequestParam("date") final Long timestamp, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving user by thread id " + threadId);
