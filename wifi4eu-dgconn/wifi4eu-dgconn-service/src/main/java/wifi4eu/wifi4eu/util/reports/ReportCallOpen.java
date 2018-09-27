@@ -10,23 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.utils.Utils;
 import wifi4eu.wifi4eu.entity.application.Application;
-import wifi4eu.wifi4eu.entity.location.Lau;
 import wifi4eu.wifi4eu.entity.location.NutCallCustom;
-import wifi4eu.wifi4eu.entity.mayor.Mayor;
-import wifi4eu.wifi4eu.entity.municipality.Municipality;
-import wifi4eu.wifi4eu.entity.registration.Registration;
-import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.call.CallRepository;
-import wifi4eu.wifi4eu.repository.location.LauRepository;
 import wifi4eu.wifi4eu.repository.location.NutCallCustomRepository;
-import wifi4eu.wifi4eu.repository.mayor.MayorRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
-import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
-import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
-import wifi4eu.wifi4eu.repository.user.UserRepository;
+import wifi4eu.wifi4eu.repository.warning.RegistrationWarningRepository;
 import wifi4eu.wifi4eu.util.reporting.ReportingUtils;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,25 +33,13 @@ public class ReportCallOpen {
     MunicipalityRepository municipalityRepository;
 
     @Autowired
-    LauRepository lauRepository;
-
-    @Autowired
-    MayorRepository mayorRepository;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    RegistrationRepository registrationRepository;
-
-    @Autowired
     ApplicationRepository applicationRepository;
 
     @Autowired
-    RegistrationUsersRepository registrationUsersRepository;
+    NutCallCustomRepository nutCallCustomRepository;
 
     @Autowired
-    NutCallCustomRepository nutCallCustomRepository;
+    RegistrationWarningRepository registrationWarningRepository;
 
     static String[] fields = {"Number of applicants for the current call up to date", "Number of applicants with 1 warning (NO MATTER WHICH WARNING)", "Number of applicants with 2 warnings (NO MATTER WHICH WARNING)", "Number of applicants with 3 warnings (NO MATTER WHICH WARNING)", "Number of applicants with warning 1 (may have more than 1 warning)", "Number of applicants with warning 2 (may have more than 1 warning)", "Number of applicants with warning 3 (may have more than 1 warning)", "Number of duplicates", "Number of duplicates invalidated", "Number of invalidated for reason 1: After the follow-up request, the application provided a document which was corrupt/impossible to open in the format supplied", "Number of invalidated for reason 2: After the follow-up request, the applicant provided the same document(s) as originally supplied with the application", "Number of invalidated for reason 3: After the follow-up request, the applicant provided a document which was unreadable", "Number of invalidated for reason 4: After the follow-up request, the applicant provided a document which was incomplete", "Number of invalidated for reason 5: After the follow-up request, the applicant provided a document which was incorrect/did not correspond to the required document (or still contained incorrect information)", "Number of invalidated for reason 6: After the follow-up request, the applicant provided a document which was missing a signature", "Number of invalidated for reason 7: The deadline for the request of correction of the required supporting documents passed without compliance by the applicant", "Number of invalidated for reason 8: The application included a merged municipality","Number of invalidated for reason 9: Due to irregularities found in the application, it was invalidated"};
     static String[] totalValues = {"callApplicants", "warning1Applicant", "warning2Applicant", "warning3Applicant", "warningsType1", "warningsType2", "warningsType3", "numberDuplicates", "numberDuplicatesInvalidated", "reason1", "reason2", "reason3", "reason4", "reason5", "reason6", "reason7", "reason8", "reason9"};
@@ -145,442 +123,10 @@ public class ReportCallOpen {
     }
 
     @Transactional
-    private boolean registrationHasWarning1(Registration registration) {
+    private boolean registrationHasWarning(Integer registrationId, Integer warningType) {
         boolean warning = false;
-        if (Validator.isNotNull(registration)) {
-            Municipality municipality = municipalityRepository.findOne(registration.getMunicipality().getId());
-            if (Validator.isNotNull(municipality) && Validator.isNotNull(municipality.getLau()) && Validator.isNotNull(municipality.getLau().getId())){
-                // Lau lau = lauRepository.findOne(Integer.parseInt(municipality.getId().toString()));
-                    Lau lau = lauRepository.findOne(municipality.getLau().getId());
-                    Mayor mayor = mayorRepository.findByMunicipalityId(municipality.getId());
-                    if (Validator.isNotNull(mayor) && Validator.isNotNull(lau)) {
-                        // User user = userRepository.findOne(registration.getIdUser());
-                        User user = userRepository.findOne(registrationUsersRepository.findUserIdFromRegistrationId(registration.getId()));
-                        if (Validator.isNotNull(user) && Validator.isNotNull(user.getEmail()) && Validator.isNotNull(user.getEcasEmail()) && Validator.isNotNull(mayor.getEmail()) && Validator.isNotNull(lau) && Validator.isNotNull(lau.getCountryCode())) {
-                            switch (lau.getCountryCode().toUpperCase()) {
-                                case "AT":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".at") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".at") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".at")) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "BE":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".be") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".be") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".be")) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "BG":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".bg") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".bg") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".bg")) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "HR":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".hr") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".hr") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".hr")) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "CY":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".cy") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".cy") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".cy")) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "CZ":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".cz") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".cz") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".cz")) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "DK":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".dk") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".dk") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".dk")) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "EE":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".ee") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".ee") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".ee")) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "FI":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".fi") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".fi") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".fi")) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "FR":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".fr") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".fr") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".fr")) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "DE":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".de") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".de") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".de")) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "EL":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".el") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".el") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".el")) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "HU":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".hu") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".hu") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".hu")) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "IS":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".is") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".is") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".is")) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "IE":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".ie") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".ie") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".ie")) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "IT":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".it") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".it") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".it")) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "LV":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".lv") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".lv") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".lv")) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "LT":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".lt") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".lt") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".lt")) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "LU":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".lu") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".lu") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".lu")) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "MT":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".mt") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".mt") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".mt")) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "NL":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".nl") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".nl") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".nl")) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "NO":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".no") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".no") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".no")) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "PL":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".pl") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".pl") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".pl")) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "PT":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".pt") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".pt") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".pt")) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "RO":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".ro") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".ro") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".ro")) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "SK":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".sk") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".sk") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".sk")) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "SI":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".si") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".si") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".si")) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "ES":
-                                    if (!(
-                                            user.getEmail().trim().toLowerCase().endsWith(".es") ||
-                                                    user.getEmail().trim().toLowerCase().endsWith(".cat") ||
-                                                    user.getEmail().trim().toLowerCase().endsWith(".gal") ||
-                                                    user.getEmail().trim().toLowerCase().endsWith(".eus")
-                                    ) || !(
-                                            user.getEcasEmail().trim().toLowerCase().endsWith(".es") ||
-                                                    user.getEcasEmail().trim().toLowerCase().endsWith(".cat") ||
-                                                    user.getEcasEmail().trim().toLowerCase().endsWith(".gal") ||
-                                                    user.getEcasEmail().trim().toLowerCase().endsWith(".eus")
-                                    ) || !(
-                                            mayor.getEmail().trim().toLowerCase().endsWith(".es") ||
-                                                    mayor.getEmail().trim().toLowerCase().endsWith(".cat") ||
-                                                    mayor.getEmail().trim().toLowerCase().endsWith(".gal") ||
-                                                    mayor.getEmail().trim().toLowerCase().endsWith(".eus")
-                                    )) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "SE":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".se") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".se") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".se")) {
-                                        warning = true;
-                                    }
-                                    break;
-                                case "UK":
-                                    if (!user.getEmail().trim().toLowerCase().endsWith(".uk") ||
-                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".uk") ||
-                                            !mayor.getEmail().trim().toLowerCase().endsWith(".uk")) {
-                                        warning = true;
-                                    }
-                                    break;
-                            }
-                        }
-                    }
-            }
-        }
-        return warning;
-    }
-
-    @Transactional
-    private boolean registrationHasWarning2(Registration registration) {
-        boolean warning = false;
-        if (Validator.isNotNull(registration)) {
-            Municipality municipality = municipalityRepository.findOne(registration.getMunicipality().getId());
-            if (Validator.isNotNull(municipality)) {
-                List<Registration> ipRegistrations = Lists.newArrayList(registrationRepository.findByIpRegistration(registration.getIpRegistration()));
-                for (Registration ipRegistration : ipRegistrations) {
-                    Municipality ipMunicipality = municipalityRepository.findOne(ipRegistration.getMunicipality().getId());
-                    if (Validator.isNotNull(ipMunicipality) && Validator.isNotNull(ipRegistration) && Validator.isNotNull(ipMunicipality.getLau().getId()) && Validator.isNotNull(municipality.getLau().getId()) && ipRegistration.getId() != registration.getId() && ipMunicipality.getLau().getId() == municipality.getLau().getId()) {
-                        warning = true;
-                        break;
-                    }
-                }
-            }
-        }
-        return warning;
-    }
-
-    @Transactional
-    private boolean registrationHasWarning3(Registration registration) {
-        boolean warning = false;
-        if (Validator.isNotNull(registration)) {
-            Municipality municipality = municipalityRepository.findOne(registration.getMunicipality().getId());
-            if (Validator.isNotNull(municipality) && Validator.isNotNull(municipality.getLau()) && Validator.isNotNull(municipality.getLau().getId())){
-                Lau lau = lauRepository.findOne(municipality.getLau().getId());
-                Mayor mayor = mayorRepository.findByMunicipalityId(municipality.getId());
-                if (Validator.isNotNull(mayor) && Validator.isNotNull(lau)) {
-                    // User user = userRepository.findOne(registration.getIdUser());
-                    User user = userRepository.findOne(registrationUsersRepository.findUserIdFromRegistrationId(registration.getId()));
-                    if (Validator.isNotNull(user) && Validator.isNotNull(user.getEmail()) && Validator.isNotNull(user.getEcasEmail()) && Validator.isNotNull(mayor.getEmail()) && Validator.isNotNull(lau) && Validator.isNotNull(lau.getCountryCode())) {
-                        switch (lau.getCountryCode().toUpperCase()) {
-                            case "AT":
-                                if (!(user.getLang().toLowerCase().equals("de"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "BE":
-                                if (!(user.getLang().toLowerCase().equals("de") ||
-                                        user.getLang().toLowerCase().equals("nl") ||
-                                        user.getLang().toLowerCase().equals("fr"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "BG":
-                                if (!(user.getLang().toLowerCase().equals("bg"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "HR":
-                                if (!(user.getLang().toLowerCase().equals("hr"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "CY":
-                                if (!(user.getLang().toLowerCase().equals("el"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "CZ":
-                                if (!(user.getLang().toLowerCase().equals("cs"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "DK":
-                                if (!(user.getLang().toLowerCase().equals("da"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "EE":
-                                if (!(user.getLang().toLowerCase().equals("et"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "FI":
-                                if (!(user.getLang().toLowerCase().equals("fi") ||
-                                        user.getLang().toLowerCase().equals("sv"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "FR":
-                                if (!(user.getLang().toLowerCase().equals("fr"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "DE":
-                                if (!(user.getLang().toLowerCase().equals("de"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "EL":
-                                if (!(user.getLang().toLowerCase().equals("el"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "HU":
-                                if (!(user.getLang().toLowerCase().equals("hu"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "IS":
-                                if (!(user.getLang().toLowerCase().equals("en"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "IE":
-                                if (!(user.getLang().toLowerCase().equals("en") ||
-                                        user.getLang().toLowerCase().equals("ga"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "IT":
-                                if (!(user.getLang().toLowerCase().equals("it"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "LV":
-                                if (!(user.getLang().toLowerCase().equals("lv"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "LT":
-                                if (!(user.getLang().toLowerCase().equals("lt"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "LU":
-                                if (!(user.getLang().toLowerCase().equals("fr") ||
-                                        user.getLang().toLowerCase().equals("de"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "MT":
-                                if (!(user.getLang().toLowerCase().equals("mt") ||
-                                        user.getLang().toLowerCase().equals("en"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "NL":
-                                if (!(user.getLang().toLowerCase().equals("nl"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "NO":
-                                if (!(user.getLang().toLowerCase().equals("en"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "PL":
-                                if (!(user.getLang().toLowerCase().equals("pl"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "PT":
-                                if (!(user.getLang().toLowerCase().equals("pt"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "RO":
-                                if (!(user.getLang().toLowerCase().equals("ro"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "SK":
-                                if (!(user.getLang().toLowerCase().equals("sk"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "SI":
-                                if (!(user.getLang().toLowerCase().equals("sl"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "ES":
-                                if (!(user.getLang().toLowerCase().equals("es"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "SE":
-                                if (!(user.getLang().toLowerCase().equals("sv"))) {
-                                    warning = true;
-                                }
-                                break;
-                            case "UK":
-                                if (!(user.getLang().toLowerCase().equals("en"))) {
-                                    warning = true;
-                                }
-                                break;
-                        }
-                    }
-                }
-            }
+        if (Validator.isNotNull(registrationId) && Validator.isNotNull(warningType)) {
+            warning = registrationWarningRepository.countByRegistrationAndWarning(registrationId,warningType) > 0;
         }
         return warning;
     }
@@ -685,7 +231,7 @@ public class ReportCallOpen {
 
     @Transactional
     private int getNumberInvalidatedByReason(int reason, int idNut){
-        int numberInvalidatedByReason = 0;
+        int numberInvalidatedByReason;
         if (idNut != 0){
             numberInvalidatedByReason = applicationRepository.findApplicationsInvalidatedByCallAndReasonAndNut(callRepository.getIdCurrentCall(),reason, idNut);
         } else {
@@ -697,7 +243,7 @@ public class ReportCallOpen {
     @Transactional
     private int getApplicantsWithWarnings(int warningsNumber, int idNut) {
         int applicantsResult = 0;
-        ArrayList<Application> allApplicants = null;
+        ArrayList<Application> allApplicants;
         if (idNut != 0) {
             allApplicants = Lists.newArrayList(applicationRepository.findApplicationsForCurrentCall(idNut));
         } else {
@@ -709,17 +255,17 @@ public class ReportCallOpen {
                     for (int i = 0; i < allApplicants.size(); i++) {
                         boolean warning = false;
                         if (!warning) {
-                            warning = registrationHasWarning1(registrationRepository.findOne(allApplicants.get(i).getRegistrationId()));
+                            warning = registrationHasWarning(allApplicants.get(i).getRegistrationId(), 1);
                             if (warning) {
                                 applicantsResult++;
                             } else {
                                 if (!warning) {
-                                    warning = registrationHasWarning2(registrationRepository.findOne(allApplicants.get(i).getRegistrationId()));
+                                    warning = registrationHasWarning(allApplicants.get(i).getRegistrationId(), 2);
                                     if (warning) {
                                         applicantsResult++;
                                     } else {
                                         if (!warning) {
-                                            warning = registrationHasWarning3(registrationRepository.findOne(allApplicants.get(i).getRegistrationId()));
+                                            warning = registrationHasWarning(allApplicants.get(i).getRegistrationId(), 3);
                                             if (warning) {
                                                 applicantsResult++;
                                             }
@@ -737,14 +283,14 @@ public class ReportCallOpen {
                         boolean secondWarning = false;
                         boolean warning = false;
                         if (!warning) {
-                            warning = registrationHasWarning1(registrationRepository.findOne(allApplicants.get(i).getRegistrationId()));
+                            warning = registrationHasWarning(allApplicants.get(i).getRegistrationId(), 1);
                             if (warning) {
                                 firstWarning = warning;
                                 warning = false;
                             }
                         }
                         if (!warning) {
-                            warning = registrationHasWarning2(registrationRepository.findOne(allApplicants.get(i).getRegistrationId()));
+                            warning = registrationHasWarning(allApplicants.get(i).getRegistrationId(), 2);
                             if (warning) {
                                 if (firstWarning) {
                                     secondWarning = warning;
@@ -755,7 +301,7 @@ public class ReportCallOpen {
                             }
                         }
                         if (!warning) {
-                            warning = registrationHasWarning3(registrationRepository.findOne(allApplicants.get(i).getRegistrationId()));
+                            warning = registrationHasWarning(allApplicants.get(i).getRegistrationId(), 3);
                             if (warning) {
                                 secondWarning = warning;
                             }
@@ -768,12 +314,12 @@ public class ReportCallOpen {
                 }
                 case 3: {
                     for (int i = 0; i < allApplicants.size(); i++) {
-                        boolean firstWarning = false;
-                        boolean secondWarning = false;
-                        boolean thirdWarning = false;
-                        firstWarning = registrationHasWarning1(registrationRepository.findOne(allApplicants.get(i).getRegistrationId()));
-                        secondWarning = registrationHasWarning2(registrationRepository.findOne(allApplicants.get(i).getRegistrationId()));
-                        thirdWarning = registrationHasWarning3(registrationRepository.findOne(allApplicants.get(i).getRegistrationId()));
+                        boolean firstWarning;
+                        boolean secondWarning;
+                        boolean thirdWarning;
+                        firstWarning = registrationHasWarning(allApplicants.get(i).getRegistrationId(), 1);
+                        secondWarning = registrationHasWarning(allApplicants.get(i).getRegistrationId(), 2);
+                        thirdWarning = registrationHasWarning(allApplicants.get(i).getRegistrationId(), 3);
                         if (firstWarning && secondWarning && thirdWarning) {
                             applicantsResult++;
                         }
@@ -782,14 +328,13 @@ public class ReportCallOpen {
                 }
             }
         }
-        float percent = (applicantsResult * 100.0f) / allApplicants.size();
         return applicantsResult;
     }
 
     @Transactional
     private int getWarningsByType(int warningType, int idNut) {
         int warningsResult = 0;
-        ArrayList<Application> allApplicants = null;
+        ArrayList<Application> allApplicants;
         if (idNut != 0) {
             allApplicants = Lists.newArrayList(applicationRepository.findApplicationsForCurrentCall(idNut));
         } else {
@@ -799,7 +344,7 @@ public class ReportCallOpen {
             switch (warningType) {
                 case 1: {
                     for (int i = 0; i < allApplicants.size(); i++) {
-                        if (registrationHasWarning1(registrationRepository.findOne(allApplicants.get(i).getRegistrationId()))) {
+                        if (registrationHasWarning(allApplicants.get(i).getRegistrationId(),1)) {
                             warningsResult++;
                         }
                     }
@@ -807,7 +352,7 @@ public class ReportCallOpen {
                 }
                 case 2: {
                     for (int i = 0; i < allApplicants.size(); i++) {
-                        if (registrationHasWarning2(registrationRepository.findOne(allApplicants.get(i).getRegistrationId()))) {
+                        if (registrationHasWarning(allApplicants.get(i).getRegistrationId(), 2)) {
                             warningsResult++;
                         }
                     }
@@ -815,7 +360,7 @@ public class ReportCallOpen {
                 }
                 case 3: {
                     for (int i = 0; i < allApplicants.size(); i++) {
-                        if (registrationHasWarning3(registrationRepository.findOne(allApplicants.get(i).getRegistrationId()))) {
+                        if (registrationHasWarning(allApplicants.get(i).getRegistrationId(), 3)) {
                             warningsResult++;
                         }
                     }
@@ -847,7 +392,7 @@ public class ReportCallOpen {
     @Transactional
     private int getNumberDuplicates(int idNut) {
         int numberDuplicates = 0;
-        long municipalityDuplicates = 0;
+        long municipalityDuplicates;
         ArrayList<String> allMunicipalities = null;
         if (idNut == 0) {
             List<Integer> countListed = Lists.newArrayList(applicationRepository.countAplicationsDuplicatedForCall());
@@ -861,9 +406,7 @@ public class ReportCallOpen {
         }
         if (idNut != 0) {
             for (String m : allMunicipalities) {
-                municipalityDuplicates = 0;
                 municipalityDuplicates = applicationRepository.countApplicationsForMunicipalityByCountry(idNut, m);
-
                 if (municipalityDuplicates != 0) {
                     numberDuplicates += (int) municipalityDuplicates - 1;
                 }
@@ -875,7 +418,7 @@ public class ReportCallOpen {
     @Transactional
     private int getNumberDuplicatesInvalidated(int idNut) {
         int numberDuplicatesInvalidated = 0;
-        long municipalityDuplicates = 0;
+        long municipalityDuplicates;
         ArrayList<String> allMunicipalities = null;
         if (idNut == 0) {
             List<Integer> countListed = Lists.newArrayList(applicationRepository.countAplicationsDuplicatedForCallInvalidated());
@@ -889,7 +432,6 @@ public class ReportCallOpen {
         }
         if (idNut != 0) {
             for (String m : allMunicipalities) {
-                municipalityDuplicates = 0;
                 municipalityDuplicates = applicationRepository.countApplicationsForMunicipalityByCountryInvalidated(idNut, m);
                 if (municipalityDuplicates != 0) {
                     numberDuplicatesInvalidated += (int) municipalityDuplicates - 1;

@@ -12,4 +12,6 @@ public interface RegistrationWarningRepository extends CrudRepository<Registrati
 
     @Query(value = "SELECT distinct(rw.warning) FROM registration_warnings rw inner join registrations r on r.id = rw.registration_id inner join municipalities m on r.municipality = m.id where m.lau = ?1", nativeQuery = true)
     List<Integer> findAllByLauId(Integer registrationId);
+
+    Integer countByRegistrationAndWarning(Integer registration, Integer warning);
 }
