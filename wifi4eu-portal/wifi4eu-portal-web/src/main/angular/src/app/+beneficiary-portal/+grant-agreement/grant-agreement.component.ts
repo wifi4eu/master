@@ -101,8 +101,7 @@ export class MyVoucherComponent {
                             for(let i = 0; i < registrations.length; i++) {
                                 this.applicationApi.getVoucherApplicationByCallIdAndRegistrationId(this.calls[(this.calls.length)-1].id, registrations[i].id).subscribe(
                                     (response : ResponseDTO) => {
-                                        if (response.data.id != 0) {
-                                            
+                                        if (response.data != null && response.data.id != 0) {
                                             this.municipalityApi.getMunicipalityById(registrations[i].municipalityId).subscribe(
                                                 (municipality : MunicipalityDTOBase) => {
                                                     this.applications.push(response.data);
