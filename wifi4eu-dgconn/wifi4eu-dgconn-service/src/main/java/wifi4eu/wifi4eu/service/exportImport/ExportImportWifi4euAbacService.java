@@ -12,6 +12,7 @@ import org.apache.poi.util.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -89,22 +90,7 @@ public class ExportImportWifi4euAbacService {
 
     private static final String ERROR_WRITING_DOWN_TO_THE_CSV_FILE = "Error writing down to the CSV file. The record will be skipped.";
 
-    // TODO: externalize
-    private static final String AIRGAP_EXPORT_LEGAL_COMMITMENT_INFORMATION_CSV = "airgap_exportLegalCommitmentInformation.csv";
-
-    // TODO: externalize
-    private static final String AIRGAP_EXPORT_BENEFICIARY_DOCUMENTS_CSV = "airgap_exportBeneficiaryDocuments.csv";
-
     private static final String THE_RECORD_WAS_SKIPPED_AS_ITS_STATUS_IS_NOT_VALID = "The record was skipped as its status is not valid";
-
-    private static final String FILENAME_EXPORT_DOCUMENTS_DATA = "portal_exportBeneficiaryDocuments.csv";
-
-    private static final String FILENAME_EXPORT_BENEFICIARIES_DATA = "portal_exportBeneficiaryInformation.csv";
-
-    // TODO: make it an external property @Value
-    private static final Integer GRANTED_AMOUNT = 15000;
-
-    private static final String FILENAME_EXPORT_LEGAL_COMMITMENT_DATA = "portal_exportBeneficiaryDocuments.csv";
 
     @Autowired
     private ExportImportRegistrationDataMapper exportImportRegistrationDataMapper;
@@ -156,6 +142,25 @@ public class ExportImportWifi4euAbacService {
 
     @Autowired
     private ApplicationRepository applicationRepository;
+
+    @Value("${budgetary.commitment.amount:15000}")
+    private int grantedAmount;
+
+    @Value("${lef.export.legalEntities.fileName}")
+    private String lefExportDataFileName;
+
+    @Value("${lef.export.documents.fileName}")
+    private String lefExportDocumentsFileName;
+
+    @Value("${legalCommitment.export.fileName}")
+    private String legalCommitmentExportFileName;
+
+    @Value("${legalCommitment.import.information.fileName}")
+    private String legalCommitmentImportFileName;
+
+    @Value("${legalCommitment.import.documents.fileName}")
+    private String legalCommitmentImportDocumentsFileName;
+
 
     public boolean importLegalEntitiesFromAbac(InputStream fileDataStream) throws IOException {
         _log.debug("importLegalEntityFBCValidate");
@@ -230,11 +235,11 @@ public class ExportImportWifi4euAbacService {
         }
 
         // Add the Beneficiary CSV file
-        ExportFile csvBeneficiariesFile = new ExportFile(FILENAME_EXPORT_BENEFICIARIES_DATA, entitiesOutputStream.toByteArray());
+        ExportFile csvBeneficiariesFile = new ExportFile(lefExportDataFileName, entitiesOutputStream.toByteArray());
         exportFiles.add(csvBeneficiariesFile);
 
         // Add the Document CSV file
-        ExportFile csvDocumentsFile = new ExportFile(FILENAME_EXPORT_DOCUMENTS_DATA, documentsOutputStream.toByteArray());
+        ExportFile csvDocumentsFile = new ExportFile(lefExportDocumentsFileName, documentsOutputStream.toByteArray());
         exportFiles.add(csvDocumentsFile);
 
         return exportFileUtilities.generateZipFileStream(exportFiles);
@@ -315,7 +320,8 @@ public class ExportImportWifi4euAbacService {
 
     @Deprecated
     public void exportRegistrationData() throws Exception {
-        _log.info("exportRegistrationData");
+        _log.debug("exportRegistrationData");
+
         List<ExportImportRegistrationDataDTO> exportImportRegistrationDataList = exportImportRegistrationDataMapper
                 .toDTOList(Lists.newArrayList(exportImportRegistrationDataRepository.findExportImportRD()));
         String[] header = {"EU Rank", "Country Rank", "Country Name", "Municipality name", "Issue",
@@ -419,7 +425,7 @@ public class ExportImportWifi4euAbacService {
 
                 for (ExportImportRegistrationData registrationData : exportImportRegistrationData) {
 
-                    int neededAmount = GRANTED_AMOUNT;
+                    int neededAmount = grantedAmount;
                     while (neededAmount > 0) {
 
                         int currentGlobalAmount = globalCommitments[globalCommitmentIndex].getAmmount();
@@ -858,7 +864,7 @@ public class ExportImportWifi4euAbacService {
         // TODO: needs o be improved for the really big files
         byte[] zipFile = IOUtils.toByteArray(inputStream);
 
-        ZipFileReader.ZipFileEntry informationFile = parseEntryFromFile(new ByteArrayInputStream(zipFile), AIRGAP_EXPORT_LEGAL_COMMITMENT_INFORMATION_CSV);
+        ZipFileReader.ZipFileEntry informationFile = parseEntryFromFile(new ByteArrayInputStream(zipFile), legalCommitmentImportFileName);
 
         try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(informationFile.getContent());
              InputStreamReader inputStreamReader = new InputStreamReader(byteArrayInputStream)) {
@@ -930,7 +936,7 @@ public class ExportImportWifi4euAbacService {
 
     private Map<Integer, String> parseLegalCommitmentFileNames(ByteArrayInputStream zipFile) throws IOException {
 
-        ZipFileReader.ZipFileEntry documentFile = parseEntryFromFile(zipFile, AIRGAP_EXPORT_BENEFICIARY_DOCUMENTS_CSV);
+        ZipFileReader.ZipFileEntry documentFile = parseEntryFromFile(zipFile, legalCommitmentImportDocumentsFileName);
 
         // TODO: needs o be improved for the really big files
         // Too heavy to hold all FileEntries thus we keep only file names.
@@ -981,7 +987,7 @@ public class ExportImportWifi4euAbacService {
              ))) {
 
             List<ExportImportLegalCommitmentInformation> legalCommitmentsInformations = searchLegalCommitments();
-            this._log.info("legalCommitmentsData.size [{}]", legalCommitmentsInformations.size());
+            this._log.debug("legalCommitmentsData.size [{}]", legalCommitmentsInformations.size());
 
             if (CollectionUtils.isNotEmpty(legalCommitmentsInformations)) {
                 for (ExportImportLegalCommitmentInformation legalCommitmentInformation : legalCommitmentsInformations) {
@@ -1015,9 +1021,9 @@ public class ExportImportWifi4euAbacService {
         // Add the Legal Commitment CSV file
         byte[] fileBytes = outputStream.toByteArray();
 
-        this._log.info("Exporting to file. FileName [{}]", FILENAME_EXPORT_LEGAL_COMMITMENT_DATA, fileBytes.length);
+        this._log.debug("Exporting to file. FileName [{}]", legalCommitmentExportFileName);
 
-        ExportFile csvLegalCommitmentsFile = new ExportFile(FILENAME_EXPORT_LEGAL_COMMITMENT_DATA, fileBytes);
+        ExportFile csvLegalCommitmentsFile = new ExportFile(legalCommitmentExportFileName, fileBytes);
         exportFiles.add(csvLegalCommitmentsFile);
 
         return exportFileUtilities.generateZipFileStream(exportFiles);
@@ -1028,7 +1034,7 @@ public class ExportImportWifi4euAbacService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
         List<BudgetaryCommitment> listBudgetaryCommitment = budgetaryCommitmentRepository.findByAbacBcKeyIsNotNullAndAbacLcKeyIsNull();
-        this._log.info("listBudgetaryCommitment.size [{}]", listBudgetaryCommitment.size());
+        this._log.debug("listBudgetaryCommitment.size [{}]", listBudgetaryCommitment.size());
         List<Application> listApplications = new ArrayList<>();
 
         // TODO Change this query logic
@@ -1044,7 +1050,7 @@ public class ExportImportWifi4euAbacService {
         }
 
         int listApplicationsSize = listApplications.size();
-        this._log.info("Applications.size [{}]", listApplicationsSize);
+        this._log.debug("Applications.size [{}]", listApplicationsSize);
 
         List<ExportImportLegalCommitmentInformation> listLegalCommitmentInformation = new ArrayList<>();
         int i = 0;
@@ -1052,13 +1058,13 @@ public class ExportImportWifi4euAbacService {
         for (Application application : listApplications) {
             Integer applicationId = application.getId();
 
-            this._log.info("Processing applications. Application.Id [{}]. Progress [{}]/[{}]", applicationId, ++i, listApplicationsSize);
+            this._log.debug("Processing applications. Application.Id [{}]. Progress [{}]/[{}]", applicationId, ++i, listApplicationsSize);
 
             List<GrantAgreement> listGrantAgreement = application.getGrantAgreements();
-            this._log.info("   listGrantAgreement.size()[{}]", listGrantAgreement.size());
+            this._log.debug("   listGrantAgreement.size()[{}]", listGrantAgreement.size());
 
             GrantAgreement grantAgreement = !listGrantAgreement.isEmpty() ? listGrantAgreement.get(0) : null;
-            this._log.info("   First Grant Agreement. grantAgreement.id [{}]", grantAgreement == null ? "NULL" : grantAgreement.getId());
+            this._log.debug("   First Grant Agreement. grantAgreement.id [{}]", grantAgreement == null ? "NULL" : grantAgreement.getId());
 
             ExportImportLegalCommitmentInformation legalCommitmentInformation = new ExportImportLegalCommitmentInformation();
             legalCommitmentInformation.setFiles(new ArrayList<>());
@@ -1066,7 +1072,7 @@ public class ExportImportWifi4euAbacService {
             if (grantAgreement != null) {
                 String documentLocation = grantAgreement.getDocumentLocation();
 
-                _log.info("Downloading from URI [{}]", documentLocation);
+                _log.debug("Downloading from URI [{}]", documentLocation);
 
                 URL aURL = null;
                 try {
@@ -1094,7 +1100,7 @@ public class ExportImportWifi4euAbacService {
                     byte[] fileContent = this.azureBlobConnector.downloadFileByUri(documentLocation);
 
                     byte[] fileData = fileContent == null ? new byte[0] : fileContent;
-                    this._log.info("   Downloaded fileContent.length [{}] bytes", fileContent == null ? "NULL" : fileContent.length);
+                    this._log.debug("   Downloaded fileContent.length [{}] bytes", fileContent == null ? "NULL" : fileContent.length);
                     ExportFile exportFile = new ExportFile(legalCommitmentInformation.getZipFileDocumentName(), fileData);
 
                     legalCommitmentInformation.getFiles().add(exportFile);

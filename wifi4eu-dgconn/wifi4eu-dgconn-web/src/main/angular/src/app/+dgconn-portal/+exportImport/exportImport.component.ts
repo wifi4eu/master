@@ -39,15 +39,15 @@ export class DgConnExportImportComponent {
                 private router: Router, private route: ActivatedRoute) {
     }
 
-    onNavigateToImportLefFile(): void {
+    navigateToImportLefFile(): void {
         this.router.navigate(['lef'], { relativeTo: this.route });
     }
 
-    onNavigateToImportBcFile(): void {
+    navigateToImportBcFile(): void {
         this.router.navigate(['bc'], { relativeTo: this.route });
     }
 
-    onNavigateToImportLcFile(): void {
+    navigateToImportLcFile(): void {
         this.router.navigate(['lc'], { relativeTo: this.route });
     }
 
@@ -59,9 +59,8 @@ export class DgConnExportImportComponent {
         this.processingOperation = true;
         this.exportImportApi.exportBeneficiaryInformation().subscribe(
             (response) => {
-                let blob = new Blob([response], { type: 'text/zip' });
-                FileSaver.saveAs(blob, 'portal_exportBeneficiaryInformation.zip');
-                this.sharedService.growlTranslation('Your file have been exported correctly!', 'dgconn.dashboard.card.messageExport', 'success');
+                this.saveFile('portal_exportBeneficiaryInformation.zip', response, 'text/zip');
+
                 this.processingOperation = false;
             }, error => {
                 this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later.', 'shared.error.api.generic', 'error');
@@ -74,9 +73,8 @@ export class DgConnExportImportComponent {
         this.processingOperation = true;
         this.exportImportApi.exportBudgetaryCommitment().subscribe(
             (response) => {
-                let blob = new Blob([response], { type: 'text/csv' });
-                FileSaver.saveAs(blob, 'portal_exportBudgetaryCommitment.csv');
-                this.sharedService.growlTranslation('Your file have been exported correctly!', 'dgconn.dashboard.card.messageExport', 'success');
+                this.saveFile('portal_exportBudgetaryCommitment.csv', response, 'text/csv');
+
                 this.processingOperation = false;
             }, error => {
                 this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later.', 'shared.error.api.generic', 'error');
@@ -89,16 +87,21 @@ export class DgConnExportImportComponent {
         this.processingOperation = true;
         this.legalEntitiesService.exportLegalCommitment().subscribe(
             (response) => {
-                const blob = new Blob([response], { type: 'text/zip' });
-                FileSaver.saveAs(blob, 'exportLegalCommitment.zip');
+                this.saveFile('exportLegalCommitment.zip', response, 'text/zip');
 
-                this.sharedService.growlTranslation('Your file have been exported correctly!', 'dgconn.dashboard.card.messageExport', 'success');
                 this.processingOperation = false;
             }, error => {
                 this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later.', 'shared.error.api.generic', 'error');
                 this.processingOperation = false;
             }
         );
+    }
+
+    private saveFile(fileName, fileData, fileType): void {
+        const blob = new Blob([fileData], { type: fileType });
+        FileSaver.saveAs(blob, fileName);
+
+        this.sharedService.growlTranslation('Your file have been exported correctly!', 'dgconn.dashboard.card.messageExport', 'success');
     }
 
 }
