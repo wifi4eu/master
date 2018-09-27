@@ -24,8 +24,8 @@ import wifi4eu.wifi4eu.apply.masterEntity.ApplicationSQLServer;
 public class PageableCommitter implements ICommitter {
 	
 	private final String INSERT_TEMPLATE = "INSERT INTO applications (call_id, registration, supplier, voucher_awarded, date, _status, invalidate_reason, lef_export, " +
-	"lef_import, lef_status, bc_export, bc_import, bc_status,lc_export, lc_import, lc_status, order) " +
-	"VALUES (?, ?, NULL, 0, ?, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, ?)";
+	"lef_import, lef_status, bc_export, bc_import, bc_status,lc_export, lc_import, lc_status) " +
+	"VALUES (?, ?, NULL, 0, ?, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0)";
 	
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	
@@ -106,7 +106,7 @@ public class PageableCommitter implements ICommitter {
 			
 			//
 			List<ApplicationSQLServer> applications = tempList.stream().map(a ->
-				new ApplicationSQLServer(Long.valueOf(a.getCallId()), Long.valueOf(a.getRegistrationId()), Long.valueOf(a.getId().substring(0, a.getId().indexOf('-'))), (a.getId().contains("-") ? Long.parseLong(a.getId().substring(a.getId().indexOf("-")) + 1) : 0L))
+				new ApplicationSQLServer(Long.valueOf(a.getCallId()), Long.valueOf(a.getRegistrationId()), Long.valueOf(a.getId().substring(0, a.getId().indexOf('-'))))
 			).collect(Collectors.toList());
 			
 			masterPreparedStatementSetter.setListLocalEntities(applications);
