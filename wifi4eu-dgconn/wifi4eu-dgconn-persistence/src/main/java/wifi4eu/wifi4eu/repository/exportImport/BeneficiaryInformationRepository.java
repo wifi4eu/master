@@ -79,7 +79,7 @@ public class BeneficiaryInformationRepository {
                         (Integer) object[0],
                         object[1] != null ? (object[1] + "") : "",
                         (String) object[2],
-                        (String) object[14],
+                        (String) object[15],
                         (String) object[3],
                         (String) object[4],
                         (String) object[5],
