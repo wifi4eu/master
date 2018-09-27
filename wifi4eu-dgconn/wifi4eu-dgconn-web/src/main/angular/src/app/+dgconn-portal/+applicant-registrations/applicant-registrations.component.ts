@@ -77,12 +77,21 @@ export class DgConnApplicantRegistrationsComponent {
     private sendNotificationsPsswd: string = '';
     private showNotificationModal: boolean = false;
 
-    private sessionInterval: any;
+    private excelInterval: any;
     private adminAction: AdminActionsDTO;
     private subject = new Subject();
 
     constructor(private adminActionsApi: AdminactionsApi, private applicationApi: ApplicationApi, private callApi: CallApi, private nutsApi: NutsApi, private activatedRoute: ActivatedRoute, private router: Router, private sharedService: SharedService, private translateService: TranslateService) {
-      this.sessionInterval = IntervalObservable.create(30000);
+      this.excelInterval = IntervalObservable.create(15000);
+      this.adminActionsApi.getByActionName("export_municipality_applications").subscribe((response: ResponseDTO) => {
+        if (response.success) {
+          this.adminAction = response.data; 
+          if(this.adminAction.running){
+            this.downloadingList = true;
+            this.excelExportInterval();
+          }
+        } 
+      })
       this.callApi.allCalls().subscribe(
             (calls: CallDTOBase[]) => {
                 if (calls.length > 0) {
@@ -160,18 +169,22 @@ export class DgConnApplicantRegistrationsComponent {
           this.adminAction = response.data; 
           if(!this.adminAction.running){
             this.subject.next();
-            // REQUEST FILE
+            this.applicationApi.downloadExportExcelApplicantsList().subscribe((response) => {
+              console.log(response);
+              let blob = new Blob([response], {type: 'application/vnd.ms-excel'});
+              FileSaver.saveAs(blob, `applicants.xls`);
+              this.downloadingList = false; 
+            })
           }          
         }                      
       });
     }
 
-    private startInterval() {
-      this.sessionInterval
+    private excelExportInterval() {
+      this.excelInterval
           .takeUntil(this.subject)
           .subscribe(execution => {
-              this.exportIsRunning();
-              console.log("running " , new Date());
+              this.exportIsRunning();              
           });
     }
 
@@ -341,21 +354,17 @@ export class DgConnApplicantRegistrationsComponent {
             if (this.searchingByName) {
                 this.applicationApi.exportExcelDGConnApplicantsListSearchingName(this.currentCall.id, countryCode, this.nameSearched).subscribe(
                     (response) => {
-                        let blob = new Blob([response], {type: 'application/vnd.ms-excel'});
-                        FileSaver.saveAs(blob, 'applicants.xls');
-                        this.downloadingList = false;
+                        this.excelExportInterval();
                     }
                 );
             } else {
                 this.applicationApi.exportExcelDGConnApplicantsList(this.currentCall.id, countryCode).subscribe(
                     (response) => {
-                        let blob = new Blob([response], {type: 'application/vnd.ms-excel'});
-                        FileSaver.saveAs(blob, 'applicants.xls');
-                        this.downloadingList = false;
+                        this.excelExportInterval();
                     }
                 );
             }
-            this.startInterval();
+
         }
     }
 

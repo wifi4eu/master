@@ -29,17 +29,7 @@ import com.google.common.collect.Lists;
 
 import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.mail.MailData;
-import wifi4eu.wifi4eu.common.dto.model.ApplicantListItemDTO;
-import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
-import wifi4eu.wifi4eu.common.dto.model.ApplicationVoucherInfoDTO;
-import wifi4eu.wifi4eu.common.dto.model.CallDTO;
-import wifi4eu.wifi4eu.common.dto.model.CorrectionRequestEmailDTO;
-import wifi4eu.wifi4eu.common.dto.model.LegalFileCorrectionReasonDTO;
-import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
-import wifi4eu.wifi4eu.common.dto.model.PagingSortingDTO;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
-import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentAuxiliarDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
@@ -47,6 +37,7 @@ import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
 import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.admin.AdminActions;
@@ -70,6 +61,7 @@ import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.repository.warning.RegistrationWarningRepository;
+import wifi4eu.wifi4eu.service.admin.AdminActionsService;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
@@ -170,6 +162,12 @@ public class ApplicationService {
 
     @Autowired
     TaskExecutor taskExecutor;
+
+    @Autowired
+    AdminActionsService adminActionsService;
+
+    @Autowired
+    AzureBlobConnector azureBlobConnector;
 
     public static final String TMP_DIR = System.getProperty("java.io.tmpdir");
 
@@ -509,35 +507,25 @@ public class ApplicationService {
     public byte[] exportExcelDGConnApplicantsList(Integer callId, String country) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
-        /*_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Exporting excel");
-        PagingSortingDTO pagingSortingData = new PagingSortingDTO(0,
-                municipalityService.getCountDistinctMunicipalitiesThatAppliedCall(callId, country), "lauId", 1);
-        List<ApplicantListItemDTO> applicants = findDgconnApplicantsList(callId, country, null, pagingSortingData);
-
-        ExcelExportGenerator excelExportGenerator = new ExcelExportGenerator(applicants, ApplicantListItemDTO.class);
-        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Excel exported");
-        return excelExportGenerator.exportExcelFile("applicants").toByteArray();*/
-
-        /*AdminActions adminActions = adminActionsRepository.findOneByAction("voucher_send_notifications");
-        if (adminActions != null && adminActions.isRunning()) {
-            return new ResponseDTO(false, adminActions, null);
-        }*/
-
         taskExecutor.execute(context.getBean(ExcelExportGeneratorAsync.class, callId, country, userConnected, ApplicantListItemDTO.class));
         return new ByteArrayOutputStream().toByteArray();
+    }
+
+    public byte[] downloadExportExcelApplicantsList(){
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        AdminActionsDTO adminActionsDTO = adminActionsService.getByActionNameAndUser("export_municipality_applications", userConnected.getId());
+        if(adminActionsDTO.isRunning()){
+            return null;
+        }
+        return azureBlobConnector.downloadExcelExportApplicants(adminActionsDTO.getData());
     }
     
     public byte[] exportExcelDGConnApplicantsListContainingName(Integer callId, String country, String name) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Exporting excel");
-        int pageSize = municipalityService.getCountDistinctMunicipalitiesThatAppliedCallContainingName(callId, country, name);
-        PagingSortingDTO pagingSortingData = new PagingSortingDTO(0, pageSize, "lauId", 1);
-        List<ApplicantListItemDTO> applicants = findDgconnApplicantsList(callId, country, name, pagingSortingData);
-
-        ExcelExportGenerator excelExportGenerator = new ExcelExportGenerator(applicants, ApplicantListItemDTO.class);
-        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Excel exported");
-        return excelExportGenerator.exportExcelFile("applicants").toByteArray();
+        taskExecutor.execute(context.getBean(ExcelExportGeneratorAsync.class, callId, country, name, userConnected, ApplicantListItemDTO.class));
+        return new ByteArrayOutputStream().toByteArray();
     }
 
     public ResponseDTO sendCorrectionEmails(String sendNotificationsPsswd, Integer callId) throws Exception {

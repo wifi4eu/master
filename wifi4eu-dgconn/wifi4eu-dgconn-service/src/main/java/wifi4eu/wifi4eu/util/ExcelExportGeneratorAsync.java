@@ -48,10 +48,9 @@ public class ExcelExportGeneratorAsync implements Runnable  {
     @Autowired
     AzureBlobConnector azureBlobConnector;
 
-    public static final String TMP_DIR = System.getProperty("java.io.tmpdir");
-
     private UserDTO userConnected;
     private Integer callId;
+    private String name;
 
     private String country;
     private Class dataClass;
@@ -63,6 +62,14 @@ public class ExcelExportGeneratorAsync implements Runnable  {
         this.userConnected = userDTO;
     }
 
+    public ExcelExportGeneratorAsync(Integer callId, String country, String name, UserDTO userDTO, Class dataClass) {
+        this.country = country;
+        this.callId = callId;
+        this.name = name;
+        this.dataClass = dataClass;
+        this.userConnected = userDTO;
+    }
+
     @Override
     public void run() {
         AdminActions adminActions = null;
@@ -70,9 +77,9 @@ public class ExcelExportGeneratorAsync implements Runnable  {
 
 
             if (dataClass == BeneficiaryListItem.class || dataClass == BeneficiaryListItemDTO.class) {
-                adminActions = adminActionsRepository.findOneByAction("export_beneficiaries");
+                adminActions = adminActionsRepository.findOneByActionAndUserId("export_beneficiaries", userConnected.getId());
             } else if (dataClass == ApplicantListItem.class || dataClass == ApplicantListItemDTO.class) {
-                adminActions = adminActionsRepository.findOneByAction("export_municipality_applications");
+                adminActions = adminActionsRepository.findOneByActionAndUserId("export_municipality_applications", userConnected.getId());
 
                 if(Validator.isNull(adminActions)){
                     adminActions = new AdminActions();
@@ -98,13 +105,14 @@ public class ExcelExportGeneratorAsync implements Runnable  {
 
                 List<ApplicantListItemDTO> applicants = applicantListItemMapper.toDTOList(
                         applicantListItemRepository.findDgconnApplicantsListContainingNameOrderByLauIdAsc(
-                                callId, country, null, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                                callId, country, name, pagingSortingData.getOffset(), pagingSortingData.getCount()));
 
                 ExcelExportGenerator excelExportGenerator = new ExcelExportGenerator(applicants, ApplicantListItemDTO.class);
                 byte[] bytes = excelExportGenerator.exportExcelFile("applicants").toByteArray();
 
-                FileUtils.writeByteArrayToFile(new File(TMP_DIR.concat("excel_file_"+userConnected.getId()+".xlsx")), bytes);
+                azureBlobConnector.uploadExportExcelApplicantsList("dgconn-applicants"+userConnected.getId(), bytes);
 
+                adminActions.setData("dgconn-applicants"+userConnected.getId());
                 adminActions.setRunning(false);
                 adminActions.setEndDate(new Date());
                 adminActionsRepository.save(adminActions);

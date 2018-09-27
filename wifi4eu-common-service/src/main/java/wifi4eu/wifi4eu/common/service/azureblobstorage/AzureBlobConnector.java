@@ -1,10 +1,6 @@
 package wifi4eu.wifi4eu.common.service.azureblobstorage;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -44,16 +40,20 @@ public class AzureBlobConnector {
 
 	private static final String DEFAULT_CONTAINER_NAME = "wifi4eu";
 
+	private static final String GRANT_AGREEMENT_CONTAINER_NAME = "grant-agreement";
+
+    private static final String EXCEL_EXPORT_CONTAINER_NAME = "excel-exports";
+
     @Autowired
     EncrypterService encrypterService;
 
     private String storageConnectionString;
-    	
+
     @PostConstruct
     public void init() throws Exception {
         storageConnectionString = encrypterService.getAzureKeyStorageLegalFiles();
     }
-    
+
 	private CloudBlobContainer getContainerReference(final String containerName) {
 		CloudStorageAccount storageAccount;
 		CloudBlobClient blobClient = null;
@@ -70,18 +70,59 @@ public class AzureBlobConnector {
 
 		return container;
 	}
-	
-	public String uploadText(final String containerName, final String fileName, final String content) {
-		// Returning value
+
+	public String uploadByteArray(final String containerName, final String fileName, final byte[] data){
 		String fileUri = null;
-		
+
 		String encodedFileName = null;
 		try {
 			encodedFileName = URLEncoder.encode(fileName, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			LOGGER.error("Error", e);
 		}
-		
+
+		if (encodedFileName != null) {
+
+			// Validating the paramenters
+			this.checkContainerName(containerName);
+			this.checkFileName(encodedFileName);
+
+			CloudBlobContainer container = this.getContainerReference(containerName);
+
+			if (container != null) {
+				//Getting a blob reference
+				CloudBlockBlob blob = null;
+				try {
+					blob = container.getBlockBlobReference(encodedFileName);
+				} catch (URISyntaxException | StorageException e) {
+					LOGGER.error("Error", e);
+				}
+
+				if (blob != null) {
+					try {
+						blob.uploadFromByteArray(data,0, data.length);
+						fileUri = blob.getUri().toString();
+					} catch (StorageException | IOException e) {
+						LOGGER.error("Error", e);
+					}
+				}
+			}
+		}
+
+		return fileUri;
+	}
+
+	public String uploadText(final String containerName, final String fileName, final String content) {
+		// Returning value
+		String fileUri = null;
+
+		String encodedFileName = null;
+		try {
+			encodedFileName = URLEncoder.encode(fileName, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			LOGGER.error("Error", e);
+		}
+
 		if (encodedFileName != null) {
 
 			// Validating the paramenters
@@ -109,17 +150,17 @@ public class AzureBlobConnector {
 				}
 			}
 		}
-		
+
 		return fileUri;
 	}
-	
+
 	public boolean downloadAsString(final String containerName, final String fileName, final String absoluteDestinationPath) throws Exception {
 		boolean result = false;
-		
+
 		// Validating the paramenters
 		this.checkContainerName(containerName);
 		this.checkFileName(fileName);
-				
+
 		CloudBlobContainer container = this.getContainerReference(containerName);
 
 		if (container == null) {
@@ -128,17 +169,47 @@ public class AzureBlobConnector {
 			blob.downloadToFile(absoluteDestinationPath);
 			result = true;
 		}
-		
+
 		return result;
 	}
-	
-	public String downloadText(final String containerName, final String fileName) {
-		String content = null;
-		
+
+	public byte[] downloadAsBytes(final String containerName, final String fileName){
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
 		// Validating the paramenters
 		this.checkContainerName(containerName);
 		this.checkFileName(fileName);
-				
+
+		CloudBlobContainer container = this.getContainerReference(containerName);
+		CloudBlockBlob blob = null;
+		try {
+			blob = container.getBlockBlobReference(fileName);
+		} catch (URISyntaxException | StorageException e) {
+			LOGGER.error("Error", e);
+		}
+
+		if (blob != null) {
+			LOGGER.info("Downloading from containerName[{}], fileName[{}]", containerName, fileName);
+
+			try {
+				blob.download(outputStream);
+				outputStream.close();
+				LOGGER.info("Content downloaded. Content.length [{}]", outputStream == null ? "NULL" : String.valueOf(outputStream.size()));
+			} catch (StorageException | IOException e) {
+				LOGGER.error("Error", e);
+			}
+		}
+
+		return outputStream.toByteArray();
+	}
+
+	public String downloadText(final String containerName, final String fileName) {
+		String content = null;
+
+		// Validating the paramenters
+		this.checkContainerName(containerName);
+		this.checkFileName(fileName);
+
 		CloudBlobContainer container = this.getContainerReference(containerName);
 		CloudBlockBlob blob = null;
 		try {
@@ -156,11 +227,11 @@ public class AzureBlobConnector {
 			} catch (StorageException | IOException e) {
 				LOGGER.error("Error", e);
 			}
-		} 
-		
+		}
+
 		return content;
 	}
-	
+
 	public boolean delete(final String containerName, final String fileName) {
 		boolean result = false;
 		CloudBlobContainer container = this.getContainerReference(containerName);
@@ -172,7 +243,7 @@ public class AzureBlobConnector {
 		} catch (URISyntaxException | StorageException e) {
 			LOGGER.error("Error getting blob reference", e);
 		}
-		
+
 		if (blob != null) {
 			try {
 				blob.delete();
@@ -181,13 +252,13 @@ public class AzureBlobConnector {
 				LOGGER.error("ERROR deleting blob", e);
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 	private void checkContainerName(final String containerName) throws IllegalArgumentException {
 		String errorMessage = null;
-		
+
 		if (containerName == null) {
 			errorMessage = "The container name cannot be null";
 		} else if (containerName.length() < 3) {
@@ -197,15 +268,15 @@ public class AzureBlobConnector {
 		} else if (containerName.contains(" ")) {
 			errorMessage = "The file name cannot contain \" \" (spaces)";
 		}
-		
+
 		if (errorMessage != null) {
 			throw new IllegalArgumentException(errorMessage);
 		}
 	}
-	
+
 	private void checkFileName(final String fileName) throws IllegalArgumentException {
 		String errorMessage = null;
-		
+
 		if (fileName == null) {
 			errorMessage = "The file name cannot be null";
 		} else if (fileName.length() > 500) {
@@ -215,45 +286,93 @@ public class AzureBlobConnector {
 		} else if (fileName.endsWith("/")) {
 			errorMessage = "The file name cannot end with \"/\" character";
 		}
-		
+
 		if (errorMessage != null) {
 			throw new IllegalArgumentException(errorMessage);
 		}
 	}
-	
+
+	public byte[] downloadGrantAgreementSigned(final String data) {
+		String fileNameDownload = data.substring(data.lastIndexOf('/') + 1);
+		AzureBlobConnector azureBlobConnector = new AzureBlobConnector();
+		byte[] content = null;
+
+		try {
+			LOGGER.info("Downloading container [{}] fileName[{}]", GRANT_AGREEMENT_CONTAINER_NAME, fileNameDownload);
+			content = downloadAsBytes(GRANT_AGREEMENT_CONTAINER_NAME, fileNameDownload);
+		} catch (Exception e) {
+			LOGGER.error("ERROR", e);
+		}
+
+		return content;
+	}
+
 	public String downloadLegalFile(final String data) {
 	    String fileNameDownload = data.substring(data.lastIndexOf('/') + 1);
 	    AzureBlobConnector azureBlobConnector = new AzureBlobConnector();
 	    String content = null;
-	    
+
 	    try {
 	    	LOGGER.info("Downloading container [{}] fileName[{}]", DEFAULT_CONTAINER_NAME, fileNameDownload);
 	    	content = downloadText(DEFAULT_CONTAINER_NAME, fileNameDownload);
 	    } catch (Exception e) {
 	    	LOGGER.error("ERROR", e);
 	    }
-	    
+
 	    return content;
 	}
-	
+
 	public String uploadLegalFile(final String fileName, final String content) {
         String uri = null;
-        
-        try {        	
+
+        try {
             final String encondedFileName = URLEncoder.encode(fileName, "UTF-8");
-            
+
         	LOGGER.info("UPLOADING DOCUMENT container[{}] fileName[{}]", DEFAULT_CONTAINER_NAME, fileName);
         	uri = uploadText(DEFAULT_CONTAINER_NAME, encondedFileName, content);
         	LOGGER.info("URI [{}]", uri);
         } catch (Exception e) {
         	LOGGER.error("error", e);
         }
-        
+
         return uri;
 	}
-	
+
 	public boolean deleteLegalFile(final String fileName) {
         return delete(DEFAULT_CONTAINER_NAME, fileName);
 	}
-	
+
+	public String uploadExportExcelApplicantsList(final String fileName, final byte[] data){
+		String uri = null;
+
+		try {
+			final String encondedFileName = URLEncoder.encode(fileName, "UTF-8");
+
+			LOGGER.info("UPLOADING DOCUMENT container[{}] fileName[{}]", EXCEL_EXPORT_CONTAINER_NAME, fileName);
+			uri = uploadByteArray(EXCEL_EXPORT_CONTAINER_NAME, encondedFileName, data);
+			LOGGER.info("URI [{}]", uri);
+		} catch (Exception e) {
+			LOGGER.error("error", e);
+		}
+		return uri;
+	}
+
+    public byte[] downloadExcelExportApplicants(final String fileName) {
+        String fileNameDownload = fileName;
+        byte[] content = null;
+
+        try {
+            LOGGER.info("Downloading container [{}] fileName[{}]", EXCEL_EXPORT_CONTAINER_NAME, fileNameDownload);
+            content = downloadAsBytes(EXCEL_EXPORT_CONTAINER_NAME, fileNameDownload);
+        } catch (Exception e) {
+            LOGGER.error("ERROR", e);
+        }
+
+        return content;
+    }
+
+    public boolean deleteExportExcel(String fileName){
+		return delete(EXCEL_EXPORT_CONTAINER_NAME, fileName);
+	}
+
 }

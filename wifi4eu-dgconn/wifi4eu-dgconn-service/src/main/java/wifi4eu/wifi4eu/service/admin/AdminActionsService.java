@@ -6,6 +6,8 @@ import wifi4eu.wifi4eu.common.dto.model.AdminActionsDTO;
 import wifi4eu.wifi4eu.mapper.admin.AdminActionsMapper;
 import wifi4eu.wifi4eu.repository.admin.AdminActionsRepository;
 
+import java.util.List;
+
 @Service
 public class AdminActionsService {
 
@@ -19,4 +21,15 @@ public class AdminActionsService {
         return adminActionsMapper.toDTO(adminActionsRepository.findOneByAction(action));
     }
 
+    public List<AdminActionsDTO> getByActionsByName(String action){
+        return adminActionsMapper.toDtoList(adminActionsRepository.findAllByAction(action));
+    }
+
+    public AdminActionsDTO getByActionNameAndUser(String action, Integer userId){
+        return adminActionsMapper.toDTO(adminActionsRepository.findOneByActionAndUserId(action, userId));
+    }
+
+    public AdminActionsDTO updateAdminAction(AdminActionsDTO updatedAdminAction){
+        return adminActionsMapper.toDTO(adminActionsRepository.save(adminActionsMapper.toEntity(updatedAdminAction)));
+    }
 }

@@ -241,9 +241,9 @@ public class ApplicationResource {
     }
 
     @ApiOperation(value = "exportExcelDGConnApplicantsList")
-    @RequestMapping(value = "/exportExcelDGConnApplicantsList", method = RequestMethod.POST, headers = "Accept=application/vnd.ms-excel", produces = "application/vnd.ms-excel")
+    @RequestMapping(value = "/exportExcelDGConnApplicantsList", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<byte[]> exportExcelDGConnApplicantsList(@RequestParam("callId") final Integer callId, @RequestParam("country") final String country, HttpServletResponse response) throws IOException {
+    public ResponseDTO exportExcelDGConnApplicantsList(@RequestParam("callId") final Integer callId, @RequestParam("country") final String country, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Exporting Excel with DGConn Applicants by call id " + callId + " and country " + country);
@@ -252,15 +252,15 @@ public class ApplicationResource {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
-            ResponseEntity<byte[]> responseReturn = null;
+           /* ResponseEntity<byte[]> responseReturn = null;
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.parseMediaType("application/vnd.ms-excel"));
             String filename = "dgconn-applicants.xls";
             headers.setContentDispositionFormData(filename, filename);
-            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-            responseReturn = new ResponseEntity<>(applicationService.exportExcelDGConnApplicantsList(callId, country), headers, HttpStatus.OK);
-            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Excel exported successfully");
-            return responseReturn;
+            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");*/
+            applicationService.exportExcelDGConnApplicantsList(callId, country);
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Excel export task is running successfully");
+            return new ResponseDTO(true, null, null);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to export the excel", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
@@ -273,9 +273,9 @@ public class ApplicationResource {
     }
 
     @ApiOperation(value = "exportExcelDGConnApplicantsListSearchingName")
-    @RequestMapping(value = "/exportExcelDGConnApplicantsListSearchingName", method = RequestMethod.POST, headers = "Accept=application/vnd.ms-excel", produces = "application/vnd.ms-excel")
+    @RequestMapping(value = "/exportExcelDGConnApplicantsListSearchingName", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<byte[]> exportExcelDGConnApplicantsListSearchingName(@RequestParam("callId") final Integer callId, @RequestParam("country") final String country, @RequestParam("name") final String name, HttpServletResponse response) throws IOException {
+    public ResponseDTO exportExcelDGConnApplicantsListSearchingName(@RequestParam("callId") final Integer callId, @RequestParam("country") final String country, @RequestParam("name") final String name, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Exporting Excel with DGConn Applicants' searching name by call id " + callId + ",country " + country + " and searching name " + name);
@@ -284,15 +284,15 @@ public class ApplicationResource {
                 throw new AccessDeniedException("");
             }
 
-            ResponseEntity<byte[]> responseReturn = null;
+            /*ResponseEntity<byte[]> responseReturn = null;
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.parseMediaType("application/vnd.ms-excel"));
             String filename = "dgconn-applicants.xls";
             headers.setContentDispositionFormData(filename, filename);
-            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-            responseReturn = new ResponseEntity<>(applicationService.exportExcelDGConnApplicantsListContainingName(callId, country, name), headers, HttpStatus.OK);
-            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Excel exported successfully");
-            return responseReturn;
+            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");*/
+            applicationService.exportExcelDGConnApplicantsListContainingName(callId, country, name);
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Excel export task is running successfully");
+            return new ResponseDTO(true, null, null);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to export the excel", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
@@ -460,4 +460,37 @@ public class ApplicationResource {
         }
         return responseDTO;
     }
+
+    @ApiOperation(value = "Download excel of the export of applicants list")
+    @RequestMapping(value = "/downloadExportExcel", method = RequestMethod.POST, headers = "Accept=application/vnd.ms-excel", produces = "application/vnd.ms-excel")
+    @ResponseBody
+    public ResponseEntity<byte[]> downloadExportExcelApplicantsList(HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Exporting Excel with DGConn Applicants");
+        try {
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("");
+            }
+
+            ResponseEntity<byte[]> responseReturn = null;
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType("application/vnd.ms-excel"));
+            String filename = "dgconn-applicants_"+userConnected.getId()+".xls";
+            headers.setContentDispositionFormData(filename, filename);
+            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+            responseReturn = new ResponseEntity<>(applicationService.downloadExportExcelApplicantsList(), headers, HttpStatus.OK);
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Excel exported successfully");
+            return responseReturn;
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to export the excel", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Excel cannot been exported", e);
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        }
+    }
+
 }
