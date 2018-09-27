@@ -355,18 +355,18 @@ public class ExportImportWifi4euAbacService {
         cF.createExcelFileRegistrationData(header, document, "ExportRegistrationData.xlsx");
     }
 
-    public boolean importAbacReferencesList(InputStream inputStream) throws Exception {
-        _log.debug("importRegistrationData");
+    public boolean importDgBudgList(InputStream inputStream) throws Exception {
+        _log.debug("importDgBudgList");
 
         try (InputStreamReader inputStreamReader = new InputStreamReader(inputStream)) {
 
             CSVParser csvParser = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(inputStreamReader);
-            csvParser.forEach(this::updateAbacReferences);
+            csvParser.forEach(this::updateAbacData);
         }
         return true;
     }
 
-    private void updateAbacReferences(CSVRecord csvRecord) {
+    private void updateAbacData(CSVRecord csvRecord) {
         Integer municipalityId = Integer.parseInt(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_PORTAL_ID));
         List<ExportImportRegistrationData> exportImportRegistrationData = exportImportRegistrationDataRepository.findByMunicipalityId(municipalityId);
 

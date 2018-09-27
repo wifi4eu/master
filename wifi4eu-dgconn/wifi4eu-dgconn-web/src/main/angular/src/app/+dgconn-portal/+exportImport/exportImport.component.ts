@@ -51,7 +51,7 @@ export class DgConnExportImportComponent {
         this.router.navigate(['lc'], { relativeTo: this.route });
     }
 
-    importAbacReferencesList() {
+    importDgBudgList() {
         this.router.navigate(['dgBudg'], { relativeTo: this.route });
     }
 

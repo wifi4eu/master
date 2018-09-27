@@ -217,14 +217,14 @@ public class ExportImportWifi4euAbacResource {
         }
     }
 
-    @RequestMapping(value = "/importRegistrationData", method = RequestMethod.POST)
+    @RequestMapping(value = "/importDgBudgList", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO importRegistrationData(@Validated @NotNull @RequestParam("importFile") MultipartFile file) {
         try {
             _log.debug("importRegistrationData");
 
-            boolean success = exportImportWifi4euAbacService.importAbacReferencesList(file.getInputStream());
+            boolean success = exportImportWifi4euAbacService.importDgBudgList(file.getInputStream());
 
             return new ResponseDTO(success);
         } catch (AccessDeniedException ade) {
