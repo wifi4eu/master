@@ -2013,3 +2013,99 @@ li.panel .panel-header .label-wrapper .label {
 .whiteTableBackground:hover {
     background-color: #fff !important;
 }
+
+.confirmDialogDocs {
+    padding: 1em 1.5em !important;
+    overflow: auto !important;
+    max-height: 40em !important;
+    width: 50% !important;
+    left: 25% !important;
+    .ui-dialog {
+        padding: 1.5% !important;
+    }
+    .ui-dialog-titlebar {
+        padding-bottom: 1em !important;
+        color: #004494 !important;
+        font-size: 20px !important;
+        font-weight: bold !important;
+        text-align: center !important;
+        margin: auto !important;
+        .ui-dialog-titlebar-icon {
+            display: none !important;
+        }
+    }
+    .ui-dialog-content {
+        line-height: 1.25 !important;
+        padding-bottom: 3em !important;
+        padding-left: 2em !important;
+        padding-right: 2em !important;
+        font-size: 16px !important;
+        border: 0 !important;
+        padding: 1em 1.5em !important;
+    }
+    .ui-dialog-buttonpane {
+        display: flex !important;
+        padding: 1em 8em !important;
+        justify-content: center !important;
+        .ui-button {
+            text-align: center !important;
+            width: 10 em !important;
+            height: 50px !important;
+            background-color: #004494 !important;
+            margin-right: 1em !important;
+            float: left !important;
+            @media screen and (min-width: 64.063em) {
+                width: 33.333% !important;
+                padding: 0.5 em !important;
+            }
+            @media screen and (min-width: 40.063em) {
+                padding: 0.5 em !important;
+            }
+        }
+        .ui-button:hover {
+            color: #fff !important;
+            background-color: #001e42 !important;
+            border-color: #001a38 !important;
+        }
+        .ui-button:active {
+            color: #fff !important;
+            background-color: #001e42 !important;
+            border-color: #001a38 !important;
+            background-image: none !important;
+        }
+        .ui-button:active {
+            background-color: #003675 !important;
+        }
+        .ui-button+.ui-button {
+            text-align: center !important;
+            width: 10 em !important;
+            height: 50px !important;
+            background-color: #ffffff !important;
+            color: #004494 !important;
+            border: solid 2px #004494 !important;
+            margin-left: 1em !important;
+            float: right !important;
+            @media screen and (min-width: 64.063em) {
+                width: 33.333% !important;
+                padding: 0.5 em !important;
+            }
+            @media screen and (min-width: 40.063em) {
+                padding: 0.5 em !important;
+            }
+        }
+        .ui-button+.ui-button:active {
+            color: #fff !important;
+            background-color: #001e42 !important;
+            border-color: #001a38 !important;
+            background-image: none !important;
+        }
+        .ui-button+.ui-button:active {
+            background-color: #003675 !important;
+        }
+        .ui-button:hover {
+            color: #fff !important;
+            background-color: #001e42 !important;
+            border-color: #001a38 !important;
+        }
+    }
+}
