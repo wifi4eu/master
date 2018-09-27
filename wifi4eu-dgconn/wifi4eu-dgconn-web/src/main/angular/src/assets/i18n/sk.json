@@ -953,5 +953,6 @@
   "shared.error.notloggedin": "Nie ste prihlásený.",
   "discussionForum.discussionForum.discussion.growl": "Komisia neposkytuje mediačnú službu.",
   "dgConn.voucherAssignment.password": "Password",
-  "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct"
+  "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct",
+  "dgconn.voucherAssignment.runningFreze": "Freezing..."
 }

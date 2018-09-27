@@ -953,5 +953,6 @@
   "shared.error.notloggedin": "Sie sind nicht angemeldet.",
   "discussionForum.discussionForum.discussion.growl": "Die Kommission erbringt keine Schlichtungsdienste.",
   "dgConn.voucherAssignment.password": "Password",
-  "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct"
+  "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct",
+  "dgconn.voucherAssignment.runningFreze": "Freezing..."
 }

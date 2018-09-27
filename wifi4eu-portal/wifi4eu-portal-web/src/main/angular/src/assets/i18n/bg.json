@@ -953,5 +953,6 @@
   "shared.error.notloggedin": "Не сте влезли в системата.",
   "discussionForum.discussionForum.discussion.growl": "Комисията не предоставя услуги по посредничество.",
   "dgConn.voucherAssignment.password": "Password",
-  "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct"
+  "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct",
+  "dgconn.voucherAssignment.runningFreze": "Freezing..."
 }

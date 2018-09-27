@@ -953,5 +953,6 @@
   "shared.error.notloggedin": "Nu sunteți conectat.",
   "discussionForum.discussionForum.discussion.growl": "Comisia nu oferă un serviciu de mediere.",
   "dgConn.voucherAssignment.password": "Password",
-  "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct"
+  "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct",
+  "dgconn.voucherAssignment.runningFreze": "Freezing..."
 }

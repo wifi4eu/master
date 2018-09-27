@@ -1028,5 +1028,6 @@
   "benefPortal.voucher.applied.callEnded": "Applied on {{date}} at {{hour}}",
   "suppRegistration.uploadLogo.info": "Please upload your logo, ensuring that the files you upload are in a suitable file format (.png or .jpg).",
   "dgConn.voucherAssignment.password": "Password",
-  "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct"
+  "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct",
+  "dgconn.voucherAssignment.runningFreze": "Freezing..."
 }

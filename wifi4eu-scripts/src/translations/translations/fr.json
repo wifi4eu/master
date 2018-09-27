@@ -954,5 +954,6 @@
   "shared.error.notloggedin": "Vous n’êtes pas connecté(e).",
   "discussionForum.discussionForum.discussion.growl": "La Commission ne fournit pas de service de médiation.",
   "dgConn.voucherAssignment.password": "Password",
-  "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct"
+  "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct",
+  "dgconn.voucherAssignment.runningFreze": "Freezing..."
 }

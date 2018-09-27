@@ -954,5 +954,6 @@
   "shared.error.notloggedin": "Ön nincs bejelentkezve.",
   "discussionForum.discussionForum.discussion.growl": "A Bizottság nem nyújt közvetítői szolgáltatást.",
   "dgConn.voucherAssignment.password": "Password",
-  "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct"
+  "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct",
+  "dgconn.voucherAssignment.runningFreze": "Freezing..."
 }

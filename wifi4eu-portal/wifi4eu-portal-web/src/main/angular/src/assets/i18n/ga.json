@@ -953,5 +953,6 @@
   "shared.error.notloggedin": "Níl tú logáilte isteach.",
   "discussionForum.discussionForum.discussion.growl": "Ní chuireann an Coimisiún seirbhís eadrána ar fáil.",
   "dgConn.voucherAssignment.password": "Password",
-  "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct"
+  "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct",
+  "dgconn.voucherAssignment.runningFreze": "Freezing..."
 }

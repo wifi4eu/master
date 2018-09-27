@@ -953,5 +953,6 @@
   "shared.error.notloggedin": "U bent niet aangemeld.",
   "discussionForum.discussionForum.discussion.growl": "De Commissie beschikt niet over een bemiddelingsdienst.",
   "dgConn.voucherAssignment.password": "Password",
-  "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct"
+  "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct",
+  "dgconn.voucherAssignment.runningFreze": "Freezing..."
 }
