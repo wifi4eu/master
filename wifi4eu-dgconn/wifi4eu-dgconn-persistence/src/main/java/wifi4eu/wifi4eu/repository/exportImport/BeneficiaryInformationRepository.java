@@ -64,7 +64,7 @@ public class BeneficiaryInformationRepository {
             + "inner join voucher_assignments as va on va.id = vs.voucher_assignment "
             + "left join registration_users as ru on r.id = ru.registration "
             + "left join users as u on u.id = ru._user "
-            + "where m.name is not null and va.status = 3";
+            + "where m.name is not null and va.status = 3 and ma.abacReference is null";
 
 
     public List<BeneficiaryInformation> getBeneficiariesInformationSignedAndNotCounterSigned() {
