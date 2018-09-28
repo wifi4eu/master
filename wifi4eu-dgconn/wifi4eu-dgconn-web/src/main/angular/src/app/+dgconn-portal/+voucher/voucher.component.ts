@@ -122,7 +122,7 @@ export class DgConnVoucherComponent {
   sessionExpired: Boolean = false;
 
   private adminAction: AdminActionsDTO;
-  private destroyed: ReplaySubject<boolean> = new ReplaySubject(1);
+  private destroyed: Subject<boolean> = new Subject();
 
   private displayConfirmingDataFreeze: boolean = false;
 
