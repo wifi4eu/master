@@ -36,12 +36,18 @@ public class CallResource {
         return callService.getCallById(callId);
     }
 
-
     @ApiOperation(value = "Get if call is closed by specific id or not")
     @RequestMapping(value = "isCallClosed/{callId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public boolean isCallClosed(@PathVariable("callId") final Integer callId) {
         return callService.isCallClosed(callId);
+    }
+
+    @ApiOperation(value = "Get all the calls closed")
+    @RequestMapping(value="/callsClosed", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<CallDTO> allCallsClosed() {
+        return callService.getAllCallsClosed();
     }
 
 //    @ApiOperation(value = "Create call")

@@ -1,55 +1,63 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportingApi } from "../../shared/swagger/api/ReportingApi";
 import { SharedService } from "../../shared/shared.service";
+import { CallApi, CallDTOBase } from '../../shared/swagger';
 
 @Component({
   selector: 'app-reporting',
   templateUrl: './reporting.component.html',
   styleUrls: ['./reporting.component.scss'],
-  providers: [
-    ReportingApi
-  ]
+  providers: [ReportingApi, CallApi]
 })
 export class ReportingComponent implements OnInit {
 
   private reports: string[] = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eight', 'ninth', 'tenth', 'eleventh'];
+  private calls: CallDTOBase[] = [];
+  private call: CallDTOBase;
 
   constructor(
     private reportingApi: ReportingApi,
-    private sharedService: SharedService
-  ) { }
+    private sharedService: SharedService,
+    private callApi: CallApi
+  ) {
+    this.callApi.allCallsClosed().subscribe(callList => {
+      this.calls = callList;
+    }, (error: Error) => {
+
+    });
+  }
 
   ngOnInit() {
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
   }
 
   private onReport(report: string) {
     switch (report) {
-        case "first":
-          this.firstReport();
+      case "first":
+        this.firstReport();
         break;
 
-        case "second":
-          this.secondReport();
+      case "second":
+        this.secondReport(this.call.id);
         break;
 
-        case "third":
-          this.thirdReport();
+      case "third":
+        this.thirdReport(this.call.id);
         break;
 
-        case "fourth":
-          this.fourthReport();
+      case "fourth":
+        this.fourthReport();
         break;
 
-        /*
-        case "eight":
-          this.eightReport();
-        break;
-        */
+      /*
+      case "eight":
+        this.eightReport();
+      break;
+      */
     }
   }
-  
-  private firstReport(){
+
+  private firstReport() {
     this.reportingApi.generateCallOpenReport().subscribe(data => {
       if (data['success'] && data['data']) {
         this.sharedService.growlTranslation('Request sent successfully', data['data'], 'success');
@@ -61,8 +69,8 @@ export class ReportingComponent implements OnInit {
     });
   }
 
-  private secondReport(){
-    this.reportingApi.generatePreSelectionReport().subscribe(data => {
+  private secondReport(callId) {
+    this.reportingApi.generatePreSelectionReport(callId).subscribe(data => {
       if (data['success'] && data['data']) {
         this.sharedService.growlTranslation('Request sent successfully', data['data'], 'success');
       } else {
@@ -73,8 +81,8 @@ export class ReportingComponent implements OnInit {
     });
   }
 
-  private thirdReport(){
-    this.reportingApi.generateNotificationsSentOutReport().subscribe(data => {
+  private thirdReport(callId) {
+    this.reportingApi.generateNotificationsSentOutReport(callId).subscribe(data => {
       if (data['success'] && data['data']) {
         this.sharedService.growlTranslation('Request sent successfully', data['data'], 'success');
       } else {
@@ -85,7 +93,7 @@ export class ReportingComponent implements OnInit {
     });
   }
 
-  private fourthReport(){
+  private fourthReport() {
     this.reportingApi.generateTimeToInformReport().subscribe(data => {
       if (data['success'] && data['data']) {
         this.sharedService.growlTranslation('Request sent successfully', data['data'], 'success');
@@ -97,7 +105,7 @@ export class ReportingComponent implements OnInit {
     });
   }
 
-  private eightReport(){
+  private eightReport() {
     this.reportingApi.generateTypesInstallationReport().subscribe(data => {
       if (data['success'] && data['data']) {
         this.sharedService.growlTranslation('Request sent successfully', data['data'], 'success');
@@ -110,11 +118,17 @@ export class ReportingComponent implements OnInit {
   }
 
 
+  private selectCallClosed(event: any){
+    console.log(event);
+  }
+
+
   private isCallSelector(report: string) {
     let result: boolean;
     switch (report) {
       case "second":
       case "third":
+      case "fourth":
       case "fifth":
       case "seventh":
       case "tenth":

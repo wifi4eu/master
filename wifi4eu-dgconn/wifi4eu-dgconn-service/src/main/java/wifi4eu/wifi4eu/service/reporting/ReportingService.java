@@ -23,13 +23,13 @@ import java.util.ArrayList;
 public class ReportingService {
 
     @Autowired
-    PermissionChecker permissionChecker;
+   private PermissionChecker permissionChecker;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    CallRepository callRepository;
+    private CallRepository callRepository;
 
     public ResponseDTO generateCallOpenReport(){
         if (!permissionChecker.checkIfDashboardUser()) {
@@ -50,15 +50,15 @@ public class ReportingService {
         return response;
     }
 
-    public ResponseDTO generatePreSelectionReport(){
+    public ResponseDTO generatePreSelectionReport(Integer callId){
         if (!permissionChecker.checkIfDashboardUser()) {
             throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
         }
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         ResponseDTO response = new ResponseDTO();
-        if (Validator.isNotNull(callRepository.getIdCurrentCall())) {
-            (new Thread(new ExcelReportsRunnable(Constant.REPORTING_PRE_SELECTION, userConnected.getName(), userConnected.getEcasEmail(), userConnected.getLang()))).start();
+        if (Validator.isNotNull(callId)) {
+            (new Thread(new ExcelReportsRunnable(Constant.REPORTING_PRE_SELECTION, userConnected.getName(), userConnected.getEcasEmail(), userConnected.getLang(), callId))).start();
 
             response.setSuccess(true);
             response.setData("reports.generate.success");
@@ -70,15 +70,15 @@ public class ReportingService {
         return response;
     }
 
-    public ResponseDTO generateNotificationSentOutReport(){
+    public ResponseDTO generateNotificationSentOutReport(Integer callId){
         if (!permissionChecker.checkIfDashboardUser()) {
             throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
         }
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         ResponseDTO response = new ResponseDTO();
-        if (Validator.isNotNull(callRepository.getIdCurrentCall())) {
-            (new Thread(new ExcelReportsRunnable(Constant.REPORTING_NOTIFICATIONS_SENT_OUT, userConnected.getName(), userConnected.getEcasEmail(), userConnected.getLang()))).start();
+        if (Validator.isNotNull(callId)) {
+            (new Thread(new ExcelReportsRunnable(Constant.REPORTING_NOTIFICATIONS_SENT_OUT, userConnected.getName(), userConnected.getEcasEmail(), userConnected.getLang(), callId))).start();
 
             response.setSuccess(true);
             response.setData("reports.generate.success");

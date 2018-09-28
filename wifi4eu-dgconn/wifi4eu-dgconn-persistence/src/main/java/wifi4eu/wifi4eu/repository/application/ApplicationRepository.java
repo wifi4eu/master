@@ -1,13 +1,10 @@
 package wifi4eu.wifi4eu.repository.application;
 
 
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.entity.application.Application;
 
-import java.util.Date;
 import java.util.List;
 
 public interface ApplicationRepository extends CrudRepository<Application,Integer> {
@@ -251,7 +248,7 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
     Integer countValidatedApplicationsByCall(Integer callId);
 
 
-    @Query(value = "SELECT count(*) FROM applications ap WHERE ap._pre_selected_flag = 1 AND ap.call_id = ?#{[0]}", nativeQuery = true)
+    @Query(value = "SELECT count(*) FROM applications ap WHERE ap.pre_selected_flag = 1 AND ap.call_id = ?#{[0]}", nativeQuery = true)
     Integer countPreSelectedApplicationsByCall(Integer callId);
 
     @Query(value = "SELECT count(*) FROM applications ap " +
@@ -259,7 +256,7 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
             "INNER JOIN municipalities m ON m.id = r.municipality " +
             "INNER JOIN laus l ON l.id = m.lau " +
             "INNER JOIN nuts n ON l.country_code = n.country_code " +
-            "WHERE ap.pre_selected_flag = 1 AND ap.call_id = ?#{[0]} AND n.level = 0 AND n.id = ?#{[1]} ", nativeQuery = true)
+            "WHERE ap.pre_selected_flag = 1 AND ap.call_id = ?#{[0]} AND n.level = 0 AND n.id = ?#{[1]}", nativeQuery = true)
     Integer countPreSelectedApplicationsByCall(Integer callId, Integer idNut);
 
 
@@ -274,8 +271,85 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
             "INNER JOIN municipalities m ON m.id = r.municipality " +
             "INNER JOIN laus l ON l.id = m.lau " +
             "INNER JOIN nuts n ON l.country_code = n.country_code " +
-            "WHERE ap.call_id = ?#{[0]} AND n.level = 0 AND n.id = ?#{[1]} AND vs.selection_status = ?#{[2]} ", nativeQuery = true)
+            "WHERE ap.call_id = ?#{[0]} AND n.level = 0 AND n.id = ?#{[1]} AND vs.selection_status = ?#{[2]}", nativeQuery = true)
     Integer countApplicationsSelectedInVoucherAssignmentByCall(Integer callId, Integer idNut, Integer status);
 
+    @Query(value = " SELECT(SELECT COUNT(*) FROM applications a " +
+            "WHERE a.pre_selected_flag != 1 AND a.call_id = ?#{[0]}) + " +
+            "(SELECT COUNT(*) FROM applications a " +
+            "INNER JOIN voucher_simulations vs ON vs.application = a.id " +
+            "WHERE vs.selection_status != 1 AND a.call_id = ?#{[0]})", nativeQuery = true)
+    Integer countUnsuccessfulApplicantsByCall(Integer callId);
+
+    @Query(value = "SELECT(SELECT COUNT(*) FROM applications a " +
+            "INNER JOIN registrations r ON r.id = a.registration " +
+            "INNER JOIN municipalities m ON m.id = r.municipality " +
+            "INNER JOIN laus l ON l.id = m.lau " +
+            "INNER JOIN nuts n ON l.country_code = n.country_code " +
+            "WHERE a.pre_selected_flag != 1 AND a.call_id = ?#{[0]} AND n.level = 0 AND n.id = ?#{[1]}) + " +
+            "(SELECT COUNT(*) FROM applications a " +
+            "INNER JOIN voucher_simulations vs ON vs.application = a.id " +
+            "INNER JOIN registrations r ON r.id = a.registration " +
+            "INNER JOIN municipalities m ON m.id = r.municipality " +
+            "INNER JOIN laus l ON l.id = m.lau " +
+            "INNER JOIN nuts n ON l.country_code = n.country_code " +
+            "WHERE vs.selection_status != 1 AND a.call_id = ?#{[0]} AND n.level = 0 AND n.id = ?#{[1]})", nativeQuery = true)
+    Integer countUnsuccessfulApplicantsByCall(Integer callId, Integer idNut);
+
+    @Query(value = "SELECT COUNT(*) FROM applications a " +
+            "INNER JOIN registrations r ON r.id = a.registration " +
+            "INNER JOIN municipalities m ON m.id = r.municipality " +
+            "WHERE a.call_id = ?#{[0]} GROUP BY m.name HAVING COUNT(*) > 1", nativeQuery = true)
+    Integer countApplicationDuplicatesByCall(Integer callId);
+
+    @Query(value = "  SELECT COUNT(*) FROM applications a " +
+            "INNER JOIN registrations r ON r.id = a.registration " +
+            "INNER JOIN municipalities m ON m.id = r.municipality " +
+            "INNER JOIN laus l ON l.id = m.lau " +
+            "INNER JOIN nuts n ON l.country_code = n.country_code " +
+            "WHERE a.call_id = ?#{[0]} AND n.level = 0 AND n.id = ?#{[1]} GROUP BY m.name HAVING COUNT(*) > 1", nativeQuery = true)
+    Integer countApplicationDuplicatesByCall(Integer callId, Integer idNut);
+
+    @Query(value = "SELECT COUNT(*) FROM applications a " +
+            "INNER JOIN registrations r ON r.id = a.registration " +
+            "INNER JOIN municipalities m ON m.id = r.municipality " +
+            "WHERE a.call_id = ?#{[0]} AND a._status = 1 GROUP BY m.name HAVING COUNT(*) > 1", nativeQuery = true)
+    Integer countApplicationDuplicatesInvalidatedByCall(Integer callId);
+
+    @Query(value = "SELECT COUNT(*) FROM applications a " +
+            "INNER JOIN registrations r ON r.id = a.registration " +
+            "INNER JOIN municipalities m ON m.id = r.municipality " +
+            "INNER JOIN laus l ON l.id = m.lau " +
+            "INNER JOIN nuts n ON l.country_code = n.country_code " +
+            "WHERE a.call_id = ?#{[0]} AND a._status = 1 AND n.level = 0 AND n.id = ?#{[1]} GROUP BY m.name HAVING COUNT(*) > 1", nativeQuery = true)
+    Integer countApplicationDuplicatesInvalidatedByCall(Integer callId, Integer idNut);
+
+    @Query(value = "SELECT COUNT(*) FROM applications a " +
+            "INNER JOIN registrations r ON r.id = a.registration " +
+            "INNER JOIN municipalities m ON m.id = r.municipality " +
+            "WHERE a.call_id = ?#{[0]} AND a._status = 3", nativeQuery = true)
+    Integer countFollowUpApplicationsByCall(Integer callId);
+
+    @Query(value = "SELECT COUNT(*) FROM applications a " +
+            "INNER JOIN registrations r ON r.id = a.registration " +
+            "INNER JOIN municipalities m ON m.id = r.municipality " +
+            "INNER JOIN laus l ON l.id = m.lau " +
+            "INNER JOIN nuts n ON l.country_code = n.country_code " +
+            "WHERE a.call_id = ?#{[0]} AND n.level = 0 AND n.id = ?#{[1]} AND a._status = 3", nativeQuery = true)
+    Integer countFollowUpApplicationsByCall(Integer callId, Integer idNut);
+
+    @Query(value = "SELECT COUNT(*) FROM applications a " +
+            "INNER JOIN application_invalidate_reason air ON air.application_id = a.id " +
+            "WHERE a.call_id = ?#{[0]} AND air.reason = ?#{[1]}", nativeQuery = true)
+    Integer countApplicationsInvalidatedByReasonAndCall(Integer callId, Integer reason);
+
+    @Query(value = "SELECT COUNT(*) FROM applications a " +
+            "INNER JOIN registrations r ON r.id = a.registration " +
+            "INNER JOIN municipalities m ON m.id = r.municipality " +
+            "INNER JOIN laus l ON l.id = m.lau " +
+            "INNER JOIN nuts n ON l.country_code = n.country_code " +
+            "INNER JOIN application_invalidate_reason air ON air.application_id = a.id " +
+            "WHERE a.call_id = ?#{[0]} AND n.level = 0 AND n.id = ?#{[1]} AND a._status = 3 AND air.reason = ?#{[2]}", nativeQuery = true)
+    Integer countApplicationsInvalidatedByReasonAndCall(Integer callId, Integer idNut, Integer reason);
 
 }

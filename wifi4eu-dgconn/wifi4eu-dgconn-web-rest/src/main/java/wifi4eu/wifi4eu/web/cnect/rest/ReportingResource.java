@@ -4,10 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.service.reporting.ReportingService;
 
@@ -18,7 +15,7 @@ import wifi4eu.wifi4eu.service.reporting.ReportingService;
 public class ReportingResource {
 
     @Autowired
-    ReportingService reportingService;
+    private ReportingService reportingService;
 
     @ApiOperation(value = "Call Open")
     @RequestMapping(value  = "/call-open", method = RequestMethod.GET, produces = "application/json")
@@ -28,17 +25,17 @@ public class ReportingResource {
     }
 
     @ApiOperation(value = "Pre Selection Lisr")
-    @RequestMapping(value  = "/pre-selection", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value  = "/pre-selection/{callId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ResponseDTO generatePreSelectionReport(){
-        return reportingService.generatePreSelectionReport();
+    public ResponseDTO generatePreSelectionReport(@PathVariable ("callId") Integer callId){
+        return reportingService.generatePreSelectionReport(callId);
     }
 
     @ApiOperation(value = "Notifications Sent Out")
-    @RequestMapping(value  = "/notifications-sent-out", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value  = "/notifications-sent-out/{callId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ResponseDTO generateNotificationsSentOutReport(){
-        return reportingService.generateNotificationSentOutReport();
+    public ResponseDTO generateNotificationsSentOutReport(@PathVariable ("callId") Integer callId){
+        return reportingService.generateNotificationSentOutReport(callId);
     }
 
     @ApiOperation(value = "KPI - Time to Inform")

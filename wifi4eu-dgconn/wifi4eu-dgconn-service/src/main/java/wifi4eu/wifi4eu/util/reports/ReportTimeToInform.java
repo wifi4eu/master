@@ -3,15 +3,17 @@ package wifi4eu.wifi4eu.util.reports;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.springframework.stereotype.Component;
 import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.util.reporting.ReportingUtils;
 
+@Component
 public class ReportTimeToInform {
 
     static String[] fields = {"Number of days between the closure of the call until button Send notifications to all applicants is pressed", "Number of applicants"};
     static String[] totalValues = {"daysNumber", "applicants"};
 
-    public void generate(HSSFWorkbook workbook) {
+   /* public void generate(HSSFWorkbook workbook) {
         if (Validator.isNotNull(callRepository.getIdCurrentCall())) {
             HSSFSheet sheet = workbook.createSheet("State of play Report");
             int numColumn = 0;
@@ -33,6 +35,6 @@ public class ReportTimeToInform {
             // send email notifying that no open call is available?
             System.out.println("No call open found");
         }
-    }
+    }*/
 
 }
