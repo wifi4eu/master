@@ -1,13 +1,10 @@
 package wifi4eu.wifi4eu.repository.application;
 
 
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.entity.application.Application;
 
-import java.util.Date;
 import java.util.List;
 
 public interface ApplicationRepository extends CrudRepository<Application,Integer> {

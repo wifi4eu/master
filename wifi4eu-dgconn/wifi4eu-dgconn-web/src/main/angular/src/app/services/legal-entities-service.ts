@@ -7,7 +7,8 @@ import { ResponseDTO } from '../shared/swagger/model/ResponseDTO';
 @Injectable()
 export class LegalEntitiesService {
 
-    private basePath = 'http://localhost:8080/dashboard/api';
+    // TODO: remove hardcoding
+    private basePath = 'api';
 
     constructor(private http: Http, @Optional() @Inject(BASE_PATH) basePath: string) {
         if (basePath) {
@@ -34,7 +35,7 @@ export class LegalEntitiesService {
     }
 
     importDbBudgFinalList(fileData: FormData): Observable<ResponseDTO> {
-        const path = this.basePath + `/exportImport/importRegistrationData`;
+        const path = this.basePath + `/exportImport/importDgBudgList`;
 
         return this.http.post(path, fileData).map(response => response.json());
     }

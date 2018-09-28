@@ -43,8 +43,8 @@ export class SupplierRegistrationStep3Component {
         } else {
             this.supplier.contactEmail = this.user.ecasEmail;
         }
-        this.user.name = this.supplier['contactName'];
-        this.user.surname = this.supplier['contactSurname'];
+        this.user.name = this.supplier['contactName'].trim();
+        this.user.surname = this.supplier['contactSurname'].trim();
         this.supplier.contactPrefix = this.supplier['contactPhonePrefix'];
         this.supplier.contactNumber = this.supplier['contactPhoneNumber'];
         this.supplier['users'] = []

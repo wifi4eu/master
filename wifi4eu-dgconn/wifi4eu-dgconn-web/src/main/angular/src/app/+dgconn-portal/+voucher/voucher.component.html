@@ -278,7 +278,7 @@
               <div class="row">
                 <div class="col-md-3 offset-md-2">
                   <button type="button" class="btn btn-primary preSelection-button text-adjust" [disabled]="callVoucherAssignment == null || callVoucherAssignment?.hasPreListSaved || !preSelectedEnabledButton"
-                    (click)="checkPreListEnabled()">
+                    (click)="savePrelistPopup()">
                     <i class="fa fa-spinner fa-spin" *ngIf="loadingPreList"></i>
                     {{'dgConn.voucherAssignment.preSelectionSave.button' | translate}}
                   </button>
@@ -345,7 +345,7 @@
   </div>
 </p-dialog>
 
-<p-dialog [(visible)]="preSelectedEnabled != null && preSelectedEnabled" [modal]="true" [responsive]="true" [resizable]="false"
+<!-- <p-dialog [(visible)]="preSelectedEnabled != null && preSelectedEnabled" [modal]="true" [responsive]="true" [resizable]="false"
   [draggable]="false" [closable]="false" [closeOnEscape]="false">
   <h1 class="Modalh1Confirmation">{{ 'dgconn.voucherAssignment.runningSimulation.preSelectedConfirmation.title' | translate }}</h1>
   <p class="center paddingStats">{{ 'dgconn.voucherAssignment.runningSimulation.preSelectedConfirmation.text' | translate }}</p>
@@ -354,10 +354,10 @@
       <button (click)="preSelectedEnabled = null" class="btn btn-primary cancel-button">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
     </div>
     <div class="col-sm-6 marginStep1">
-      <button #savePreListBtn (click)="savePreList(savePreListBtn)" class="btn btn-primary publish-button">{{ 'dgconn.voucherAssignment.runningSimulation.confirm' | translate }}</button>
+      <button (click)="savePrelistPopup()" class="btn btn-primary publish-button">{{ 'dgconn.voucherAssignment.runningSimulation.confirm' | translate }}</button>
     </div>
   </div>
-</p-dialog>
+</p-dialog> -->
 
 <p-dialog [(visible)]="displayFreezeConfirmation" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
   [closable]="false" [closeOnEscape]="false">
@@ -368,7 +368,7 @@
       <button (click)="displayFreezeConfirmation = false" class="btn btn-primary cancel-button">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
     </div>
     <div class="col-sm-6 marginStep1">
-      <button class="btn btn-primary publish-button" #saveFreezeBtn (click)="saveFreezeList(saveFreezeBtn)">{{ 'dgconn.voucherAssignment.runningSimulation.confirm' | translate }}</button>
+      <button class="btn btn-primary publish-button" #saveFreezeBtn (click)="savePrelistPopup()">{{ 'dgconn.voucherAssignment.runningSimulation.confirm' | translate }}</button>
     </div>
   </div>
 </p-dialog>
@@ -416,6 +416,22 @@
     </div>
     <div class="col-sm-6 marginStep1">
         <button class="btn btn-primary publish-button" (click)="sendNotificationToApplicants()" [disabled]="!confirmFreezeBtn || psswdNotification == ''"> <i class="fa fa-spinner fa-spin" *ngIf="loadingFreezeList"></i> {{ 'dgconn.voucherAssignment.runningSimulation.confirm' | translate }}</button>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog [(visible)]="showPrelistModal" [modal]="true" [responsive]="true" [resizable]="false"
+  [draggable]="false" [closable]="false" [closeOnEscape]="false">
+  <div class="row center">
+    <h1 class="password_popup_header">{{ 'dgConn.voucherAssignment.password' | translate }}</h1>
+    <div class="col-sm-12 marginStep1">
+        <input type="password"  [(ngModel)]="psswdPrelist"  class="searchInput"  style="width: 20em;">
+    </div>
+    <div class="col-sm-6 marginStep1">
+        <button (click)="showPrelistModal = false; psswdPrelist = ''" class="btn btn-primary cancel-button">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
+    </div>
+    <div class="col-sm-6 marginStep1">
+        <button class="btn btn-primary publish-button" (click)="savePreList()" [disabled]="!confirmFreezeBtn || psswdPrelist == ''"> <i class="fa fa-spinner fa-spin" *ngIf="loadingFreezeList"></i> {{ 'dgconn.voucherAssignment.runningSimulation.confirm' | translate }}</button>
     </div>
   </div>
 </p-dialog>

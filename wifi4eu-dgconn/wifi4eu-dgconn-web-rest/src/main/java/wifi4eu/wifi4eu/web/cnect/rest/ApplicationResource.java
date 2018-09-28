@@ -87,7 +87,7 @@ public class ApplicationResource {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            
+
             return applicationService.getApplicationsVoucherInfoByCall(callId);
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
@@ -178,7 +178,7 @@ public class ApplicationResource {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            
+
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Applications not invalidated are retrieved successfully");
             return applicationService.countApplicationsNotInvalidated(callId);
         } catch (AccessDeniedException ade) {
@@ -225,7 +225,7 @@ public class ApplicationResource {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            
+
             ApplicationDTO resApplication = applicationService.sendLegalDocumentsCorrection(applicationDTO, request);
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Legal documents correction request sent successfully");
             return new ResponseDTO(true, resApplication, null);
@@ -251,7 +251,7 @@ public class ApplicationResource {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            
+
             ResponseEntity<byte[]> responseReturn = null;
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.parseMediaType("application/vnd.ms-excel"));
@@ -283,7 +283,7 @@ public class ApplicationResource {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("");
             }
-            
+
             ResponseEntity<byte[]> responseReturn = null;
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.parseMediaType("application/vnd.ms-excel"));
@@ -307,7 +307,7 @@ public class ApplicationResource {
     @ApiOperation(value = "Send request correction e-mails for a specific call")
     @RequestMapping(value = "/sendCorrectionEmails", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO sendCorrectionEmails(@RequestParam("callId") final Integer callId, HttpServletResponse response) throws IOException {
+    public ResponseDTO sendCorrectionEmails(@RequestParam("sendNotificationsPsswd") final String sendNotificationsPsswd, @RequestParam("callId") final Integer callId, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending request correction e-mails for call id " + callId);
@@ -315,9 +315,9 @@ public class ApplicationResource {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("");
             }
-            
-            CorrectionRequestEmailDTO correctionRequest = applicationService.sendCorrectionEmails(callId);
-            return new ResponseDTO(true, correctionRequest, null);
+
+            ResponseDTO correctionRequest = applicationService.sendCorrectionEmails(sendNotificationsPsswd, callId);
+            return correctionRequest;
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to send the request", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
@@ -340,7 +340,7 @@ public class ApplicationResource {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("");
             }
-            
+
             return applicationService.getLastCorrectionRequestEmailInCall(callId);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve the request", ade.getMessage());
@@ -364,7 +364,7 @@ public class ApplicationResource {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("");
             }
-            
+
             return applicationService.checkIfCorrectionRequestEmailIsAvailable(callId);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to check the option", ade.getMessage());
@@ -385,7 +385,7 @@ public class ApplicationResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Rejecting application");
         try {
-        	if (!permissionChecker.checkIfDashboardUser()) {
+            if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
@@ -436,12 +436,12 @@ public class ApplicationResource {
         ResponseDTO responseDTO = new ResponseDTO();
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Selecting validated applications");
         try {
-            if(Validator.isNotNull(userConnected)){
+            if (Validator.isNotNull(userConnected)) {
                 if (permissionChecker.checkIfDashboardUser()) {
                     responseDTO.setSuccess(true);
                     responseDTO.setData(applicationService.getNumberOfValidatedApplications(callId));
                     _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Validated applications retrieved correctly");
-                }else{
+                } else {
                     responseDTO.setSuccess(false);
                     responseDTO.setData("");
                     responseDTO.setError(new ErrorDTO(401, "Access denied"));

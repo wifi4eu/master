@@ -15,6 +15,9 @@ import * as FileSaver from "file-saver";
 import { Subscription } from "rxjs/Subscription";
 import { DataTable } from "primeng/primeng";
 import { TranslateService } from "ng2-translate/ng2-translate";
+import * as moment from 'moment';
+import 'moment-timezone';
+import{ AppConstants} from '../../shared/constants/AppConstants';
 
 @Component({
     templateUrl: 'applicant-registrations.component.html',
@@ -68,6 +71,9 @@ export class DgConnApplicantRegistrationsComponent {
     private warning1Message: string = '';
     private warning2Message: string = '';
     private warning3Message: string = '';
+
+    private sendNotificationsPsswd: string = '';
+    private showNotificationModal: boolean = false;
 
     constructor(private applicationApi: ApplicationApi, private callApi: CallApi, private nutsApi: NutsApi, private activatedRoute: ActivatedRoute, private router: Router, private sharedService: SharedService, private translateService: TranslateService) {
         this.callApi.allCalls().subscribe(
@@ -325,21 +331,21 @@ export class DgConnApplicantRegistrationsComponent {
     }
 
     private displayCorrectionEmailsModal() {
-        if (this.correctionRequestsEmailAvailable)
-            this.displayCorrectionEmails = true;
+       this.showNotificationModal = true;
+       this.sendNotificationsPsswd = '';
     }
 
     private sendCorrectionEmails() {
         if (this.currentCall != null && this.correctionRequestsEmailAvailable) {
             this.sendingCorrectionEmails = true;
-            this.applicationApi.sendCorrectionEmails(this.currentCall.id).subscribe(
+            this.applicationApi.sendCorrectionEmails(this.sendNotificationsPsswd ,this.currentCall.id).subscribe(
                 (response: ResponseDTOBase) => {
                     if (response.success) {
                         if (response.data != null) {
                             let correctionRequest = response.data;
-                            let timestamp = new Date(correctionRequest.date);
-                            this.correctionRequestsEmailDate = ('0' + timestamp.getUTCDate()).slice(-2) + '/' + ('0' + (timestamp.getUTCMonth() + 1)).slice(-2) + "/" + timestamp.getUTCFullYear();
-                            this.correctionRequestsEmailTime = ('0' + (timestamp.getUTCHours() + 2)).slice(-2) + ':' + ('0' + timestamp.getUTCMinutes()).slice(-2);
+                            let timestamp = moment(correctionRequest.date).tz(AppConstants.timezone);
+                            this.correctionRequestsEmailDate = timestamp.format("DD/MM/YYYY");
+                            this.correctionRequestsEmailTime = timestamp.format("HH:mm");
                             this.correctionRequestsEmailCounter = correctionRequest.buttonPressedCounter;
                         }
                         this.applicationApi.checkIfCorrectionRequestEmailIsAvailable(this.currentCall.id).subscribe(
@@ -352,7 +358,9 @@ export class DgConnApplicantRegistrationsComponent {
                         );
                         this.sharedService.growlTranslation('An email has been sent to the representants of the legal entities to supply the legal documents for the registration.', 'dgConn.duplicatedBeneficiaryDetails.requestLegalDocuments.success', 'success');
                     } else {
-                        this.sharedService.growlTranslation('An error occurred while trying to request the legal documents of the registration. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.requestLegalDocuments.error', 'error');
+                        if(response.error.errorCode == 20){
+                          this.sharedService.growlTranslation('An error occurred while sending notifications.', response.error.errorMessage, 'error');
+                        }
                     }
                     this.closeModal();
                 }, error => {
@@ -366,6 +374,7 @@ export class DgConnApplicantRegistrationsComponent {
     private closeModal() {
         this.sendingCorrectionEmails = false;
         this.displayCorrectionEmails = false;
+        this.showNotificationModal = false;
     }
 
     private getCorrectionRequestsEmailData(callId: number) {
@@ -381,9 +390,9 @@ export class DgConnApplicantRegistrationsComponent {
             this.applicationApi.getLastCorrectionRequestEmail(callId).subscribe(
                 (correctionEmail: CorrectionRequestEmailDTOBase) => {
                     if (correctionEmail != null) {
-                        let timestamp = new Date(correctionEmail.date);
-                        this.correctionRequestsEmailDate = ('0' + timestamp.getUTCDate()).slice(-2) + '/' + ('0' + (timestamp.getUTCMonth() + 1)).slice(-2) + "/" + timestamp.getUTCFullYear();
-                        this.correctionRequestsEmailTime = ('0' + (timestamp.getUTCHours() + 2)).slice(-2) + ':' + ('0' + timestamp.getUTCMinutes()).slice(-2);
+                        let timestamp = moment(correctionEmail.date).tz(AppConstants.timezone);
+                        this.correctionRequestsEmailDate = timestamp.format("DD/MM/YYYY");
+                        this.correctionRequestsEmailTime = timestamp.format("HH:mm");
                         this.correctionRequestsEmailCounter = correctionEmail.buttonPressedCounter;
                     }
                 }

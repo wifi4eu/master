@@ -885,7 +885,7 @@
   "dgConn.manageApplications.newUpload": "New upload",
   "benefPortal.beneficary.addMunicipality": "Add contact person",
   "dgConn.importexport.title": "ABAC",
-  "dgConn.importexport.introduction": "Breif explanation TBU",
+  "dgConn.importexport.introduction": "Brief explanation TBU",
   "dgConn.importexport.lef": "Legal Entities (LEF)",
   "dgConn.importexport.lef.import.finallist": "Import Final list from DG BUDG",
   "dgConn.importexport.lef.import.finallist.desc": "This button will import the municipalities as completed by DG BUDG into the portal. If a municipality exists already in ABAC, this imported file will give the ABAC reference number to the portal.",
@@ -1025,5 +1025,6 @@
   "benefPortal.profile.addNewContact.empty": "Please, complete the email field to add a new contact",
   "discussionForum.discussionForum.discussion.growl": "The Commission does not provide a mediation service.",
   "supplierPortal.profile.addNewContact.empty": "Please, complete the email field to add a new contact",
-  "benefPortal.voucher.applied.callEnded": "Applied on {{date}} at {{hour}}"
+  "benefPortal.voucher.applied.callEnded": "Applied on {{date}} at {{hour}}",
+  "benefPortal.grantAgreement.lefImport" : "You cannot sign the grant agreement until the lef import has been done"
 }
