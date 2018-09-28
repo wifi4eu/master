@@ -4,9 +4,11 @@ import { ImportLefComponent } from './lef/importLef.component';
 import { ExportImportRoutingModule } from './exportImport-routing.module';
 import { DgConnExportImportComponent } from './exportImport.component';
 import { ImportBudgetaryCommitmentComponent } from './budgetaryCommitment/importBudgetaryCommitment.component';
-import { FileSelectorComponent } from './shared/fileSelector.component';
+import { FileSelectorComponent } from './shared/fileSelector/fileSelector.component';
 import { ImportLegalCommitmentComponent } from 'app/+dgconn-portal/+exportImport/legalCommitment/importLegalCommitment.component';
 import { ImportDgBudgFinalListComponent } from './dgBudgFinalList/importDgBudgFinalList.component';
+import { ImportFileComponent } from './shared/importFile/importFile.component';
+import { PanelButtonComponent } from './shared/panelButton/panelButton.component';
 
 @NgModule({
     imports: [
@@ -19,7 +21,9 @@ import { ImportDgBudgFinalListComponent } from './dgBudgFinalList/importDgBudgFi
         ImportLegalCommitmentComponent,
         ImportDgBudgFinalListComponent,
         DgConnExportImportComponent,
-        FileSelectorComponent
+        FileSelectorComponent,
+        ImportFileComponent,
+        PanelButtonComponent
     ],
     bootstrap: [DgConnExportImportComponent]
 })

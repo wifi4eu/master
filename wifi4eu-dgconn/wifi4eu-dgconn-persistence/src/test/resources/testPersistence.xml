@@ -18,14 +18,12 @@
         <class>wifi4eu.wifi4eu.entity.installation.InstallationSite</class>
         <class>wifi4eu.wifi4eu.entity.installation.InstallationSiteWhitelist</class>
         <class>wifi4eu.wifi4eu.entity.organization.Organization</class>
-        <class>wifi4eu.wifi4eu.entity.exportImport.ValidatedLEF</class>
         <class>wifi4eu.wifi4eu.entity.exportImport.BudgetaryCommitment</class>
         <class>wifi4eu.wifi4eu.entity.exportImport.ExportImportBeneficiaryInformation</class>
         <class>wifi4eu.wifi4eu.entity.exportImport.BeneficiaryInformation</class>
         <class>wifi4eu.wifi4eu.entity.exportImport.ExportImportRegistrationData</class>
         <class>wifi4eu.wifi4eu.entity.exportImport.GlobalCommitment</class>
         <class>wifi4eu.wifi4eu.entity.exportImport.ExportImportBudgetaryCommitment</class>
-        <class>wifi4eu.wifi4eu.entity.exportImport.ExportFile</class>
         <class>wifi4eu.wifi4eu.entity.exportImport.ValidatedBC</class>
         <class>wifi4eu.wifi4eu.entity.admin.AdminActions</class>
         <class>wifi4eu.wifi4eu.entity.logEmails.LogEmail</class>

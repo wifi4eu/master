@@ -1,15 +1,8 @@
 
-<div class="container">
-    <div class="ui-g-12" style="margin-top: 1em; font-size: 14px;">
-        <a class="link-label" routerLink=".." routerLinkActive="active">
-            <i class="fa fa-arrow-left" aria-hidden="true"></i> {{'shared.back.button' | translate}}
-        </a>
-        <p class="beneficiaryTitle">{{ 'dgConn.importexport.title' | translate }}</p>
-        <p>{{ 'dgConn.importexport.lef.import.finallist' | translate }}</p>
-    </div>
-
-    <fileSelector (selectedFile)="sendFormData($event)"></fileSelector>
-</div>
+<importFile
+        title="{{ 'dgConn.importexport.lef.import.finallist' | translate }}"
+        (selectedFile)="sendFormData($event)"
+></importFile>
 
 <p-dialog [(visible)]="processingOperation" [modal]="true" [responsive]="true" [resizable]="false"
           [draggable]="false" [closable]="false">

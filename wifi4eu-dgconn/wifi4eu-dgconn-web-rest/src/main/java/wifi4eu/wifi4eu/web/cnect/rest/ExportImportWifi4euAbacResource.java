@@ -51,11 +51,11 @@ public class ExportImportWifi4euAbacResource {
 
     @RequestMapping(value = "/importLegalEntityFBCValidate", method = RequestMethod.POST, produces = "application/JSON")
     @ResponseBody
-    public ResponseDTO importLegalEntityFBCValidate(@Validated @NotNull @RequestParam("importFile") MultipartFile file) {
+    public ResponseDTO importLegalEntitiesFromAbac(@Validated @NotNull @RequestParam("importFile") MultipartFile file) {
         try {
             _log.debug("importLegalEntityFBCValidate: file size = {}", file.getSize());
 
-            boolean success = exportImportWifi4euAbacService.importLegalEntityFBCValidate(file.getInputStream());
+            boolean success = exportImportWifi4euAbacService.importLegalEntitiesFromAbac(file.getInputStream());
 
             _log.debug("Import of the LEF result: {}", success);
 
@@ -217,14 +217,14 @@ public class ExportImportWifi4euAbacResource {
         }
     }
 
-    @RequestMapping(value = "/importRegistrationData", method = RequestMethod.POST)
+    @RequestMapping(value = "/importDgBudgList", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO importRegistrationData(@Validated @NotNull @RequestParam("importFile") MultipartFile file) {
         try {
             _log.debug("importRegistrationData");
 
-            boolean success = exportImportWifi4euAbacService.importAbacReferencesList(file.getInputStream());
+            boolean success = exportImportWifi4euAbacService.importDgBudgList(file.getInputStream());
 
             return new ResponseDTO(success);
         } catch (AccessDeniedException ade) {
