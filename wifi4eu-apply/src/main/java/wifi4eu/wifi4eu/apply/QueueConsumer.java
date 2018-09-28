@@ -3,6 +3,7 @@ package wifi4eu.wifi4eu.apply;
 import io.lettuce.core.Consumer;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
+import io.lettuce.core.RedisURI.Builder;
 import io.lettuce.core.StreamMessage;
 import io.lettuce.core.XReadArgs;
 import io.lettuce.core.XReadArgs.*;
@@ -106,20 +107,27 @@ public class QueueConsumer implements Runnable {
     private synchronized void connect() throws IOException {
         logger.info("Connecting to redis sentinel");
 
-        String sentinelUri1 = Config.getEnvironment("wifi4eu.queue.uri.1");
-        String sentinelUri2 = Config.getEnvironment("wifi4eu.queue.uri.2");
-        String sentinelUri3 = Config.getEnvironment("wifi4eu.queue.uri.3");
-
         Integer sentinelPort = Integer.valueOf(Config.getEnvironment("wifi4eu.queue.sentinel.port"));
-
-        RedisURI redisUri = RedisURI.Builder.sentinel(sentinelUri1, sentinelPort, "master1")
-                .withSentinel(sentinelUri2, sentinelPort)
-                .withSentinel(sentinelUri3, sentinelPort)
-                .build();
-
+        String cfgRedisUri = Config.getEnvironment("wifi4eu.queue.uri");
+        logger.info("Recovered sentinels: {} - setting connection on port {}", cfgRedisUri, sentinelPort);
+        
+        Builder redisUriBuilder = RedisURI.builder();
+        boolean isMasterSet = false;
+        String[] redisSentinels = cfgRedisUri.split(",");        
+        for (String redisSentinel : redisSentinels) {
+        	if (!isMasterSet) {
+        		redisUriBuilder.sentinel(redisSentinel, sentinelPort, "master1");
+        		isMasterSet = true;
+        		logger.info("Added sentinel {} as master", redisSentinel);
+        	} else {
+        		redisUriBuilder.withSentinel(redisSentinel, sentinelPort);
+        		logger.info("Added sentinel {}", redisSentinel);
+        	}
+		}
+        
+        RedisURI redisUri = redisUriBuilder.build();
         redis = RedisClient.create(redisUri);
         redis.setDefaultTimeout(Duration.ofMillis(cfgReadTimeout));
-
         connection = redis.connect();
         streamCommands = connection.sync();
 

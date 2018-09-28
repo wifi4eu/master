@@ -18,8 +18,6 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.zaxxer.hikari.HikariDataSource;
-
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
@@ -36,18 +34,21 @@ public class MasterDbConfig {
 	private char[] password;
 	
 	@Value("${wifi4eu.masterdb.url}")
-	private String masterdbUrl;
-	
+	private String masterDBUrl;
+
+	@Value("${wifi4eu.masterdb.driver}")
+	private String masterDBDriver;
+
 	@Bean(name = "masterDataSource")
-	public HikariDataSource dataSource() {
+	public DataSource dataSource() {
         DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
-        dataSourceBuilder.driverClassName("net.sourceforge.jtds.jdbc.Driver");
+        dataSourceBuilder.driverClassName(this.masterDBUrl);
         dataSourceBuilder.username(this.user);
         dataSourceBuilder.password(String.valueOf(this.password));
-        dataSourceBuilder.url(this.masterdbUrl);
+        dataSourceBuilder.url(this.masterDBUrl);
         
-        HikariDataSource ds = (HikariDataSource) dataSourceBuilder.build(); 
-        ds.setConnectionTestQuery("SELECT 1");
+        DataSource ds = (DataSource) dataSourceBuilder.build(); 
+        // TODO review ds.setConnectionTestQuery("SELECT 1");
 
         return ds;   
 	}

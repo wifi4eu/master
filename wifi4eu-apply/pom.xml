@@ -5,7 +5,7 @@
 
 	<groupId>wifi4eu.wifi4eu</groupId>
 	<artifactId>apply</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>wifi4eu-apply</name>
@@ -21,8 +21,29 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
-	  	  <skipTests>true</skipTests>
+		<jdk.version>1.8</jdk.version>
+		<skipTests>true</skipTests>
+		
+		<!-- application default values -->
+				
+		<!-- redis values -->
+		<wifi4eu.queue.name>wifi4eu-apply</wifi4eu.queue.name>
+		<wifi4eu.queue.cgroup>wifi4eu-cgroup3</wifi4eu.queue.cgroup>
+		<wifi4eu.queue.consumerid>wifi4eu-c2</wifi4eu.queue.consumerid>
+		<wifi4eu.queue.readinterval>600000</wifi4eu.queue.readinterval>		
+		<wifi4eu.queue.sentinel.port>5000</wifi4eu.queue.sentinel.port>
+		<wifi4eu.queue.batchsize>300</wifi4eu.queue.batchsize>
+		<wifi4eu.queue.uri>localhost</wifi4eu.queue.uri>
+
+		<!-- local database -->
+		<wifi4eu.localdb.uri>jdbc:sqlite:wifi4eu-call.db</wifi4eu.localdb.uri>
+
+		<!-- remote databases -->
+		<wifi4eu.masterdb.driver>net.sourceforge.jtds.jdbc.Driver</wifi4eu.masterdb.driver>
+		<wifi4eu.masterdb.url>jdbc:sqlserver://wifi4eu-dbserver.database.windows.net:1433;databaseName=wifi4eudb-prod_01_2018-05-28T08-30Z</wifi4eu.masterdb.url>
+		<wifi4eu.masterdb.user>taqof2g1aamcdvf@wifi4eu-dbserver</wifi4eu.masterdb.user>
+		<wifi4eu.masterdb.password>TFpKzD@8RkK1Be-/yV2D.QbC3lRzTL*H$EN</wifi4eu.masterdb.password>
+
 	</properties>
 
 	<dependencies>
@@ -54,7 +75,6 @@
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 		
-		
 		<dependency>
 			<groupId>io.lettuce</groupId>
 			<artifactId>lettuce-core</artifactId>
@@ -67,6 +87,7 @@
 			<artifactId>sqlite-jdbc</artifactId>
 			<version>3.23.1</version>
 		</dependency>
+		
 		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -80,13 +101,12 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/net.sourceforge.jtds/jtds -->
-		<dependency>
-			<groupId>net.sourceforge.jtds</groupId>
-			<artifactId>jtds</artifactId>
-			<version>1.3.1</version>
-		</dependency>
-
+ 		<dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>6.4.0.jre8</version>
+        </dependency>
+ 
 		<dependency>
     		<groupId>org.springframework</groupId>
     		<artifactId>spring-jdbc</artifactId>
@@ -95,13 +115,94 @@
 	</dependencies>
 
 	<build>
+	
+		<finalName>wifi4eu-apply</finalName>
+<!--           
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+ -->		
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.7.0</version>
+                    <configuration>
+                        <source>${jdk.version}</source>
+                        <target>${jdk.version}</target>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<addResources>false</addResources>
+				</configuration>				
 			</plugin>
 		</plugins>
-		<finalName>wifi4eu-apply</finalName>
+		
 	</build>
+
+	<profiles>
+	
+		<profile>
+			<id>LOCAL</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<test.value>TEST - LOCAL VALUE</test.value>
+			</properties>
+		</profile>
+		
+		<profile>
+			<id>DEV</id>
+			<properties>
+				<wifi4eu.queue.uri>10.0.2.31,10.0.2.32,10.0.2.33</wifi4eu.queue.uri>
+				<wifi4eu.masterdb.url>jdbc:sqlserver://wifi4eu-dbserver.database.windows.net:1433;databaseName=wifi4eudb-prod_01_2018-05-28T08-30Z</wifi4eu.masterdb.url>
+				<wifi4eu.masterdb.user>taqof2g1aamcdvf@wifi4eu-dbserver</wifi4eu.masterdb.user>
+				<wifi4eu.masterdb.password>TFpKzD@8RkK1Be-/yV2D.QbC3lRzTL*H$EN</wifi4eu.masterdb.password>
+			</properties>
+		</profile>
+		
+		<profile>
+			<id>ACC</id>
+			<properties>
+				<wifi4eu.queue.uri>202.3.2.4,202.3.2.5,202.3.2.6</wifi4eu.queue.uri>
+				<wifi4eu.masterdb.url>jdbc:sqlserver://wifi4eu-dbserver-acc.database.windows.net:1433;databaseName=wifi4eu-dbserver-acc</wifi4eu.masterdb.url>
+				<wifi4eu.masterdb.user>user_rw</wifi4eu.masterdb.user>
+				<wifi4eu.masterdb.password>532V301vO205lHz</wifi4eu.masterdb.password>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>ACCHF</id>
+			<properties>
+				<wifi4eu.queue.uri>202.3.2.11,202.3.2.12,202.3.2.13</wifi4eu.queue.uri>
+				<wifi4eu.masterdb.url>jdbc:sqlserver://wifi4eu-dbserver-acc.database.windows.net:1433;databaseName=wifi4eu-dbserver-acchf</wifi4eu.masterdb.url>
+				<wifi4eu.masterdb.user>user_rw</wifi4eu.masterdb.user>
+				<wifi4eu.masterdb.password>532V301vO205lHz</wifi4eu.masterdb.password>
+			</properties>
+		</profile>
+		
+		<profile>
+			<id>PRO</id>
+			<properties>
+				<wifi4eu.queue.uri>10.0.2.70,10.0.2.71,10.0.2.72</wifi4eu.queue.uri>
+				<wifi4eu.masterdb.url>jdbc:sqlserver://wifi4eu-dbserver.database.windows.net:1433;databaseName=wifi4eudb-prod_01_TESTUPGRADE</wifi4eu.masterdb.url>
+				<wifi4eu.masterdb.user>taqof2g1aamcdvf@wifi4eu-dbserver</wifi4eu.masterdb.user>
+				<wifi4eu.masterdb.password>TFpKzD@8RkK1Be-/yV2D.QbC3lRzTL*H$EN</wifi4eu.masterdb.password>
+			</properties>
+		</profile>
+		
+	</profiles>
 
 </project>
