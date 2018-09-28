@@ -84,9 +84,9 @@ import java.util.stream.Collectors;
  */
 @Service
 @Transactional
-public class ExportImportWifi4euAbacService {
+public class ExportImportAbacServiceImpl implements ExportImportAbacService {
 
-    private final Logger _log = LoggerFactory.getLogger(ExportImportWifi4euAbacService.class);
+    private final Logger _log = LoggerFactory.getLogger(ExportImportAbacServiceImpl.class);
 
     private static final String ERROR_WRITING_DOWN_TO_THE_CSV_FILE = "Error writing down to the CSV file. The record will be skipped.";
 
@@ -162,6 +162,7 @@ public class ExportImportWifi4euAbacService {
     private String legalCommitmentImportDocumentsFileName;
 
 
+    @Override
     public boolean importLegalEntitiesFromAbac(InputStream fileDataStream) throws IOException {
         _log.debug("importLegalEntityFBCValidate");
 
@@ -208,6 +209,7 @@ public class ExportImportWifi4euAbacService {
         return municipalitiesAbac;
     }
 
+    @Override
     @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public ByteArrayOutputStream exportLegalEntities() throws IOException {
         _log.debug("exportBeneficiaryInformation");
@@ -318,6 +320,7 @@ public class ExportImportWifi4euAbacService {
         return StringUtils.isNotEmpty(beneficiaryInformation.getDoc_fileName()) ? beneficiaryInformation.getDoc_portalId() + "-" + beneficiaryInformation.getDoc_fileName() : Strings.EMPTY;
     }
 
+    @Override
     @Deprecated
     public void exportRegistrationData() throws Exception {
         _log.debug("exportRegistrationData");
@@ -363,6 +366,7 @@ public class ExportImportWifi4euAbacService {
         cF.createExcelFileRegistrationData(header, document, "ExportRegistrationData.xlsx");
     }
 
+    @Override
     public boolean importDgBudgList(InputStream inputStream) throws Exception {
         _log.debug("importDgBudgList");
 
@@ -393,6 +397,7 @@ public class ExportImportWifi4euAbacService {
         }
     }
 
+    @Override
     public byte[] exportBudgetaryCommitment() throws IOException {
         _log.debug("exportBudgetaryCommitment");
 
@@ -817,6 +822,7 @@ public class ExportImportWifi4euAbacService {
         return issueType;
     }
 
+    @Override
     public boolean importBudgetaryCommitment(InputStream fileDataStream) throws IOException {
         _log.debug("importBudgetaryCommitment");
 
@@ -859,6 +865,7 @@ public class ExportImportWifi4euAbacService {
         return null;
     }
 
+    @Override
     public boolean importLegalCommitment(InputStream inputStream) throws IOException {
 
         // TODO: needs o be improved for the really big files
@@ -973,6 +980,7 @@ public class ExportImportWifi4euAbacService {
         }
     }
 
+    @Override
     @Transactional(readOnly = true)
     public ByteArrayOutputStream exportLegalCommitment() throws IOException {
 
