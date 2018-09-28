@@ -122,7 +122,7 @@ export class DgConnVoucherComponent {
   sessionExpired: Boolean = false;
 
   private adminAction: AdminActionsDTO;
-  private destroyed: Subject<boolean> = new Subject();
+  private destroyedSimulateFreeze: Subject<boolean> = new Subject();
 
   private displayConfirmingDataFreeze: boolean = false;
 
@@ -238,13 +238,13 @@ export class DgConnVoucherComponent {
   }
   startInterval() {
     this.sessionInterval
-        .takeUntil(this.destroyed)
+        .takeUntil(this.destroyedSimulateFreeze)
         .subscribe(execution => {
           this.adminActionsApi.getByActionName("voucher_simulation").subscribe((response: ResponseDTO) => {
               if (response.success) {
                 this.adminAction = response.data;
                 if(!this.adminAction.running){
-                  this.destroyed.next(true);   
+                  this.destroyedSimulateFreeze.next(true);   
                   this.reloadData();
                   this.displayConfirmingData = false;
                 }            
@@ -255,13 +255,13 @@ export class DgConnVoucherComponent {
 
   startIntervalFreeze() {
     this.sessionInterval
-        .takeUntil(this.destroyed)
+        .takeUntil(this.destroyedSimulateFreeze)
         .subscribe(execution => {
           this.adminActionsApi.getByActionName("freeze_voucher").subscribe((response: ResponseDTO) => {
               if (response.success) {
                 this.adminAction = response.data;
                 if(!this.adminAction.running){
-                  this.destroyed.next(true);   
+                  this.destroyedSimulateFreeze.next(true);   
                   this.reloadData();
                   this.displayConfirmingDataFreeze = false;
 
