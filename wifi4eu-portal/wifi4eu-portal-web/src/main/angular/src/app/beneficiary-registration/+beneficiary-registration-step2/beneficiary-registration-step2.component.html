@@ -42,8 +42,7 @@
                 <div class="ui-g-12">
                     <div class="ui-g-8">
                         <div class="form-group">
-                            <label class="label floatLeft" for="address">{{ 'benefRegistration.townHall.address' |
-                                translate }}</label>
+                            <label class="label floatLeft" for="address">{{ 'benefRegistration.address.label' | translate }}</label>
                             <input type="text" class="form-control paddingInput" min="1" 
                                    id="addressStep2" name="address" [(ngModel)]="municipalities[0].address"  maxlength="255" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)" required>
                         </div>

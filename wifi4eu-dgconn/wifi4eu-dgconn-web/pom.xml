@@ -47,20 +47,22 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.5.0</version>
                         <executions>
+                            <!--
                             <execution>
-                                <phase>generate-sources</phase>
-                                <id>1</id>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <configuration>
-                                    <executable>bash</executable>
-                                    <workingDirectory>../../wifi4eu-scripts/src/translations</workingDirectory>
-                                    <arguments>
-                                        <argument>copy_to_i18.sh</argument>
-                                    </arguments>
-                                </configuration>
+                              <phase>generate-sources</phase>
+                              <id>1</id>
+                              <goals>
+                                <goal>exec</goal>
+                              </goals>
+                              <configuration>
+                                <executable>bash</executable>
+                                <workingDirectory>../../wifi4eu-scripts/src/translations</workingDirectory>
+                                <arguments>
+                                  <argument>copy_to_i18.sh</argument>
+                                </arguments>
+                              </configuration>
                             </execution>
+                            -->
                             <execution>
                                 <phase>generate-sources</phase>
                                 <id>2</id>
