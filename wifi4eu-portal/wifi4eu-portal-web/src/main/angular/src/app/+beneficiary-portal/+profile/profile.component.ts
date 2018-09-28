@@ -298,7 +298,8 @@ export class BeneficiaryProfileComponent {
                         this.withdrawnSuccess = true;
                         this.localStorageService.remove('user');
                         var port = window.location.port ? ':' + window.location.port : '';
-                        window.location.href = window.location.protocol + "//" + window.location.hostname + port+'/wifi4eu/index.html';
+                        //TODO should try in other environments
+                        window.location.replace(window.location.protocol + "//" + window.location.hostname + port);
                     } else {
                         if(data.error != null){
                           this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', data.error.errorMessage, 'warn');  
