@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SharedService } from '../../../shared/shared.service';
+import { SharedService } from '../../../../shared/shared.service';
 
 @Component({
     selector: 'fileSelector',

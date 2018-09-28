@@ -35,7 +35,7 @@ export class LegalEntitiesService {
     }
 
     importDbBudgFinalList(fileData: FormData): Observable<ResponseDTO> {
-        const path = this.basePath + `/exportImport/importRegistrationData`;
+        const path = this.basePath + `/exportImport/importDgBudgList`;
 
         return this.http.post(path, fileData).map(response => response.json());
     }
