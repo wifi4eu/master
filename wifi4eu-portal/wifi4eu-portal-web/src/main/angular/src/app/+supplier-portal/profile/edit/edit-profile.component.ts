@@ -40,7 +40,7 @@ export class SupplierEditProfileComponent {
     private user: UserDTOBase;
     private userConnected: UserDTOBase;
     private supplier: SupplierDTOBase;
-    private websitePattern: string = '(([wW][wW][wW]\\.)|([hH][tT][tT][pP][sS]?:\\/\\/([wW][wW][wW]\\.)?))?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,256}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)';
+    private websitePattern: string = '(([wW][wW][wW]\\.)|([hH][tT][tT][pP][sS]?:\\/\\/([wW][wW][wW]\\.)?))?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,256}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)$';
     private countryOptions: SelectItem[] = [];
     private regionOptions: SelectItem[][] = [];
     private selectedCountries: NutsDTOBase[] = [];
