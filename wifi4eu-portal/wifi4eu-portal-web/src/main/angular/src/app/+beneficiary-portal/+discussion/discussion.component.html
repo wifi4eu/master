@@ -118,10 +118,9 @@
         <div *ngIf="thread.messages.length < 1" class="row button-content discussion-content">
             <div class="col-sm-12 noPadding">
                 <div class="col-sm-8">
-                    <!--<p>{{'discussionForum.noRecentConversations.text' | translate }}</p>-->
                 </div>
                 <div class="col-sm-4">
-                    <button [disabled]="thread.mediation" type="button"
+                    <button type="button"
                             class="btn btn-primary changePassword discussionButton"
                             (click)="newMessage()">
                         {{'discussionForum.add.reply' | translate }}
@@ -136,7 +135,7 @@
                     <div class="ui-g-3">
                         <div>
                             <button type="button" class="btn btn-primary changePassword discussionButton"
-                                    (click)="newMessage()" [disabled]="thread.mediation">
+                                    (click)="newMessage()">
                                 <i class="fa fa-plus" aria-hidden="true"></i>
                                 {{'discussionForum.add.reply' | translate }}
                             </button>
