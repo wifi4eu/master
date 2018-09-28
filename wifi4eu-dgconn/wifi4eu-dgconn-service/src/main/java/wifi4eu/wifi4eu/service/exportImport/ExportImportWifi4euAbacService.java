@@ -227,11 +227,11 @@ public class ExportImportWifi4euAbacService {
         }
 
         // Add the Beneficiary CSV file
-        ExportFile csvBeneficiariesFile = new ExportFile(FILENAME_EXPORT_BENEFICIARIES_DATA, csvBeneficiaryData.toString().getBytes());
+        ExportFile csvBeneficiariesFile = new ExportFile(FILENAME_EXPORT_BENEFICIARIES_DATA, csvBeneficiaryData.toString().getBytes(StandardCharsets.UTF_8));
         exportFiles.add(csvBeneficiariesFile);
 
         // Add the Document CSV file
-        ExportFile csvDocumentsFile = new ExportFile(FILENAME_EXPORT_DOCUMENTS_DATA, csvDocumentData.toString().getBytes());
+        ExportFile csvDocumentsFile = new ExportFile(FILENAME_EXPORT_DOCUMENTS_DATA, csvDocumentData.toString().getBytes(StandardCharsets.UTF_8));
         exportFiles.add(csvDocumentsFile);
 
         return exportFileUtilities.generateZipFileStream(exportFiles);
