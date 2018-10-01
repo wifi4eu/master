@@ -173,19 +173,37 @@ public class ReportPreSelection {
 
     @Transactional
     private Integer getDuplicates(Integer callId, Integer idNut) {
+        Integer res = 0;
         if (idNut != 0) {
-            return applicationRepository.countApplicationDuplicatesByCall(callId, idNut);
+            res = applicationRepository.countApplicationDuplicatesByCall(callId, idNut);
+            if(Validator.isNotNull(res)){
+                return res;
+            }
+            return 0;
         } else {
-            return applicationRepository.countApplicationDuplicatesByCall(callId);
+            res = applicationRepository.countApplicationDuplicatesByCall(callId);
+            if(Validator.isNotNull(res)){
+                return res;
+            }
+            return 0;
         }
     }
 
     @Transactional
     private Integer getDuplicatesInvalidated(Integer callId, Integer idNut) {
+        Integer res = 0;
         if (idNut != 0) {
-            return applicationRepository.countApplicationDuplicatesInvalidatedByCall(callId, idNut);
+            res = applicationRepository.countApplicationDuplicatesInvalidatedByCall(callId, idNut);
+            if(Validator.isNotNull(res)){
+                return res;
+            }
+            return 0;
         } else {
-            return applicationRepository.countApplicationDuplicatesInvalidatedByCall(callId);
+            res = applicationRepository.countApplicationDuplicatesInvalidatedByCall(callId);
+            if(Validator.isNotNull(res)){
+                return res;
+            }
+            return 0;
         }
     }
 
