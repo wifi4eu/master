@@ -128,7 +128,7 @@ export class BeneficiaryListComponent implements OnInit {
   }
 
   private downloadPdfGrantAgreement(registrationId: number){
-    this.beneficiaryApi.exportBeneficiaryPdfGrantAgreement(registrationId, this.currentCall.id).subscribe(          
+    this.beneficiaryApi.exportBeneficiaryPdfGrantAgreement(registrationId).subscribe(          
       (response) => {
           let blob = new Blob([response], {type: 'application/pdf'});
           FileSaver.saveAs(blob, 'grantAgreementPdf.pdf');
