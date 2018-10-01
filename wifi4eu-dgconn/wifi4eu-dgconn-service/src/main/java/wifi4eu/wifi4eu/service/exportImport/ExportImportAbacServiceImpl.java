@@ -385,11 +385,9 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
             Chunk titleTxt = new Chunk("LEF supporting document", tittleFont);
             Paragraph titlePar = new Paragraph(titleTxt);
             titlePar.setAlignment(Element.ALIGN_CENTER);
-            Chapter titleCh = new Chapter(titlePar, chapterNum++);
+            document.add(titlePar);
 
-            Chunk municipalityTitleTxt = new Chunk("Municipality information", chapterFont);
-            Chapter municipalityChapter = new Chapter(new Paragraph(municipalityTitleTxt), chapterNum++);
-            municipalityChapter.setNumberDepth(0);
+            document.add(new Paragraph(new Chunk("Municipality information", chapterFont)));
 
             StringBuilder municipalityParagraphText = new StringBuilder();
             municipalityParagraphText.append("Municipality id: ").append(beneficiaryInformation.getMun_id()).append("\n");
@@ -399,14 +397,12 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
             municipalityParagraphText.append("Municipality postal code: ").append(beneficiaryInformation.getMun_postalCode()).append("\n");
             municipalityParagraphText.append("Municipality country code: ").append(beneficiaryInformation.getMun_countryCodeISO()).append("\n");
 
-            municipalityChapter.add(new Paragraph(municipalityParagraphText.toString(), paragraphFont));
-            document.add(municipalityChapter);
+            document.add(new Paragraph(new Chunk(municipalityParagraphText.toString(), paragraphFont)));
 
             Mayor mayor = mayorRepository.findByMunicipalityId(Integer.parseInt(beneficiaryInformation.getMun_id()));
             if (mayor != null) {
-                Chunk mayorTitleText = new Chunk("Mayor information", chapterFont);
-                Chapter mayorChapter = new Chapter(new Paragraph(mayorTitleText), chapterNum++);
-                mayorChapter.setNumberDepth(0);
+
+                document.add(new Paragraph(new Chunk("Mayor information", chapterFont)));
 
                 StringBuilder mayorParagraphText = new StringBuilder();
                 mayorParagraphText.append("Mayor id: ").append(mayor.getId()).append("\n");
@@ -414,15 +410,14 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
                 mayorParagraphText.append("Mayor surname: ").append(mayor.getSurname()).append("\n");
                 mayorParagraphText.append("Mayor email: ").append(mayor.getEmail()).append("\n");
 
-                mayorChapter.add(new Paragraph(mayorParagraphText.toString(), paragraphFont));
-                document.add(mayorChapter);
+                document.add(new Paragraph(new Chunk(mayorParagraphText.toString(), paragraphFont)));
             }
 
             Iterable<Representation> representations = representationRepository.findByMunicipalityId(Integer.parseInt(beneficiaryInformation.getMun_id()));
             if (representations.iterator().hasNext()) {
-                Chunk representationsTitleText = new Chunk("Representations information", chapterFont);
-                Chapter representationsChapter = new Chapter(new Paragraph(representationsTitleText), chapterNum++);
-                representationsChapter.setNumberDepth(0);
+
+                document.add(new Paragraph(new Chunk("Representations information", chapterFont)));
+
                 representations.forEach(representation -> {
                     StringBuilder representationParagraphText = new StringBuilder();
                     Mayor mayorRep = representation.getMayor();
@@ -430,9 +425,13 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
                     representationParagraphText.append("Mayor name: ").append(mayorRep.getName()).append("\n");
                     representationParagraphText.append("Mayor surname: ").append(mayorRep.getSurname()).append("\n");
                     representationParagraphText.append("Mayor email: ").append(mayorRep.getEmail()).append("\n");
-                    representationsChapter.add(new Paragraph(representationParagraphText.toString(), paragraphFont));
+
+                    try {
+                        document.add(new Paragraph(new Chunk(representationParagraphText.toString(), paragraphFont)));
+                    } catch (DocumentException e) {
+                        _log.error("unable to create representation in beneficiary pdf", e);
+                    }
                 });
-                document.add(representationsChapter);
             }
 
             document.close();
