@@ -30,8 +30,7 @@ public class ApplicationResource {
     @Autowired
     ApplicationService applicationService;
 
-    @Autowired
-    UserService userService;
+    private String HARCODED_LOCALHOST = "127.0.0.1";
 
     Logger _log = LogManager.getLogger(ApplicationResource.class);
 
@@ -39,26 +38,25 @@ public class ApplicationResource {
     @RequestMapping(value = "/sendApplicationEmails/{callId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ResponseDTO sendApplicationEmails(HttpServletRequest http, @PathVariable("callId") final Integer callId) throws IOException {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.info("IP ADDRESS => "+http.getRemoteAddr());
-        try {
-                if (userConnected.getType() != 5) {
-                    throw new AccessDeniedException("This user is not authorized to use this functionality.");
-                }
-                Integer[] sentEmails = applicationService.sendEmailApplications(callId);
-                if (sentEmails != null) {
-                    Map<String, Long> response = new HashMap<>();
-                    response.put("sentEmailsUsers", sentEmails[0].longValue());
-                    response.put("sentEmailsMunicipalities", sentEmails[1].longValue());
-                    return new ResponseDTO(true, response, null);
-                } else {
-                    throw new Exception("ERROR - Could not create application emails");
-                }
-        } catch (AccessDeniedException ade) {
-            return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
-        } catch (Exception e) {
-            return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
+        if (http.getRemoteAddr().equals(HARCODED_LOCALHOST)){
+            try {
+                    Integer[] sentEmails = applicationService.sendEmailApplications(callId);
+                    if (sentEmails != null) {
+                        Map<String, Long> response = new HashMap<>();
+                        response.put("sentEmailsUsers", sentEmails[0].longValue());
+                        response.put("sentEmailsMunicipalities", sentEmails[1].longValue());
+                        return new ResponseDTO(true, response, null);
+                    } else {
+                        throw new Exception("ERROR - Could not create application emails");
+                    }
+            } catch (AccessDeniedException ade) {
+                return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
+            } catch (Exception e) {
+                return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
+            }
+        } else {
+            return new ResponseDTO(false, null, new ErrorDTO(400, "ERROR - Ip not authorized"));
         }
     }
 

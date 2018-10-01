@@ -27,10 +27,8 @@ import wifi4eu.wifi4eu.service.user.UserConstants;
 
 @Service
 public class ApplicationService {
-    private static final Logger _log = LogManager.getLogger(ApplicationService.class);
 
-    @Value("${mail.server.location}")
-    private String baseUrl;
+    private static final Logger _log = LogManager.getLogger(ApplicationService.class);
 
     @Autowired
     private MailService mailService;
@@ -43,9 +41,6 @@ public class ApplicationService {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private ApplicationService applicationService;
 
     @Autowired
     private CallRepository callRepository;
@@ -63,8 +58,8 @@ public class ApplicationService {
 
     	MailData mailData = MailHelper.buildMailCreateApplication(user.getEcasEmail(), MailService.FROM_ADDRESS, municipalityId, "createApplication", locale);
     	mailService.sendMail(mailData, true);
-
         application.setSentEmail(true);
+        application.setSentEmailDate(new Date());
         applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(application)));
         _log.log(Level.getLevel("BUSINESS"), "Create Application Emails - Email will be sent to " + user.getEcasEmail() + " for the " + "application id: " + application.getId());
     }
@@ -86,7 +81,7 @@ public class ApplicationService {
             if(users != null && !users.isEmpty()) {
                 for (User user : users) {
                     if (municipalityId != null && user != null) {
-                        applicationService.sendCreateApplicationEmail(user, municipalityId, app);
+                        sendCreateApplicationEmail(user, municipalityId, app);
                         sentEmailsUsers++;
                     } else {
                         _log.error("Create Application Emails - inconsistency in data. User or municipality is null. Application id: " + app.getId());
