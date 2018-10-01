@@ -765,4 +765,14 @@ export class DgConnApplicantRegistrationsDetailsComponent {
             
         ); 
     }
+
+      private checkSeen(fileId: number){
+        this.registrationApi.getDownloadedLegalFile(fileId).subscribe(
+            (response: ResponseDTOBase) =>{
+
+            }, error =>{
+
+            }
+        );
+    }  
 }
