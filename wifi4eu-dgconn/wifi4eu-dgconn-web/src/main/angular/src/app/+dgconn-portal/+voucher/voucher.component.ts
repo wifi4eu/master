@@ -6,7 +6,7 @@ import { VoucherApi } from "../../shared/swagger/api/VoucherApi";
 import { ApplicationVoucherInfoDTOBase } from "../../shared/swagger/model/ApplicationVoucherInfoDTO";
 import { NutsApi } from "../../shared/swagger/api/NutsApi";
 import { NutsDTOBase } from "../../shared/swagger/model/NutsDTO";
-import { Observable } from 'rxJs/Observable';
+import { Observable } from 'rxjs/Observable';
 import { SharedService } from "../../shared/shared.service";
 import { VoucherAssignmentDTO, VoucherSimulationDTO, ResponseDTO, VoucherAssignmentAuxiliarDTO, ResponseDTOBase, ApplicationDTO, VoucherAssignmentAuxiliarDTOBase, RegistrationWarningApi, VoucherAssignmentDTOBase, AdminactionsApi } from "../../shared/swagger";
 import { trigger, transition, style, animate, query, stagger, group, state } from '@angular/animations';
@@ -63,6 +63,7 @@ export class DgConnVoucherComponent {
   private listAssignment: VoucherSimulationDTO[] = [];
   private municipalityMunicipality = null;
   private simulationRequest = null;
+  private preListLoaded = false;
 
   private indexTab = 0;
   private totalRecords: number = null;
@@ -102,6 +103,9 @@ export class DgConnVoucherComponent {
   private confirmFreezeBtn : boolean = true;
   private confirmNotificationsBtn: boolean = true;
   private showNotificationModal : boolean = false;
+
+  private showPrelistModal: boolean =  false;
+  private psswdPrelist: string = '';
 
   @ViewChild("paginator") paginator: Paginator;
   @ViewChild("tableVoucher") tableVoucher: DataTable;
@@ -197,6 +201,7 @@ export class DgConnVoucherComponent {
                 this.loadingPreList = true;
                 this.loadingFreezeList = true;
                 this.callVoucherAssignment = data;
+                this.preListLoaded = data.hasPreListSaved;
                 let date = new Date(this.callVoucherAssignment.preListExecutionDate);
                 this.dateNumberPreList = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
                 this.hourNumberPreList = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
@@ -209,7 +214,7 @@ export class DgConnVoucherComponent {
                   }, (error) => {
                     this.sharedService.growlTranslation('An error occured while checking if pre-list is enabled', 'dgConn.voucherAssignment.error.checkPreList', 'error');
                   })
-                this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id)
+                this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id, new Date().getTime())
                   .finally(() => {
                     this.loadingFreezeList = false;
                   })
@@ -360,24 +365,35 @@ export class DgConnVoucherComponent {
     });
   }
 
-  savePreList(savePreListBtn) {
-    savePreListBtn.disabled = true;
+  private savePrelistPopup(){
+    this.showPrelistModal = true;
+    this.psswdPrelist = '';
+  }
+
+ private savePreList() {
     if (this.callVoucherAssignment.hasPreListSaved) {
       return;
     }
-    this.voucherApi.savePreListSimulation(this.callVoucherAssignment.id, this.callSelected.id).subscribe((response: ResponseDTO) => {
-      this.preSelectedEnabled = null;
-      this.callVoucherAssignment.hasPreListSaved = true;
-      this.callVoucherAssignment.preListExecutionDate = response.data.executionDate;
-      let date = new Date(this.callVoucherAssignment.preListExecutionDate);
-      this.freezeButtonEnabled = true;
-      this.filterTable();
-      this.dateNumberPreList = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
-      this.hourNumberPreList = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
-      savePreListBtn.disabled = false;
-    }, error => {
-      this.sharedService.growlTranslation('An error ocurred while saving pre-list', 'dgConn.voucherAssignment.error.savingPreList', 'error');
-    })
+    this.voucherApi.savePreListSimulation(this.psswdPrelist, this.callVoucherAssignment.id, this.callSelected.id).subscribe((response: ResponseDTO) => {
+      if(!response.success){
+        if(response.error.errorCode == 20){
+          this.sharedService.growlTranslation('An error occurred while freezing the list.', response.error.errorMessage, 'error');
+        }
+      }else{
+        this.preSelectedEnabled = null;
+        this.callVoucherAssignment.hasPreListSaved = true;
+        this.callVoucherAssignment.preListExecutionDate = response.data.executionDate;
+        let date = new Date(this.callVoucherAssignment.preListExecutionDate);
+        this.freezeButtonEnabled = true;
+        this.filterTable();
+        this.dateNumberPreList = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
+        this.hourNumberPreList = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
+        this.showPrelistModal = false;
+      }
+      }, error => {
+        this.sharedService.growlTranslation('An error ocurred while saving pre-list', 'dgConn.voucherAssignment.error.savingPreList', 'error');
+        this.showPrelistModal = false;
+      });
   }
 
   sortTable(event) {
@@ -428,7 +444,7 @@ export class DgConnVoucherComponent {
             })
         }
         this.loadPage();
-        this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id)
+        this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id, new Date().getTime())
           .finally(() => {
             this.loadingFreezeList = false;
           })
@@ -501,7 +517,7 @@ export class DgConnVoucherComponent {
   }
 
   private freezeList() {
-    this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id).subscribe((enabled) => {
+    this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id, new Date().getTime()).subscribe((enabled) => {
       this.showFreezeModal = enabled;
       this.pressedNotificationButton = !enabled;
       if (!enabled) {
@@ -516,17 +532,26 @@ export class DgConnVoucherComponent {
     this.loadingFreezeList = true;
     this.confirmFreezeBtn = false;
     
-    
-    this.voucherApi.saveFreezeListSimulation(this.psswdFreeze, this.callVoucherAssignment.id, this.callSelected.id).subscribe((response: ResponseDTO) => {
-      this.displayFreezeConfirmation = false;
-      this.callVoucherAssignment.id = response.data.id;
-      this.callVoucherAssignment.hasFreezeListSaved = true;
-      this.callVoucherAssignment.executionDate = response.data.executionDate;
-      this.callVoucherAssignment.freezeLisExecutionDate = response.data.executionDate;
-      let date = new Date(this.callVoucherAssignment.freezeLisExecutionDate);
-      this.dateNumberFreeze = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
-      this.hourNumberFreeze = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
-      this.loadPage();
+    this.voucherApi.saveFreezeListSimulation(this.psswdFreeze, this.callVoucherAssignment.id, this.callSelected.id).finally(() => {
+      this.loadingFreezeList = false;
+      this.confirmFreezeBtn = true;
+      this.psswdFreeze = '';
+    }).subscribe((response: ResponseDTO) => {
+      if(!response.success){
+        if(response.error.errorCode == 20){
+          this.sharedService.growlTranslation('An error occurred while freezing the list.', response.error.errorMessage, 'error');
+        }
+      }else{
+        this.displayFreezeConfirmation = false;
+        this.callVoucherAssignment.id = response.data.id;
+        this.callVoucherAssignment.hasFreezeListSaved = true;
+        this.callVoucherAssignment.executionDate = response.data.executionDate;
+        this.callVoucherAssignment.freezeLisExecutionDate = response.data.executionDate;
+        let date = new Date(this.callVoucherAssignment.freezeLisExecutionDate);
+        this.dateNumberFreeze = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
+        this.hourNumberFreeze = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
+        this.loadPage();
+      }      
       this.showFreezeModal = false;
       this.displayConfirmingData = false;
     }, error => {
@@ -537,7 +562,7 @@ export class DgConnVoucherComponent {
   }
 
   private sendNotificationToApplicants() {
-    this.showNotificationModal = false;
+    this.showNotificationModal = true;
     this.confirmNotificationsBtn = false;
     if (this.callVoucherAssignment.notifiedDate != null) {
       return;
@@ -546,13 +571,20 @@ export class DgConnVoucherComponent {
       return;
     }
     this.pressedNotificationButton = true;
-    this.voucherApi.sendNotificationForApplicants(this.psswdNotification, this.callSelected.id).subscribe((response: ResponseDTO) => {
+    this.voucherApi.sendNotificationForApplicants(this.psswdNotification, this.callSelected.id)
+    .finally(() => {
+      this.psswdNotification = '';
+    })
+    .subscribe((response: ResponseDTO) => {
       if (response.success) {
         this.pressedNotificationButton = true;
         this.showNotificationModal = false;
         this.sharedService.growlTranslation('The process of sending notifications has started.', 'dgConn.voucherAssignment.success.sendingNotifications', 'success');
         this.router.navigate(['../voucher'], { relativeTo: this.route });
       } else {
+        if(response.error.errorCode == 20){
+          this.sharedService.growlTranslation('An error occurred while sending notifications.', response.error.errorMessage, 'error');
+        }
         if (response.data != null && (response.data["running"] || response.data["notifiedDate"])) {
           if (response.data["running"]) {
             let dateStartSending = new Date(response.data["startDate"]);
@@ -573,6 +605,7 @@ export class DgConnVoucherComponent {
       this.showNotificationModal = false;
     }, (error) => {
       this.showNotificationModal = false;
+      this.pressedNotificationButton = false;
       this.sharedService.growlTranslation('An error occurred while sending notifications.', 'dgConn.voucherAssignment.error.sendingNotifications', 'error');
     })
    

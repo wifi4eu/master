@@ -34,6 +34,7 @@ import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentAuxiliarDTO;
 import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentDTO;
 import wifi4eu.wifi4eu.common.dto.model.VoucherManagementDTO;
 import wifi4eu.wifi4eu.common.dto.model.VoucherSimulationDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.SelectionStatus;
@@ -263,10 +264,10 @@ public class VoucherService {
     }
 
     @Transactional
-    public VoucherAssignmentDTO saveFreezeListSimulation(String freezePsswd, int voucherAssignmentId, int callId) {
+    public ResponseDTO saveFreezeListSimulation(String freezePsswd, int voucherAssignmentId, int callId) {
 
         if (!INEAPermissionChecker.freezePsswd.equals(freezePsswd)) {
-            throw new AppException("Wrong password");
+            return new ResponseDTO(false, null, new ErrorDTO(20, "dgConn.voucherAssignment.error.incorrectPassword"));
         }
 
         CallDTO callDTO = callService.getCallById(callId);
@@ -318,12 +319,16 @@ public class VoucherService {
         }
 
         result.setVoucherSimulations(simulationDTOSet);
-        return voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(result)));
+        return new ResponseDTO(true, voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(result))), null);
     }
 
     @Transactional
-    public VoucherAssignmentDTO savePreListSimulation(int voucherAssignmentId, int callId) {
+    public ResponseDTO savePreListSimulation(String savePrelistPsswd, int voucherAssignmentId, int callId) {
         CallDTO callDTO = callService.getCallById(callId);
+        
+        if (!INEAPermissionChecker.savePrelistPsswd.equals(savePrelistPsswd)) {
+            return new ResponseDTO(false, null, new ErrorDTO(20, "dgConn.voucherAssignment.error.incorrectPassword"));
+        }
 
         if (callDTO == null) {
             throw new AppException("Call not exists");
@@ -376,7 +381,7 @@ public class VoucherService {
             result = voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(result)));
 
             voucherSimulationRepository.updateApplicationsInVoucherSimulationByVoucherAssignment(1, result.getId());
-            return result;
+            return new ResponseDTO(true, result, null);
         } else {
             throw new AppException("Error saving pre-selected list");
         }
@@ -867,7 +872,7 @@ public class VoucherService {
 
     public ResponseDTO sendNotificationForApplicants(String psswdNotification, int callId) {
         if (!INEAPermissionChecker.notificationsPsswd.equals(psswdNotification)) {
-            throw new AppException("Wrong password");
+            return new ResponseDTO(false, null, new ErrorDTO(20, "dgConn.voucherAssignment.error.incorrectPassword"));
         }
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);

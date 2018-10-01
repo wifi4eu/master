@@ -1,0 +1,65 @@
+﻿-- INSERT LT LAUS (added new name fields)
+UPDATE laus SET name_national=N'Akmenės r. sav.', name_latin=N'Akmenės rajono savivaldybė', abac_name=N'Akmenes r. sav.', display_name=N'Akmenės r. sav.' WHERE id=77182;
+UPDATE laus SET name_national=N'Alytaus m. sav.', name_latin=N'Alytaus miesto savivaldybė', abac_name=N'Alytaus m. sav.', display_name=N'Alytaus m. sav.' WHERE id=77183;
+UPDATE laus SET name_national=N'Alytaus r. sav.', name_latin=N'Alytaus rajono savivaldybė', abac_name=N'Alytaus r. sav.', display_name=N'Alytaus r. sav.' WHERE id=77184;
+UPDATE laus SET name_national=N'Anykščių r. sav.', name_latin=N'Anykščių rajono savivaldybė', abac_name=N'Anyksciu r. sav.', display_name=N'Anykščių r. sav.' WHERE id=77185;
+UPDATE laus SET name_national=N'Birštono sav.', name_latin=N'Birštono savivaldybė', abac_name=N'Birstono sav.', display_name=N'Birštono sav.' WHERE id=77186;
+UPDATE laus SET name_national=N'Biržų r. sav.', name_latin=N'Biržų rajono savivaldybė', abac_name=N'Birzu r. sav.', display_name=N'Biržų r. sav.' WHERE id=77187;
+UPDATE laus SET name_national=N'Druskininkų sav.', name_latin=N'Druskininkų savivaldybė', abac_name=N'Druskininku sav.', display_name=N'Druskininkų sav.' WHERE id=77188;
+UPDATE laus SET name_national=N'Elektrėnų sav.', name_latin=N'Elektrėnų savivaldybė', abac_name=N'Elektrenu sav.', display_name=N'Elektrėnų sav.' WHERE id=77189;
+UPDATE laus SET name_national=N'Ignalinos r. sav.', name_latin=N'Ignalinos rajono savivaldybė', abac_name=N'Ignalinos r. sav.', display_name=N'Ignalinos r. sav.' WHERE id=77190;
+UPDATE laus SET name_national=N'Jonavos r. sav.', name_latin=N'Jonavos rajono savivaldybė', abac_name=N'Jonavos r. sav.', display_name=N'Jonavos r. sav.' WHERE id=77191;
+UPDATE laus SET name_national=N'Joniškio r. sav.', name_latin=N'Joniškio rajono savivaldybė', abac_name=N'Joniskio r. sav.', display_name=N'Joniškio r. sav.' WHERE id=77192;
+UPDATE laus SET name_national=N'Jurbarko r. sav.', name_latin=N'Jurbarko rajono savivaldybė', abac_name=N'Jurbarko r. sav.', display_name=N'Jurbarko r. sav.' WHERE id=77193;
+UPDATE laus SET name_national=N'Kaišiadorių r. sav.', name_latin=N'Kaišiadorių rajono savivaldybė', abac_name=N'Kaisiadoriu r. sav.', display_name=N'Kaišiadorių r. sav.' WHERE id=77194;
+UPDATE laus SET name_national=N'Kalvarijos sav.', name_latin=N'Kalvarijos savivaldybė', abac_name=N'Kalvarijos sav.', display_name=N'Kalvarijos sav.' WHERE id=77195;
+UPDATE laus SET name_national=N'Kauno m. sav.', name_latin=N'Kauno miesto savivaldybė', abac_name=N'Kauno m. sav.', display_name=N'Kauno m. sav.' WHERE id=77196;
+UPDATE laus SET name_national=N'Kauno r. sav.', name_latin=N'Kauno rajono savivaldybė', abac_name=N'Kauno r. sav.', display_name=N'Kauno r. sav.' WHERE id=77197;
+UPDATE laus SET name_national=N'Kazlų Rūdos sav.', name_latin=N'Kazlų Rūdos savivaldybė', abac_name=N'Kazlu Rudos sav.', display_name=N'Kazlų Rūdos sav.' WHERE id=77198;
+UPDATE laus SET name_national=N'Kėdainių r. sav.', name_latin=N'Kėdainių rajono savivaldybė', abac_name=N'Kedainiu r. sav.', display_name=N'Kėdainių r. sav.' WHERE id=77199;
+UPDATE laus SET name_national=N'Kelmės r. sav.', name_latin=N'Kelmės rajono savivaldybė', abac_name=N'Kelmes r. sav.', display_name=N'Kelmės r. sav.' WHERE id=77200;
+UPDATE laus SET name_national=N'Klaipėdos m. sav.', name_latin=N'Klaipėdos miesto savivaldybė', abac_name=N'Klaipedos m. sav.', display_name=N'Klaipėdos m. sav.' WHERE id=77201;
+UPDATE laus SET name_national=N'Klaipėdos r. sav.', name_latin=N'Klaipėdos rajono savivaldybė', abac_name=N'Klaipedos r. sav.', display_name=N'Klaipėdos r. sav.' WHERE id=77202;
+UPDATE laus SET name_national=N'Kretingos r. sav.', name_latin=N'Kretingos rajono savivaldybė', abac_name=N'Kretingos r. sav.', display_name=N'Kretingos r. sav.' WHERE id=77203;
+UPDATE laus SET name_national=N'Kupiškio r. sav.', name_latin=N'Kupiškio rajono savivaldybė', abac_name=N'Kupiskio r. sav.', display_name=N'Kupiškio r. sav.' WHERE id=77204;
+UPDATE laus SET name_national=N'Lazdijų r. sav.', name_latin=N'Lazdijų rajono savivaldybė', abac_name=N'Lazdiju r. sav.', display_name=N'Lazdijų r. sav.' WHERE id=77205;
+UPDATE laus SET name_national=N'Marijampolės sav.', name_latin=N'Marijampolės savivaldybė', abac_name=N'Marijampoles sav.', display_name=N'Marijampolės sav.' WHERE id=77206;
+UPDATE laus SET name_national=N'Mažeikių r. sav.', name_latin=N'Mažeikių rajono savivaldybė', abac_name=N'Mazeikiu r. sav.', display_name=N'Mažeikių r. sav.' WHERE id=77207;
+UPDATE laus SET name_national=N'Molėtų r. sav.', name_latin=N'Molėtų rajono savivaldybė', abac_name=N'Moletu r. sav.', display_name=N'Molėtų r. sav.' WHERE id=77208;
+UPDATE laus SET name_national=N'Neringos sav.', name_latin=N'Neringos savivaldybė', abac_name=N'Neringos sav.', display_name=N'Neringos sav.' WHERE id=77209;
+UPDATE laus SET name_national=N'Pagėgių sav.', name_latin=N'Pagėgių savivaldybė', abac_name=N'Pagegiu sav.', display_name=N'Pagėgių sav.' WHERE id=77210;
+UPDATE laus SET name_national=N'Pakruojo r. sav.', name_latin=N'Pakruojo rajono savivaldybė', abac_name=N'Pakruojo r. sav.', display_name=N'Pakruojo r. sav.' WHERE id=77211;
+UPDATE laus SET name_national=N'Palangos m. sav.', name_latin=N'Palangos miesto savivaldybė', abac_name=N'Palangos m. sav.', display_name=N'Palangos m. sav.' WHERE id=77212;
+UPDATE laus SET name_national=N'Panevėžio m. sav.', name_latin=N'Panevėžio miesto savivaldybė', abac_name=N'Panevezio m. sav.', display_name=N'Panevėžio m. sav.' WHERE id=77213;
+UPDATE laus SET name_national=N'Panevėžio r. sav.', name_latin=N'Panevėžio rajono savivaldybė', abac_name=N'Panevezio r. sav.', display_name=N'Panevėžio r. sav.' WHERE id=77214;
+UPDATE laus SET name_national=N'Pasvalio r. sav.', name_latin=N'Pasvalio rajono savivaldybė', abac_name=N'Pasvalio r. sav.', display_name=N'Pasvalio r. sav.' WHERE id=77215;
+UPDATE laus SET name_national=N'Plungės r. sav.', name_latin=N'Plungės rajono savivaldybė', abac_name=N'Plunges r. sav.', display_name=N'Plungės r. sav.' WHERE id=77216;
+UPDATE laus SET name_national=N'Prienų r. sav.', name_latin=N'Prienų rajono savivaldybė', abac_name=N'Prienu r. sav.', display_name=N'Prienų r. sav.' WHERE id=77217;
+UPDATE laus SET name_national=N'Radviliškio r. sav.', name_latin=N'Radviliškio rajono savivaldybė', abac_name=N'Radviliskio r. sav.', display_name=N'Radviliškio r. sav.' WHERE id=77218;
+UPDATE laus SET name_national=N'Raseinių r. sav.', name_latin=N'Raseinių rajono savivaldybė', abac_name=N'Raseiniu r. sav.', display_name=N'Raseinių r. sav.' WHERE id=77219;
+UPDATE laus SET name_national=N'Rietavo sav.', name_latin=N'Rietavo savivaldybė', abac_name=N'Rietavo sav.', display_name=N'Rietavo sav.' WHERE id=77220;
+UPDATE laus SET name_national=N'Rokiškio r. sav.', name_latin=N'Rokiškio rajono savivaldybė', abac_name=N'Rokiskio r. sav.', display_name=N'Rokiškio r. sav.' WHERE id=77221;
+UPDATE laus SET name_national=N'Šakių r. sav.', name_latin=N'Šakių rajono savivaldybė', abac_name=N'Sakiu r. sav.', display_name=N'Šakių r. sav.' WHERE id=77222;
+UPDATE laus SET name_national=N'Šalčininkų r. sav.', name_latin=N'Šalčininkų rajono savivaldybė', abac_name=N'Salcininku r. sav.', display_name=N'Šalčininkų r. sav.' WHERE id=77223;
+UPDATE laus SET name_national=N'Šiaulių m. sav.', name_latin=N'Šiaulių miesto savivaldybė', abac_name=N'Siauliu m. sav.', display_name=N'Šiaulių m. sav.' WHERE id=77224;
+UPDATE laus SET name_national=N'Šiaulių r. sav.', name_latin=N'Šiaulių rajono savivaldybė', abac_name=N'Siauliu r. sav.', display_name=N'Šiaulių r. sav.' WHERE id=77225;
+UPDATE laus SET name_national=N'Šilalės r. sav.', name_latin=N'Šilalės rajono savivaldybė', abac_name=N'Silales r. sav.', display_name=N'Šilalės r. sav.' WHERE id=77226;
+UPDATE laus SET name_national=N'Šilutės r. sav.', name_latin=N'Šilutės rajono savivaldybė', abac_name=N'Silutes r. sav.', display_name=N'Šilutės r. sav.' WHERE id=77227;
+UPDATE laus SET name_national=N'Širvintų r. sav.', name_latin=N'Širvintų rajono savivaldybė', abac_name=N'Sirvintu r. sav.', display_name=N'Širvintų r. sav.' WHERE id=77228;
+UPDATE laus SET name_national=N'Skuodo r. sav.', name_latin=N'Skuodo rajono savivaldybė', abac_name=N'Skuodo r. sav.', display_name=N'Skuodo r. sav.' WHERE id=77229;
+UPDATE laus SET name_national=N'Švenčionių r. sav.', name_latin=N'Švenčionių rajono savivaldybė', abac_name=N'Svencioniu r. sav.', display_name=N'Švenčionių r. sav.' WHERE id=77230;
+UPDATE laus SET name_national=N'Tauragės r. sav.', name_latin=N'Tauragės rajono savivaldybė', abac_name=N'Taurages r. sav.', display_name=N'Tauragės r. sav.' WHERE id=77231;
+UPDATE laus SET name_national=N'Telšių r. sav.', name_latin=N'Telšių rajono savivaldybė', abac_name=N'Telsiu r. sav.', display_name=N'Telšių r. sav.' WHERE id=77232;
+UPDATE laus SET name_national=N'Trakų r. sav.', name_latin=N'Trakų rajono savivaldybė', abac_name=N'Traku r. sav.', display_name=N'Trakų r. sav.' WHERE id=77233;
+UPDATE laus SET name_national=N'Ukmergės r. sav.', name_latin=N'Ukmergės rajono savivaldybė', abac_name=N'Ukmerges r. sav.', display_name=N'Ukmergės r. sav.' WHERE id=77234;
+UPDATE laus SET name_national=N'Utenos r. sav.', name_latin=N'Utenos rajono savivaldybė', abac_name=N'Utenos r. sav.', display_name=N'Utenos r. sav.' WHERE id=77235;
+UPDATE laus SET name_national=N'Varėnos r. sav.', name_latin=N'Varėnos rajono savivaldybė', abac_name=N'Varenos r. sav.', display_name=N'Varėnos r. sav.' WHERE id=77236;
+UPDATE laus SET name_national=N'Vilkaviškio r. sav.', name_latin=N'Vilkaviškio rajono savivaldybė', abac_name=N'Vilkaviskio r. sav.', display_name=N'Vilkaviškio r. sav.' WHERE id=77237;
+UPDATE laus SET name_national=N'Vilniaus m. sav.', name_latin=N'Vilniaus miesto savivaldybė', abac_name=N'Vilniaus m. sav.', display_name=N'Vilniaus m. sav.' WHERE id=77238;
+UPDATE laus SET name_national=N'Vilniaus r. sav.', name_latin=N'Vilniaus rajono savivaldybė', abac_name=N'Vilniaus r. sav.', display_name=N'Vilniaus r. sav.' WHERE id=77239;
+UPDATE laus SET name_national=N'Visagino sav.', name_latin=N'Visagino savivaldybė', abac_name=N'Visagino sav.', display_name=N'Visagino sav.' WHERE id=77240;
+UPDATE laus SET name_national=N'Zarasų r. sav.', name_latin=N'Zarasų rajono savivaldybė', abac_name=N'Zarasu r. sav.', display_name=N'Zarasų r. sav.' WHERE id=77241;
+
+--60
+--select nuts3, lau1, name_national, name_latin, abac_name, display_name, id 
+--from laus where country_code = 'LT' order by name1 asc

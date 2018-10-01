@@ -173,7 +173,7 @@
                       <p-column field="application.preSelectedFlag" [hidden]="callVoucherAssignment == null || callVoucherAssignment?.hasFreezeListSaved" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.applicationChange' | translate}}"
                         styleClass="text-center">
                         <ng-template let-row="rowData" pTemplate="body">
-                          <span *ngIf="row.application.preSelectedFlag == 0 && callVoucherAssignment?.hasPreListSaved" class="duplicate-warn">{{'dgConn.voucherAssignment.table.applicationChangeNew' | translate}}</span>
+                          <span *ngIf="row.application.preSelectedFlag == 0 && preListLoaded" class="duplicate-warn">{{'dgConn.voucherAssignment.table.applicationChangeNew' | translate}}</span>
                           <span *ngIf="row.application.preSelectedFlag == 1">-</span>
                         </ng-template>
                       </p-column>
@@ -219,7 +219,7 @@
                       </p-column>
                       <p-column header="{{'dgConn.voucherAssignment.table.action' | translate}}" styleClass="text-center not-hide-overflow">
                         <ng-template let-rowData="rowData" pTemplate="body">
-                          <div style="position:relative; cursor: pointer;" (click)="op.show($event)" *ngIf="!callVoucherAssignment?.hasFreezeListSaved">
+                          <div style="position:relative; cursor: pointer;" (click)="op.show($event)">
                             <p-overlayPanel #op>
                               <div class="row">
                                 <a (click)="goToMunicipality(rowData.lau)">
@@ -231,7 +231,7 @@
                                   </div>
                                 </a>
                               </div>
-                              <div class="row">
+                              <div class="row" *ngIf="!callVoucherAssignment?.hasFreezeListSaved">
                                 <a *ngIf="!rowData.application.rejected" [class.reject-disabled]="!callVoucherAssignment?.hasPreListSaved" (click)="rejectApplication(rowData.application.id)">
                                   <div class="col-sm-2">
                                     <span class="fa fa-ban"></span>
@@ -278,7 +278,7 @@
               <div class="row">
                 <div class="col-md-3 offset-md-2">
                   <button type="button" class="btn btn-primary preSelection-button text-adjust" [disabled]="callVoucherAssignment == null || callVoucherAssignment?.hasPreListSaved || !preSelectedEnabledButton"
-                    (click)="checkPreListEnabled()">
+                    (click)="savePrelistPopup()">
                     <i class="fa fa-spinner fa-spin" *ngIf="loadingPreList"></i>
                     {{'dgConn.voucherAssignment.preSelectionSave.button' | translate}}
                   </button>
@@ -293,7 +293,7 @@
                   <span class="dates-voucher-assignment" *ngIf="callVoucherAssignment?.hasFreezeListSaved && dateNumberFreeze" [innerHTML]="'dgConn.voucherAssignment.freezeList.date' | translate:{date:dateNumberFreeze,hour:hourNumberFreeze}"></span>
                 </div>
                 <div class="col-md-4">
-                  <button type="button" class="btn btn-primary sendNotification-button text-adjust" (click)="sendNotificationToApplicants()" [disabled]="!callVoucherAssignment?.hasFreezeListSaved || !hasCallEnded || pressedNotificationButton || callVoucherAssignment?.notifiedDate">
+                  <button type="button" class="btn btn-primary sendNotification-button text-adjust" (click)="showNotificationPopUp()" [disabled]="!callVoucherAssignment?.hasFreezeListSaved || !hasCallEnded || pressedNotificationButton || callVoucherAssignment?.notifiedDate">
                     {{'dgConn.voucherAssignment.sendNotification.button' | translate}}
                   </button>
                   <span class="dates-voucher-assignment" *ngIf="startSendingNotifications.startSendingDate && !callVoucherAssignment.notifiedDate">{{ 'dgConn.voucherAssignment.sendingNotifications.process.startDate' | translate:{date: startSendingNotifications?.startSendingDate,time: startSendingNotifications?.startSendingHour} }}</span>
@@ -345,7 +345,7 @@
   </div>
 </p-dialog>
 
-<p-dialog [(visible)]="preSelectedEnabled != null && preSelectedEnabled" [modal]="true" [responsive]="true" [resizable]="false"
+<!-- <p-dialog [(visible)]="preSelectedEnabled != null && preSelectedEnabled" [modal]="true" [responsive]="true" [resizable]="false"
   [draggable]="false" [closable]="false" [closeOnEscape]="false">
   <h1 class="Modalh1Confirmation">{{ 'dgconn.voucherAssignment.runningSimulation.preSelectedConfirmation.title' | translate }}</h1>
   <p class="center paddingStats">{{ 'dgconn.voucherAssignment.runningSimulation.preSelectedConfirmation.text' | translate }}</p>
@@ -354,10 +354,10 @@
       <button (click)="preSelectedEnabled = null" class="btn btn-primary cancel-button">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
     </div>
     <div class="col-sm-6 marginStep1">
-      <button #savePreListBtn (click)="savePreList(savePreListBtn)" class="btn btn-primary publish-button">{{ 'dgconn.voucherAssignment.runningSimulation.confirm' | translate }}</button>
+      <button (click)="savePrelistPopup()" class="btn btn-primary publish-button">{{ 'dgconn.voucherAssignment.runningSimulation.confirm' | translate }}</button>
     </div>
   </div>
-</p-dialog>
+</p-dialog> -->
 
 <p-dialog [(visible)]="displayFreezeConfirmation" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
   [closable]="false" [closeOnEscape]="false">
@@ -368,7 +368,7 @@
       <button (click)="displayFreezeConfirmation = false" class="btn btn-primary cancel-button">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
     </div>
     <div class="col-sm-6 marginStep1">
-      <button class="btn btn-primary publish-button" #saveFreezeBtn (click)="saveFreezeList(saveFreezeBtn)">{{ 'dgconn.voucherAssignment.runningSimulation.confirm' | translate }}</button>
+      <button class="btn btn-primary publish-button" #saveFreezeBtn (click)="savePrelistPopup()">{{ 'dgconn.voucherAssignment.runningSimulation.confirm' | translate }}</button>
     </div>
   </div>
 </p-dialog>
@@ -391,9 +391,15 @@
 <p-dialog [(visible)]="showFreezeModal" [modal]="true" [responsive]="true" [resizable]="false"
   [draggable]="false" [closable]="false" [closeOnEscape]="false">
   <div class="row center">
+    <h1 class="password_popup_header">{{ 'dgConn.voucherAssignment.password' | translate }}</h1>
     <div class="col-sm-12 marginStep1">
-      <input type="password"  [(ngModel)]="psswdFreeze"  class="searchInput" >
-      <button class="btn btn-primary publish-button" (click)="saveFreezeList()" [disabled]="!confirmFreezeBtn || psswdFreeze == ''"> <i class="fa fa-spinner fa-spin" *ngIf="loadingFreezeList"></i> {{ 'dgconn.voucherAssignment.runningSimulation.confirm' | translate }}</button>
+        <input type="password"  [(ngModel)]="psswdFreeze"  class="searchInput" style="width: 20em;">
+    </div>
+    <div class="col-sm-6 marginStep1">
+        <button (click)="showFreezeModal = false; psswdFreeze = ''" class="btn btn-primary cancel-button">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
+    </div>
+    <div class="col-sm-6 marginStep1">
+        <button class="btn btn-primary publish-button" (click)="saveFreezeList()" [disabled]="!confirmFreezeBtn || psswdFreeze == ''"> <i class="fa fa-spinner fa-spin" *ngIf="loadingFreezeList"></i> {{ 'dgconn.voucherAssignment.runningSimulation.confirm' | translate }}</button>
     </div>
   </div>
 </p-dialog>
@@ -401,9 +407,31 @@
 <p-dialog [(visible)]="showNotificationModal" [modal]="true" [responsive]="true" [resizable]="false"
   [draggable]="false" [closable]="false" [closeOnEscape]="false">
   <div class="row center">
+    <h1 class="password_popup_header">{{ 'dgConn.voucherAssignment.password' | translate }}</h1>
     <div class="col-sm-12 marginStep1">
-      <input type="password"  [(ngModel)]="psswdNotification"  class="searchInput" >
-      <button class="btn btn-primary publish-button" (click)="sendNotificationToApplicants()" [disabled]="!confirmFreezeBtn || psswdNotification == ''"> <i class="fa fa-spinner fa-spin" *ngIf="loadingFreezeList"></i> {{ 'dgconn.voucherAssignment.runningSimulation.confirm' | translate }}</button>
+        <input type="password"  [(ngModel)]="psswdNotification"  class="searchInput"  style="width: 20em;">
+    </div>
+    <div class="col-sm-6 marginStep1">
+        <button (click)="showNotificationModal = false; psswdNotification = ''" class="btn btn-primary cancel-button">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
+    </div>
+    <div class="col-sm-6 marginStep1">
+        <button class="btn btn-primary publish-button" (click)="sendNotificationToApplicants()" [disabled]="!confirmFreezeBtn || psswdNotification == ''"> <i class="fa fa-spinner fa-spin" *ngIf="loadingFreezeList"></i> {{ 'dgconn.voucherAssignment.runningSimulation.confirm' | translate }}</button>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog [(visible)]="showPrelistModal" [modal]="true" [responsive]="true" [resizable]="false"
+  [draggable]="false" [closable]="false" [closeOnEscape]="false">
+  <div class="row center">
+    <h1 class="password_popup_header">{{ 'dgConn.voucherAssignment.password' | translate }}</h1>
+    <div class="col-sm-12 marginStep1">
+        <input type="password"  [(ngModel)]="psswdPrelist"  class="searchInput"  style="width: 20em;">
+    </div>
+    <div class="col-sm-6 marginStep1">
+        <button (click)="showPrelistModal = false; psswdPrelist = ''" class="btn btn-primary cancel-button">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
+    </div>
+    <div class="col-sm-6 marginStep1">
+        <button class="btn btn-primary publish-button" (click)="savePreList()" [disabled]="!confirmFreezeBtn || psswdPrelist == ''"> <i class="fa fa-spinner fa-spin" *ngIf="loadingFreezeList"></i> {{ 'dgconn.voucherAssignment.runningSimulation.confirm' | translate }}</button>
     </div>
   </div>
 </p-dialog>
