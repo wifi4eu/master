@@ -90,10 +90,10 @@ public class DocumentService {
 	@Transactional( propagation = Propagation.REQUIRES_NEW )
 	public Document addDocumentInAres(Document document) throws Exception {
 		hermesDocumentServiceClient.createFile(document);
-		hermesDocumentServiceClient.createDocument(document);
 		hermesDocumentServiceClient.uploadAttachment(document);
-		hermesDocumentServiceClient.fileDocument(document);
-		hermesDocumentServiceClient.registerDocument(document);
+		hermesDocumentServiceClient.createDocument(document);
+		//hermesDocumentServiceClient.fileDocument(document); COMMENTED OUT because registerDocumentById already files the document
+		hermesDocumentServiceClient.registerDocumentById(document);
 
         return saveDocument(document);
     }

@@ -3,23 +3,7 @@ package wifi4eu.wifi4eu.abac.integration.hrs;
 import com.sun.xml.ws.fault.ServerSOAPFaultException;
 import generated.hrs.ws.DocumentService;
 import generated.hrs.ws.FilingPlanService;
-import generated.hrs.ws.model.AttachmentTypeToAdd;
-import generated.hrs.ws.model.CreateDocument;
-import generated.hrs.ws.model.CreateDocumentResponse;
-import generated.hrs.ws.model.CreateFile;
-import generated.hrs.ws.model.CreateFileRequest;
-import generated.hrs.ws.model.CreateFileResponse;
-import generated.hrs.ws.model.CurrentEntityToAdd;
-import generated.hrs.ws.model.DocumentCreationRequest;
-import generated.hrs.ws.model.DocumentRegistrationRequest;
-import generated.hrs.ws.model.FileDocument;
-import generated.hrs.ws.model.FileDocumentResponse;
-import generated.hrs.ws.model.ItemKindToAdd;
-import generated.hrs.ws.model.RegisterDocument;
-import generated.hrs.ws.model.RegisterDocumentResponse;
-import generated.hrs.ws.model.SecurityClassification;
-import generated.hrs.ws.model.SendersToAdd;
-import generated.hrs.ws.model.UploadedItemToAdd;
+import generated.hrs.ws.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -95,6 +79,18 @@ public class HermesDocumentServiceClient {
         request.setDocumentDate(getGregorianDate(document.getDateCreated()));
         request.setSecurityClassification(SecurityClassification.NORMAL);
         request.setSenders(createIneaSender());
+
+        ItemsToAdd items = new ItemsToAdd();
+        UploadedItemToAdd uploadedItemToAdd = new UploadedItemToAdd();
+        uploadedItemToAdd.setName(document.getFileName());
+        uploadedItemToAdd.setContentId(document.getHermesAttachmentId());
+        uploadedItemToAdd.setLanguage("EN");
+        uploadedItemToAdd.setKind(ItemKindToAdd.MAIN);
+        uploadedItemToAdd.setAttachmentType(AttachmentTypeToAdd.NATIVE_ELECTRONIC);
+        uploadedItemToAdd.setExternalReference("HRS");
+        items.getScannedItemOrUploadedItem().add(uploadedItemToAdd);
+
+        request.setItems(items);
 
         CreateDocument createDocument = new CreateDocument();
         createDocument.setRequest(request);
@@ -179,7 +175,7 @@ public class HermesDocumentServiceClient {
         return document;
     }
 
-
+    @Deprecated
     public Document registerDocument(Document document) throws Exception {
 
         if(document.getRegistrationNumber() != null){
@@ -216,6 +212,25 @@ public class HermesDocumentServiceClient {
 
         document.setRegistrationNumber(registerDocumentResponse.getDocument().getRegistrationNumber());
         document.setAresReference(registerDocumentResponse.getDocument().getRegistrationNumber());
+
+        return document;
+    }
+
+    public Document registerDocumentById(Document document) throws Exception {
+
+        if(document.getRegistrationNumber() != null){
+            logger.info("A document is already registered for DOC {} RegistrationNumber {}", document.getId(), document.getRegistrationNumber());
+            return document;
+        }
+
+        RegisterDocumentById registerDocumentById = new RegisterDocumentById();
+        registerDocumentById.setDocumentId(document.getHermesDocumentId());
+        registerDocumentById.setFileId(document.getHermesFileId());
+
+        RegisterDocumentByIdResponse registerDocumentByIdResponse = documentService.registerDocumentById(registerDocumentById);
+
+        document.setRegistrationNumber(registerDocumentByIdResponse.getResult().getRegistrationNumber());
+        document.setAresReference(registerDocumentByIdResponse.getResult().getRegistrationNumber());
 
         return document;
     }
