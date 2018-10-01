@@ -4,6 +4,7 @@ LOCAL_SOURCECODE=/Users/rgarcita/Proyectos/wifi4EU
 REMOTE_COPYFOLDER=/home/devel/deploy/auto
 FO_WAR1_FOLDER=/wifi4eu/wifi4eu-portal/wifi4eu-portal-web/target/*.war
 FO_WAR2_FOLDER=/wifi4eu/wifi4eu-public-portal/wifi4eu-public-portal-web/target/*.war
+FO_WAR3_FOLDER=/wifi4eu-supplier/wifi4eu-supplier-web/target/*.war
 FO_TOMCAT_1_CRED=devel@10.0.2.15
 FO_TOMCAT_2_CRED=
 FO_TOMCAT_LIST="$FO_TOMCAT_1_CRED"

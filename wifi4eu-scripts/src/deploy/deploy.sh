@@ -75,6 +75,7 @@ then
 		# Copy new wars
         scp -i $PEM_FO_CERT_PATH -o StrictHostKeyChecking=no $LOCAL_SOURCECODE$FO_WAR1_FOLDER $FO_TOMCAT:$REMOTE_COPYFOLDER
         scp -i $PEM_FO_CERT_PATH -o StrictHostKeyChecking=no $LOCAL_SOURCECODE$FO_WAR2_FOLDER $FO_TOMCAT:$REMOTE_COPYFOLDER
+		scp -i $PEM_FO_CERT_PATH -o StrictHostKeyChecking=no $LOCAL_SOURCECODE$FO_WAR3_FOLDER $FO_TOMCAT:$REMOTE_COPYFOLDER
 
         # Stop tomcat server
         if [[ $3 = *"stop"* ]]; then
@@ -90,6 +91,10 @@ then
         if [ -f "$REMOTE_COPYFOLDER/ROOT.war" ]
         then
         sudo rm -fR $FO_TOMCAT_PATH/webapps/ROOT;
+        fi
+		if [ -f "$REMOTE_COPYFOLDER/supplier.war" ]
+        then
+        sudo rm -fR $FO_TOMCAT_PATH/webapps/supplier;
         fi
         sudo cp $REMOTE_COPYFOLDER/*.war $FO_TOMCAT_PATH/webapps;
         sudo rm -fR $REMOTE_COPYFOLDER/*;"</dev/null
@@ -125,6 +130,10 @@ then
         fi
         # Copy files to webapps
         ssh -i $PEM_BO_CERT_PATH -o StrictHostKeyChecking=no $BO_TOMCAT "uname -a;
+		if [ -f "$REMOTE_COPYFOLDER/dashboard.war" ]
+        then
+        sudo rm -fR $FO_TOMCAT_PATH/webapps/dashboard;
+        fi
         sudo cp $REMOTE_COPYFOLDER/*.war $BO_TOMCAT_PATH/webapps;
         sudo rm -fR $REMOTE_COPYFOLDER/*;"</dev/null
 		# Start tomcat server
