@@ -750,4 +750,7 @@ public class UserService {
         userRepository.save(contactToDeactivate);
     }
 
+    public UserDTO getSupplierMainContact(Integer supplierId) {
+        return userMapper.toDTO(userRepository.getSupplierMainContact(supplierId));
+    }
 }

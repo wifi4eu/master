@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.repository.user;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.entity.user.User;
 
 import java.util.List;
@@ -50,4 +51,10 @@ public interface UserRepository extends CrudRepository<User, Integer> {
             "INNER JOIN  municipalities mun ON mun.id = reg.municipality\n" +
             "WHERE u.id = ?#{[0]}", nativeQuery = true)
     List<Object[]> updateRedisInfo(Long userId);
+
+    @Query(value = "SELECT u.id, u.name, u.surname, u.contact_phone_prefix, u.contact_phone_number, u.ecas_email \n" +
+            "FROM users u \n" +
+            "INNER JOIN supplier_users su ON u.id = su.user_id \n" +
+            "WHERE supplier_id = ?#{[0]} AND su.main = 1", nativeQuery = true)
+    User getSupplierMainContact(Integer supplierId);
 }

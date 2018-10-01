@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
@@ -393,5 +392,33 @@ public class UserResource {
             response.sendError(org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
         return new ResponseDTO();
+    }
+
+    // WARNING: Only municipalities that have ever been a awarded a voucher will be able to access
+    @ApiOperation(value = "Get supplier main contact by specific id")
+    @RequestMapping(value = "/mainSupplierContact/{supplierId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public UserDTO getSupplierMainContact(@PathVariable("supplierId") final Integer supplierId, @RequestParam("municipalityId") Integer municipalityId, HttpServletResponse response) throws IOException {
+        UserDTO supplierContactDTO;
+        try {
+            _log.info("getSupplierDetailsById: " + supplierId);
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if (!permissionChecker.checkIfVoucherAwarded(userDTO, municipalityId)) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            supplierContactDTO = userService.getSupplierMainContact(supplierId);
+            return supplierContactDTO;
+        } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'getSupplierDetailsById' operation.", ade);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'getSupplierDetailsById' operation.", e);
+            }
+            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        }
+        return null;
     }
 }
