@@ -24,9 +24,9 @@ public class ReportingUtils {
 
     @Autowired
     ReportNotificationsSentOut reportNotificationsSentOut;
-/*
+
     @Autowired
-    ReportTimeToInform reportTimeToInform;*/
+    ReportTimeToInform reportTimeToInform;
 
     public void generateTypesInstallationReport(HSSFWorkbook workbook) {
         reportTypesInstallation.generate(workbook);
@@ -44,9 +44,9 @@ public class ReportingUtils {
         reportNotificationsSentOut.generate(workbook, callId);
     }
 
-    /*public void generateTimeToInformReporting(HSSFWorkbook workbook) {
+    public void generateTimeToInformReporting(HSSFWorkbook workbook) {
         reportTimeToInform.generate(workbook);
-    }*/
+    }
 
     public static void autoSizeColumns(HSSFWorkbook workbook) {
         int numberOfSheets = workbook.getNumberOfSheets();

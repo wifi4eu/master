@@ -229,10 +229,19 @@ public class ReportNotificationsSentOut {
 
     @Transactional
     private Integer getDuplicates(Integer callId, Integer idNut) {
+        Integer res = 0;
         if (idNut != 0) {
-            return applicationRepository.countApplicationDuplicatesByCall(callId, idNut);
+            res = applicationRepository.countApplicationDuplicatesByCall(callId, idNut);
+            if (Validator.isNotNull(res)) {
+                return res;
+            }
+            return 0;
         } else {
-            return applicationRepository.countApplicationDuplicatesByCall(callId);
+            res = applicationRepository.countApplicationDuplicatesByCall(callId);
+            if (Validator.isNotNull(res)) {
+                return res;
+            }
+            return 0;
         }
     }
 

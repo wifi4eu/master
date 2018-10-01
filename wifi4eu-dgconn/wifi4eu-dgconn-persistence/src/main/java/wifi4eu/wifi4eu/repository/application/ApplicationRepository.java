@@ -349,7 +349,7 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
             "INNER JOIN laus l ON l.id = m.lau " +
             "INNER JOIN nuts n ON l.country_code = n.country_code " +
             "INNER JOIN application_invalidate_reason air ON air.application_id = a.id " +
-            "WHERE a.call_id = ?#{[0]} AND n.level = 0 AND n.id = ?#{[1]} AND a._status = 3 AND air.reason = ?#{[2]}", nativeQuery = true)
+            "WHERE a.call_id = ?#{[0]} AND n.level = 0 AND n.id = ?#{[1]} AND air.reason = ?#{[2]}", nativeQuery = true)
     Integer countApplicationsInvalidatedByReasonAndCall(Integer callId, Integer idNut, Integer reason);
 
 }
