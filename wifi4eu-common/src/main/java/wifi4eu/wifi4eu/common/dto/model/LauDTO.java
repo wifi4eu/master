@@ -22,7 +22,8 @@ public class LauDTO implements Serializable {
     public LauDTO() {
     }
 
-    public LauDTO(int id, String countryCode, String nuts3, String lau1, String lau2, String change, String name1, String name2, int pop, int area, String physicalAddress, String nationalName, String latinName, String abacName, String displayName) {
+    public LauDTO(int id, String countryCode, String nuts3, String lau1, String lau2, String change, String name1, String name2, int pop, int area,
+                  String physicalAddress, String nationalName, String latinName, String abacName, String displayName) {
         this.id = id;
         this.countryCode = countryCode;
         this.nuts3 = nuts3;
