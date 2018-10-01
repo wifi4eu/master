@@ -2,16 +2,17 @@
 // Angular imports
 import { Component } from "@angular/core";
 import { LocalStorageService } from "angular-2-local-storage";
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 // DTO's & API imports
-import { UserDTOBase, RegistrationApi, RegistrationDTOBase, MayorApi, MayorDTOBase, CallApi, CallDTOBase, MunicipalityApi, MunicipalityDTOBase, ApplicationDTOBase, ApplicationApi, ApplicantListItemDTOBase } from "../../shared/swagger";
+import { UserDTOBase, RegistrationApi, RegistrationDTOBase, MayorApi, MayorDTOBase, CallApi, CallDTOBase, MunicipalityApi, MunicipalityDTOBase, ApplicationDTOBase, ApplicationApi, GrantAgreementApi, GrantAgreementDTOBase, GrantAgreementDTO, ResponseDTO } from "../../shared/swagger";
 import { HAMMER_GESTURE_CONFIG } from "@angular/platform-browser";
+import { SharedService } from "../../shared/shared.service";
 
 @Component ({
-    selector: 'my-voucher-component',
+    selector: 'my-voucher.component.ts',
     templateUrl: 'my-voucher.component.html',
-    providers: [RegistrationApi, MayorApi, CallApi, MunicipalityApi, ApplicationApi] 
+    providers: [SharedService, GrantAgreementApi, RegistrationApi, MayorApi, CallApi, MunicipalityApi, ApplicationApi] 
 })
 
 export class MyVoucherComponent {
@@ -57,6 +58,7 @@ export class MyVoucherComponent {
     private supplierSelectedDates: Array<String> = [];
     private grantAgreementDates: Array<String> = [];
     private confirmButtonDisabled: boolean = false;
+    private startDate: string = '';
 
         /* -- voucherCompetitionState values --
     0 = There are no calls created
@@ -65,6 +67,9 @@ export class MyVoucherComponent {
     3 = Call created & started. You clicked 'Apply For Voucher' and are waiting for the approvement.
      */
     private voucherCompetitionState: number;
+    private showPermissionsModal: boolean;
+    private hasSigned: GrantAgreementDTO [] = [];
+    private date: String [] = [];
 
 
     constructor(
@@ -74,7 +79,10 @@ export class MyVoucherComponent {
         private callApi: CallApi,
         private municipalityApi: MunicipalityApi,
         private applicationApi: ApplicationApi,
-        private router: Router,
+        private router: Router, private route: ActivatedRoute,
+        private grantAgreementApi: GrantAgreementApi,
+        private sharedService : SharedService
+
     ) {
         /* Authenticate user */
         let storedUser = this.localStorage.get('user');
@@ -86,39 +94,39 @@ export class MyVoucherComponent {
         if (this.user != null) {
             this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
                 (registrations: RegistrationDTOBase[]) => {
-                    // this.registrationsDocs = registrations;
-                    // this.registrations = registrations;
-                    // this.checkForCalls(registrations);
-
                     /* Get application for each municipality */ 
                     this.callApi.allCalls().subscribe(
                         (calls: CallDTOBase[]) => {
                             this.calls = calls;
                             for(let i = 0; i < registrations.length; i++) {
-                                this.applicationApi.getApplicationByCallIdAndRegistrationId(this.calls[(this.calls.length)-1].id, registrations[i].id).subscribe(
-                                    (application : ApplicationDTOBase) => {
-                                        if (application.id != 0) {
+                                this.applicationApi.getVoucherApplicationByCallIdAndRegistrationId(this.calls[(this.calls.length)-1].id, registrations[i].id).subscribe(
+                                    (response : ResponseDTO) => {
+                                        if (response.data != null && response.data.id != 0) {        
                                             this.municipalityApi.getMunicipalityById(registrations[i].municipalityId).subscribe(
                                                 (municipality : MunicipalityDTOBase) => {
-                                                    this.applications.push(application);
+                                                    this.applications.push(response.data);
+                                                    this.grantAgreementApi.getGrantAgreementByApplicationId(response.data.id).subscribe(
+                                                        (grantAgreement: GrantAgreementDTOBase)=>{
+                                                          if(grantAgreement != null && grantAgreement.dateSignature != null){
+                                                              grantAgreement.dateSignature = new Date(grantAgreement.dateSignature);
+                                                              grantAgreement['formattedDateSignature'] = ('0' + grantAgreement.dateSignature.getUTCDate()).slice(-2) + "/" + ('0' + ( grantAgreement.dateSignature.getUTCMonth() + 1)).slice(-2) + "/" +  grantAgreement.dateSignature.getUTCFullYear();
+                                                              this.hasSigned.push(grantAgreement);
+                                                              this.date[i] = ('0' + grantAgreement.dateSignature.getUTCDate()).slice(-2) + "/" + ('0' + ( grantAgreement.dateSignature.getUTCMonth() + 1)).slice(-2) + "/" +  grantAgreement.dateSignature.getUTCFullYear();
+                                                          } else {
+                                                              this.hasSigned.push(null);
+                                                          }
+                                                    }, error => {
+                                                        console.log(error);                                                        
+                                                    });
                                                     this.registrations.push(registrations[i]);
                                                     this.municipalities.push(municipality);
                                                     if(i === 0) {this.grantAgreementDates.push(this.getStringDate(1529922797000));}  
-                                                    !registrations[i].isSubmission ? this.confirmButtons.push(true) : this.confirmButtons.push(false);
-                                                    
-                                                    // application.selectSupplierDate != (0 || null) ? this.confirmButtonDisabled = false : this.confirmButtonDisabled = true;
-                                                    // console.log("Registrations are ", this.registrations);
-                                                    // console.log("First confirmation is ", this.registrations[0].isSubmission);
                                                 }
                                             );
                                         }
                                     }
                                 );
                             }
-                            // console.log("Dates are ", this.grantAgreementDates);
-                            // console.log("Applications are ", this.applications);
-                            // console.log("Confirm network buttons are ", this.confirmButtons);
-                            
                         }
                     );
                 }
@@ -158,9 +166,17 @@ export class MyVoucherComponent {
         this.localeDate = this.selectionDate.toLocaleDateString().split(' ');
         return this.localeDate[0];
     }
-    /* TO BE COMPLETED */
-    private agreementDetails(event) {
-        console.log("Write a routing to see grant agreement");
+
+    /* Navigate to sign grant agreement */
+    private agreementDetails(i) {
+        this.grantAgreementApi.isUserAuthorizedSignGrantAgreement(this.applications[i].id).subscribe((response: boolean) => {
+            if(!response){
+                this.showPermissionsModal = true;
+                return;
+            }
+            this.router.navigate(['/beneficiary-portal/my-voucher/sign-grant-agreement/' + this.municipalities[i].registrations[0].id]);
+          })
+        
     }
 
     private signGrantAgreement(index) {
@@ -170,7 +186,7 @@ export class MyVoucherComponent {
     /* TO BE COMPLETED */
     /* Method that returns when was grant agreement signed, fake for the moment */
 
-
-
-// End of class export    
+    private closeModal() {
+        this.showPermissionsModal = false;
+    }
 }

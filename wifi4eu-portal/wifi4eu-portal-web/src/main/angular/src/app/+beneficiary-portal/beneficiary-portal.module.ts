@@ -13,13 +13,13 @@ import { AccessPointDetailsComponent } from "./access-point-details/access-point
 import { BeneficiaryService } from "../core/services/beneficiary-service";
 import { BeneficiaryEditProfileComponent } from "./+profile/edit-profile/edit-profile.component";
 import { MyHistoryComponent } from "./my-history/my-history.component";
-import { MyVoucherComponent } from "./+grant-agreement/grant-agreement.component";
-import { SignGrantAgreementComponent } from "./+grant-agreement/+sign-grant-agreement/sign-grant-agreement.component";
+import { MyVoucherComponent } from "./+my-voucher/my-voucher.component";
+import { SignGrantAgreementComponent } from "./+my-voucher/+sign-grant-agreement/sign-grant-agreement.component";
 import { BeneficiaryUserComponent } from "./+profile/beneficiary-user/beneficiary-user.component";
 import { ConfirmDialogModule } from "primeng/primeng";
 import { SelectSupplierComponent } from './+select-supplier/select-supplier.component';
 import { DataGridModule } from "primeng/primeng";
-import { MyVoucherComponent } from "./+my-voucher/my-voucher.component";
+import { SelectedSupplierDetailsComponent } from "./+selected-supplier-details/selected-supplier-details.component";
 
 @NgModule({
   imports: [SharedModule, BeneficiaryPortalRoutingModule, HttpModule, ConfirmDialogModule],

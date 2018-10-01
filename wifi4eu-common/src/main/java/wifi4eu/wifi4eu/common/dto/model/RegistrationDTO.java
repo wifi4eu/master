@@ -29,9 +29,6 @@ public class RegistrationDTO implements Serializable {
     private Date installationSiteRejection;
     private Date installationSiteConfirmation;
     private List<UserDTO> users;
-    private Long isSubmission;
-    private Long isRejection;
-    private Long isConfirmation;
 
     public RegistrationDTO() {
     }
@@ -39,7 +36,7 @@ public class RegistrationDTO implements Serializable {
     public RegistrationDTO(int id, int municipalityId, String role, int status, String ipRegistration, String associationName, int organisationId, int allFilesFlag, int
             mailCounter, List<RegistrationWarningDTO> registrationWarningDTOList, int idUserPM, int idUserBPM, int idStatusBeneficiary, boolean
                                    compliance, int actionToBeTaken, int actionTaken, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered, Date
-                                   installationSiteSubmission, Date installationSiteRejection, Date installationSiteConfirmation, List<UserDTO> users, Long isSubmission, Long isRejection, Long isConfirmation) {
+                                   installationSiteSubmission, Date installationSiteRejection, Date installationSiteConfirmation, List<UserDTO> users) {
         this.id = id;
         this.municipalityId = municipalityId;
         this.role = role;
@@ -63,9 +60,6 @@ public class RegistrationDTO implements Serializable {
         this.installationSiteRejection = installationSiteRejection;
         this.installationSiteConfirmation = installationSiteConfirmation;
         this.users = users;
-        this.isSubmission = isSubmission;
-        this.isRejection = isRejection;
-        this.isConfirmation = isConfirmation;
     }
 
     public Date getInstallationSiteSubmission() {
@@ -250,29 +244,5 @@ public class RegistrationDTO implements Serializable {
 
     public void setUsers(List<UserDTO> users) {
         this.users = users;
-    }
-
-    public Long getIsSubmission() {
-        return isSubmission;
-    }
-
-    public void setIsSubmission(Long isSubmission) {
-        this.isSubmission = isSubmission;
-    }
-
-    public Long getIsRejection() {
-        return isRejection;
-    }
-
-    public void setIsRejection(Long isRejection) {
-        this.isRejection = isRejection;
-    }
-
-    public Long getIsConfirmation() {
-        return isConfirmation;
-    }
-
-    public void setIsConfirmation(Long isConfirmation) {
-        this.isConfirmation = isConfirmation;
     }
 }

@@ -10,8 +10,7 @@ import { AccessPointListComponent } from "./access-point-list/access-point-list.
 import { AccessPointDetailsComponent } from "./access-point-details/access-point-details.component";
 import { BeneficiaryEditProfileComponent } from "./+profile/edit-profile/edit-profile.component";
 import { MyHistoryComponent } from "./my-history/my-history.component";
-import { MyVoucherComponent } from "./+grant-agreement/grant-agreement.component";
-import { SignGrantAgreementComponent } from "./+grant-agreement/+sign-grant-agreement/sign-grant-agreement.component";
+import { SignGrantAgreementComponent } from "./+my-voucher/+sign-grant-agreement/sign-grant-agreement.component";
 import { CanDeactivateGuard } from "../can-deactivate-guard.service";
 import { ConfirmationService } from "primeng/primeng";
 import { SelectSupplierComponent } from "./+select-supplier/select-supplier.component";
@@ -26,9 +25,6 @@ import { MyVoucherComponent } from "./+my-voucher/my-voucher.component";
         }, {
             path: 'voucher',
             component: VoucherComponent,
-        }, {
-            path: 'my-voucher',
-            component: MyVoucherComponent
         }, {
             path: 'discussion-forum/:threadId',
             component: DiscussionComponent
@@ -58,13 +54,15 @@ import { MyVoucherComponent } from "./+my-voucher/my-voucher.component";
             path: 'my-history',
             component: MyHistoryComponent
         }, {
-            path: 'my-voucher/grant-agreement',
+            path: 'my-voucher',
             component: MyVoucherComponent,
         }, {
-            path: 'my-voucher/grant-agreement/sign-grant-agreement/:id',
+            path: 'my-voucher/sign-grant-agreement/:id',
             component: SignGrantAgreementComponent,
-        }
-            component: AdditionalInfoComponent
+        },{
+            path: 'additional-info/:municipalityId',
+            component: AdditionalInfoComponent,
+            canDeactivate: [CanDeactivateGuard]
         }, {
             path: 'selected-supplier-details/:municipalityId/:supplierId',
             component: SelectedSupplierDetailsComponent

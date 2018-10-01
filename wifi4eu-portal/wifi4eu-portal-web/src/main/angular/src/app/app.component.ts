@@ -215,7 +215,7 @@ export class AppComponent {
                 })
             ];
             this.children[1] = [
-                new UxLayoutLink({
+                /* new UxLayoutLink({
                     label: this.menuTranslations.get('itemMenu.suppPortal'),
                     url: '/supplier-portal/voucher'
                 }), */
@@ -239,7 +239,7 @@ export class AppComponent {
                 }),
                 new UxLayoutLink({
                     label: this.menuTranslations.get('benefPortal.myVoucher.title.text'),
-                    url: '/beneficiary-portal/my-voucher/grant-agreement'
+                    url: '/beneficiary-portal/my-voucher'
                 }),
                 new UxLayoutLink({
                     label: this.menuTranslations.get('itemMenu.listSuppliers'),
@@ -261,7 +261,7 @@ export class AppComponent {
                 }),
                 new UxLayoutLink({
                     label: this.menuTranslations.get('benefPortal.myVoucher.title.text'),
-                    url: '/beneficiary-portal/my-voucher/grant-agreement'
+                    url: '/beneficiary-portal/my-voucher'
                 }),
                 new UxLayoutLink({
                     label: 'Registered suppliers',

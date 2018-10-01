@@ -34,6 +34,7 @@
     <div class="ui-g-12 ui-md-8 offset-md-2">
         <div class="marginTop registrationPanel">
             <p-dataTable [value]="applyVouchersData" [expandableRows]="voucherCompetitionState != null && voucherCompetitionState != 0" [expandedRows]="applyVouchersData" [class.table-disabled]="!allRequestCompleted">
+
                 <p-column field="municipality" [sortable]="allRequestCompleted ? true : false" styleClass="label whiteTableBackground">
                     <ng-template pTemplate="header">
                         <span *ngIf="!allRequestCompleted">
@@ -53,6 +54,7 @@
                         </span>
                     </template>
                 </p-column>
+
                 <p-column header="" styleClass="label whiteTableBackground">
                     <template pTemplate="body" let-data="rowData" let-i="rowIndex">
                         <button *ngIf="!data.filesUploaded" class="btn btn-primary" id="muncicipalityButton"
@@ -65,6 +67,7 @@
                         </span>
                     </template>
                 </p-column>
+
                 <p-column header="" styleClass="label whiteTableBackground" >
                     <template pTemplate="body" let-data="rowData" let-i="rowIndex">
                           <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(data)" *ngIf="!isVoucherApplied(data.idRegistration) && !data.numberApplicant" [disabled]="!data.filesUploaded || !data.conditionAgreement || voucherCompetitionState == null || voucherCompetitionState == 0">
@@ -80,31 +83,7 @@
                         </span>
                     </template>
                 </p-column>
-                <p-column header="" styleClass="label text-center">
-                    <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
-                        <div *ngIf="voucherCompetitionState == 2">
-                            <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(i, $event)" *ngIf="!applications[i]" [disabled]="loadingButtons[i] || voucherCompetitionState == 0 || voucherCompetitionState == 1 || !docsOpen[i]">
-                                {{ 'benefPortal.voucher.applyforvoucher' | translate }}
-                            </button>
-                            <span *ngIf="applications[i]">
-                                <i class="fa fa-check" aria-hidden="true" style="color: #298B59"></i>
-                                {{ 'benefPortal.voucher.applied' | translate }}
-                            </span>
-                        </div>
-                        <div *ngIf="voucherCompetitionState == 5">
-                            <button class="btn btn-primary text-adjust" id="voucherButton" (click)="selectWifiInstallation(i)">
-                                {{ 'benefPortal.selectSupplier.details.title' | translate }}
-                            </button>
-                        </div>
-                        <div *ngIf="voucherCompetitionState == 6">
-                            <span class="subtitle-discover text-adjust pull-right">
-                                <i class="fas fa-wifi" aria-hidden="true" style="color: #298B59"></i>
-                                {{ 'benefPortal.selectSupplier.feedback.selected' | translate }} {{ displayedDate }}
-                            </span>
-                        </div>
 
-                    </template>
-                </p-column>
                 <template let-data pTemplate="rowexpansion" let-i="rowIndex">
                     <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="voucherCompetitionState != null && voucherCompetitionState != 0" >
                         <div class="row conditions-agreement">
@@ -119,6 +98,7 @@
                         </div>
                     </div>
                 </template>
+                
             </p-dataTable>
         </div>
     </div>
@@ -153,7 +133,6 @@
 
 <helpdesk-form-component portal="beneficiary-voucher"></helpdesk-form-component>
 
-// TO ERASEEE
 <div class="container font">
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayError" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="false"

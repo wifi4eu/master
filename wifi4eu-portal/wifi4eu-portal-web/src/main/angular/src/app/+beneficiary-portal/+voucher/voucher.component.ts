@@ -15,7 +15,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { environment } from '../../../environments/environment';
 import * as moment from 'moment';
 import 'moment-timezone';
-import{ AppConstants} from '../../shared/constants/AppConstants';
+import{ AppConstants } from '../../shared/constants/AppConstants';
 
 @Component({
     templateUrl: 'voucher.component.html',
@@ -47,18 +47,16 @@ export class VoucherComponent {
     private uploadHour: string[] = [];
 
     // TO ERASEEE
-    private voucherApplied: string = "";
     private selectionDate: Date;
     private localeDate: Array<String>;
     private displayedDate: String;
-    private openedCalls: string = "";
-    private isMayor: boolean = false;
-    private registration: RegistrationDTOBase;
-    private mayor: MayorDTOBase;
-    private docsOpen: boolean [] = [];
-    private registrationsDocs: RegistrationDTOBase[] = [];
-    private storedRegistrationQueues = [];
-    private disableQueuing = [];
+    // private isMayor: boolean = false;
+    // private registration: RegistrationDTOBase;
+    // private mayor: MayorDTOBase;
+    // private docsOpen: boolean [] = [];
+    // private registrationsDocs: RegistrationDTOBase[] = [];
+    // private storedRegistrationQueues = [];
+    // private disableQueuing = [];
 
     private displayError = false;
     private displayCallClosed = false;
@@ -160,6 +158,7 @@ export class VoucherComponent {
                             this.uploadDateTime[this.applyVouchersData[i].idMunicipality] = ('0' + uploaddate.getUTCDate()).toString().slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
                             this.uploadHourTime[this.applyVouchersData[i].idMunicipality] = ('0' + uploaddate.getHours()).toString().slice(-2) + ":" + ('0' + uploaddate.getMinutes()).slice(-2);
                         }
+                        console.log("Apply voucher data is ", this.applyVouchersData);
                     }
                 },
                 error => {
@@ -269,7 +268,7 @@ export class VoucherComponent {
     }
 
     private selectWifiInstallation(i) {
-        this.router.navigate(['/beneficiary-portal/select-supplier/', this.registrations[i].municipalityId], {relativeTo: this.route});
+        this.router.navigate(['/beneficiary-portal/select-supplier/', this.applyVouchersData[i].idMunicipality], {relativeTo: this.route});
     }
 
     /* Get displayed string date from epoch number */

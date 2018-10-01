@@ -52,7 +52,7 @@ public class SupplierResource {
     @Autowired
     private UserService userService;
 
-    Logger _log = LoggerFactory.getLogger(SupplierResource.class);
+    Logger _log = LogManager.getLogger(SupplierResource.class);
 
     @ApiOperation(value = "Get supplier by specific id")
     @RequestMapping(value = "/{supplierId}", method = RequestMethod.GET, produces = "application/json")

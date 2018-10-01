@@ -67,19 +67,19 @@
                     </p-row>
                     <p-row>
                         <p-column header="{{ 'shared.municipality.label' | translate }}" [sortable]="true"></p-column>
-                        <p-column header="{{ 'benefPortal.myVoucher.datatable.action' | translate }} 1"></p-column>
-                        <p-column header="{{ 'benefPortal.myVoucher.datatable.action' | translate }} 2"></p-column>
-                        <p-column header="{{ 'benefPortal.myVoucher.datatable.action' | translate }} 3"></p-column>
+                        <p-column header="{{ 'benefPortal.myVoucher.datatable.action1' | translate }}"></p-column>
+                        <p-column header="{{ 'benefPortal.myVoucher.datatable.action2' | translate }}"></p-column>
+                        <p-column header="{{ 'benefPortal.myVoucher.datatable.action3' | translate }}"></p-column>
                     </p-row>
                 </p-headerColumnGroup>
 
                 <p-column header="{{ 'shared.municipality.label' | translate }}" styleClass="text-center">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
                         <div class="beneficiarRegistrationCheck">
-                            <div class="align-self-center">
+                            <div class="align-self-center" style="margin-right: 6px;">
                                 <img alt="" class="municipality-icon" src="assets/images/account-balance-material-icons-regular.png">
                             </div>
-                            <div  class="align-self-center">
+                            <div  class="align-self-center" style="line-height: 24px;">
                                 <!-- <a (click)="goToDocuments(i)">{{municipality.name}}</a> -->
                                 <span>{{ municipality.name }}</span> 
                             </div>
@@ -89,12 +89,12 @@
 
                 <p-column field="" header="{{ 'benefPortal.myVoucher.datatable.action' | translate }} 1" styleClass="text-center">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
-                        <div *ngIf="grantAgreementDates[i]" class="beneficiarRegistrationCheck">
+                        <div *ngIf="grantAgreementDates[i]" class="beneficiarRegistrationCheck"> 
                             <div>
-                                <div class="align-self-center">
+                                <div class="align-self-center ui-g-12 ui-md-2 ui-lg-1">
                                     <i class="fa fa-calendar-check-o municipality-name" aria-hidden="true"></i>
                                 </div>
-                                <div class="align-self-center">
+                                <div class="align-self-center ui-g-12 ui-md-10 ui-lg-11">
                                     <span>{{ 'benefPortal.myVoucher.datatable.grantAgreement' | translate }} {{ grantAgreementDates[i] }}.</span>
                                     <span><a (click)="agreementDetails(i)" class="municipality-name">{{ 'shared.link.seeDetails' | translate }}</a></span>
                                 </div>
@@ -108,30 +108,52 @@
                     </template>
                 </p-column>
                 
-                <p-column field="" header="{{ 'benefPortal.myVoucher.datatable.action' | translate }} 2" styleClass="text-center">
+                <p-column field="" header="{{ 'benefPortal.myVoucher.datatable.action2' | translate }}" styleClass="text-center">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
-                        <div *ngIf="true" class="beneficiarRegistrationCheck">
-                            <div *ngIf="applications[i].supplierId" class="align-self-center">
-                                <div class="align-self-center">
-                                    <i class="fa fa-wifi municipality-name" aria-hidden="true"></i>
-                                </div>
-                                <!-- <span>{{ 'benefPortal.selectSupplier.feedback.selected' | translate }} {{ supplierSelectedDates[i] }}.</span> -->
-                                <span>{{ 'benefPortal.selectSupplier.feedback.selected' | translate }} {{ applications[i].selectSupplierDate | date:'dd-MM-yyyy' }}.</span>
-                                <span><a (click)="supplierDetails(i)" class="municipality-name">{{ 'shared.link.seeDetails' | translate }}</a></span>
-                            </div>
-                            <div *ngIf="!applications[i].supplierId" class="align-self-center">
-                                <button class="btn btn-primary text-adjust" id="voucherButton" (click)="selectWifiInstallation(i)" [disabled]="!grantAgreementDates[i]">
+                        <div class="beneficiarRegistrationCheck">
+
+                            <!-- Before signing grant agreement - button select supplier shown but disabled -->
+                            <div *ngIf="!applications[i].supplierId && !hasSigned[i]" class="align-self-center">
+                                <button class="btn btn-primary text-adjust" id="voucherButton" (click)="selectWifiInstallation(i)" [disabled]="true">
                                     {{ 'benefPortal.selectSupplier.details.title' | translate }}
                                 </button>
                             </div>
+                            
+                            <!-- Grant agreement signed - waiting for INEA countersignature -->
+                            <div *ngIf="hasSigned[i] && !hasSigned[i].dateCounterSignature" class="left">
+                                <span>
+                                    {{ 'benefPortal.myVoucher.waitingCommission' | translate }}
+                                </span>
+                            </div>
+
+                            <!-- Grant agreement signed - has INEA countersignature -->
+                            <div *ngIf="hasSigned[i] && hasSigned[i].dateCounterSignature" class="left">
+                                <!-- Selects a supplier for the first time -->
+                                <div *ngIf="!applications[i].supplierId">
+                                    <button class="btn btn-primary text-adjust" id="voucherButton" (click)="selectWifiInstallation(i)">
+                                        {{ 'benefPortal.selectSupplier.details.title' | translate }}
+                                    </button>
+                                </div>
+                                <!-- Has already selected a supplier -->
+                                <div *ngIf="applications[i].supplierId" class="">
+                                    <div class="align-self-center ui-g-12 ui-md-2 ui-lg-1">
+                                        <i class="fa fa-wifi municipality-name" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="align-self-center ui-g-12 ui-md-10 ui-lg-11">
+                                        <span>{{ 'benefPortal.selectSupplier.feedback.selected' | translate }} {{ applications[i].selectSupplierDate | date:'dd-MM-yyyy' }}.</span>
+                                        <span><a (click)="supplierDetails(i)" class="municipality-name">{{ 'shared.link.seeDetails' | translate }}</a></span>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </template>
                 </p-column>
 
-                <p-column field="" header="{{ 'benefPortal.myVoucher.datatable.action' | translate }} 3" styleClass="text-center">
+                <p-column field="" header="{{ 'benefPortal.myVoucher.datatable.action3' | translate }}" styleClass="text-center">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
-                        <div *ngIf="true">
-                            <button class="btn btn-primary text-adjust align-self-center confirm-network-button" id="voucherButton" (click)="confirmInstallation()" [disabled]="confirmButtons[i]">
+                        <div>
+                            <button class="btn btn-primary text-adjust align-self-center confirm-network-button" id="voucherButton" (click)="confirmInstallation()" [disabled]="!registrations[i].installationSiteSubmission || registrations[i].installationSiteConfirmation">
                                 {{ 'benefPortal.myVoucher.datatable.confirmInstallation' | translate }}
                             </button>
                         </div>
@@ -139,9 +161,25 @@
                 </p-column>
 
             </p-dataTable>
-
-            <!--{{ applications[0].is_submission }}-->
-            <!--{{ applications[1].is_submission }}-->
+            
         </div>
     </div>
 </div>
+
+
+<p-dialog [(visible)]="showPermissionsModal" [modal]="true" [responsive]="true"
+          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+    <p class="ModalpConfirmation">{{'benefPortal.grantAgreement.permissionsWarning.description' | translate }}</p>
+    <p></p>
+    <div class="form-group row">
+        <div class="col-lg-2"></div>
+        <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+        </div>
+        <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+            <button type="submit" class="btn btn-primary publish-button" (click)="closeModal()">
+                {{ 'shared.confirm.button' | translate }}
+            </button>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+</p-dialog>

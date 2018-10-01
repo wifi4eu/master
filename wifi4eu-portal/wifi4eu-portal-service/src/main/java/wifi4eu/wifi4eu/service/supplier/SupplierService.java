@@ -61,7 +61,7 @@ import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.RegistrationUtils;
-import wifi4eu.wifi4eu.util.MailService;
+import wifi4eu.wifi4eu.common.service.mail.MailService;
 
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
@@ -734,12 +734,18 @@ public class SupplierService {
             if (notification.getUserLang() != null) {
                 locale = new Locale(notification.getUserLang());
             }
-            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-            String fromAddress = MailService.FROM_ADDRESS;
-            String subject = bundle.getString("mail.notifySelectedSupplier.subject");
-            String msgBody = bundle.getString("mail.notifySelectedSupplier.body");
-            msgBody = MessageFormat.format(msgBody, notification.getMunicipalityName(), notification.getMunicipalityCountry() );
-            mailService.sendEmail(notification.getSupplierEmail(), fromAddress, subject, msgBody);
+
+            String additionalInfoUrl = userService.getBaseUrl() + "supplier-portal/notify-selected-supplier";
+            MailData mailData = MailHelper.buildMailNotifySelectedSupplier(notification.getSupplierEmail(), MailService.FROM_ADDRESS, additionalInfoUrl, locale);
+            mailService.sendMail(mailData, false);
+
+            // ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+            // String fromAddress = MailService.FROM_ADDRESS;
+            // String subject = bundle.getString("mail.notifySelectedSupplier.subject");
+            // String msgBody = bundle.getString("mail.notifySelectedSupplier.body");
+            // msgBody = MessageFormat.format(msgBody, notification.getMunicipalityName(), notification.getMunicipalityCountry() );
+            // mailService.sendEmail(notification.getSupplierEmail(), fromAddress, subject, msgBody);
+
         } else {
             throw new Exception("Notification doesn't exist.");
         }
@@ -764,9 +770,9 @@ public class SupplierService {
         }
         // Update timestamps
         RegistrationDTO registration = registrationService.getRegistrationById(notification.getRegistrationId());
-        registration.setIsSubmission(null);
-        registration.setIsRejection(new Date().getTime());
-        registration.setIsConfirmation(null);
+        registration.setInstallationSiteSubmission(null);
+        registration.setInstallationSiteRejection(new Date());
+        registration.setInstallationSiteConfirmation(null);
         registrationService.saveRegistration(registration);
 
         // Delete installation report --> TO BE COMPLETED

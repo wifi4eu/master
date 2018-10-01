@@ -10,11 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,9 +28,6 @@ import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
 import java.util.Date;
 
 @CrossOrigin(origins = "*")
@@ -177,7 +170,7 @@ public class ApplicationResource {
     @ApiOperation(value = "Assign supplier")
     @RequestMapping(value = "/assignSupplier", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO assignSupplier(@RequestParam ("municipalityId") final int municipalityId, @RequestBody final ApplicationDTO applicationDTO, HttpServletResponse response) throws IOException {
+    public ResponseDTO assignSupplier(@RequestParam("municipalityId") final int municipalityId, @RequestBody final ApplicationDTO applicationDTO, HttpServletResponse response) throws IOException {
         try {
             if (_log.isInfoEnabled()) {
                 _log.info("assignSupplier");
