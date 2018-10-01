@@ -6,7 +6,7 @@ import { LocalStorageService } from "angular-2-local-storage";
 import { Router } from '@angular/router';
 
 // Project Api's
-import { MunicipalityApi, RegistrationApi, CallApi, ApplicationApi, CallDTOBase, RegistrationDTOBase, ApplicationDTOBase, SupplierApi, SupplierDTOBase, ResponseDTOBase } from "../../shared/swagger";
+import { MunicipalityApi, RegistrationApi, CallApi, ApplicationApi, CallDTOBase, RegistrationDTOBase, ApplicationDTOBase, SupplierApi, SupplierDTOBase, ResponseDTOBase, UserApi } from "../../shared/swagger";
 
 // Project DTO's
 import { MunicipalityDTOBase } from "../../shared/swagger/model/MunicipalityDTO";
@@ -15,7 +15,7 @@ import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
 @Component ({
   selector: 'selected-supplier-component',
   templateUrl: './selected-supplier-details.component.html',
-  providers: [MunicipalityApi, RegistrationApi, CallApi, ApplicationApi, SupplierApi]
+  providers: [MunicipalityApi, RegistrationApi, CallApi, ApplicationApi, SupplierApi, UserApi]
 })
 
 export class SelectedSupplierDetailsComponent {
@@ -25,6 +25,7 @@ export class SelectedSupplierDetailsComponent {
   private registration: RegistrationDTOBase;
   private application: ApplicationDTOBase;
   private supplier: SupplierDTOBase;
+  private supplierContactUser: UserDTOBase;
 
   // User characteristics
   private user: UserDTOBase;
@@ -49,7 +50,8 @@ export class SelectedSupplierDetailsComponent {
     private registrationApi: RegistrationApi,
     private callApi: CallApi,
     private applicationApi: ApplicationApi,
-    private supplierApi: SupplierApi
+    private supplierApi: SupplierApi,
+    private userApi: UserApi
   ) {
 
     /* Get params from URL */
@@ -73,7 +75,7 @@ export class SelectedSupplierDetailsComponent {
           for(var i = 0; i < registrations.length; i++) {
             if(registrations[i].municipalityId === this.municipalityId) {
               this.registration = registrations[i];
-              !this.registration.isConfirmation ? this.hasConfirmedInstallation = false : this.hasConfirmedInstallation = true;
+              !this.registration.installationSiteConfirmation ? this.hasConfirmedInstallation = false : this.hasConfirmedInstallation = true;
             }
           }
           
@@ -87,6 +89,7 @@ export class SelectedSupplierDetailsComponent {
                     this.changedSupplierChoice = true;
                   }
                   this.getSupplierDetails(this.paramsSupplierId, this.municipalityId);
+                  this.getSupplierMainContact(this.paramsSupplierId, this.municipalityId);
                   }
                 );
               }
@@ -106,10 +109,20 @@ export class SelectedSupplierDetailsComponent {
       }
     );
     /* Get the date when supplier was selected if the supplier hasn't changed his choice */
-    if((this.application.supplierId === this.paramsSupplierId) && (!this.application.supplierId))  {
+    if((this.application.supplierId === this.paramsSupplierId) && (this.application.supplierId != null))  {
       this.getStringDate(this.application.selectSupplierDate);
       this.displayDate = true; 
     }
+  }
+
+  /* Get supplier main contact details from supplierId requested through params */
+  getSupplierMainContact(supplierId, municipalityId) {
+    this.userApi.getSupplierMainContact(supplierId, municipalityId).subscribe(
+      (supplierContact: UserDTOBase) => {
+        this.supplierContactUser = supplierContact;
+        console.log("Supplier contact user is ", this.supplierContactUser);
+      }
+    );
   }
 
   /* Get displayed string date from epoch number */

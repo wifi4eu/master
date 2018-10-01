@@ -73,19 +73,19 @@
     </div>
   </div>
 
-    <!-- WiFi installation contact details -->
+  <!-- WiFi installation contact details -->
   <div class="container">
     <div class="marginTop">    
   
       <p class="municipality-name marginTop">{{'benefRegistration.yourDetails.title' | translate }}</p>
       
-      <div *ngIf="supplier" class="company-details-content col-xs-10 col-sm-10 col-md-9">
+      <div *ngIf="supplierContactUser" class="company-details-content col-xs-10 col-sm-10 col-md-9">
         <div class="row">
           <div class="col-sm-4">
             <p>{{ 'suppRegistration.name.label' | translate }}</p>
           </div>
           <div class="col-sm-8">
-            <p class="profileData">{{ supplier.contactName }}</p>
+            <p class="profileData">{{ supplierContactUser?.name }}</p>
           </div>
         </div>
         <div class="row">
@@ -93,7 +93,7 @@
             <p>{{ 'suppRegistration.surname.label' | translate }}</p>
           </div>
           <div class="col-sm-8">
-            <p class="profileData">{{ supplier?.contactSurname }}</p>
+            <p class="profileData">{{ supplierContactUser?.surname }}</p>
           </div>
         </div>
         <div class="row">
@@ -101,7 +101,7 @@
             <p>{{ 'suppRegistration.phone.number' | translate }}</p>
           </div>
           <div class="col-sm-8">
-            <p class="profileData">{{ supplier?.contactPhonePrefix }} {{ supplier?.contactPhoneNumber }}</p>
+            <p class="profileData">{{ supplierContactUser?.phonePrefix }} {{ supplierContactUser?.phoneNumber }}</p>
           </div>
         </div>
         <div class="row">
@@ -109,7 +109,7 @@
             <p>{{ 'suppRegistration.email.label' | translate }}</p>
           </div>
           <div class="col-sm-8">
-            <p class="profileData word-break-all">{{ supplier?.contactEmail }}</p>
+            <p class="profileData word-break-all">{{ supplierContactUser?.email }}</p>
           </div>
         </div>
       </div>
