@@ -287,3 +287,7 @@ DROP TABLE IF EXISTS dbo.VALIDATED_BC;
 DROP TABLE IF EXISTS dbo.NUTCALLCUSTOM;
 DROP TABLE IF EXISTS dbo.USERAUTHORIZEDPERSON;
 DROP TABLE IF EXISTS dbo.USERCONTACTDETAILS;
+
+
+-- 2018-09-27 bugfix/WIFIFOREU-3553 - Column data to store reference of exported file on applications list
+ALTER TABLE dbo.admin_actions ADD data nvarchar(255);
