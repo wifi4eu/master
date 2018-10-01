@@ -35,6 +35,14 @@ public interface LegalFileCorrectionReasonRepository extends CrudRepository<Lega
     @Query(value = "SELECT * FROM legal_files_correction_reason WHERE request_correction IS NOT NULL AND request_correction = 1 AND correction_reason IS NOT NULL AND request_correction_date IS NOT NULL AND request_correction_date > ?#{[0]} AND registration = ?#{[1]}", nativeQuery = true)
     List<LegalFileCorrectionReason> findLegalFileCorrectionsAfterDateByRegistrationId(Long dateInMilis, int registrationId);
 
-    @Query(value = "SELECT DISTINCT(type) FROM legal_files_correction_reason WHERE request_correction IS NOT NULL AND request_correction = 1 AND correction_reason IS NOT NULL AND request_correction_date IS NOT NULL AND request_correction_date < ?#{[0]} AND registration = ?#{[1]}", nativeQuery = true)
-    List<Integer> findTypeFilesWaitingUploadByRegistration(Long dateInMilis, int registrationId);
+    @Query(value = "SELECT lfcr.type FROM legal_files_correction_reason lfcr"
+            + " JOIN legal_files lf ON lfcr.registration = lf.registration AND lfcr.type = lf.type"
+            + " LEFT JOIN log_emails le  ON le.action = ?#{[1]}"
+            + " WHERE lfcr.request_correction IS NOT NULL AND lfcr.request_correction = 1 AND lfcr.correction_reason"
+            + " IS NOT NULL AND lfcr.request_correction_date IS NOT NULL AND lfcr.registration = ?#{[0]}"
+            + " GROUP BY lfcr.type"
+            + " HAVING MAX(lf.upload_time) < max(le.sent_date)"
+            + " AND max(lfcr.request_correction_date) < max(COALESCE(le.sent_date,0))"
+            + " AND max(lfcr.request_correction_date) > max(lf.upload_time)", nativeQuery = true)
+    List<Integer> findTypeFilesWaitingUploadByRegistration(int registrationId, String emailAction);
 }
