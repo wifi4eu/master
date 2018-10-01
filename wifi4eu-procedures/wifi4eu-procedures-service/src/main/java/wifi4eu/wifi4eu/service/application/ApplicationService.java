@@ -71,7 +71,7 @@ public class ApplicationService {
 
     public Integer[] sendEmailApplications(Integer callId) throws Exception {
         if (Validator.isNull(callRepository.findOne(callId))){
-            throw new AppException("Call ID " + callId + "does not exist");
+            throw new AppException("Call ID " + callId + " does not exist");
         }
         Integer sentEmailsUsers = 0;
         Integer sentEmailsMunicipalities = 0;
