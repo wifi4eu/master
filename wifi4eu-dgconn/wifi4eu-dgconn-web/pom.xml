@@ -168,7 +168,10 @@
                                     <goal>exec</goal>
                                 </goals>
                                 <configuration>
-                                    <executable>/home/michael/.nvm/versions/node/v9.7.1/bin/ng</executable>
+                                    <!-- make sure to install angular cli gobally for this to work
+                                         sudo npm install -unsafe-perm -g @angular/cli
+                                         (add a second dash before unsafe-perm)-->
+                                    <executable>ng</executable>
                                     <workingDirectory>src/main/angular</workingDirectory>
                                     <arguments>
                                         <argument>build</argument>
@@ -200,10 +203,6 @@
                     </plugin>
                 </plugins>
             </build>
-            <properties>
-                <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
-                <azure.blob.legal.files.key>${azure.blob.legal.files.key.local}</azure.blob.legal.files.key>
-            </properties>
         </profile>
     </profiles>
 
