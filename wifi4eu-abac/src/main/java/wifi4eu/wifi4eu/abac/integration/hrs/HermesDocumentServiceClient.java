@@ -21,7 +21,7 @@ import java.util.GregorianCalendar;
 public class HermesDocumentServiceClient {
 
     private static final String FILE_NAME_PATTERN = "Grant n° %s/Wifi4EU/Call %d identifying %d/%s/%s";
-    private static final String DOCUMENT_NAME_PATTERN = "Grant n° Inea/Wifi4EU/Call %d identifying %d/%s/%s - %s";
+    private static final String DOCUMENT_NAME_PATTERN = "Grant n° %s/Wifi4EU/Call %d identifying %d/%s/%s - %s";
 
     private static final Logger logger = LoggerFactory.getLogger(HermesDocumentServiceClient.class);
 
@@ -76,7 +76,13 @@ public class HermesDocumentServiceClient {
         DocumentCreationRequest request = new DocumentCreationRequest();
 
         LegalEntity legalEntity = document.getLegalEntity();
-        String documentName = String.format(DOCUMENT_NAME_PATTERN, legalEntity.getCallNumber(), legalEntity.getMid(), legalEntity.getAbacLatinName(), legalEntity.getCountry().getName(), document.getType().getValue());
+        String documentName = String.format(DOCUMENT_NAME_PATTERN,
+                                            legalEntity.getRegistrationNumber(),
+                                            legalEntity.getCallNumber(),
+                                            legalEntity.getMid(),
+                                            legalEntity.getAbacLatinName(),
+                                            legalEntity.getCountry().getName(),
+                                            document.getType().getUserInterfaceTitle());
 
         request.setTitle(documentName);
         request.setDocumentDate(getGregorianDate(document.getDateCreated()));
