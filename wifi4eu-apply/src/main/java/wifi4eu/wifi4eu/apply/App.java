@@ -15,57 +15,63 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-
 @SpringBootApplication
 @Configuration
 @PropertySource("classpath:application.properties")
 @EnableTransactionManagement
 public class App extends SpringBootServletInitializer implements CommandLineRunner {
 
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	
+	private static final Logger LOG = LoggerFactory.getLogger(SpringBootServletInitializer.class);
+
 	@Autowired
 	private Environment environment;
 
 	@Autowired
 	private MasterCommitter masterCommitter;
-	
+
 	@Value("${mode}")
 	private String mode;
 
-	@Value("${test.property}")
-	private String injectedValue;
-	
+	@Value("${server.port}")
+	private String serverPort;
+
 	@Override
-	public void run(String... args) throws Exception {
-		logger.info("****************************************");
-		System.out.println("#########################################");
-		System.out.println("# INIT ");
-		System.out.println("#########################################");
-		
+	public void run(String... args) throws IOException {
 		Config.init(environment);
-		
-		System.out.println("#########################################");
-		System.out.println("#########################################");
-		System.out.println("# config # " + Config.getEnvironment("test.property"));
-		System.out.println("# injected # " + injectedValue );
-		System.out.println("#########################################");
-		System.out.println("#########################################");
 
-		if (Modes.read.name().equals(this.mode)) {
-			QueueConsumer conn = new QueueConsumer();
-
-			Thread thread = new Thread(conn);
-
-			thread.start();
-			
-		} else if (Modes.commit.name().equals(this.mode)) {
-			this.masterCommitter.commit();
-
+		if (Modes.commit.name().equals(this.mode)) {
+			LOG.info("### Running in commit mode on port {}", this.serverPort);
+			startCommit();
+		} else if (Modes.read.name().equals(this.mode)) {
+			LOG.info("### Running in read mode on port {}", this.serverPort);
+			startRead();
+		} else {
+			// default if no mode is set
+			LOG.info("### Running in read mode (no mode defined) on port {}", this.serverPort);
+			startRead();
 		}
 	}
 
+	/**
+	 * Method to start the process in read mode.
+	 * 
+	 * @throws IOException
+	 */
+	private void startRead() throws IOException {
+		QueueConsumer conn = new QueueConsumer();
+		Thread thread = new Thread(conn);
+		thread.start();
+	}
+
+	/**
+	 * Method to start the process in commit mode.
+	 */
+	private void startCommit() {
+		this.masterCommitter.commit();
+	}
+
 	public static void main(String[] args) throws IOException {
-		SpringApplication.run(App.class, args);
+		SpringApplication app = new SpringApplication(App.class);
+		app.run(args);
 	}
 }

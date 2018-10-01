@@ -1,28 +1,23 @@
 package wifi4eu.wifi4eu.apply;
 
-import io.lettuce.core.Consumer;
+import java.io.IOException;
+import java.time.Duration;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.RedisURI.Builder;
 import io.lettuce.core.StreamMessage;
-import io.lettuce.core.XReadArgs;
-import io.lettuce.core.XReadArgs.*;
+import io.lettuce.core.XReadArgs.StreamOffset;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisStreamCommands;
 
-import java.io.IOException;
-import java.time.Duration;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-
-
-/* REDIS CONFIGURATION
+/* 
+	REDIS CONFIGURATION
 
     https://redis.io/topics/streams-intro
 
@@ -48,13 +43,13 @@ import org.springframework.stereotype.Component;
 
 public class QueueConsumer implements Runnable {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(QueueConsumer.class);
+
     private String lastReadMessageId;
 
     private RedisClient redis = null;
     private StatefulRedisConnection<String, String> connection = null;
     private RedisStreamCommands<String, String> streamCommands = null;
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private String cfgQueueName;
     private String cfgGroupName;
@@ -62,7 +57,6 @@ public class QueueConsumer implements Runnable {
 
     private long    cfgReadTimeout = 5000;
     private long    cfgBatchSize   = 300;
-
 
     public QueueConsumer()  throws IOException {
 
@@ -75,53 +69,37 @@ public class QueueConsumer implements Runnable {
         cfgReadTimeout = Long.valueOf(Config.getEnvironment("wifi4eu.queue.readinterval"), 10);
         cfgBatchSize   = Long.valueOf(Config.getEnvironment("wifi4eu.queue.batchsize"), 10);
 
-        logger.info("cfgQueueName:" + cfgQueueName);
-        logger.info("cfgGroupName:" + cfgGroupName);
-        logger.info("cfgConsumerId:" + cfgConsumerId);
-
-        logger.info("cfgReadTimeout:" + cfgReadTimeout);
-        logger.info("cfgBatchSize:" + cfgBatchSize);
+        LOGGER.info("# Initializating QueueConsumer...");
+        LOGGER.info("cfgQueueName:" + cfgQueueName);
+        LOGGER.info("cfgGroupName:" + cfgGroupName);
+        LOGGER.info("cfgConsumerId:" + cfgConsumerId);
+        LOGGER.info("cfgReadTimeout:" + cfgReadTimeout);
+        LOGGER.info("cfgBatchSize:" + cfgBatchSize);
 
         if (redis == null) {
             connect();
         }
     }
 
-    /*private synchronized void connect() throws IOException {
-
-        String cfgRedisUri = Config.getEnvironment("wifi4eu.queue.uri");
-
-        logger.info("Connecting to redis at :" + cfgRedisUri);
-
-        //redis = RedisClient.create(cfgRedisUri);
-        redis = RedisClient.create(RedisURI.create(cfgRedisUri, 9000));
-        redis.setDefaultTimeout(Duration.ofMillis(cfgReadTimeout));
-
-        connection = redis.connect();
-        streamCommands = connection.sync();
-
-        logger.info("Connected: " + cfgRedisUri);
-    }*/
-
     //-- Using a pool of sentinels
-    private synchronized void connect() throws IOException {
-        logger.info("Connecting to redis sentinel");
+    private synchronized void connect() {
+        LOGGER.info("# Connecting to redis sentinel...");
 
         Integer sentinelPort = Integer.valueOf(Config.getEnvironment("wifi4eu.queue.sentinel.port"));
         String cfgRedisUri = Config.getEnvironment("wifi4eu.queue.uri");
-        logger.info("Recovered sentinels: {} - setting connection on port {}", cfgRedisUri, sentinelPort);
+        LOGGER.info("Recovered sentinels: {} - setting connection on port {}", cfgRedisUri, sentinelPort);
         
         Builder redisUriBuilder = RedisURI.builder();
         boolean isMasterSet = false;
         String[] redisSentinels = cfgRedisUri.split(",");        
         for (String redisSentinel : redisSentinels) {
         	if (!isMasterSet) {
-        		redisUriBuilder.sentinel(redisSentinel, sentinelPort, "master1");
+        		redisUriBuilder = redisUriBuilder.sentinel(redisSentinel, sentinelPort, "master1");
         		isMasterSet = true;
-        		logger.info("Added sentinel {} as master", redisSentinel);
+        		LOGGER.info("Added sentinel {} as master", redisSentinel);
         	} else {
-        		redisUriBuilder.withSentinel(redisSentinel, sentinelPort);
-        		logger.info("Added sentinel {}", redisSentinel);
+        		redisUriBuilder = redisUriBuilder.withSentinel(redisSentinel, sentinelPort);
+        		LOGGER.info("Added sentinel {}", redisSentinel);
         	}
 		}
         
@@ -131,7 +109,7 @@ public class QueueConsumer implements Runnable {
         connection = redis.connect();
         streamCommands = connection.sync();
 
-        logger.info("Connected to sentinel");
+        LOGGER.info("Connected to sentinel");
     }
 
     /*
@@ -158,18 +136,18 @@ public class QueueConsumer implements Runnable {
         return messages;
     }*/
 
-    private List<StreamMessage<String, String>> readQueue(String fromMessageId) throws Exception {
-        logger.debug("[I] readQueueSince");
+    private List<StreamMessage<String, String>> readQueue(String fromMessageId) {
+        LOGGER.debug("[I] readQueueSince");
 
         List<StreamMessage<String, String>> messages = streamCommands.<StreamMessage<String, String>>xread(StreamOffset.from(cfgQueueName, fromMessageId));
 
-        if (messages.size() > 0) {
-            logger.info("READ " + messages.size() + " items from " + cfgQueueName);
+        if (messages != null && !messages.isEmpty()) {
+            LOGGER.info("READ {} items from {}", messages.size(), cfgQueueName);
         } else {
-            logger.info("No new messages found.");
+            LOGGER.info("No new messages found.");
         }
 
-        logger.debug("[F] readQueueSince");
+        LOGGER.debug("[F] readQueueSince");
         return messages;
     }
 
@@ -179,7 +157,7 @@ public class QueueConsumer implements Runnable {
                 msg.getBody().get("u"), msg.getBody().get("m"), msg.getBody().get("ip"),
                 msg.getBody().get("time"));
 
-        logger.info("QUEUE ENTRY: <{}> r={} u={} m={} ip={}", app.redis_id, app.r, app.u, app.m, app.ip, app.data);
+        LOGGER.info("QUEUE ENTRY: <{}> r={} u={} m={} ip={}", app.redis_id, app.r, app.u, app.m, app.ip, app.data);
 
         return app;
     }
@@ -189,61 +167,49 @@ public class QueueConsumer implements Runnable {
     public void run() {
 
         try {
-
-            logger.info("-- Initializing DB");
+            LOGGER.info("-- Initializing DB");
             LocalDB db = new LocalDB();
-            logger.info("-- DB Initialized");
+            LOGGER.info("-- DB Initialized");
 
             while (true) {
-
-                logger.info("Checking for new messagess since: " + lastReadMessageId);
-
+                LOGGER.info("Checking for new messagess since: {}", lastReadMessageId);
                 List<StreamMessage<String, String>> messages = readQueue(lastReadMessageId);
-
                 for (StreamMessage<String, String> msg : messages) {
-
-                    boolean ok = false;
-
-                    try {
-
-                        Monitor.addReceived();
-
-                        Application app = getApplication(msg);
-
-                        db.saveMessage(app);
-
-                        lastReadMessageId = msg.getId(); //-- Incremental reads to redis
-
-                        ok = true;
-                    } catch (Exception ex) {
-
-                        logger.warn("Error processing entry {}: {}", msg.getId(), ex.getMessage());
-
-                        ok = false;
-
-                        continue;
-
-                    } finally {
-
-                        if (ok == true && msg != null) {
-
-                            //streamCommands.xack(cfgQueueName, cfgGroupName, msg.getId());
-                            logger.info("Entry {} saved and acknowledged", msg.getId());
-
-                            Monitor.addProcessed();
-                        }
-                    }
+                	if (!processMessage(db, msg)) {
+                		continue;
+                	}
                 }
 
                 Thread.sleep(30000);
             }
         } catch (Exception ex) {
-
-            logger.error("Error reading from queue", ex);
+            LOGGER.error("Error reading from queue", ex);
             redis.shutdown();
-
             // TODO UNCAUGHT EXCEPTION IN MAIN LOOP
         }
+    }
+    
+    private boolean processMessage(LocalDB db, StreamMessage<String, String> msg) {
+        boolean ok = false;
+
+        LOGGER.info("Processing new message...");
+        
+        try {
+            Monitor.addReceived();
+            Application app = getApplication(msg);
+            db.saveMessage(app);
+            lastReadMessageId = msg.getId(); //-- Incremental reads to redis
+            ok = true;
+        } catch (Exception ex) {
+            LOGGER.warn("Error processing entry {}: {}", msg.getId(), ex.getMessage());
+        } finally {
+            if (ok == true && msg != null) {
+                LOGGER.info("Entry {} saved and acknowledged", msg.getId());
+                Monitor.addProcessed();
+            }
+        }
+        
+        return ok;
     }
 
 }

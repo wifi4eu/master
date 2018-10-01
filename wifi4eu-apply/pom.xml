@@ -40,9 +40,9 @@
 
 		<!-- remote databases -->
 		<wifi4eu.masterdb.driver>net.sourceforge.jtds.jdbc.Driver</wifi4eu.masterdb.driver>
-		<wifi4eu.masterdb.url>jdbc:sqlserver://wifi4eu-dbserver.database.windows.net:1433;databaseName=wifi4eudb-prod_01_2018-05-28T08-30Z</wifi4eu.masterdb.url>
-		<wifi4eu.masterdb.user>taqof2g1aamcdvf@wifi4eu-dbserver</wifi4eu.masterdb.user>
-		<wifi4eu.masterdb.password>TFpKzD@8RkK1Be-/yV2D.QbC3lRzTL*H$EN</wifi4eu.masterdb.password>
+		<wifi4eu.masterdb.url>jdbc:sqlserver://localhost:1433;databaseName=wifi4eu-dev</wifi4eu.masterdb.url>
+		<wifi4eu.masterdb.user>testuser</wifi4eu.masterdb.user>
+		<wifi4eu.masterdb.password>TESTpassword123</wifi4eu.masterdb.password>
 
 	</properties>
 
@@ -153,16 +153,6 @@
 
 	<profiles>
 	
-		<profile>
-			<id>LOCAL</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<test.value>TEST - LOCAL VALUE</test.value>
-			</properties>
-		</profile>
-		
 		<profile>
 			<id>DEV</id>
 			<properties>
