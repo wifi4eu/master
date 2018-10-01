@@ -388,12 +388,19 @@ body {
   font-size: 25px;
   font-weight: bold;
   color: $dark-blue;
+  word-break: normal;
 }
 
 .beneficiaryMayor {
   font-size: 21px;
   font-weight: bold;
   color: $dark-blue;
+  word-break: normal;
+}
+
+// TO ERASEEE
+.ui-g-12 {
+  word-break: break-word;
 }
 
 .edit {
@@ -415,6 +422,21 @@ body {
   background: none;
 }
 
+.sizeBeneficiaryHr{
+  width: 98.5%;
+  margin-top: 20px !important;
+}
+
+.sizeBeneficiaryHr2{
+  width: 100%;
+  margin-top: 20px !important;
+}
+
+.registrationHr {
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
+  background: none;
+}
+
 .genericHr {
   border: 0;
   border-top: 2px solid rgba(0, 0, 0, 0.1);
@@ -431,6 +453,32 @@ body {
   background-color: white;
 }
 
+.discussionWarningBox{
+  border: solid 1px rgba(0, 0, 0, 0.3);
+}
+
+.discussionWarning{
+  color: #c53b0c;
+  background-color: #ffc488;
+
+}
+
+.discussionWarning-icon{
+  background-color: #ff9933;
+  text-align: center;
+}
+
+.fa-exclamation-triangle{
+  font-size: 2.5em;
+  margin-top: 12%;
+  color: #fff;
+}
+
+.discussionWarnigButton{
+  margin-top: 1em;
+    margin-bottom: 1em;
+}
+
 .discussion-content {
   border: solid 1px rgba(0, 0, 0, 0.3);
   padding-bottom: 0px;
@@ -440,7 +488,7 @@ body {
 
 .changePassword {
   margin-top: 0.5em;
-  width: 71%;
+  width: 85%;
   padding-top: 15px;
   padding-bottom: 15px;
   font-size: 1.2em;
@@ -483,6 +531,7 @@ body {
 
 .profileData {
   font-weight: bold;
+  overflow-wrap: break-word;
 }
 
 .profileDataDiscussion {
@@ -567,14 +616,20 @@ body {
   font-family: Verdana;
   font-size: 1.4em;
   font-weight: bold;
-
 }
 
-.row.vertical-align {
-  display: flex;
-  align-items: center;
-  margin-top: 1em;
-
+.row {
+  .vertical-align {
+    display: flex;
+    align-items: center;
+    margin-top: 1em;
+  }
+  .conditions-agreement {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: $dark-grey;
+  }
 }
 
 .cancel-button {
@@ -586,6 +641,14 @@ body {
   font-family: Verdana;
   font-size: 1.4em;
   font-weight: bold;
+}
+
+.removeMunicipalityBtn{
+  font-family: Verdana;
+  font-weight: bold;
+  background-color: #ffffff;
+  color: #004494;
+  border: solid 2px #004494;
 }
 
 .cancel-button.cancel-link {
@@ -826,7 +889,26 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
 }
 
 .progress-indicator {
-  padding-top: 5.3em;
+    padding-top: 5.3em;
+    width: 100%;
+    .completed:focus {
+        color: #4caf50;
+    }
+    .completed:hover {
+        color: #4caf50;
+    }
+    .active:focus {
+        color: #004494;
+    }
+    .active:hover {
+        color: #004494;
+    }
+    li:focus {
+        color: #bdbdbd;
+    }
+    li:hover {
+        color: #bdbdbd;
+    }
 }
 
 #app-header .right-content {
@@ -1450,7 +1532,7 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   background-color: #ffffff;
   color: #004494;
   border: solid 2px #004494;
-  height: 50px;
+  height: 6em;
   font-family: Verdana;
   font-size: 1.4em;
   font-weight: bold;
@@ -1642,6 +1724,10 @@ p-tabview.white .ui-widget-content.ui-tabview {
   background-color: #ffeb3b;
 }
 
+.voucherModal {
+  text-align: center;
+}
+
 .dgConnDetailsHr {
   background:  none;
   border-top:  2px solid rgba(0, 0, 0, 0.1);
@@ -1664,9 +1750,365 @@ input.email_profile::-ms-clear{
   display: none;
 }
 
-.voucherModal {
-  text-align: center;
+.sessionOff {
+  background-color: rgba(1, 1, 1, 0.7);
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 5000;
+  pointer-events: none;
 }
+
+.sessionOn{
+  height: 100%;
+}
+
+.topButtonSession {
+  width: 10%;
+  min-width: 100px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.topBarSession {
+  line-height:35px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: 5px;
+}
+
+.disabledUserWork{
+  position:absolute;
+  top: 123px;
+  background-color: rgba(1, 1, 1, 0.7);;
+  width: 100%;
+  height: 100%;
+  z-index: 99999999;
+  margin-top: -100px;}
+
+.voucher__assignment{
+  margin-top: 4rem;
+}
+
+.manageMunicipalities{
+  padding-top: 1.9em;
+  padding-bottom: 0.9em;
+}
+
+.installation {
+  width: 13em;
+  margin-top: 2em;
+  font-size: 1.2em;
+}
+
+.linkNoStyle {
+  color: #000 !important;
+}
+
+.paddingTable {
+  padding-right: 1em;
+}
+
+#nav-bar{
+  height:100%;
+  min-height: 55px;
+}
+
+#top-menu {
+  min-height: 55px;
+  display:flex;
+}
+
+#top-menu > ul > li{
+  max-width: 70vw;
+  float:none;
+  vertical-align:top;
+}
+
+@media only screen and (max-width: 1154px) {
+  #top-menu > ul > li{
+    max-width: 31vw;
+    height:100%;
+    min-height: 55px;
+ }
+}
+#top-menu > ul > li > a {
+  height: 100%;
+}
+
+#top-menu ul, #top-menu ul li, #top-menu ul li a{
+  display: inline-block;
+}
+
+.language-modal {
+  margin: 10px;
+  width: 100%;
+}
+
+.text-adjust {
+  overflow: hidden;
+  white-space: normal;
+}
+
+.whitePanel {
+  background-color: white;
+  border: 2px solid #d2d2d2;
+  word-break: break-word;
+}
+
+.whitePanelBeneficiary{
+  background-color: white;
+}
+
+
+.whiteButton {
+  font-size: 0.8em;
+}
+
+.grantAgreementImg{
+  width: 6.5em;
+  height: 6.5em;
+  margin-top: 0.6em;
+}
+
+.smallCharacters{
+  font-size: 0.7em;
+}
+
+.voucherStatusAgreement{
+  vertical-align: middle;
+  font-size: 1.8em;
+}
+
+.voucherStatusAgreementBorder{
+  color: darkblue;
+  background: #fff;
+  margin-top: 2em;
+  border: solid 0.1em darkblue;
+}
+
+.voucherStatusBackButton{
+  margin-top: 3em;
+}
+.hoja-ID-card {
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
+}
+
+.documents-info {
+    div.alert {
+        background-color: #ffffff !important;
+        border: solid 1px #004494 !important;
+        width: 100%;
+        height: auto;
+        color: #4a4a4a;
+        font-weight: bold;
+        font-size: 11px;
+        text-transform: uppercase;
+        .text.with-icon {
+            margin-top: 0 !important;
+        }
+    }
+}
+
+.attachment-label {
+    font-style: italic;
+    color: #727272
+}
+
+.alert-icon {
+    color: #004494;
+    font-size: 15px !important;
+    padding-left: 0.5rem;
+}
+
+.margin-docs:first-child{
+    padding-top: 4em;
+}
+
+.table-disabled > *{
+  opacity: 0.5;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+.panelMunicipality{
+  font-size: 14px !important;
+  word-break: break-word;
+}
+
+.panel-header{
+  background-color: #fff !important;
+  padding: 1px 1px 0.3px 1px;
+}
+
+.panel-content{
+  padding: 0px !important;
+}
+
+.label{
+  margin-top: 1em;
+}
+
+li.panel .panel-header .toggle{
+  margin-top: 0.5em;
+}
+
+.editRegistrationsLabel{
+  margin-top: 0.3em;
+  font-size: 17px;
+}
+
+.marginSecondSectionBeneficiary{
+  margin-top: 9.80em;
+}
+
+.blueText{
+  color:#254872;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.cursorPointer{
+  cursor: pointer;
+}
+
+li.panel .panel-header .label-wrapper .label {
+  color:#254872 !important;
+}
+
+.mTopCenter{
+  text-align: center;
+  margin-top: 3em;
+}
+
+.timer-height-block {
+  height: 19rem;
+}
+
+@-moz-document url-prefix() {
+  .timer-height-block {
+    @media screen and (max-width: 750px) {
+      height: 19.50rem;
+    }
+    @media screen and (max-width: 450px) {
+      height: 25rem;
+    }
+  }
+}
+
+.forceBlueColorOnLinks a{
+  color:#254872 !important;
+}
+.whiteTableBackground {
+    background-color: #fff !important;
+}
+.whiteTableBackground:hover {
+    background-color: #fff !important;
+}
+
+.confirmDialogDocs {
+    padding: 1em 1.5em !important;
+    overflow: auto !important;
+    max-height: 40em !important;
+    width: 50% !important;
+    left: 25% !important;
+    .ui-dialog {
+        padding: 1.5% !important;
+    }
+    .ui-dialog-titlebar {
+        padding-bottom: 1em !important;
+        color: #004494 !important;
+        font-size: 20px !important;
+        font-weight: bold !important;
+        text-align: center !important;
+        margin: auto !important;
+        .ui-dialog-titlebar-icon {
+            display: none !important;
+        }
+    }
+    .ui-dialog-content {
+        line-height: 1.25 !important;
+        padding-bottom: 3em !important;
+        padding-left: 2em !important;
+        padding-right: 2em !important;
+        font-size: 16px !important;
+        border: 0 !important;
+        padding: 1em 1.5em !important;
+    }
+    .ui-dialog-buttonpane {
+        display: flex !important;
+        padding: 1em 8em !important;
+        justify-content: center !important;
+        .ui-button {
+            text-align: center !important;
+            width: 10 em !important;
+            height: 50px !important;
+            background-color: #004494 !important;
+            margin-right: 1em !important;
+            float: left !important;
+            @media screen and (min-width: 64.063em) {
+                width: 33.333% !important;
+                padding: 0.5 em !important;
+            }
+            @media screen and (min-width: 40.063em) {
+                padding: 0.5 em !important;
+            }
+        }
+        .ui-button:hover {
+            color: #fff !important;
+            background-color: #001e42 !important;
+            border-color: #001a38 !important;
+        }
+        .ui-button:active {
+            color: #fff !important;
+            background-color: #001e42 !important;
+            border-color: #001a38 !important;
+            background-image: none !important;
+        }
+        .ui-button:active {
+            background-color: #003675 !important;
+        }
+        .ui-button+.ui-button {
+            text-align: center !important;
+            width: 10 em !important;
+            height: 50px !important;
+            background-color: #ffffff !important;
+            color: #004494 !important;
+            border: solid 2px #004494 !important;
+            margin-left: 1em !important;
+            float: right !important;
+            @media screen and (min-width: 64.063em) {
+                width: 33.333% !important;
+                padding: 0.5 em !important;
+            }
+            @media screen and (min-width: 40.063em) {
+                padding: 0.5 em !important;
+            }
+        }
+        .ui-button+.ui-button:active {
+            color: #fff !important;
+            background-color: #001e42 !important;
+            border-color: #001a38 !important;
+            background-image: none !important;
+        }
+        .ui-button+.ui-button:active {
+            background-color: #003675 !important;
+        }
+        .ui-button:hover {
+            color: #fff !important;
+            background-color: #001e42 !important;
+            border-color: #001a38 !important;
+        }
+    }
+}
+
 
 // Created for selectSupplier component
 .text-adjust {
@@ -1683,15 +2125,15 @@ input.email_profile::-ms-clear{
     margin-bottom: 0.5em;
     font-size: 1rem;
     font-family: verdana;
-      
+
     .supplier-name::first-letter {
       text-transform: uppercase;
     }
-    
+
     .supplier-address, .supplier-website {
       text-transform: capitalize;
     }
-    
+
     .supplier-vat {
       text-transform: uppercase;
     }
@@ -1707,23 +2149,23 @@ input.email_profile::-ms-clear{
 
   .supplier-logo {
     text-align: center;
-  
+
     img {
       height: 40px;
     }
   }
-  
+
   .ui-column-title {
     text-transform: capitalize;
     font-size: 1rem;
   }
-  
+
   .ui-state-highlight {
     // background-color: #B2C1F2;
     background-color: #9BC53D;
     border: none;
   }
-  
+
   .ui-datatable-data td {
     vertical-align: middle;
   }
@@ -1731,7 +2173,7 @@ input.email_profile::-ms-clear{
   @media screen and (max-width : 900px) {
     .supplier-website {
       display: none !important;
-    }  
+    }
   }
 }
 
@@ -1787,14 +2229,14 @@ input.email_profile::-ms-clear{
     color: #5c5c5c;
     text-align: left;
     margin-top: 1.4em;
-    margin-bottom: 0.5em;    
+    margin-bottom: 0.5em;
   }
-  
+
   .align-self-center {
-    align-self: baseline; 
+    align-self: baseline;
     padding: 0.3em;
   }
-  
+
   .confirm-network-button {
     padding: 10px;
   }
@@ -1806,3 +2248,4 @@ input.email_profile::-ms-clear{
     }
   }
 }
+// End of selection of supplier styles

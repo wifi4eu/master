@@ -1,0 +1,9 @@
+<!--
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <Realm className="org.apache.catalina.realm.JAASRealm"
+           appName="WiFI4EULogin"
+           userClassNames="eu.cec.digit.ecas.client.j2ee.tomcat.EcasPrincipal"
+           roleClassNames="eu.cec.digit.ecas.client.j2ee.tomcat.EcasPrincipal" />
+</Context>
+-->

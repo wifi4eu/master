@@ -1,13 +1,13 @@
 package wifi4eu.wifi4eu.service.thread;
 
 import com.google.common.collect.Lists;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.UserThreadsDTO;
 import wifi4eu.wifi4eu.mapper.thread.UserThreadsMapper;
 import wifi4eu.wifi4eu.repository.thread.UserThreadsRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class UserThreadsService {
     @Autowired
     UserThreadsRepository userThreadsRepository;
 
-    Logger _log = LoggerFactory.getLogger(UserThreadsService.class);
+    Logger _log = LogManager.getLogger(UserThreadsService.class);
 
     public List<UserThreadsDTO> getAllUserThreads() {
         return userThreadsMapper.toDTOList(Lists.newArrayList(userThreadsRepository.findAll()));
@@ -30,6 +30,10 @@ public class UserThreadsService {
     }
 
     public UserThreadsDTO createUserThreads(UserThreadsDTO userThreadsDTO) {
+    	if (userThreadsDTO.getId() != 0) {
+    		_log.warn("Call to a create method with id set, the value has been removed ({})", userThreadsDTO.getId());
+    		userThreadsDTO.setId(0);	
+    	}    	
         return userThreadsMapper.toDTO(userThreadsRepository.save(userThreadsMapper.toEntity(userThreadsDTO)));
     }
 
@@ -43,11 +47,11 @@ public class UserThreadsService {
         }
     }
 
-    public List<UserThreadsDTO> getThreadsByUserId(int userId) {
+    public List<UserThreadsDTO> getUserThreadsByUserId(int userId) {
         return userThreadsMapper.toDTOList(Lists.newArrayList(userThreadsRepository.findByUserId(userId)));
     }
 
-    public List<UserThreadsDTO> getUsersByThreadId(int threadId) {
+    public List<UserThreadsDTO> getUserThreadsByThreadId(int threadId) {
         return userThreadsMapper.toDTOList(Lists.newArrayList(userThreadsRepository.findByThreadId(threadId)));
     }
 

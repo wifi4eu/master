@@ -1,0 +1,490 @@
+<div class="clearfix"></div>
+<div class="container font">
+    <div class="clearfix"></div>
+    <br>
+    <div class="row">
+        <br>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <span class="beneficiaryMayor">{{ 'benefPortal.editProfile.title' | translate }}</span>
+        </div>
+        <div class="col-sm-2">
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="whitePanel col-sm-12">
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
+                <span class="edit">{{ 'shared.municipalityDetails.title' | translate}}</span>
+            </div>
+            <div class="col-sm-2">
+            </div>
+        </div>
+        <form (ngSubmit)="saveProfileChanges()" #profileEditForm="ngForm"></form>
+        <div class="row" *ngIf="municipalities.length > 0 && municipalities.length == mayors.length">
+            <div class="col-sm-12" *ngFor="let municipality of municipalities; let i = index">
+                <br>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-4">
+                        <span class="profileData">{{municipality.name}} - #{{ i + 1 }} </span>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div *ngIf="isOrganisation" class="form-group ui-g">
+                                    <a (click)="addExtraMunicipality()" class="edit">+ {{'benefRegistration.addMunicipalty.label' | translate}}
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <a *ngIf="isMunicipalityEditable[municipality.id] && isOrganisation" (click)="openModal(municipality.id)" class="edit">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                    {{ 'shared.delete.button' | translate }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1"></div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <hr class="beneficiaryHr">
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <p>{{ 'benefRegistration.townHall.address' | translate }}</p>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <input id="address_municipality" type="text" [(ngModel)]="municipality.address" class="form-control" name="address_municipality"
+                            ngcontrol="address_municipality" #address_municipality="ngModel" maxlength="255" (ngModelChange)="checkButtonEnabled($event)"
+                            [disabled]="!isMunicipalityEditable[municipality.id]" required>
+                        <div [hidden]="address_municipality.valid || address_municipality.pristine" class="alert alert-danger">
+                            {{ 'suppRegistration.address.required' | translate }}
+                        </div>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <p>{{ 'shared.number.label' | translate }}</p>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <input id="number_municipality" type="text" [(ngModel)]="municipality.addressNum" class="form-control" name="number_municipality"
+                            ngcontrol="number_municipality" #number_municipality="ngModel" maxlength="255" (ngModelChange)="checkButtonEnabled($event)"
+                            [disabled]="!isMunicipalityEditable[municipality.id]" required>
+                        <div [hidden]="number_municipality.valid || number_municipality.pristine" class="alert alert-danger">
+                            {{ 'suppRegistration.address.required' | translate }}
+                        </div>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <p>{{ 'shared.postal-code.label' | translate }}</p>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <input id="postalCode_municipality" type="text" [(ngModel)]="municipality.postalCode" class="form-control" name="postalCode_municipality"
+                            ngcontrol="postalCode_municipality" #postalCode_municipality="ngModel" maxlength="255" (ngModelChange)="checkButtonEnabled($event)"
+                            [disabled]="!isMunicipalityEditable[municipality.id]" required>
+                        <div [hidden]="postalCode_municipality.valid || postalCode_municipality.pristine" class="alert alert-danger">
+                            {{ 'suppRegistration.address.required' | translate }}
+                        </div>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <p>{{ 'benefRegistration.nameMayor.label' | translate }}</p>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <input id="name_mayor" type="text" [(ngModel)]="mayors[i].name" class="form-control" name="name_mayor" ngcontrol="name_mayor"
+                            #name_mayor="ngModel" maxlength="255" (ngModelChange)="checkButtonEnabled($event)" [disabled]="!isMunicipalityEditable[municipality.id]"
+                            required>
+                        <div [hidden]="name_mayor.valid || name_mayor.pristine" class="alert alert-danger">
+                            {{ 'shared.name.required' | translate }}
+                        </div>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <p>{{ 'benefRegistration.surnameMayor.label' | translate }}</p>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <input id="surname_mayor" type="text" [(ngModel)]="mayors[i].surname" class="form-control" name="surname_mayor" ngcontrol="surname_mayor"
+                            #surname_mayor="ngModel" (ngModelChange)="checkButtonEnabled($event)" maxlength="255" [disabled]="!isMunicipalityEditable[municipality.id]"
+                            required>
+                        <div [hidden]="surname_mayor.valid || surname_mayor.pristine" class="alert alert-danger">
+                            {{ 'shared.surname.required' | translate }}
+                        </div>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <p>{{ 'benefRegistration.emailMayor.label' | translate }}</p>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <input id="email_mayor" type="text" [(ngModel)]="mayors[i].email" class="form-control" name="email_mayor" ngcontrol="email_mayor" [pattern]="emailPattern"
+                            #email_mayor="ngModel" maxlength="255" (ngModelChange)="checkButtonEnabled($event)" [disabled]="!isMunicipalityEditable[municipality.id]"
+                            required>
+                        <div [hidden]="email_mayor.valid || email_mayor.pristine" class="alert alert-danger">
+                             {{ 'email.required' | translate }}
+                        </div>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                
+                <!-- CONTACT DETAILS ADD CONTACT MUNICIPALITY
+                <br>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <button type="button" (click)="addNewContactToMunicipality(municipality.id)" class="btn btn-primary pull-right">
+                            {{ 'benefPortal.beneficary.addMunicipality' | translate}}
+                        </button>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                
+                   
+                <div class="col-sm-12" *ngIf="users[municipality?.id].length > 0">
+                    <div *ngFor="let contactPerson of users[registration?.municipalityId]; let i = index">
+                        <div *ngIf="!contactPerson?.main" class="ui-g-12">
+                            <div class="offset-sm-2 ui-g-8">
+                                <hr class="genericHr">
+                            </div>
+                            <span class="offset-sm-2 ui-g-8 blueText">{{'benefPortal.profile.contactPerson' | translate}}</span>
+                            <p class="edit cursorPointer right" (click)="deactivateShowModal(contactPerson.id)" *ngIf="!(contactPerson.type == -1) && !(contactPerson.id == user.id)">
+                                <i class="fa fa-ban"></i>{{ 'shared.deactivate.button' | translate}}</p>
+                            <beneficiary-user [user]="contactPerson" [organizationName]="finalBeneficiary.associationName" [isEdit]="true" [countries]="countries"
+                                (onOrganizationChange)="finalBeneficiary.associationName  = $event;checkButtonEnabledUser($event, null)"
+                                (onUserChange)="users[registration?.municipalityId][i] = $event;checkButtonEnabledUser($event, contactPerson.id)"></beneficiary-user>
+                            <br>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <br> 
+            -->
+                
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-8">
+                <ng-container *ngIf="multipleMunicipalities">
+                    <ux-accordion-boxes>
+                        <div *ngFor="let mayor of newMayors; let i = index" id="scrollMunicipality-{{i}}">
+                            <hr class="genericHr" *ngIf="i != 0">
+                            <custom-accordion-box [isExpanded]="true" [rightSide]="true">
+                                <div class="ui-g">
+                                    <div class="ui-g-12">
+                                        <h3 class="beneficiaryTitle">{{ 'shared.municipalityDetails.title' | translate }}
+                                        </h3>
+                                        <div class="ui-g">
+                                            <div class="ui-g-12">
+                                                <div class="form-group">
+                                                    <label class="label floatLeft" for="municipality">
+                                                        {{ 'shared.municipality.label' | translate }}
+                                                    </label>
+                                                    <div class="clearfix"></div>
+                                                    <p-autoComplete [id]="'municipality-'+i" class="form-control {{css_class_municipalities[i]}}" [name]="'municipality-'+i"
+                                                        field="name1" ngcontrol="'municipality-'+i" [(ngModel)]="laus[i]" [suggestions]="lauSuggestions"
+                                                        (completeMethod)="search($event)" (onSelect)="checkMunicipalitiesSelected()"
+                                                        (input)="checkMunicipalitiesSelected()" (focusout)="clearMunicipality(i)"
+                                                        required></p-autoComplete>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g">
+                                    <div class="ui-g-12">
+                                        <div class="ui-g-8">
+                                            <div class="form-group">
+                                                <label class="label floatLeft" for="address">
+                                                    {{ 'benefRegistration.townHall.address' | translate }}</label>
+                                                <input type="text" class="form-control paddingInput" min="1" [id]="'address-'+i" [name]="'address-'+i" [(ngModel)]="newMunicipalities[i].address"
+                                                    (ngModelChange)="checkButtonEnabled($event)" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="ui-g-4">
+                                            <div class="form-group">
+                                                <label class="label floatLeft" for="address">
+                                                    {{ 'shared.number.label' | translate }}</label>
+                                                <input type="text" class="form-control paddingInput" [id]="'addressNum-'+i" [name]="'addressNum-'+i" [(ngModel)]="newMunicipalities[i].addressNum"
+                                                    (ngModelChange)="checkButtonEnabled($event)" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-g">
+                                    <div class="ui-g-12">
+                                        <div class="ui-g-4">
+                                            <div class="form-group">
+                                                <label class="label floatLeft" [for]="'postalCode-'+i">
+                                                    {{ 'shared.postal-code.label' | translate }}</label>
+                                                <input type="text" class="form-control paddingInput" [id]="'postalCode-'+i" [name]="'postalCode-'+i" [(ngModel)]="newMunicipalities[i].postalCode"
+                                                    (ngModelChange)="checkButtonEnabled($event)" required>
+                                            </div>
+                                        </div>
+                                        <div class="ui-g-8"></div>
+                                    </div>
+                                </div>
+                                <div id="legal-representative" class="form-group ui-g">
+                                    <div class="ui-g-12">
+                                        <h3 class="beneficiaryTitle">{{ 'benefRegistration.registration.legalRepresentative' | translate }}
+                                        </h3>
+                                        <label class="field-desc" style="margin-top: 10px;color: gray;">
+                                            {{ 'benefRegistration.registration.authorisedPerson' | translate }}
+                                        </label>
+                                    </div>
+                                </div>
+                                <!-- Mayor name -->
+                                <div [id]="'mayor-name-'+i" class="form-group ui-g">
+                                    <div class="ui-g-12">
+                                        <label class="label floatLeft">{{ 'benefRegistration.nameMayor.label' | translate }}</label>
+                                        <input class="form-control paddingInput" [name]="'name-'+i" [id]="'name-'+i" type="text" maxlength="255" [(ngModel)]="newMayors[i].name"
+                                            (ngModelChange)="checkButtonEnabled($event)" required>
+                                    </div>
+                                </div>
+                                <!-- Mayor last name -->
+                                <div [id]="'mayor-last-name-'+i" class="form-group ui-g">
+                                    <div class="ui-g-12">
+                                        <label class="label floatLeft">
+                                            {{ 'benefRegistration.surnameMayor.label' | translate }}
+                                        </label>
+                                        <input class="form-control paddingInput" type="text" [name]="'surname-'+i" [id]="'surname-'+i" maxlength="255" [(ngModel)]="newMayors[i].surname"
+                                            (ngModelChange)="checkButtonEnabled($event)" required>
+                                    </div>
+                                </div>
+                                <!-- Mayor email -->
+                                <div [id]="'mayor-email-'+i" class="form-group ui-g">
+                                    <div class="ui-g-12">
+                                        <label class="label floatLeft">
+                                            {{ 'benefRegistration.emailMayor.label' | translate }}
+                                        </label>
+                                        <input class="form-control paddingInput" maxlength="255" type="email" [pattern]="emailPattern" [(ngModel)]="newMayors[i].email"
+                                            [id]="'email-'+i" [name]="'email-'+i" (input)="checkButtonEnabled($event)" maxlength="255"
+                                            required>
+                                        <label class="field-desc" style="margin-top: 10px;color: gray;">
+                                            {{ 'benefRegistration.email.fielddesc' | translate }}</label>
+                                    </div>
+                                </div>
+                                <!-- Mayor confirmation email -->
+                                <div [id]="'mayor-confirm-email-'+i" class="form-group ui-g">
+                                    <div class="ui-g-12">
+                                        <label class="label floatLeft">
+                                            {{ 'shared.confirmemail.label' | translate }}
+                                        </label>
+                                        <input class="form-control paddingInput {{css_class_email[i]}}" type="email" [name]="'confirm-email-'+i" [id]="'confirm-email-'+i"
+                                            maxlength="255" (input)="checkEmailsMatch()" (paste)="preventPaste()" [(ngModel)]="emailConfirmations[i]"
+                                            maxlength="255">
+                                    </div>
+                                </div>
+                                <div class="form-group ui-g-12 right">
+                                    <button class="btn redButton" type="button" (click)="removeExtraMunicipality(i)">
+                                        {{'benefRegistration.removeMunicipality.label' | translate}}
+                                    </button>
+                                </div>
+                                <br>
+                                <br>
+                            </custom-accordion-box>
+                        </div>
+                    </ux-accordion-boxes>
+                </ng-container>
+            </div>
+            <div class="col-lg-2"></div>
+        </div>
+        <br>
+        <br>
+    </div>
+    <br>
+    <br>
+    <div class="whitePanel col-sm-12" *ngIf="userMain && userMain?.main">
+        <br>
+        <br>
+        <div class="row">
+            <br>
+            <div class="offset-sm-2 col-sm-6">
+                <span class="beneficiaryMayor">{{ 'benefRegistration.yourDetails.title' | translate }}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="offset-sm-2 col-sm-8">
+                <hr class="beneficiaryHr">
+            </div>
+        </div>
+
+        <beneficiary-user [user]="userMain" [organizationName]="finalBeneficiary.associationName" [isEdit]="true" [countries]="countries" 
+            (onOrganizationChange)="finalBeneficiary.associationName = $event;checkButtonEnabledUser($event, null)"    
+            (onUserChange)="userMain = $event;checkButtonEnabledUser($event, userMain.id)"></beneficiary-user>
+        <br>
+        <br>
+    </div>
+    <br>
+    <br>
+        <!--CONTACT DETAILS FOR ORGANIZATION WOULD GO HERE-->
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+            <button type="button" class="btn btn-primary cancel-button" (click)="goBackToProfile()">
+                {{ 'shared.cancel.button' | translate }}
+            </button>
+        </div>
+        <!-- {{ !municipalitiesSelected }} - {{!emailsMatch}} - {{!profileEditForm.form.valid}} - {{!buttonEnabled}}  -->
+        <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+            <button (click)="editProfile()" class="btn btn-primary publish-button" [disabled]="!municipalitiesSelected || !emailsMatch || !profileEditForm.form.valid || !buttonEnabled">
+                {{ 'shared.confirm.button' | translate }}
+            </button>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+    <br>
+    <br>
+    <br>
+</div>
+
+
+<p-dialog [(visible)]="submittingData" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="false"
+    [closeOnEscape]="false">
+    <p class="ModalLoaderDots">
+        <span>·</span>
+        <span>·</span>
+        <span>·</span>
+    </p>
+    <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
+    <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
+</p-dialog>
+
+<p-dialog [(visible)]="displayDeleteMunicipality" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
+    [closable]="false" [closeOnEscape]="false">
+    <h1 class="beneficiaryMayorModal">{{'benefPortal.beneficiary.confirmDeletion.title' | translate }}</h1>
+    <p class="ModalpConfirmation">{{'benefPortal.beneficiary.confirmDeletion.text' | translate }}</p>
+    <p></p>
+    <div class="form-group row">
+        <div class="col-lg-2"></div>
+        <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+            <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">
+                {{ 'shared.cancel.button' | translate }}
+            </button>
+        </div>
+        <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+            <button type="submit" class="btn btn-primary publish-button" (click)="deleteMunicipality()" [disabled]="">
+                {{ 'shared.confirm.button' | translate }}
+            </button>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+</p-dialog>
+
+<!-- CONTACT DETAILS ADD CONTACT MUNICIPALITY
+<p-dialog [(visible)]="addUser" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="false"
+    [closeOnEscape]="false">
+    <form #addNewUser="ngForm">
+        <div class="form-group">
+
+            <div class="row marginStep1 landingFirstText">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8 center">
+                    <h1 class="Modalh1Confirmation ">{{ 'benefPortal.adduser.title' | translate}}</h1>
+                    <p class="left">{{ 'benefPortal.adduser.desc' | translate}}</p>
+                    <p class="left">{{ 'benefPortal.adduser.email' | translate}}</p>
+                    <input type="email" id="newUserEmail" [(ngModel)]="newUserEmail" class="form-control" name="newUserEmail" [pattern]="emailPattern"
+                        size="50" required>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+        </div>
+    </form>
+    <div class="row marginStep1 landingFirstText form-group ">
+        <div class="col-lg-2"></div>
+        <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+            <button type="button" class="btn btn-primary cancel-button" (click)="closeAddNewContactModal()">
+                {{ 'shared.cancel.button' | translate }}
+            </button>
+        </div>
+        <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+            <button (click)="addNewContact()" class="btn btn-primary publish-button" [disabled]="!addNewUser.form.valid">
+                {{ 'shared.confirm.button' | translate }}
+            </button>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+</p-dialog>
+ <p-dialog [(visible)]="addContact" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="false"
+    [closeOnEscape]="false">
+    <p class="ModalLoaderDots">
+        <span>·</span>
+        <span>·</span>
+        <span>·</span>
+    </p>
+    <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
+    <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
+</p-dialog> -->
+
+<!--MODAL CONFIMATION OF DEACTIVATING CONTACT-->
+<!-- <p-dialog [(visible)]="displayDeactivatemodal" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
+    [closable]="false" [closeOnEscape]="false">
+    <div class="form-group ui-g">
+        <div class="col-sm-12 center" style="padding-bottom:1em; color: #004494; font-size:20px; font-weight: bold;">
+            <span>{{ 'shared.deactivate.modalTitle' | translate}}</span>
+        </div>
+        <div class="col-sm-12 center" style="padding-bottom:1em;">
+            <span style="line-height: 1.25; font-size: 16px;">{{ 'shared.deactivateContactModalAreYouSure' | translate}}</span>
+        </div>
+        <div class="col-sm-12 center">
+            <div class="offset-lg-2 col-sm-6 col-g-6 col-md-6 col-lg-4">
+                <button (click)="closeModal()" class="btn btn-primary publish-button">{{ 'shared.cancel.button' | translate }} </button>
+            </div>
+            <div class="col-sm-6 col-g-6 col-md-6 col-lg-4">
+                <button (click)="deactivateContactModal()" type="button" class="btn btn-primary cancel-button">
+                    {{ 'shared.confirm.button' | translate }}
+                </button>
+            </div>
+        </div>
+    </div>
+</p-dialog> -->

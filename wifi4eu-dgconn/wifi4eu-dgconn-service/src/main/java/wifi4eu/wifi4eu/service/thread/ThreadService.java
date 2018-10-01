@@ -1,6 +1,5 @@
 package wifi4eu.wifi4eu.service.thread;
 
-import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,9 +11,6 @@ import wifi4eu.wifi4eu.repository.thread.ThreadMessageRepository;
 import wifi4eu.wifi4eu.repository.thread.ThreadRepository;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
-import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +34,6 @@ public class ThreadService {
 
     @Autowired
     MunicipalityService municipalityService;
-
-    public List<ThreadDTO> getAllThreads() {
-        return threadMapper.toDTOList(Lists.newArrayList(threadRepository.findAll()));
-    }
 
     public ThreadDTO getThreadById(int threadId) {
         return threadMapper.toDTO(threadRepository.findOne(threadId));
@@ -82,30 +74,7 @@ public class ThreadService {
         }
     }
 
-    public ThreadDTO deleteThread(int threadId) {
-        ThreadDTO threadDTO = threadMapper.toDTO(threadRepository.findOne(threadId));
-        if (threadDTO != null) {
-            threadRepository.delete(threadMapper.toEntity(threadDTO));
-            return threadDTO;
-        } else {
-            return null;
-        }
-    }
-
     public ThreadDTO getThreadByTypeAndReason(int type, String reason) {
         return threadMapper.toDTO(threadRepository.findByTypeAndReason(type, reason));
     }
-
-    public List<ThreadDTO> getUserThreads(int userId) {
-        List<ThreadDTO> threads = new ArrayList<>();
-        for (RegistrationDTO registration : registrationService.getRegistrationsByUserId(userId)) {
-            MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
-            ThreadDTO thread = getThreadByTypeAndReason(4, String.valueOf(municipality.getLauId()));
-            if (thread != null) {
-                threads.add(thread);
-            }
-        }
-        return threads;
-    }
-
 }

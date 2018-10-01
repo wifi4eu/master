@@ -1,405 +1,228 @@
-<div class="clearfix"></div>
-<div class="container font">
-    <div class="clearfix"></div>
-    <div class="row labelModal">
-        <div class="col-sm-8">
-            <div class="row">
-                <div class="col-sm-12">
-                    <p class="beneficiaryTitle">{{ 'benefPortal.profile.title' | translate }}</p>
-                    <hr class="beneficiaryHr">
-                </div>
-            </div>
-            <div class="row">
-                <br>
-                <div class="col-sm-10">
-                    <p class="beneficiaryMayor">{{ 'suppRegistration.contact.person' | translate }}</p>
-                </div>
-                <div class="col-sm-2">
-                    <a (click)="displayModal('contact')" class="edit">
-                        <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'shared.edit.button' | translate }}
-                    </a>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4"><p>{{ 'shared.name.label' | translate }}</p></div>
-                <div class="col-sm-8"><p class="profileData">{{supplier.contactName}}</div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4"><p>{{ 'shared.surname.label' | translate }}</p></div>
-                <div class="col-sm-8"><p class="profileData">{{supplier.contactSurname}}</p></div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4"><p>{{ 'suppRegistration.phone.number' | translate }}</p></div>
-                <div class="col-sm-8"><p class="profileData">
-                    {{supplier.contactPhonePrefix}}{{supplier.contactPhoneNumber}}</p></div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4"><p>{{ 'shared.email.label' | translate }}</p></div>
-                <div class="col-sm-8"><p class="profileData">{{supplier.contactEmail}}</p></div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <hr class="beneficiaryHr">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-10">
-                    <p class="beneficiaryMayor">{{ 'suppRegistration.company.details' | translate }}</p>
-                </div>
-                <div class="col-sm-2">
-                    <a (click)="displayModal('company')">
-                        <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'shared.edit.button' | translate }}
-                    </a>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-4"><p>{{ 'suppRegistration.company.name' | translate }}</p></div>
-                <div class="col-sm-8"><p class="profileData">{{supplier.name}}</div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4"><p>{{ 'suppRegistration.legal.address' | translate }}</p></div>
-                <div class="col-sm-8"><p class="profileData">{{supplier.address}}</div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4"><p>{{ 'suppRegistration.vat.label' | translate }}</p></div>
-                <div class="col-sm-8"><p class="profileData"> {{supplier.vat}}</div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4"><p>{{ 'suppRegistration.bic.label' | translate }}</p></div>
-                <div class="col-sm-8"><p class="profileData">{{supplier.bic}}</div>
-            </div>
-            <div class="row" *ngIf="supplier.logo">
-                <div class="col-sm-4"><p>{{ 'suppPortal.profile.currentLogo' | translate }}</p></div>
-                <div class="col-sm-8"><p class="profileData"><img [src]="supplier.logo" height="50"></div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-12">
-                    <hr class="beneficiaryHr">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <p class="beneficiaryMayor">{{ 'suppRegistration.entity.support' | translate }}</p>
-                    <p-tabView *ngIf="selectedCountriesNames.length > 0"
-                               (onChange)="selectCountry($event, tableRegions)">
-                        <p-tabPanel *ngFor="let country of selectedCountriesNames;" [header]="country"></p-tabPanel>
-                        <p-dataTable #tableRegions [value]="regionsToRender" [paginator]="true" [rows]="10">
-                            <p-column field="label" [sortable]="true"></p-column>
-                        </p-dataTable>
-                    </p-tabView>
-                    <b *ngIf="selectedCountriesNames.length == 0"><i></i></b>
-                </div>
-
-            </div>
+<div class="container">
+    <div class="ui-g-12" style="padding-bottom: 0;">
+        <div class="ui-g-8 ui-lg-8 ui-md-12 ui-sm-12" style="margin-top: 1em;">
+            <p class="beneficiaryTitle">
+                <span>{{ 'benefPortal.profile.title' | translate }}</span>
+                <span class="link-label right" routerLink="./edit" routerLinkActive="active" *ngIf="!fetchingData">
+                    <i class="fa fa-pencil" aria-hidden="true"></i> {{'discussionForum.editRegistration' | translate}}
+                </span>
+            </p>
+            <hr class="beneficiaryHr">
+            <i *ngIf="fetchingData" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
         </div>
-
-        <div class="col-sm-4">
-            <div class="col-sm-12 margin-top button-content">
-                <p>{{ 'shared.change-password.text' | translate }}</p>
-                <div style="text-align: center !important">
-                    <button id="changePassword" type="button" (click)="displayModal('password')"
-                            class="btn btn-primary changePassword">
-                        {{'shared.change-password.button' | translate }}
-                    </button>
-
+    </div>
+    <div *ngIf="!fetchingData" class="ui-g-12" style="padding-top: 0;">
+        <div class="ui-g-8 ui-lg-8 ui-md-12 ui-sm-12" style="margin-top: 1em;">
+            <p class="beneficiaryMayor">{{ 'suppPortal.companyInformation' | translate }}</p>
+            <div class="ui-g-12 whitePanel">
+                <div class="ui-g-12">
+                    <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.company.name' | translate }}</span>
+                    <span class="ui-g-8 ui-sm-12"><b>{{ supplier.name }}</b></span>
+                </div>
+                <div class="ui-g-12">
+                    <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.legal.address' | translate }}</span>
+                    <span class="ui-g-8 ui-sm-12"><b>{{ supplier.address }}</b></span>
+                </div>
+                <div class="ui-g-12">
+                    <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.vat.label' | translate }}</span>
+                    <span class="ui-g-8 ui-sm-12"><b>{{ supplier.vat }}</b></span>
+                </div>
+               <!--  <div class="ui-g-12">
+                    <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bic.label' | translate }}</span>
+                    <span class="ui-g-8 ui-sm-12"><b>{{ supplier.bic }}</b></span>
+                </div>
+                <div class="ui-g-12">
+                    <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bank.account' | translate }}</span>
+                    <span class="ui-g-8 ui-sm-12"><b>{{ supplier.accountNumber }}</b></span>
+                </div> -->
+                <div class="ui-g-12" *ngIf="supplier.website">
+                    <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.company.web' | translate }}</span>
+                    <span class="ui-g-8 ui-sm-12"><b>{{ supplier.website }}</b></span>
+                </div>
+                <div class="ui-g-12" *ngIf="supplier.logo">
+                    <span class="ui-g-4 ui-sm-12">{{ 'suppPortal.profile.currentLogo' | translate }}</span>
+                    <span class="ui-g-8 ui-sm-12">
+                        <img [src]="supplier.logo" height="50" style="border: 1px solid #d7d7d7;">
+                    </span>
                 </div>
             </div>
-
-            <div class="col-sm-12 margin-top button-content">
-                <p class="applicationText">{{ 'suppPortal.withdraw-registration.text' | translate }}</p>
-                <div style="text-align: center !important">
-                    <button id="withdrawRegistration" type="button" (click)="withdrawRegistration()"
-                            class="btn btn-primary changePassword"
-                            [disabled]="withdrawingRegistration || withdrawnSuccess">
+            <br/><br/>
+            <p *ngIf="users" class="beneficiaryMayor">{{ 'benefRegistration.yourDetails.title' | translate }}</p>
+                <div *ngFor="let user of users; let i = index">
+                    <div class="clearfix"></div>
+                    <!--ADD CONTACT-->
+                    <!--<p class><b>{{ 'suppRegistration.contact.person' | translate }} {{i+1}}</b></p>-->
+                    <div class="ui-g-12 whitePanel">
+                        <div class="ui-g-12">
+                            <span class="ui-g-4 ui-sm-12">{{ 'shared.name.label' | translate }}</span>
+                            <span class="ui-g-8 ui-sm-12"><b>{{ user?.name }}</b></span>
+                        </div>
+                        <div class="ui-g-12">
+                            <span class="ui-g-4 ui-sm-12">{{ 'shared.surname.label' | translate }}</span>
+                            <span class="ui-g-8 ui-sm-12"><b>{{ user?.surname }}</b></span>
+                        </div>
+                        <div class="ui-g-12">
+                            <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.phone.number' | translate }}</span>
+                            <span class="ui-g-8 ui-sm-12"><b>{{ user?.phonePrefix }} {{ user?.phoneNumber }}</b></span>
+                        </div>
+                        <div class="ui-g-12">
+                            <span class="ui-g-4 ui-sm-12">{{ 'shared.email.label' | translate }}</span>
+                            <span class="ui-g-8 ui-sm-12"><b>{{ user?.ecasEmail }}</b></span>
+                        </div>
+                    </div>
+                </div>
+            <!-- ADD CONTACT
+                <div class="form-group ui-g-12 ui-lg-12 ui-md-12 ui-sm-12 contactPersonMargin">   
+                <p class="edit ui-g-12 cursorPointer" (click)="addNewContactToSupplier()">+ {{ "benefPortal.beneficary.addMunicipality" | translate}}</p>   
+            </div>-->
+            <br/><br/>
+            <p class="beneficiaryMayor">{{ 'suppRegistration.entity.support' | translate }}</p>
+            <div class="ui-g-12 whitePanel" style="padding: 0;">
+                <p-tabView *ngIf="selectedCountriesNames.length > 0" (onChange)="selectCountry($event, tableRegions)">
+                    <p-tabPanel *ngFor="let country of selectedCountriesNames;"
+                                header="{{country | slice:0:1 | uppercase }}{{country | slice:1:country.length | lowercase }}">
+                    </p-tabPanel>
+                    <p-dataTable class="ui-g-12" #tableRegions [value]="regionsToRender" [paginator]="true" [rows]="10">
+                        <p-column field="label" [sortable]="true"></p-column>
+                    </p-dataTable>
+                </p-tabView>
+            </div>
+            <br/><br/>
+        </div>
+        <div class="ui-g-4 ui-lg-4 ui-md-12 ui-sm-12" style="margin-top: 1em;">
+            <p class="beneficiaryMayor">User account</p>
+            <div class="ui-g-12 whitePanel" style="padding: 0.5em 1em;">
+                <p class="ui-g-12">{{ 'shared.change-password.text' | translate }}</p>
+                <div class="ui-g-12 center">
+                    <button id="changePassword" type="button" (click)="displayModal('password')" class="btn btn-primary whiteButton">
+                        {{ 'shared.change-password.button' | translate }}
+                    </button>
+                </div>
+                <hr class="beneficiaryHr ui-g-12">
+                <p class="ui-g-12">{{ 'suppPortal.withdraw-registration.text' | translate }}</p>
+                <div class="ui-g-12 center">
+                    <button id="withdrawRegistration" type="button" (click)="displayModal('withdraw')" class="btn btn-primary whiteButton">
                         {{ 'shared.withdraw-registration.button' | translate }}
                     </button>
                 </div>
+                <hr class="beneficiaryHr ui-g-12">
+                <p class="ui-g-12">
+                    <span>{{ 'shared.changeLanguage.text1' | translate }}</span> <b>{{ selectedLanguage.label }}</b>.
+                    <br/><br/>
+                    <span>{{ 'shared.changeLanguage.text2' | translate }}</span>
+                </p>
+                <div class="ui-g-12 center">
+                    <button id="changeLanguage" type="button" (click)="changeLanguage()" class="btn btn-primary whiteButton">
+                        {{ 'shared.changeLanguage.button' | translate }}
+                    </button>
+                </div>
+                <br/><br/>
             </div>
         </div>
     </div>
 </div>
+
 <!--MODALS BELOW-->
-<div class="container font">
-    <div class="ui-g-1"></div>
-    <p-dialog [(visible)]="displayContact" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false" [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
-        <p class="beneficiaryMayor center">{{ 'suppRegistration.contact.person' | translate }}</p>
-        <form (ngSubmit)="saveContactChanges()" #profileFormContact="ngForm">
-            <div class="form-group ui-g">
-                <div class="ui-g-1"></div>
-                <div class="ui-g-10">
-                    <div class="form-group">
-                        <label for="contactName">{{ 'shared.name.label' | translate }}</label>
-                        <input id="contactName" type="text" [(ngModel)]="editedSupplier.contactName"
-                               class="form-control" name="contactName" ngcontrol="contactName"
-                               #contactName="ngModel" required>
-                        <div [hidden]="contactName.valid || contactName.pristine" class="alert alert-danger">
-                            {{ 'shared.name.required' | translate }}
-                        </div>
-                    </div>
-                </div>
-                <div class="ui-g-1"></div>
-            </div>
-            <div class="form-group ui-g">
-                <div class="ui-g-1"></div>
-                <div class="ui-g-10">
-                    <div class="form-group">
-                        <label for="contactSurname">{{ 'shared.surname.label' | translate }}</label>
-                        <input id="contactSurname" type="text" [(ngModel)]="editedSupplier.contactSurname"
-                               class="form-control" name="contactSurname" ngcontrol="contactSurname"
-                               #contactSurname="ngModel" required>
-                        <div [hidden]="contactSurname.valid || contactSurname.pristine" class="alert alert-danger">
-                            {{ 'shared.surname.required' | translate }}
-                        </div>
-                    </div>
-                </div>
-                <div class="ui-g-1"></div>
-            </div>
-            <div class="form-group ui-g">
-                <div class="ui-g-1"></div>
-                <div class="ui-g-10" style="padding:0.5em 0">
-                    <div class="form-group">
-                        <div class="ui-g-5">
-                            <label for="contactPhonePrefix">
-                                {{ 'suppRegistration.prefix.number' | translate }}
-                            </label>
-                            <input id="contactPhonePrefix" type="text"
-                                   [(ngModel)]="editedSupplier.contactPhonePrefix"
-                                   class="form-control" name="contactPhonePrefix" ngcontrol="contactPhonePrefix"
-                                   #contactPhonePrefix="ngModel" required>
-                            <div [hidden]="contactPhonePrefix.valid || contactPhonePrefix.pristine"
-                                 class="alert alert-danger">
-                                {{ 'benefRegistration.phone.required' | translate }}
-                            </div>
-                        </div>
-                        <div class="ui-g-5">
-                            <label for="contactPhoneNumber">
-                                {{ 'suppRegistration.phone.number' | translate }}
-                            </label>
-                            <input id="contactPhoneNumber" type="text"
-                                   [(ngModel)]="editedSupplier.contactPhoneNumber"
-                                   class="form-control"
-                                   name="contactPhoneNumber" ngcontrol="contactPhoneNumber"
-                                   #contactPhoneNumber="ngModel" required>
-                            <div [hidden]="contactPhoneNumber.valid || contactPhoneNumber.pristine"
-                                 class="alert alert-danger">
-                                {{ 'benefRegistration.phone.required' | translate }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="ui-g-1"></div>
-            </div>
-
-            <div class="form-group ui-g">
-                <div class="ui-g-1"></div>
-                <div class="ui-g-10">
-                    <div class="form-group">
-                        <label for="contactEmail">{{ 'shared.email.label' | translate }}</label>
-                        <label class="form-control" id="contactEmail" name="contactEmail">
-                            <b>{{editedSupplier.contactEmail}}</b>
-                        </label>
-                    </div>
-                </div>
-                <div class="ui-g-1"></div>
-            </div>
-            <div class="form-group">
-                <div style="text-align: center !important">
-                    <button type="button" class="btn btn-primary changePasswordModalNoTop"
-                            (click)="closeModal()">
-                        {{ 'shared.cancel.button' | translate }}
-                    </button>
-                    <button type="submit" class="btn btn-primary changePasswordModalNoTop"
-                            [disabled]="!profileFormContact.form.valid">
-                        {{ 'shared.confirm.button' | translate }}
-                    </button>
-                </div>
-            </div>
-        </form>
-    </p-dialog>
-</div>
-
-<div class="container font">
-    <div class="ui-g-1"></div>
-    <p-dialog [(visible)]="displayCompany" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false" [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
-        <p class="beneficiaryMayor center">{{ 'suppRegistration.company.details' | translate }}</p>
-        <form (ngSubmit)="saveDetailsChanges()" #profileFormCompany="ngForm">
-            <div class="form-group ui-g">
-                <div class="ui-g-1"></div>
-                <div class="ui-g-10">
-                    <div class="form-group">
-                        <label for="name">{{ 'suppRegistration.company.name' | translate }}</label>
-                        <input id="name" type="text" [(ngModel)]="editedSupplier.name" class="form-control"
-                               name="name" ngcontrol="name" #name="ngModel" required>
-                        <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
-                            {{'suppRegistration.company.required' | translate }}
-                        </div>
-                    </div>
-                </div>
-                <div class="ui-g-1"></div>
-            </div>
-            <div class="form-group ui-g">
-                <div class="ui-g-1"></div>
-                <div class="ui-g-10">
-                    <div class="form-group">
-                        <label for="address">{{ 'suppRegistration.legal.address' | translate }}</label>
-                        <input id="address" type="text" [(ngModel)]="editedSupplier.address"
-                               class="form-control" name="address" ngcontrol="address" #address="ngModel" required>
-                        <div [hidden]="address.valid || address.pristine" class="alert alert-danger">
-                            {{'suppRegistration.address.required' | translate }}
-                        </div>
-                    </div>
-                </div>
-                <div class="ui-g-1"></div>
-            </div>
-            <div class="form-group ui-g">
-                <div class="ui-g-1"></div>
-                <div class="ui-g-10">
-                    <div class="form-group">
-                        <label for="vat">{{ 'suppRegistration.vat.label' | translate }}</label>
-                        <input id="vat" type="text" [(ngModel)]="editedSupplier.vat" class="form-control"
-                               name="vat" ngcontrol="vat" #vat="ngModel" required>
-                        <div [hidden]="vat.valid || vat.pristine" class="alert alert-danger">
-                            {{'suppRegistration.vat.required' | translate }}
-                        </div>
-                    </div>
-                </div>
-                <div class="ui-g-1"></div>
-            </div>
-            <div class="form-group ui-g">
-                <div class="ui-g-1"></div>
-                <div class="ui-g-10">
-                    <div class="form-group">
-                        <label for="bic">{{ 'suppRegistration.bic.label' | translate }}</label>
-                        <input id="bic" type="text" [(ngModel)]="editedSupplier.bic" class="form-control"
-                               name="bic" ngcontrol="bic" #bic="ngModel" required>
-                        <div [hidden]="bic.valid || bic.pristine" class="alert alert-danger">
-                            {{'benefRegistration.bic.required' | translate }}
-                        </div>
-                    </div>
-                </div>
-                <div class="ui-g-1"></div>
-            </div>
-            <div class="form-group ui-g">
-                <div class="ui-g-12 container">
-                    <div class="form-group">
-                        <label for="logo">{{ 'suppRegistration.company.logo' | translate }}</label>
-                        <br>
-                        <br>
-                        <div class="ui-g-12" style="border: 1px solid #D5D5D5; background: #ffffff;">
-                            <div *ngIf="supplier.logo && !deletingLogo" class="ui-g-6">
-                                <div class="ui-g-12">
-                                    <b>{{ 'suppPortal.profile.currentLogo' | translate }}</b>
-                                </div>
-                                <div class="ui-g-12">
-                                    <img id="logo" [src]="supplier.logo" class="profileLogoImage">
-                                </div>
-                            </div>
-                            <div *ngIf="isLogoUploaded" class="ui-g-6">
-                                <div class="ui-g-12">
-                                    <b>{{ 'suppPortal.profile.newLogo' | translate }}</b>
-                                </div>
-                                <div class="ui-g-12">
-                                    <img id="newLogo" [src]="logoUrl.result" class="profileLogoImage">
-                                </div>
-                            </div>
-                            <div class="ui-g-12 center">
-                                <br>
-                                <input #logoInput type="file" (change)="changeLogo($event)" accept="image/*">
-                            </div>
-                            <div class="ui-g-12 center">
-                                <br>
-                                <button type="button" class="btn redButton" (click)="deleteLogo()"
-                                        [disabled]="!supplier.logo || deletingLogo">
-                                    {{ 'suppPortal.profile.deleteLogo' | translate }}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="center">
-                    <button type="button" class="btn btn-primary changePasswordModalNoTop"
-                            (click)="closeModal()">
-                        {{ 'shared.cancel.button' | translate }}
-                    </button>
-                    <button type="submit" class="btn btn-primary changePasswordModalNoTop"
-                            [disabled]="!profileFormCompany.form.valid">
-                        {{ 'shared.confirm.button' | translate }}
-                    </button>
-                </div>
-            </div>
-        </form>
-    </p-dialog>
-</div>
-
-<div class="container font">
-    <div class="ui-g-1"></div>
-    <p-dialog [(visible)]="displayChangePassword" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false"
-              [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
-        <p class="beneficiaryMayorModal">{{'shared.beneficiaryProfile.password' | translate }}</p>
-        <form #profileFormPassword="ngForm">
-            <div class="form-group profileDialog">
-                <label class="labelModal" for="currentPassword_field">
-                    {{ 'currentPassword.label' | translate }}
-                </label>
-                <input id="currentPassword_field" type="password" [(ngModel)]="currentPassword"
-                       class="form-control beneficiaryProfileI"
-                       name="currentPassword_field" ngcontrol="currentPassword_field"
-                       #currentPassword_field="ngModel"
-                       required>
-                <div [hidden]="currentPassword_field.valid || currentPassword_field.pristine"
-                     class="alert alert-danger">
-                    {{ 'password.required' | translate }}
-                </div>
-                <a class="forgotPassword" routerLink="/forgot">Forgot password?</a><br>
-                <label class="labelModal" for="newPassword_field">
-                    {{ 'shared.password.label' | translate }}
-                </label>
-                <input id="newPassword_field" type="password" [(ngModel)]="newPassword"
-                       class="form-control beneficiaryProfileI" name="newPassword_field"
-                       ngcontrol="newPassword_field" #newPassword_field="ngModel"
-                       (input)="checkPasswordsMatch()" required>
-                <div [hidden]="newPassword_field.valid || newPassword_field.pristine"
-                     class="alert alert-danger">
-                    {{ 'password.required' | translate }}
-                </div>
-                <label class="labelModal" for="repeatNewPassword_field">
-                    {{ 'confirmNewPassword.label' | translate }}
-                </label>
-                <input id="repeatNewPassword_field" type="password" [(ngModel)]="repeatNewPassword"
-                       class="form-control beneficiaryProfileI" name="repeatNewPassword_field"
-                       ngcontrol="repeatNewPassword_field" #repeatNewPassword_field="ngModel"
-                       (input)="checkPasswordsMatch()" (paste)="preventPaste()" required>
-                <div [hidden]="repeatNewPassword_field.valid || repeatNewPassword_field.pristine"
-                     class="alert alert-danger">
-                    {{'newPassword.required' | translate }}
-                </div>
-                <div class="form-group">
-                    <div style="text-align: center !important">
-                        <button type="button" class="btn btn-primary changePasswordModal"
-                                (click)="closeModal()">
-                            {{ 'shared.cancel.button' | translate }}
-                        </button>
-                        <button type="submit" class="btn btn-primary changePasswordModal"
-                                [disabled]="!profileFormPassword.form.valid || !passwordsMatch">
-                            {{ 'shared.confirm.button' | translate }}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </p-dialog>
-</div>
-<helpdesk-form-component portal="supplier-profile"></helpdesk-form-component>
 <p-dialog [(visible)]="withdrawingRegistration" [modal]="true" [responsive]="true"
           [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
     <p class="ModalLoaderDots"><span>·</span><span>·</span><span>·</span></p>
     <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
     <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
 </p-dialog>
+<!-- Modal to confirm supplier withdraw-->
+<p-dialog [(visible)]="withdrawingRegistrationConfirmation" [modal]="true" [responsive]="true"
+          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+    <h1 class="Modalh1Confirmation">{{'suppPortal.withdraw-registration.text' | translate}}</h1>
+    <br/><br/>
+    <div class="modal-body">
+        <div class="row center">
+            <div class="col-sm-6">
+                <button type="submit" class="btn btn-primary cancel-button" (click)="withdrawingRegistrationConfirmation = !withdrawingRegistrationConfirmation">
+                    {{ 'shared.close' | translate }}
+                </button>
+            </div>
+            <div class="col-sm-6">
+                <button type="submit" class="btn btn-primary publish-button" (click)="withdrawRegistration()">
+                    {{ 'shared.confirm.button' | translate }}
+                </button>
+            </div>
+        </div>
+    </div>
+</p-dialog>
+<!-- -->
+<p-dialog [(visible)]="displayLanguageModal" header="{{ 'shared.changeLanguage.modal.title' | translate }}" [modal]="true" [responsive]="true"
+          [resizable]="false" [draggable]="false" [closable]="true">
+    <div class="modal-body">
+        <div *ngFor="let row of languageRows" class="row">
+            <div *ngFor="let language of row" class="col-md-6">
+                <button class="btn language-modal" [class.btn-secondary]="language.code != selectedLanguage.code" [class.btn-primary]="language.code == selectedLanguage.code" (click)="selectLanguage(language.code)">
+                    <label class="text-adjust">{{language.label}} ({{language.code}})</label>
+                </button>
+            </div>
+        </div>
+    </div>
+</p-dialog>
+<!-- ADD CONTACT
+<p-dialog [(visible)]="addUser" [modal]="true" [responsive]="true"
+          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+    <form #addNewUser="ngForm">
+        <div class="form-group">
+
+            <div class="row marginStep1 landingFirstText">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8 center">
+                    <h1 class="Modalh1Confirmation ">{{ 'benefPortal.adduser.title' | translate}}</h1>
+                    <p class="left">{{ 'benefPortal.adduser.desc' | translate}}</p>
+                    <p class="left">{{ 'benefPortal.adduser.email' | translate}}</p>
+                    <input type="email" id="newUserEmail" [(ngModel)]="newUserEmail"
+                           class="form-control" name="newUserEmail" [pattern]="emailPattern" size="50" required>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+        </div>
+    </form>
+    <div class="row marginStep1 landingFirstText form-group ">
+        <div class="col-lg-2"></div>
+        <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+            <button type="button" class="btn btn-primary cancel-button" (click)="closeAddNewContactModal()">
+                {{ 'shared.cancel.button' | translate }}
+            </button>
+        </div>
+        <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+            <button (click)="addNewContact()" class="btn btn-primary publish-button"
+                    [disabled]="!addNewUser.form.valid">
+                {{ 'shared.confirm.button' | translate }}
+            </button>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+</p-dialog>
+
+<p-dialog [(visible)]="addContact" [modal]="true" [responsive]="true"
+          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+    <p class="ModalLoaderDots"><span>·</span><span>·</span><span>·</span></p>
+    <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
+    <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
+</p-dialog>
+
+<p-dialog [(visible)]="displayAddContactModal">
+    <div class="form-group ui-g">
+        <h1 class="Modalh1Confirmation">{{ 'shared.deactivateContactModalAreYouSure' | translate}}</h1>
+        <div class="ui-lg-3"></div>
+        <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
+            <button (click)="closeModal()" class="btn btn-primary publish-button">{{ 'shared.cancel.button' |
+                translate }}
+            </button>
+        </div>
+        <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
+            <button (click)="deactivateContactModal()" class="btn btn-primary cancel-button">
+                {{ 'shared.confirm.button' | translate }}
+            </button>
+        </div>
+
+        <div class="ui-lg-3"></div>
+    </div>
+</p-dialog>-->
+<!--MODALS ABOVE-->
+
+<helpdesk-form-component portal="supplier-profile"></helpdesk-form-component>

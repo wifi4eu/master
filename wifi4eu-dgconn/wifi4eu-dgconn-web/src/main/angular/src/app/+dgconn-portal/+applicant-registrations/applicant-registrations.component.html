@@ -1,0 +1,186 @@
+<div class="container">
+    <div class="ui-g-12" style="margin-top: 1em; font-size: 14px;">
+        <a class="link-label" routerLink=".." routerLinkActive="active">
+            <i class="fa fa-long-arrow-left" aria-hidden="true"></i> {{ 'shared.back.button' | translate }}
+        </a>
+        <p class="beneficiaryTitle">{{ 'dgConn.manageApplications.title' | translate }}</p>
+        <p>{{ 'dgConn.manageApplications.desc' | translate }}</p>
+    </div>
+    <div class="ui-g-12 center">
+        <p-tabView *ngIf="calls.length > 0" (onChange)="changeCall($event)">
+            <p-tabPanel *ngFor="let call of calls; let i = index"
+                        header="{{ 'dgConn.call.number' | translate:{number:i+1} }}"
+                        [selected]="i == currentIndex"
+                        [headerStyle]="{'margin-left': '-3px', 'padding-left': '7px', 'padding-right': '13px'}">
+            </p-tabPanel>
+        </p-tabView>
+    </div>
+    <div class="ui-g-12 center">
+        <div class="panel-dg panel-padding panel-input">
+            <div class="row">
+                <div class="col-md-6">
+                    <span>{{ 'dgConn.filterByCountry' | translate }}</span><br><br>
+                    <select [(ngModel)]="country" (ngModelChange)="filterApplicantsSearch()" id="country" name="country" class="form-control"
+                            ng-options="option.value as option.name for option in typeOptions" [disabled]="countries.length < 1 || loadingData">
+                        <option selected [ngValue]="null">
+                            -
+                        </option>
+                        <option *ngFor="let currentCountry of countries" [ngValue]="currentCountry">
+                            {{currentCountry.label | slice:0:1 | uppercase }}{{currentCountry.label | slice:1:currentCountry.label.length | lowercase }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <span>{{ 'dgConn.searchByMunicipality' | translate }}</span><br><br>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </span>
+                        <input type="text" [(ngModel)]="inputSearch" class="form-control"
+                                   [disabled]="loadingData" (keyup.enter)="searchByName()"
+                                    placeholder="{{ 'dgConn.searchByMunicipality.placeholder' | translate }}">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" (click)="searchByName()" type="button" [disabled]="loadingData">
+                                <span *ngIf="!loadingData">{{ 'shared.search.button' | translate }}</span>
+                                <span *ngIf="loadingData">
+                                    <i [@enterSpinner] class="fa fa-spinner loading-icon"></i>
+                                </span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-dg" *ngIf="calls.length > 0">
+            <div class="ui-g-12" style="padding: 1em 2em;border-bottom: 1px solid #bdbdbd;">
+                <a class="link-label right" [class.link-disabled]="loadingData || downloadingList" (click)="exportListExcel()">
+                    <i class="fa fa-download" aria-hidden="true"></i>  {{ 'dgConn.exportExcel' | translate }} <i *ngIf="downloadingList" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
+                </a>
+            </div>
+            <p-dataTable *ngIf="!firstDataDownload" #tableApplicants [value]="applicantListItems" (onSort)="sortData($event)">
+                <p-column field="countryCode" [sortable]="!loadingData" header="{{ 'dgConn.beneficiaries.country' | translate }}" styleClass="text-center"></p-column>
+                <p-column field="name" [sortable]="!loadingData" header="{{ 'dgConn.beneficiaries.name' | translate }}" styleClass="text-center"></p-column>
+                <p-column field="status" [sortable]="false" header="{{ 'dgConn.status' | translate }}" styleClass="text-center">
+                    <ng-template let-row="rowData" pTemplate="body">
+                        <span *ngIf="row.status == -1">-</span>
+                        <span *ngIf="row.status == 0">{{ 'dgConn.beneficiaries.applied' | translate }}</span>
+                        <span *ngIf="row.status == 1">{{ 'dgConn.status.invalidated' | translate }}</span>
+                        <span *ngIf="row.status == 2">{{ 'dgConn.status.validated' | translate }}</span>
+                        <span *ngIf="row.status == 3">{{ 'dgConn.status.pendingFollowup' | translate }}</span>
+                    </ng-template>
+                </p-column>
+                <p-column field="issueStatus" [sortable]="false" header="{{ 'dgConn.issues' | translate }}" styleClass="text-center">
+                    <ng-template let-row="rowData" let-index="rowIndex" pTemplate="body">
+                        <span class="badge" style="color: #000;"
+                              [class.badge-warning]="(row.warning1 && row.warning2 && !row.warning3) || row.warning1 || row.warning2"
+                              [class.badge-warning-yellow]="!row.warning1 && !row.warning2 && row.warning3"
+                              *ngIf="row.warning1 || row.warning2 || row.warning3"
+                              [pTooltip]="warningTooltipMessages[index]">
+                            <span>{{  'dgConn.badge.warning' | translate  }}</span>
+                            <span style="letter-spacing: 0.12em;">{{  row.warning1 ? '1' + (row.warning2 ? ',' : '' + (row.warning3 ? ',' : '' )) : '' }}</span>
+                            <span style="letter-spacing: 0.12em;">{{  row.warning2 ? '2' + (row.warning3 ? ',' : '') : '' }}</span>
+                            <span style="letter-spacing: 0.12em;">{{  row.warning3 ? '3' : '' }}</span>
+                        </span>
+                    </ng-template>
+                </p-column>
+                <p-column field="counter" [sortable]="!loadingData" header="{{ 'dgConn.numberOfApplications' | translate }}" styleClass="text-center"></p-column>
+                <!--
+                <p-column field="mediation" [sortable]="!loadingData" header="{{ 'dgConn.beneficiaries.mediation' | translate }}" styleClass="text-center">
+                    <ng-template let-row="rowData" pTemplate="body">
+                        <span *ngIf="row.mediation">{{'dgConn.yes' | translate }}</span>
+                        <span *ngIf="!row.mediation">{{'dgConn.no' | translate }}</span>
+                    </ng-template>
+                </p-column>
+                -->
+                <p-column field="supportingDocuments" [sortable]="!loadingData" header="{{ 'dgConn.manageApplications.table.supportingDocuments' | translate }}" styleClass="text-center">
+                  <ng-template let-row="rowData" pTemplate="body">
+                    <span *ngIf="row.supportingDocuments >= 1">{{ 'dgConn.manageApplications.newUpload' | translate }}</span>
+                    <span *ngIf="row.supportingDocuments == 0">-</span>
+                  </ng-template>
+              </p-column>
+                <p-column [sortable]="false" header="{{ 'dgConn.details' | translate }}" styleClass="text-center">
+                    <ng-template let-row="rowData" pTemplate="body">
+                    <span [routerLink]="['./', row.lauId, 'call', currentCall.id]" routerLinkActive="active" class="action-label">
+                        <span class="fa fa-eye"></span> <span>{{ 'dgConn.view' | translate }}</span>
+                    </span>
+                    </ng-template>
+                </p-column>
+                <footer>
+                    <div style="position: absolute; bottom: 25px; left: 20px;">
+                    <span *ngIf="!loadingData">
+                        {{ 'dgConn.totalRecords' | translate }}: {{tableApplicants.totalRecords}}
+                    </span>
+                        <span *ngIf="loadingData">
+                        {{ 'shared.loading.modal.title' | translate }} <i [@enterSpinner] class="fa fa-spinner loading-icon"></i>
+                    </span>
+                    </div>
+                    <p-paginator class="paginator-panel" #paginator (onPageChange)="paginateData($event)"
+                                 [rows]="itemsPerPage" [first]="page * itemsPerPage"
+                                 [rowsPerPageOptions]="rowsPerPageOptions" [totalRecords]="totalItems">
+                    </p-paginator>
+                </footer>
+            </p-dataTable>
+        </div>
+    </div>
+    <div class="ui-g-12">
+        <p>{{ 'dgconn.sendRequestCorrectionEmails.desc' | translate }}</p>
+        <button type="button" class="btn btn-primary" (click)="displayCorrectionEmailsModal()" [disabled]="!correctionRequestsEmailAvailable">
+            <i *ngIf="sendingCorrectionEmails" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i> <b>{{ 'dgconn.sendRequestCorrectionEmails' | translate }}</b>
+        </button>
+        <p *ngIf="correctionRequestsEmailCounter == 1">
+            {{ 'dgconn.sendRequestCorrectionEmails.requestSentOn' | translate: {date:correctionRequestsEmailDate,time:correctionRequestsEmailTime} }}
+        </p>
+        <p *ngIf="correctionRequestsEmailCounter > 1">
+            {{ 'dgconn.sendRequestCorrectionEmails.lastRequestSentOn' | translate: {date:correctionRequestsEmailDate,time:correctionRequestsEmailTime} }}
+        </p>
+    </div>
+   <!--  <p-dialog [(visible)]="displayCorrectionEmails" [modal]="true" [responsive]="true" [resizable]="false"
+              [draggable]="false" [closable]="!sendingCorrectionEmails" [closeOnEscape]="false" (onAfterHide)="closeModal()">
+        <form (ngSubmit)="sendCorrectionEmails()" #correctionEmailsForm="ngForm">
+            <div class="form-group">
+                <div style="padding: 2em; padding-top: 0em;" class="center">
+                    <h2 class="beneficiaryMayor">{{ 'dgconn.sendRequestCorrectionEmails' | translate }}</h2>
+                    <p>{{ 'dgconn.sendRequestCorrectionEmails.modal.desc' | translate }}</p>
+                </div>
+                <div style="padding: 2em; padding-top: 0em;">
+                    <div class="row center">
+                        <div class="col-sm-6">
+                            <button type="button" class="btn btn-primary cancel-button"
+                                    [disabled]="sendingCorrectionEmails" (click)="closeModal()">
+                                {{ 'shared.cancel.button' | translate }}
+                            </button>
+                        </div>
+                        <div class="col-sm-6">
+                            <button type="submit" class="btn btn-primary publish-button"
+                                    [disabled]="sendingCorrectionEmails">
+                                {{ 'shared.confirm.button' | translate }} <i *ngIf="sendingCorrectionEmails" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </p-dialog> -->
+    <p-dialog [(visible)]="sendingCorrectionEmails" [modal]="true" [responsive]="true"
+              [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+        <p class="ModalLoaderDots"><span>·</span><span>·</span><span>·</span></p>
+        <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
+        <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
+    </p-dialog>
+    
+<p-dialog [(visible)]="showNotificationModal" [modal]="true" [responsive]="true" [resizable]="false"
+[draggable]="false" [closable]="false" [closeOnEscape]="false">
+<div class="row center">
+  <h1 class="password_popup_header">{{ 'dgConn.voucherAssignment.password' | translate }}</h1>
+  <div class="col-sm-12 marginStep1">
+      <input type="password"  [(ngModel)]="sendNotificationsPsswd"  class="searchInput"  style="width: 20em;">
+  </div>
+  <div class="col-sm-6 marginStep1">
+      <button (click)="showNotificationModal = false; sendNotificationsPsswd = ''" class="btn btn-primary cancel-button">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
+  </div>
+  <div class="col-sm-6 marginStep1">
+      <button class="btn btn-primary publish-button" (click)="sendCorrectionEmails()" [disabled]="sendNotificationsPsswd == ''"> <i class="fa fa-spinner fa-spin" *ngIf="loadingFreezeList"></i> {{ 'dgconn.voucherAssignment.runningSimulation.confirm' | translate }}</button>
+  </div>
+</div>
+</p-dialog>
+</div>

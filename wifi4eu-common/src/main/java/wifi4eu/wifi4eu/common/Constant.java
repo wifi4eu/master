@@ -6,10 +6,11 @@ public abstract class Constant {
 	public static final String USER = "edu.yale.its.tp.cas.client.filter.user";
 	public static final String FORM = "FORM";
 
+	public static final long ROLE_DEACTIVATED = -1;
 	public static final long ROLE_SUPPLIER = 1;
-	public static final long ROLE_MAYOR = 2;
+	public static final long ROLE_SUPPLIER_CONTACT = 2;
 	public static final long ROLE_REPRESENTATIVE = 3;
-	public static final long ROLE_MEMBERSTATE = 4;
+	public static final long ROLE_REPRESENTATIVE_CONTACT = 4;
 	public static final long ROLE_DGCONN = 5;
 
 
@@ -29,4 +30,11 @@ public abstract class Constant {
 	public static final String NATIONALITY_DEFAULT = "BE";
 	public static final String ECOM_CATEG_DEFAULT = "Government (local, regional, national, European)";
 	public static final String PREF_LANG_DEFAULT = "en";
+
+	//EMAIL LOG
+	public static final String LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS = "sendCorrectionEmails";
+
+	public static final String REPORTING_CALL_OPEN = "call_open";
+	public static final String REPORTING_TYPES_INSTALLATION_REPORT = "types_IR";
+	public final static String REPORTING_DEFAULT_LANG = "en";
 }

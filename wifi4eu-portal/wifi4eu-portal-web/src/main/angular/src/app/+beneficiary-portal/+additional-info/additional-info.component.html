@@ -1,16 +1,21 @@
 <div class="container" *ngIf="municipality">
     <div class="row" *ngIf="registration">
-
-        <div class="ui-g-12 center">
-            <div class="ui-md-8 center">
-                <ux-alert *ngIf="registration.allFilesFlag != 1" styleClass="alert-info">{{
-                    'shared.statusLabel' | translate}} {{
-                    'shared.statusUploadDocs' | translate}}
-                </ux-alert>
-                <ux-alert *ngIf="registration.allFilesFlag == 1" styleClass="alert-info">{{
-                    'shared.statusLabel' | translate}}{{
-                    'shared.statusDocsUploaded' | translate}}
-                </ux-alert>
+        <div style="display: flex; padding-top: 2em;">
+            <div class="ui-g-1" style="margin-top: 1em; font-size: 16px; width: none !important;">
+                <a class="link-label" (click)="goBack()">
+                    <i class="fa fa-long-arrow-left fa-2" aria-hidden="true"></i> {{ 'shared.back.button' | translate
+                    }}
+                </a>
+            </div>
+            <div class="ui-g-12 center">
+                <div class="ui-md-8" style="float: right;">
+                    <ux-alert *ngIf="registration.allFilesFlag != 1" class="documents-info" iconClass="fa fa-exclamation-circle alert-icon">
+                        {{ 'shared.statusLabel' | translate}} {{ 'shared.statusUploadDocs' | translate}}
+                    </ux-alert>
+                    <ux-alert *ngIf="registration.allFilesFlag == 1" class="documents-info" iconClass="fa fa-exclamation-circle alert-icon">
+                        {{ 'shared.statusLabel' | translate}}{{ 'shared.statusDocsUploaded' | translate}}
+                    </ux-alert>
+                </div>
             </div>
         </div>
     </div>
@@ -46,190 +51,325 @@
             </p>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <p class="labelModal profileData">
-                {{ 'shared.supportingDocuments.provide' | translate }}
-            </p>
-        </div>
-    </div>
-    <form #legalForm="ngForm" (ngSubmit)="onSubmit()" *ngIf="municipality && user">
-        <div class="col-sm-6">
 
+    <form #legalForm="ngForm" (ngSubmit)="onSubmit()" *ngIf="municipality && user" style="display: grid;">
+        <div style="padding-left: 5em; padding-right:5em;">
+
+            <div class="row" *ngIf="isMayor">
+                <p class="labelModal profileData">
+                    {{ 'shared.supportingDocuments.provide' | translate }}
+                </p>
+            </div>
+            <div class="row" *ngIf="!isMayor">
+                <p class="labelModal profileData">
+                    {{ 'shared.supportingDocuments.provide.mandatory' | translate }}
+                </p>
+            </div>
 
             <div class="row">
                 <div class="col-offset-12">
-                    <label class="label" for="document1"
-                           [innerHTML]="'benefPortal.request.additionalInfo.doc1.label' | translate"></label>
+                    <label class="label" style="margin-top: 1.2em !important;" for="document1" [innerHTML]="'benefPortal.request.additionalInfo.doc1.label' | translate"></label>
                 </div>
+
                 <div class="col-offset-12">
                     <div class="left">
                         <div class="fileUpload btn btn-primary">
                             <span>{{ 'benefDocs.copyMayorsID' | translate }}</span>
-                            <input #document1 id="document1" name="document1"
-                                   (change)="uploadFile($event, 0)" type="file" class="upload"
-                                   accept=".png, .jpg, .pdf"
-                            />
+                            <input #document1 id="document1" name="document1" (change)="uploadFile($event, 1)" type="file"
+                                class="upload" accept=".png, .jpg, .pdf" />
                         </div>
                     </div>
-                    <span class="ui-g-12" *ngIf="registration">
-                        <span *ngIf="registration.legalFile1 && !documentUrls[0]">
-                            <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 1
-                            <a class="link-label" *ngIf="!registration.allFilesFlag && deleteBlocker"
-                               (click)="deleteFromServer(0)"><i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
-                            <a class="link-label" [href]="getLegalFileUrl(1)" download><i class="fa fa-download"
-                                                                                          aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
-                        </span>
-
-                        <span *ngIf="documentUrls[0]">
-                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 1
-                                    <a sclass="link-label" (click)="removeFile(0)"><i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
-                        </span>
-                    </span>
-                </div>
-            </div>
-            <div class="row" *ngIf="!isMayor">
-                <div class="col-offset-12">
-                    <label class="label" for="document2"
-                           [innerHTML]="'benefPortal.request.additionalInfo.doc3.label' | translate"></label>
-                </div>
-                <div class="col-offset-12">
-                    <div class="left">
-                        <div class="fileUpload btn btn-primary">
-                            <span>{{ 'benefDocs.copyYourID' | translate }}</span>
-                            <input #document3 id="document3" name="document3"
-                                   (change)="uploadFile($event, 1)" type="file" class="upload"
-                                   accept=".png, .jpg, .pdf"
-                            />
+                    <span class="ui-g-12 row" *ngIf="registration">
+                        <div class="ui-g-4 hoja-ID-card">
+                            <img src="assets\images\hoja-id-card.png" srcset="assets\images\hoja-id-card@2x.png 2x, assets\images\hoja-id-card@3x.png 3x">
                         </div>
-                    </div>
-                    <span class="ui-g-12" *ngIf="registration">
-                        <span *ngIf="registration.legalFile2 && !documentUrls[1]">
-                            <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 3
-                            <a class="link-label" *ngIf="!registration.allFilesFlag" (click)="deleteFromServer(1)"><i
-                                    class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
-                            <a class="link-label" [href]="getLegalFileUrl(2)" download><i class="fa fa-download"
-                                                                                          aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
-                        </span>
-                        <span *ngIf="documentUrls[1]">
-                                <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 3
-                                <a class="link-label" (click)="removeFile(1)"><i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
-                        </span>
+                        <div class="ui-g-8">
+                            <div class="margin-docs">
+                                <span *ngIf="documentFilesType1.length == 0">
+                                    <span class="attachment-label">{{ 'shared.supportingDocuments.noAttached' |
+                                        translate }}</span>
+                                </span>
+                            </div>
+                            <div *ngFor="let file of documentFilesType1; let i = index" class="pb-1 margin-docs">
+                                <span *ngIf="documentFilesType1[i].fileSize">
+                                    <i class="fa fa-paperclip"></i>
+                                    <span>{{documentFilesType1[i].fileName}}</span>
+                                    <span *ngIf="!file?.uploadTime">
+                                        <!-- new file -->
+                                        <a sclass="link-label" (click)="openDeleteModal(1)">
+                                            <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
+                                    </span>
+                                    <span *ngIf="file?.uploadTime">
+                                        <!-- history -->
+                                        <a class="link-label" style="pointer-events:none; cursor: default; opacity: 0.6;">
+                                            <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
+                                        <a class="link-label" href="{{fileURL}}{{registration.id}}/{{file.id}}" target="_blank">
+                                            <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' |
+                                            translate }}
+                                        </a>
+                                        <span class="attachment-label">
+                                            <br />{{ 'shared.supportingDocuments.attachment' |
+                                            translate:{date:documentFilesType1[i].uploadTime|
+                                            date : "dd/MM/yyyy", time:documentFilesType1[i].uploadTime| date : "HH:mm"}
+                                            }}
+                                        </span>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
                     </span>
                 </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <hr class="beneficiaryHr marginHr">
+                    </div>
+                </div>
             </div>
-
-        </div>
-
-
-        <div class="col-sm-6">
 
             <div class="row">
                 <div class="col-offset-12">
-                    <label class="label" for="document3"
-                           [innerHTML]="'benefPortal.request.additionalInfo.doc2.label' | translate"></label>
+                    <label class="label" for="document3" [innerHTML]="'benefPortal.request.additionalInfo.doc2.label' | translate"></label>
                 </div>
                 <div class="col-offset-12">
 
                     <div class="left">
                         <div class="fileUpload btn btn-primary">
                             <span>{{ 'benefDocs.proofNomination' | translate }}</span>
-                            <input #document2 id="document3" name="document2"
-                                   (change)="uploadFile($event, 2)" type="file" class="upload"
-                                   accept=".png, .jpg, .pdf"
-                            />
+                            <input #document3 id="document3" name="document3" (change)="uploadFile($event, 3)" type="file"
+                                class="upload" accept=".png, .jpg, .pdf" />
                         </div>
                     </div>
-                    <span class="ui-g-12" *ngIf="registration">
-                        <span *ngIf="registration.legalFile3 && !documentUrls[2]">
-                            <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 2
-                            <a class="link-label" *ngIf="!registration.allFilesFlag && deleteBlocker"
-                               (click)="deleteFromServer(2)"><i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
-                            <a class="link-label" [href]="getLegalFileUrl(3)" download><i class="fa fa-download"
-                                                                                          aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
-                        </span>
-                         <span *ngIf="documentUrls[2]">
-                                <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 2
-                                <a class="link-label" (click)="removeFile(2)"><i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
-                    </span>
+                    <span class="ui-g-12 row" *ngIf="registration">
+                        <div class="ui-g-4 hoja-ID-card">
+                            <img src="assets\images\hoja.svg" srcset="assets\images\hoja-id-card@2x.png 2x, assets\images\hoja-id-card@3x.png 3x">
+                        </div>
+                        <div class="ui-g-8">
+                            <div class="margin-docs">
+                                <span *ngIf="documentFilesType3.length == 0">
+                                    <span class="attachment-label">{{ 'shared.supportingDocuments.noAttached' |
+                                        translate }}</span>
+                                </span>
+                            </div>
+                            <div *ngFor="let file of documentFilesType3; let i = index" class="pb-1 margin-docs">
+                                <span *ngIf="documentFilesType3[i].fileSize">
+                                    <i class="fa fa-paperclip"></i>
+                                    <span>{{documentFilesType3[i].fileName}}</span>
+                                    <span *ngIf="!file?.uploadTime">
+                                        <!-- new file -->
+                                        <a sclass="link-label" (click)="openDeleteModal(3)">
+                                            <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
+                                    </span>
+                                    <span *ngIf="file?.uploadTime">
+                                        <!-- history -->
+                                        <a class="link-label" style="pointer-events:none; cursor: default; opacity: 0.6;">
+                                            <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
+                                        <a class="link-label" href="{{fileURL}}{{registration.id}}/{{file.id}}" target="_blank">
+                                            <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' |
+                                            translate }}
+                                        </a>
+                                        <span class="attachment-label">
+                                            <br />{{ 'shared.supportingDocuments.attachment' |
+                                            translate:{date:documentFilesType3[i].uploadTime|
+                                            date : "dd/MM/yyyy", time:documentFilesType3[i].uploadTime| date : "HH:mm"}
+                                            }}
+                                        </span>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
                     </span>
                 </div>
             </div>
 
-
             <div class="row" *ngIf="!isMayor">
-                <div class="col-sm-12 col-lg-12 col-md-12">
-                    <label class="label" for="document4"
-                           [innerHTML]="'benefPortal.request.additionalInfo.doc4.label' | translate"></label>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <hr class="beneficiaryHr marginHr">
+                    </div>
+                </div>
+
+                <p class="labelModal profileData">
+                    {{ 'shared.supportingDocuments.provide.optional' | translate }}
+                </p>
+
+                <div class="col-offset-12">
+                    <label class="label" for="document4" [innerHTML]="'benefPortal.request.additionalInfo.doc3.label' | translate"></label>
                 </div>
                 <div class="col-offset-12">
                     <div class="left">
                         <div class="fileUpload btn btn-primary">
                             <span>{{ 'benefDocs.authorisedSign' | translate }}</span>
-                            <input #document4 id="document4" name="document4"
-                                   (change)="uploadFile($event, 3)" type="file" class="upload"
-                                   accept=".png, .jpg, .pdf"
-                            />
+                            <input #document4 id="document4" name="document4" (change)="uploadFile($event, 4)" type="file"
+                                class="upload" accept=".png, .jpg, .pdf" />
                         </div>
                     </div>
-                    <span class="ui-g-12" *ngIf="registration">
-                         <span *ngIf="registration.legalFile4 && !documentUrls[3]">
-                            <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 4
-                            <a class="link-label" *ngIf="!registration.allFilesFlag" (click)="deleteFromServer(3)"><i
-                                    class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
-                            <a class="link-label" [href]="getLegalFileUrl(4)" download><i class="fa fa-download"
-                                                                                          aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
-                        </span>
-                         <span *ngIf="documentUrls[3]">
-                                <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 4
-                                <a class="link-label" (click)="removeFile(3)"><i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
+                    <span class="ui-g-12 row" *ngIf="registration">
+                        <div class="ui-g-4 hoja-ID-card">
+                            <img src="assets\images\hoja.svg" srcset="assets\images\hoja-id-card@2x.png 2x, assets\images\hoja-id-card@3x.png 3x">
+                        </div>
+                        <div class="ui-g-8">
+                            <div class="margin-docs">
+                                <span *ngIf="documentFilesType4.length == 0">
+                                    <span class="attachment-label">{{ 'shared.supportingDocuments.noAttached' |
+                                        translate }}</span>
+                                </span>
+                            </div>
+                            <div *ngFor="let file of documentFilesType4; let i = index" class="pb-1 margin-docs">
+                                <span *ngIf="documentFilesType4[i].fileSize">
+                                    <i class="fa fa-paperclip"></i>
+                                    <span>{{documentFilesType4[i].fileName}}</span>
+                                    <span *ngIf="!file?.uploadTime">
+                                        <!-- new file -->
+                                        <a sclass="link-label" (click)="openDeleteModal(4)">
+                                            <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
+                                    </span>
+                                    <span *ngIf="file?.uploadTime">
+                                        <!-- history -->
+                                        <a class="link-label" style="pointer-events:none; cursor: default; opacity: 0.6;">
+                                            <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
+                                        <a class="link-label" href="{{fileURL}}{{registration.id}}/{{file.id}}" target="_blank">
+                                            <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' |
+                                            translate }}
+                                        </a>
+
+                                        <span class="attachment-label">
+                                            <br />{{ 'shared.supportingDocuments.attachment' |
+                                            translate:{date:documentFilesType4[i].uploadTime|
+                                            date : "dd/MM/yyyy", time:documentFilesType4[i].uploadTime| date : "HH:mm"}
+                                            }}
+                                        </span>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
                     </span>
-                 </span>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
-                <hr class="beneficiaryHr marginHr">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12 label">
-                <p>{{ 'benefPortal.voucher.call.label2' | translate }}</p>
-                <p>{{ 'benefPortal.voucher.municipalitySuccessApply.part2' | translate }}</p>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <hr class="beneficiaryHr marginHr">
+                    </div>
+                </div>
+
+
+
+                <div class="col-offset-12">
+                    <label class="label" for="document2" [innerHTML]="'benefPortal.request.additionalInfo.doc4.label' | translate"></label>
+                </div>
+                <div class="col-offset-12">
+                    <div class="left">
+                        <div class="fileUpload btn btn-primary">
+                            <span>{{ 'benefDocs.copyYourID' | translate }}</span>
+                            <input #document2 id="document2" name="document2" (change)="uploadFile($event, 2)" type="file"
+                                class="upload" accept=".png, .jpg, .pdf" />
+                        </div>
+                    </div>
+                    <span class="ui-g-12 row" *ngIf="registration">
+                        <div class="ui-g-4 hoja-ID-card">
+                            <img src="assets\images\hoja-id-card.png" srcset="assets\images\hoja-id-card@2x.png 2x, assets\images\hoja-id-card@3x.png 3x">
+                        </div>
+                        <div class="ui-g-8">
+                            <div class="margin-docs">
+                                <span *ngIf="documentFilesType2.length == 0">
+                                    <span class="attachment-label">{{ 'shared.supportingDocuments.noAttached' |
+                                        translate }}</span>
+                                </span>
+                            </div>
+                            <div *ngFor="let file of documentFilesType2; let i = index" class="pb-1 margin-docs">
+                                <span *ngIf="documentFilesType2[i].fileSize">
+                                    <i class="fa fa-paperclip"></i>
+                                    <span>{{documentFilesType2[i].fileName}}</span>
+                                    <span *ngIf="!file?.uploadTime">
+                                        <!-- new file -->
+                                        <a sclass="link-label" (click)="openDeleteModal(2)">
+                                            <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
+                                    </span>
+                                    <span *ngIf="file?.uploadTime">
+                                        <!-- history -->
+                                        <a class="link-label" style="pointer-events:none; cursor: default; opacity: 0.6;">
+                                            <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
+                                        <a class="link-label" href="{{fileURL}}{{registration.id}}/{{file.id}}" target="_blank">
+                                            <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' |
+                                            translate }}
+                                        </a>
+                                        <span class="attachment-label">
+                                            <br />{{ 'shared.supportingDocuments.attachment' |
+                                            translate:{date:documentFilesType2[i].uploadTime|
+                                            date : "dd/MM/yyyy", time:documentFilesType2[i].uploadTime| date : "HH:mm"}
+                                            }}
+                                        </span>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </span>
+                </div>
             </div>
         </div>
 
         <div class="row">
             <div class="col-sm-12">
                 <hr class="beneficiaryHr marginHr">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 beneficiaryTitle center" style="padding-bottom:1em;">
+                <p>{{ 'shared.supportingDocuments.confirmation.label' | translate }}</p>
             </div>
         </div>
         <div class="form-group ui-g">
             <div class="ui-lg-3"></div>
             <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                <a routerLink="../.." routerLinkActive="active">
-                    <button type="button" class="btn btn-primary cancel-button">{{ 'shared.cancel.button' |
-                        translate }}
-                    </button>
-                </a>
+                <button type="button" (click)="goBack()" class="btn btn-primary cancel-button" [disabled]="!legalForm.form.valid || !filesUploaded">{{
+                    'shared.cancel.button' | translate }}
+                </button>
             </div>
             <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                <button type="submit" class="btn btn-primary publish-button"
-                        [disabled]="!legalForm.form.valid || !filesUploaded">
+                <button type="submit" class="btn btn-primary publish-button" [disabled]="!legalForm.form.valid || !filesUploaded || !changedDocs > 0">
                     {{ 'shared.confirm.button' | translate }}
                 </button>
             </div>
             <div class="ui-lg-3"></div>
         </div>
-
     </form>
-    <p-dialog [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false"
-              [closable]="false" [closeOnEscape]="false">
-        <p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>
+    <p-confirmDialog class="form-group ui-g confirmDialogDocs" header="{{ 'shared.supportingDocuments.leavePage.title' | translate}}"
+        message="{{ 'shared.supportingDocuments.leavePage.body' | translate}}" acceptLabel="{{ 'shared.yes' | translate }}"
+        rejectLabel="{{ 'shared.no' | translate }}" closeOnEscape="false" closable="false" responsive="true">
+    </p-confirmDialog>
+    <p-dialog [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
+        [closable]="false" [closeOnEscape]="false">
+        <p class="ModalLoaderDots">
+            <span>.</span>
+            <span>.</span>
+            <span>.</span>
+        </p>
         <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title' | translate }}</h1>
         <p class="ModalpConfirmation">{{ 'shared.loading.modal.title3' | translate }}</p>
     </p-dialog>
+
+    <p-dialog [(visible)]="displayConfirmDelete" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
+        [closable]="false" [closeOnEscape]="false">
+        <div class="form-group ui-g">
+            <div class="col-sm-12 center" style="padding-bottom:1em; color: #004494; font-size:20px; font-weight: bold;">
+                <span>{{ 'shared.supportingDocuments.removeDocument' | translate}}</span>
+            </div>
+            <div class="col-sm-12 center" style="padding-bottom:1em;">
+                <span style="line-height: 1.25; font-size: 16px;">{{ 'shared.supportingDocuments.removeModalAreYouSure'
+                    | translate}}</span>
+            </div>
+            <div class="col-sm-12 center">
+                <div class="offset-lg-2 col-sm-6 col-g-6 col-md-6 col-lg-4">
+                    <button (click)="cancelBack()" class="btn btn-primary publish-button">{{ 'shared.cancel.button' |
+                        translate }} </button>
+                </div>
+                <div class="col-sm-6 col-g-6 col-md-6 col-lg-4">
+                    <button (click)="removeFile()" type="button" class="btn btn-primary cancel-button">
+                        {{ 'shared.confirm.button' | translate }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </p-dialog>
+
     <helpdesk-form-component portal="beneficiary-additional-info"></helpdesk-form-component>
 </div>

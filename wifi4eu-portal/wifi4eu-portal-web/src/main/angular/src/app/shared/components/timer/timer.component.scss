@@ -1,0 +1,30 @@
+#timerSpan{
+    padding: 7px;
+
+    span {
+        padding : 0px;
+    }
+}
+
+.time{
+    font-size: 300%;
+    color: #004494;
+    position: relative;
+    min-width: 59px; 
+}
+
+.time.dots, .time{
+  display: block;
+}
+.time.dots~span{
+  display: block;
+}
+
+.dots::after{
+    content: ":";
+    padding-left: 15%;
+    overflow: hidden;
+    position: absolute;
+}
+
+

@@ -18,11 +18,18 @@ public class UserDTO {
     private long accessDate;
     private int type;
     private boolean verified;
+    private String csrfToken;
+    private String phonePrefix;
+    private String phoneNumber;
+    private boolean isUserInvited = false;
+    private int userInvitedFor = 0;
+    private String country;
+    private String city;
 
     public UserDTO() {
     }
 
-    public UserDTO(int id, String ecasUsername, String ecasEmail, String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String password, String lang, long createDate, long accessDate, int type, boolean verified) {
+    public UserDTO(int id, String ecasUsername, String ecasEmail, String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String password, String lang, long createDate, long accessDate, int type, boolean verified, String csrfToken, String phonePrefix, String phoneNumber, String country, String city) {
         this.id = id;
         this.ecasUsername = ecasUsername;
         this.ecasEmail = ecasEmail;
@@ -39,6 +46,11 @@ public class UserDTO {
         this.accessDate = accessDate;
         this.type = type;
         this.verified = verified;
+        this.csrfToken = csrfToken;
+        this.phonePrefix = phonePrefix;
+        this.phoneNumber = phoneNumber;
+        this.country = country;
+        this.city = city;
     }
 
     public int getId() {
@@ -47,6 +59,22 @@ public class UserDTO {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getEcasUsername() {
+        return ecasUsername;
+    }
+
+    public void setEcasUsername(String ecasUsername) {
+        this.ecasUsername = ecasUsername;
+    }
+
+    public String getEcasEmail() {
+        return ecasEmail;
+    }
+
+    public void setEcasEmail(String ecasEmail) {
+        this.ecasEmail = ecasEmail;
     }
 
     public String getTreatment() {
@@ -113,6 +141,14 @@ public class UserDTO {
         this.password = password;
     }
 
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
+    }
+
     public long getCreateDate() {
         return createDate;
     }
@@ -129,14 +165,6 @@ public class UserDTO {
         this.accessDate = accessDate;
     }
 
-    public boolean isVerified() {
-        return verified;
-    }
-
-    public void setVerified(boolean verified) {
-        this.verified = verified;
-    }
-
     public int getType() {
         return type;
     }
@@ -145,27 +173,67 @@ public class UserDTO {
         this.type = type;
     }
 
-    public String getEcasUsername() {
-        return ecasUsername;
+    public boolean isVerified() {
+        return verified;
     }
 
-    public String getLang() {
-        return lang;
+    public void setVerified(boolean verified) {
+        this.verified = verified;
     }
 
-    public void setLang(String lang) {
-        this.lang = lang;
+    public String getCsrfToken() {
+        return csrfToken;
     }
 
-    public void setEcasUsername(String ecasUsername) {
-        this.ecasUsername = ecasUsername;
+    public void setCsrfToken(String csrfToken) {
+        this.csrfToken = csrfToken;
     }
 
-    public String getEcasEmail() {
-        return ecasEmail;
+    public String getPhonePrefix() {
+        return phonePrefix;
     }
 
-    public void setEcasEmail(String ecasEmail) {
-        this.ecasEmail = ecasEmail;
+    public void setPhonePrefix(String phonePrefix) {
+        this.phonePrefix = phonePrefix;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public boolean isUserInvited() {
+        return isUserInvited;
+    }
+
+    public void setUserInvited(boolean isUserInvited) {
+        this.isUserInvited = isUserInvited;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public int getUserInvitedFor() {
+        return userInvitedFor;
+    }
+
+    public void setUserInvitedFor(int userInvitedFor) {
+        this.userInvitedFor = userInvitedFor;
     }
 }

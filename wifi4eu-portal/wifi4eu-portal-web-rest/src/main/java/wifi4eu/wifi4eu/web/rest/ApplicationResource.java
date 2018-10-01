@@ -1,21 +1,30 @@
 package wifi4eu.wifi4eu.web.rest;
 
+import java.io.IOException;
+import java.nio.file.AccessDeniedException;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.helper.Validator;
+import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
@@ -33,6 +42,7 @@ import java.util.Date;
 @Api(value = "/application", description = "Application object REST API services")
 @RequestMapping("application")
 public class ApplicationResource {
+
     @Autowired
     ApplicationService applicationService;
 
@@ -44,174 +54,123 @@ public class ApplicationResource {
 
     @Autowired
     UserService userService;
-    
+
     @Autowired
     SupplierService supplierService;
 
-    Logger _log = LoggerFactory.getLogger(ApplicationResource.class);
+    Logger _log = LogManager.getLogger(ApplicationResource.class);
 
     @ApiOperation(value = "Get application by call and registration id")
     @RequestMapping(value = "/call/{callId}/registration/{registrationId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ApplicationDTO getApplicationByCallIdAndRegistrationId(@PathVariable("callId") final Integer callId, @PathVariable("registrationId") final Integer registrationId, HttpServletResponse response) throws IOException {
-        if (_log.isInfoEnabled()) {
-            _log.info("getApplicationByCall: " + callId + " & Registration: " + registrationId);
-        }
-
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting applications by call id " + callId + " and registration id " + registrationId);
         try {
             permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId);
         } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Permission not found", e.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
 
         ApplicationDTO responseApp = applicationService.getApplicationByCallIdAndRegistrationId(callId, registrationId);
         if (responseApp == null) {
+            _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - Application not found");
             responseApp = new ApplicationDTO();
+        } else {
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Application is retrieved correctly");
         }
         return responseApp;
     }
 
-    @ApiOperation(value = "Get applications voucher info by call id")
-    @RequestMapping(value = "/voucherInfo/call/{callId}", method = RequestMethod.GET, produces = "application/json")
+    @ApiOperation(value = "Get voucher application by call and registration id")
+    @RequestMapping(value = "/call/{callId}/registration/{registrationId}/voucher", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<ApplicationVoucherInfoDTO> getApplicationsVoucherInfoByCall(@PathVariable("callId") final Integer callId, HttpServletResponse response) throws IOException {
+    public ResponseDTO getVoucherApplicationByCallIdAndRegistrationId(@PathVariable("callId") final Integer callId, @PathVariable("registrationId") final Integer registrationId, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        ResponseDTO responseDTO = new ResponseDTO();
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting voucher application by call id " + callId + " and registration id " + registrationId);
         try {
-
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 5) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            if (Validator.isNotNull(userConnected)) {
+                if (permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId)) {
+                    responseDTO.setSuccess(true);
+                    responseDTO.setData(applicationService.getVoucherApplicationByCallIdAndRegistrationId(callId, registrationId));
+                    _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Application is retrieved correctly");
+                }else{
+                    responseDTO.setSuccess(false);
+                    responseDTO.setData("");
+                    responseDTO.setError(new ErrorDTO(401, "Access denied"));
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Permission not found");
+                }
+            } else {
+                responseDTO.setSuccess(false);
+                responseDTO.setData("");
+                responseDTO.setError(new ErrorDTO(404,"User not found"));
             }
-
-            if (_log.isInfoEnabled()) {
-                _log.info("getApplicationsVoucherInfoByCall: " + callId);
-            }
-            return applicationService.getApplicationsVoucherInfoByCall(callId);
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.info("getApplicationsVoucherInfoByCall: " + callId);
-                response.sendError(HttpStatus.NOT_FOUND.value());
-            }
-            return null;
+            responseDTO.setSuccess(false);
+            responseDTO.setData("");
+            responseDTO.setError(new ErrorDTO(404, "Application not found"));
+            _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - Application not found");
         }
+        return responseDTO;
     }
 
-    @ApiOperation(value = "Get applications voucher info by call id")
-    @RequestMapping(value = "/voucherInfo/application/{applicationId}", method = RequestMethod.GET, produces = "application/json")
+    @ApiOperation(value = "Check if municipality has edit permissions")
+    @RequestMapping(value = "/municipality/{municipalityId}/editable", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ApplicationVoucherInfoDTO applicationVoucherInfoDTOEndpoint(@PathVariable("applicationId") final Integer applicationId) {
-        return null;
-    }
-
-    @ApiOperation(value = "Resource to generate ApplicantListItemDTO")
-    @RequestMapping(value = "/getApplicantListItem", method = RequestMethod.GET)
-    @ResponseBody
-    public ApplicantListItemDTO getApplicantListItem() {
-        return new ApplicantListItemDTO();
-    }
-
-    @ApiOperation(value = "Resource to generate PagingSortingDTO")
-    @RequestMapping(value = "/getPagingSortingDTO", method = RequestMethod.GET)
-    public PagingSortingDTO getPagingSortingDTO() {
-        return new PagingSortingDTO();
-    }
-
-    @ApiOperation(value = "findDgconnApplicantsListByCallId")
-    @RequestMapping(value = "/findDgconnApplicantsListByCallId/{callId}", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseDTO findDgconnApplicantsListByCallId(@PathVariable("callId") final Integer callId, @RequestParam("country") final String country, @RequestBody final PagingSortingDTO pagingSortingData, HttpServletResponse response) throws IOException {
+    public ResponseDTO isMunicipalityEditable(@PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Checking municipality " + municipalityId + " is editable");
         try {
-
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 5) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-
-            ResponseDTO res = new ResponseDTO(true, null, null);
-            res.setData(applicationService.findDgconnApplicantsList(callId, country, null, pagingSortingData));
-            res.setXTotalCount(municipalityService.getCountDistinctMunicipalitiesThatAppliedCall(callId, country));
-            return res;
+            // this rightconstants was with registrations_table, check if it works with municipalities
+            permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("can't retrieve applicants", e);
-            }
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
-        }
-    }
-
-    @ApiOperation(value = "findDgconnApplicantsListByCallIdSearchingName")
-    @RequestMapping(value = "/findDgconnApplicantsListByCallIdSearchingName/{callId}", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseDTO findDgconnApplicantsListByCallIdSearchingName(@PathVariable("callId") final Integer callId, @RequestParam("country") final String country, @RequestParam("name") final String name,
-                                                                     @RequestBody final PagingSortingDTO pagingSortingData, HttpServletResponse response) throws IOException {
-        try {
-
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 5) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-
-            ResponseDTO res = new ResponseDTO(true, null, null);
-            res.setData(applicationService.findDgconnApplicantsList(callId, country, name, pagingSortingData));
-            res.setXTotalCount(municipalityService.getCountDistinctMunicipalitiesThatAppliedCallContainingName(callId, country, name));
-            return res;
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("can't retrieve applicants", e);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Permission not found", e.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
-        return new ResponseDTO(false, null, null);
+
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            boolean checkIfEditable = municipalityService.isMunicipalityEditable(municipalityId);
+            responseDTO.setSuccess(true);
+            responseDTO.setData(checkIfEditable);
+            responseDTO.setError(new ErrorDTO());
+        } catch (Exception e) {
+            responseDTO.setSuccess(false);
+            responseDTO.setData("Error on query");
+            responseDTO.setError(new ErrorDTO());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+        }
+        return responseDTO;
     }
 
-    @ApiOperation(value = "Validate application")
-    @RequestMapping(value = "/validate", method = RequestMethod.POST)
+    @ApiOperation(value = "Get application by  registration id")
+    @RequestMapping(value = "/registration/{registrationId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ResponseDTO validateApplication(@RequestBody final ApplicationDTO applicationDTO, HttpServletResponse response) throws IOException {
+    public ApplicationDTO getApplicationByRegistrationId(@PathVariable("registrationId") final Integer registrationId, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting applications by registration id " + registrationId);
         try {
-            if (_log.isInfoEnabled()) {
-                _log.info("validateApplication");
-            }
-
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 5) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-
-            ApplicationDTO resApplication = applicationService.validateApplication(applicationDTO);
-            return new ResponseDTO(true, resApplication, null);
+            permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId);
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'validateApplication' operation.", e);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Permission not found", e.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
-    }
 
-    @ApiOperation(value = "Invalidate application")
-    @RequestMapping(value = "/invalidate", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseDTO invalidateApplication(@RequestBody final ApplicationDTO applicationDTO, HttpServletResponse response) throws IOException {
-        try {
-            if (_log.isInfoEnabled()) {
-                _log.info("invalidateApplication");
-            }
+        ApplicationDTO responseApp = applicationService.getApplicationByRegistrationId(registrationId);
 
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 5) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-
-            ApplicationDTO resApplication = applicationService.invalidateApplication(applicationDTO);
-            return new ResponseDTO(true, resApplication, null);
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'invalidateApplication' operation.", e);
-            }
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        if (responseApp == null) {
+            _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - Application not found");
+            responseApp = new ApplicationDTO();
+        } else {
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Application is retrieved correctly");
         }
+        return responseApp;
     }
 
     // Save supplier Id into the application
@@ -239,102 +198,12 @@ public class ApplicationResource {
                 _log.error("AccessDenied on 'assignSupplier' operation.", ade);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
-            return null; 
+            return null;
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'assignSupplier' operation.", e);
             }
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
-        }
-    }
-
-    @ApiOperation(value = "Get applications by specific call and lau id")
-    @RequestMapping(value = "/call/{callId}/lau/{lauId}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public List<ApplicationDTO> getApplicationsByCallIdAndLauId(@PathVariable("callId") final Integer callId, @PathVariable("lauId") final Integer lauId, @RequestParam("currentDate") final Long currentDate, HttpServletResponse response) throws IOException {
-        if (_log.isInfoEnabled()) {
-            _log.info("getApplicationsByCallIdAndLauId");
-        }
-        try {
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 5) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-            return applicationService.getApplicationsByCallIdAndLauId(callId, lauId);
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'getApplicationsByCallIdAndLauId' operation.", e);
-            }
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        }
-        return null;
-    }
-
-    @ApiOperation(value = "Send legal documents correction request")
-    @RequestMapping(value = "/sendLegalDocumentsCorrection", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseDTO sendLegalDocumentsCorrection(@RequestBody final ApplicationDTO applicationDTO, HttpServletResponse response) throws IOException {
-        try {
-            if (_log.isInfoEnabled()) {
-                _log.info("sendLegalDocumentsCorrection");
-            }
-            if (!permissionChecker.checkIfDashboardUser()) {
-                throw new AccessDeniedException("");
-            }
-            ApplicationDTO resApplication = applicationService.sendLegalDocumentsCorrection(applicationDTO);
-            return new ResponseDTO(true, resApplication, null);
-        } catch (AccessDeniedException ade) {
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            return null;
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'sendLegalDocumentsCorrection' operation.", e);
-            }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
-        }
-    }
-
-    @ApiOperation(value = "exportExcelDGConnApplicantsList")
-    @RequestMapping(value = "/exportExcelDGConnApplicantsList", method = RequestMethod.POST, headers = "Accept=application/vnd.ms-excel", produces = "application/vnd.ms-excel")
-    @ResponseBody
-    public ResponseEntity<byte[]> exportExcelDGConnApplicantsList(@RequestParam("callId") final Integer callId, @RequestParam("country") final String country, HttpServletResponse response) throws IOException {
-        try {
-            if (!permissionChecker.checkIfDashboardUser()) {
-                throw new AccessDeniedException("");
-            }
-            ResponseEntity<byte[]> responseReturn = null;
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.parseMediaType("application/vnd.ms-excel"));
-            String filename = "dgconn-applicants.xls";
-            headers.setContentDispositionFormData(filename, filename);
-            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-            responseReturn = new ResponseEntity<>(applicationService.exportExcelDGConnApplicantsList(callId, country), headers, HttpStatus.OK);
-            return responseReturn;
-        } catch (AccessDeniedException ade) {
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            return null;
-        }
-    }
-
-    @ApiOperation(value = "exportExcelDGConnApplicantsListSearchingName")
-    @RequestMapping(value = "/exportExcelDGConnApplicantsListSearchingName", method = RequestMethod.POST, headers = "Accept=application/vnd.ms-excel", produces = "application/vnd.ms-excel")
-    @ResponseBody
-    public ResponseEntity<byte[]> exportExcelDGConnApplicantsListSearchingName(@RequestParam("callId") final Integer callId, @RequestParam("country") final String country, @RequestParam("name") final String name, HttpServletResponse response) throws IOException {
-        try {
-            if (!permissionChecker.checkIfDashboardUser()) {
-                throw new AccessDeniedException("");
-            }
-            ResponseEntity<byte[]> responseReturn = null;
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.parseMediaType("application/vnd.ms-excel"));
-            String filename = "dgconn-applicants.xls";
-            headers.setContentDispositionFormData(filename, filename);
-            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-            responseReturn = new ResponseEntity<>(applicationService.exportExcelDGConnApplicantsListContainingName(callId, country, name), headers, HttpStatus.OK);
-            return responseReturn;
-        } catch (AccessDeniedException ade) {
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            return null;
         }
     }
 }

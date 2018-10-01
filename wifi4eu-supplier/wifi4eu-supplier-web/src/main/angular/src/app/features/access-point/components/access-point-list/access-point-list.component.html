@@ -1,0 +1,73 @@
+<div class="container">
+    <div class="back-button">
+        <a href="#" [routerLink]="['/screen/installation-report']">
+            <i class="fa fa-arrow-left"></i> Back</a>
+    </div>
+
+    <div class="header">
+        <h1>{{ 'accessPoint.title' | translate }}</h1>
+        <p>{{ 'accessPoint.thisPageIsUsedTo' | translate }}</p>
+    </div>
+
+    <div class="form-group col-md-12 row">
+        <p>{{ 'shared.beneficiary.label' | translate }}:
+            <span class="font-weight-bold">{{beneficiary.name}}</span>
+            <br> {{ 'accessPoint.installationSite' | translate }}
+            <span class="font-weight-bold">{{installationSiteName}}</span>
+        </p>
+    </div>
+
+    <div class="results accessPoints">
+        <div class="row table-filters-header align-items-end">
+            <div class="col-md-8">
+                <p>{{ 'accessPoint.listTitle' | translate}}
+                    <span class="font-weight-bold">{{installationSiteName}}</span>
+                    {{ 'accessPoint.listTitleOf' | translate}}
+                    <span class="font-weight-bold">{{beneficiary.name}}</span>
+                </p>
+            </div>
+            <div class="col-md-4 text-right btn-flat-link">
+                <ux-button [isFlat]="true" [isLarge]="true" (click)="openUpdateAccessPoint()" typeClass="link" [isDisabled]="disablePermissionsIndicator()">+ {{ 'accessPoint.add' | translate }}</ux-button>
+            </div>
+        </div>
+
+        <p-dataTable [value]="accessPoints" [rows]="searchParametersService.parameters.delta" [paginator]="true" [rowsPerPageOptions]="[5,10,20]"
+            [totalRecords]="totalResults" [first]="searchParametersService.parameters.page" [lazy]="true" (onLazyLoad)="onPage($event)"
+            [immutable]="false">
+            <p-column field="number" header="{{'shared.number.label' | translate }}" sortable="true"></p-column>
+            <p-column field="locationType" header="{{'accessPoint.locationType' | translate }}" sortable="true"></p-column>
+            <p-column field="location" header="{{'accessPoint.locationName' | translate }}" sortable="true"></p-column>
+            <p-column header="{{'accessPoint.geoLocation' | translate }}">
+                <ng-template let-col let-accessPoint="rowData" pTemplate="body">
+                    <span>
+                        {{accessPoint.latitude}}, {{accessPoint.longitude}}
+                    </span>
+                </ng-template>
+            </p-column>
+            <p-column field="indoor" header="{{'accessPoint.deviceType' | translate }}" sortable="true">
+                    <ng-template let-col let-accessPoint="rowData" pTemplate="body">
+                            <span *ngIf="accessPoint.indoor; else outdoor"> {{ 'accessPoint.indoor' | translate }}</span>
+                            <ng-template  #outdoor>{{ 'accessPoint.outdoor' |translate }}</ng-template>
+                        </ng-template>
+            </p-column>
+            <p-column field="deviceBrand" header="{{'accessPoint.deviceBrand' | translate }}" sortable="true"></p-column>
+            <p-column field="modelNumber" header="{{'accessPoint.deviceModel' | translate }}" sortable="true"></p-column>
+            <p-column field="serialNumber" header="{{'accessPoint.deviceSerial' | translate }}" sortable="true"></p-column>
+            <p-column field="macAddress" header="{{'accessPoint.macAddress' | translate }}"></p-column>
+            <p-column header="{{'shared.details' | translate }}">
+                <ng-template let-accessPoint="rowData" pTemplate="body">
+                    <div class="my-center-text">
+                        <ux-button [isFlat]="true" iconClass="fas fa-eye" [routerLink]="['./details', accessPoint.id]" routerLinkActive="active">{{ 'shared.view' | translate }}</ux-button>
+                    </div>
+                </ng-template>
+            </p-column>
+
+            <ng-template pTemplate="emptymessage">
+                {{'shared.noResults' | translate}}
+            </ng-template>
+        </p-dataTable>
+    </div>
+
+    <update-access-point [accessPoint]="accessPoint" [isEdit]="false" (onSubmitted)="onSearch()"></update-access-point>
+
+</div>

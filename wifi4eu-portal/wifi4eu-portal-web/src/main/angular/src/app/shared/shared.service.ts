@@ -15,11 +15,13 @@ export class SharedService {
     private emitLogin = new Subject<any>();
     private emitLogout = new Subject<any>();
     private emitClean = new Subject<any>();
+    emitLanguage = new Subject<any>();
 
     updateEmitter = this.emitUpdate.asObservable();
     loginEmitter = this.emitLogin.asObservable();
     logoutEmitter = this.emitLogout.asObservable();
     cleanEmitter = this.emitClean.asObservable();
+    languageEmitter = this.emitLanguage.asObservable();
 
     user: UserDTOBase = null;
 
@@ -45,40 +47,50 @@ export class SharedService {
         this.emitClean.next();
     }
 
-    growlTranslation(translatedString: string, keyToTranslate: string, type: string, params?: any) {
+    growlTranslation(translatedString: string, keyToTranslate: any, type: string, params?: any, life?: number) {
+        if (life === undefined || !life) {
+            life = 1000;
+        }
+
+        const successSummary = this.translateService.instant('summary.success');
+        const errorSummary = this.translateService.instant('summary.error');
+        const warningSummary = this.translateService.instant('summary.warning');
+        const infoSummary = this.translateService.instant('summary.info');
+        
         this.translateService.get(keyToTranslate, params).subscribe(
-            (translation: string) => {
+            (translation: any) => {
                 if (translation) {
                     translatedString = translation;
                 }
+                
                 switch (type) {
                     case 'success':
-                        this.uxService.growl({
-                            severity: 'success',
-                            summary: 'SUCCESS',
-                            detail: translatedString
-                        });
-                        break;
+                    this.uxService.growl({
+                        severity: 'success',
+                        summary: successSummary,
+                        detail: translatedString
+                    }, false, false, life);
+                    break;
                     case 'error':
                         this.uxService.growl({
                             severity: 'error',
-                            summary: 'ERROR',
+                            summary: errorSummary,
                             detail: translatedString
-                        });
+                        }, false, false, life);
                         break;
                     case 'warn':
                         this.uxService.growl({
                             severity: 'warn',
-                            summary: 'WARNING',
+                            summary: warningSummary,
                             detail: translatedString
-                        });
+                        }, false, false, life);
                         break;
                     case 'info':
                         this.uxService.growl({
                             severity: 'info',
-                            summary: 'INFO',
+                            summary: infoSummary,
                             detail: translatedString
-                        });
+                        }, false, false, life);
                         break;
                 }
             }, error => {
@@ -86,30 +98,30 @@ export class SharedService {
                     case 'success':
                         this.uxService.growl({
                             severity: 'success',
-                            summary: 'SUCCESS',
+                            summary: successSummary,
                             detail: translatedString
-                        });
+                        }, false, false, life);
                         break;
                     case 'error':
                         this.uxService.growl({
                             severity: 'error',
-                            summary: 'ERROR',
+                            summary: errorSummary,
                             detail: translatedString
-                        });
+                        }, false, false, life);
                         break;
                     case 'warn':
                         this.uxService.growl({
                             severity: 'warn',
-                            summary: 'WARNING',
+                            summary: warningSummary,
                             detail: translatedString
-                        });
+                        }, false, false, life);
                         break;
                     case 'info':
                         this.uxService.growl({
                             severity: 'info',
-                            summary: 'INFO',
+                            summary: infoSummary,
                             detail: translatedString
-                        });
+                        }, false, false, life);
                         break;
                 }
             }

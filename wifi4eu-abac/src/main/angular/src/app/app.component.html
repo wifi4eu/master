@@ -1,0 +1,61 @@
+<ux-layout-app uxTrackScroll>
+    <uxLayoutAppMainContainer>
+        <ux-layout-app-main>
+            <uxLayoutAppMainHeaderContainer>
+                <ux-layout-header appFullName="Wifi4EU Free Wifi for Europeans" appShortName="App"
+                                  [userInfos]="userInfos" [isCustomRightContent]="true">
+                    <uxLayoutHeaderRightContent>
+                        <ux-language-selector [selectedLanguage]="selectedLanguage" (languageChanged)="onLanguageChanged($event)"></ux-language-selector>
+                        <div class="profile-wrapper" isCompact="false">
+                            <div class="left-panel">
+                                <div *ngIf="user" class="user-infos">
+                                    <span class="wellcomeHeader">Logged in as <a [routerLink]="profileUrl"><strong
+                                            class="color-primary">{{user.email}}</strong></a></span>
+                                    <button (click)="onLogout()" class="headerButton">Logout</button>
+                                </div>
+                                <div *ngIf="!user" class="user-infos">
+                                    <strong class="color-primary">
+                                    </strong>
+                                    <button class="headerButton" routerLink="/login" routerLinkActive="active">
+                                        Login
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </uxLayoutHeaderRightContent>
+                </ux-layout-header>
+            </uxLayoutAppMainHeaderContainer>
+            <uxLayoutAppMainNavBarContainer>
+                <ux-layout-nav-bar>
+                    <ux-layout-nav-bar-top-menu homeUrl="home" [links]="menuLinks"></ux-layout-nav-bar-top-menu>
+                    <ux-layout-nav-bar-actions>
+                        <div *ngIf="user">
+                            <ux-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu"
+                                                           isOverlayPanel="true"
+                                                           userInfos="Logged in as {{user.email}}"
+                                                           [links]="menuLinks">
+                            </ux-layout-nav-bar-action-item>
+                        </div>
+                        <div *ngIf="!user">
+                            <div class="clearfix"></div>
+                            <ux-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu"
+                                                           isOverlayPanel="true"
+                                                           [links]="menuLinks"
+                                                           userInfos="Login">
+                                Log out
+                            </ux-layout-nav-bar-action-item>
+                        </div>
+                    </ux-layout-nav-bar-actions>
+                </ux-layout-nav-bar>
+            </uxLayoutAppMainNavBarContainer>
+            <uxLayoutAppMainContentContainer>
+                <router-outlet></router-outlet>
+            </uxLayoutAppMainContentContainer>
+            <uxLayoutAppMainFooterContainer>
+                <ux-layout-footer isCompact="true">
+                    {{ 'home.footer.update' | translate }}<a href="#">{{ 'home.footer.top' | translate }}</a>
+                </ux-layout-footer>
+            </uxLayoutAppMainFooterContainer>
+        </ux-layout-app-main>
+    </uxLayoutAppMainContainer>
+</ux-layout-app>

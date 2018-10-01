@@ -1,0 +1,105 @@
+<div class="container" *ngIf="municipalityName">
+    <div class="supplier"></div>
+    <div class="back-button">
+        <a (click)="goBack()">
+            <i class="fa fa-arrow-left"></i> Back</a>
+    </div>
+    <div id="step2-title" class="row">
+        <div class="col-sm-12">
+            <div id="component-title">
+                <p class="beneficiaryTitle labelModal">{{ 'accessPointDetails.title' | translate }}
+                <p>{{ 'accessPointDetails.subtitle' | translate }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group col-md-12 row">
+        <p>{{ 'shared.beneficiary.label' | translate }}:
+            <span class="font-weight-bold">{{municipalityName}}</span></p>
+        <p>{{ 'accessPoint.installationSite' | translate }}
+            <span class="font-weight-bold">{{installationSiteName}}</span></p>
+    </div>
+
+
+    <div class="clearfix"></div>
+    <div class="results button-content ">
+        <div class="row">
+            <div class="col-sm-2">
+                <p>{{'shared.number.label' | translate}}</p>
+            </div>
+            <div class="col-sm-10">
+                <p class="profileData">{{number}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <p>{{'accessPoint.locationType' | translate }}</p>
+            </div>
+            <div class="col-sm-10">
+                <p class="profileData">{{locationType}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <p>{{'accessPoint.locationName' | translate }}</p>
+            </div>
+            <div class="col-sm-10">
+                <p class="profileData">{{locationAP}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <p>{{'accessPoint.geoLocation' | translate }}</p>
+            </div>
+            <div class="col-sm-10">
+                <p class="profileData">{{latitude}}, {{longitude}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <p>{{'accessPoint.deviceType' | translate }}</p>
+            </div>
+            <div class="col-sm-10">
+                <p><span *ngIf="indoor; else outdoor" class="profileData">{{ 'accessPoint.indoor' | translate }}</span>
+                    <template #outdoor><span class="profileData">{{ 'accessPoint.outdoor' |translate }}</span>
+                    </template>
+                </p>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <p>{{'accessPoint.deviceBrand' | translate }}</p>
+            </div>
+            <div class="col-sm-10">
+                <p class="profileData">{{deviceBrand}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <p>{{'accessPoint.deviceModel' | translate }}</p>
+            </div>
+            <div class="col-sm-10">
+                <p class="profileData">{{modelNumber}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <p>{{'accessPoint.deviceSerial' | translate }}</p>
+            </div>
+            <div class="col-sm-10">
+                <p class="profileData">{{serialNumber}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <p>{{'accessPoint.macAddress' | translate }}</p>
+            </div>
+            <div class="col-sm-10">
+                <p class="profileData">{{macAddress}}</p>
+            </div>
+        </div>
+
+    </div>
+    <div class="supplier"></div>
+</div>

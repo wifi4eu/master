@@ -8,6 +8,9 @@ import {SupplierApi} from "../shared/swagger/api/SupplierApi";
 import {SharedService} from "../shared/shared.service";
 import {ResponseDTOBase} from "../shared/swagger/model/ResponseDTO";
 import {TranslateService} from "ng2-translate";
+import { LocalStorageService } from "angular-2-local-storage";
+import { UserDTOBase } from "../shared/swagger";
+
 
 @Component({
     selector: 'supplier-registration',
@@ -26,13 +29,15 @@ export class SupplierRegistrationComponent {
     private allCountriesSelect: SelectItem[] = [];
     private allRegionsSelect: SelectItem[][] = [];
     private logoUrl: FileReader = new FileReader();
+    private user: UserDTOBase;
 
-    constructor(private nutsApi: NutsApi, private supplierApi: SupplierApi, private sharedService: SharedService, private translateService: TranslateService) {
+    constructor(private localStorageService: LocalStorageService, private nutsApi: NutsApi, private supplierApi: SupplierApi, private sharedService: SharedService, private translateService: TranslateService) {
         this.nutsApi.getNutsByLevel(0).subscribe(
             (countries: NutsDTOBase[]) => {
                 for (let country of countries) {
+                    let countryName = country.label.substring(0, 1).toUpperCase() + country.label.substring(1, country.label.length).toLowerCase();
                     let selectCountry = {
-                        label: country.label,
+                        label: countryName,
                         value: country
                     };
                     this.allCountriesSelect.push(selectCountry);
@@ -82,6 +87,9 @@ export class SupplierRegistrationComponent {
     }
 
     submitRegistration() {
+        let storedUser = this.localStorageService.get('user');
+        this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
+
         this.supplier.suppliedRegions = [];
         for (let selectedCountry in this.selectedRegions) {
             for (let selectedRegion of this.selectedRegions[selectedCountry]) {

@@ -1,24 +1,82 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot } from '@angular/router';
-import { UserDTOBase } from "./shared/swagger/model/UserDTO";
-import { LocalStorageService } from "angular-2-local-storage";
+import { Observable } from "rxjs/Observable";
+import { SharedService } from "./shared/shared.service";
 
 @Injectable()
 export class AppGuard implements CanActivate {
-    private user: UserDTOBase;
 
-    constructor(private localStorage: LocalStorageService, private router: Router) {
+    constructor(private router: Router, private sharedService: SharedService) {
     }
 
-    canActivate(route: ActivatedRouteSnapshot) {
-        let allow = false;
-        let u = this.localStorage.get('user');
-        this.user = u ? JSON.parse(u.toString()) : null;
-        if (this.user != null) {
-            if (this.user.type == 5) {
-                allow = true;
+    canActivate(route: ActivatedRouteSnapshot): Observable<boolean> | boolean {
+        let allow = true;
+        
+        if (this.sharedService.user) {
+            allow = this.allowAccess(route.url[0].path);
+            if (!allow) {
+                this.router.navigateByUrl('/notfound');
             }
+            return allow;
+        } else {
+            return this.sharedService.loginEmitter.map(() => {
+                allow = this.allowAccess(route.url[0].path);
+                if (!allow) {
+                    this.router.navigateByUrl('/notfound');
+                }
+                return allow;
+            });
         }
+    }
+
+    private allowAccess(url: string): boolean {
+        let allow = false;
+        switch (url) {
+            case 'home':
+                allow = this.allowAccessToAnyone();
+                break;
+            case 'helpdesk':
+            case 'dgconn-portal':
+                allow = this.allowAccessToDgConn();
+                break;
+        }
+
         return allow;
+    }
+
+    private allowAccessToAnyone() {
+        if (this.sharedService.user === null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private allowAccessToUnregistered() {
+        if (this.sharedService.user === null) {
+            return false;
+        }
+        return (this.sharedService.user.type == 0) ? true : false;
+    }
+
+    private allowAccessToSupplier() {
+        if (this.sharedService.user === null) {
+            return false;
+        }
+        return (this.sharedService.user.type == 1) ? true : false;
+    }
+
+    private allowAccessToBeneficiary() {
+        if (this.sharedService.user === null) {
+            return false;
+        }
+        return (this.sharedService.user.type == 3) ? true : false;
+    }
+
+    private allowAccessToDgConn() {
+        if (this.sharedService.user === null) {
+            return false;
+        }
+        return (this.sharedService.user.type == 5) ? true : false;
     }
 }

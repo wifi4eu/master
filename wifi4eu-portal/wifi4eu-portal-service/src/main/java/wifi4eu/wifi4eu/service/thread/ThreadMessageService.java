@@ -1,22 +1,33 @@
 package wifi4eu.wifi4eu.service.thread;
 
+import java.util.List;
+import java.util.Locale;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import wifi4eu.wifi4eu.common.dto.model.*;
+
+import wifi4eu.wifi4eu.common.dto.mail.MailData;
+import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
+import wifi4eu.wifi4eu.common.dto.model.ThreadDTO;
+import wifi4eu.wifi4eu.common.dto.model.ThreadMessageDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.mail.MailHelper;
+import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.mapper.thread.ThreadMessageMapper;
+import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.thread.ThreadMessageRepository;
+import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
-import wifi4eu.wifi4eu.util.MailService;
-
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 @Service
 public class ThreadMessageService {
+    private final Logger _log = LogManager.getLogger(ThreadMessageService.class);
+    
     @Autowired
     ThreadMessageMapper threadMessageMapper;
 
@@ -38,7 +49,17 @@ public class ThreadMessageService {
     @Autowired
     MailService mailService;
 
+    @Autowired
+    UserMapper userMapper;
+
+    @Autowired
+    UserRepository userRepository;
+
     public ThreadMessageDTO createThreadMessage(ThreadMessageDTO threadMessageDTO) {
+    	if (threadMessageDTO.getId() != 0) {
+    		_log.warn("Call to a create method with id set, the value has been removed ({})", threadMessageDTO.getId());
+            threadMessageDTO.setId(0);	
+    	}
         ThreadMessageDTO threadMessage = threadMessageMapper.toDTO(threadMessageRepository.save(threadMessageMapper.toEntity(threadMessageDTO)));
         ThreadDTO thread = threadService.getThreadById(threadMessage.getThreadId());
         if (thread.getType() == 1) {
@@ -46,16 +67,19 @@ public class ThreadMessageService {
             if (municipalities.size() <= 10) {
                 if (!userService.isLocalHost()) {
                     for (MunicipalityDTO municipality : municipalities) {
-                        UserDTO user = userService.getUserById(municipality.getRegistrations().get(0).getUserId());
+                        UserDTO user = userMapper.toDTO(userRepository.findMainUserFromRegistration(municipality.getRegistrations().get(0).getId()));
                         if (user != null) {
                             Locale locale = new Locale(UserConstants.DEFAULT_LANG);
                             if (user.getLang() != null) {
                                 locale = new Locale(user.getLang());
                             }
-                            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                            String subject = bundle.getString("mail.thread.subject");
-                            String msgBody = bundle.getString("mail.thread.body");
-                            mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+
+                            // String forumUrl = userService.getBaseUrl() + "beneficiary-portal/discussion-forum/" + thread.getId();
+                            // msgBody = MessageFormat.format(msgBody, forumUrl);
+                            MailData mailData = MailHelper.buildMailNewThreadMessage(
+                            		user.getEcasEmail(), MailService.FROM_ADDRESS, 
+                            		municipality.getId(), "createThreadMessage", locale);
+                        	mailService.sendMail(mailData, false);
                         }
                     }
                 }

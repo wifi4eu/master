@@ -4,31 +4,33 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
-import wifi4eu.wifi4eu.common.dto.model.SupplierListItemDTO;
-import wifi4eu.wifi4eu.common.dto.model.SuppliersCacheDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.helper.Validator;
+import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.common.utils.SupplierValidator;
+import wifi4eu.wifi4eu.common.utils.UserValidator;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
-import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,6 +42,7 @@ import java.util.List;
 @Api(value = "/supplier", description = "Supplier object REST API services")
 @RequestMapping("supplier")
 public class SupplierResource {
+
     @Autowired
     private SupplierService supplierService;
 
@@ -51,55 +54,25 @@ public class SupplierResource {
 
     Logger _log = LoggerFactory.getLogger(SupplierResource.class);
 
-    /*
-    //TODO: limit access to this service
-    @ApiOperation(value = "Get all the suppliers")
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public List<SupplierDTO> allSuppliers(HttpServletResponse response) throws IOException {
-        _log.info("allSuppliers");
-        try {
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 5) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-        } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("AccessDenied on 'allSuppliers' operation.", ade);
-            }
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'allSuppliers' operation.", e);
-            }
-            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        }
-        return supplierService.getAllSuppliers();
-    }
-    */
-
-    //TODO: limit access to this service
     @ApiOperation(value = "Get supplier by specific id")
     @RequestMapping(value = "/{supplierId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public SupplierDTO getSupplierById(@PathVariable("supplierId") final Integer supplierId, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("User ID: " + userConnected.getEcasUsername() + " - Getting supplier by id " + supplierId);
         SupplierDTO supplierDTO = supplierService.getSupplierById(supplierId);
         try {
-            _log.info("getSupplierById: " + supplierId);
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (supplierDTO.getUserId() != userDTO.getId() && userDTO.getType() != 5) {
+            if (supplierService.getUserIdFromSupplier(supplierDTO.getId()) != userConnected.getId() && userConnected.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Supplier retrieved successfully");
             return supplierService.getSupplierById(supplierId);
         } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("AccessDenied on 'getSupplierById' operation.", ade);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this supplier", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'getSupplierById' operation.", e);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This supplier cannot been retrieved", e);
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
         return null;
@@ -114,7 +87,7 @@ public class SupplierResource {
         try {
             _log.info("getSupplierDetailsById: " + supplierId);
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(!permissionChecker.checkIfVoucherAwarded(userDTO, municipalityId)) {
+            if (!permissionChecker.checkIfVoucherAwarded(userDTO, municipalityId)) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             supplierDTO = supplierService.getSupplierDetailsById(supplierId);
@@ -166,27 +139,30 @@ public class SupplierResource {
 
     @ApiOperation(value = "Update supplier")
     @RequestMapping(method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO updateSupplier(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating supplier");
         try {
-            _log.info("updateSupplier");
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (supplierDTO.getUserId() != userDTO.getId()) {
+
+            if (supplierService.getUserIdFromSupplier(supplierDTO.getId()) != userConnected.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
+
+            /*if (!supplierService.isSupplierEditable(userConnected)){
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }*/
+            SupplierValidator.validateSupplierUpdate(supplierDTO);
             SupplierDTO resSupplier = supplierService.updateSupplier(supplierDTO);
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Supplier updated successfully");
             return new ResponseDTO(true, resSupplier, null);
         } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("AccessDenied on 'createSupplier' operation.", ade);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to update this supplier", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'createSupplier' operation.", e);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This supplier cannot been updated", e);
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
     }
@@ -195,31 +171,38 @@ public class SupplierResource {
     @RequestMapping(value = "update/contactDetails", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO updateContactDetails(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating contact details");
         try {
-            _log.info("updateContactDetails");
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (supplierDTO.getUserId() != userDTO.getId()) {
+            SupplierDTO supplier = supplierService.getSupplierByUserId(userConnected.getId());
+            /*boolean access = false;
+            for (UserDTO user : supplier.getUsers()) {
+                if (user.getId() == userConnected.getId()) {
+                    access = true;
+                    break;
+                }
+
+            }
+            if (!access) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }*/
+            if (Validator.isNotNull(supplier)) {
+                if (supplierDTO.getId() != supplier.getId()) {
+                    throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+                }
+            } else {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-
-            SupplierDTO sendSupplierDTO = supplierService.getSupplierByUserId(supplierDTO.getUserId());
-
-            if(supplierDTO.getId() != sendSupplierDTO.getId()){
-                throw new AccessDeniedException("");
-            }
-
-            SupplierDTO resSupplier = supplierService.updateContactDetails(sendSupplierDTO, supplierDTO.getContactName(), supplierDTO.getContactSurname(), supplierDTO.getContactPhonePrefix(), supplierDTO.getContactPhoneNumber());
+            List<UserDTO> resSupplier = supplierService.updateContactDetails(supplierDTO);
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Contact details updated successfully");
             return new ResponseDTO(true, resSupplier, null);
         } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("AccessDenied on 'updateContactDetails' operation.", ade);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to update these contact details", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'updateContactDetails' operation.", e);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- These contact details cannot been updated", e);
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
@@ -227,124 +210,90 @@ public class SupplierResource {
     @ApiOperation(value = "update Supplier Details")
     @RequestMapping(value = "update/supplierDetails", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO updateSupplierDetails(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
+    public ResponseDTO updateSupplierDetails(@RequestBody final SupplierDTO supplierDTO, @RequestBody final UserDTO userDTO, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating supplier details");
         try {
-            _log.info("updateSupplierDetails");
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (supplierDTO.getUserId() != userDTO.getId()) {
+            int supplierUserId = supplierService.getUserIdFromSupplier(supplierDTO.getId());
+            if (supplierUserId != userConnected.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-
-            SupplierDTO sendSupplierDTO = supplierService.getSupplierByUserId(supplierDTO.getUserId());
-
-            if(supplierDTO.getId() != sendSupplierDTO.getId()){
-                throw new AccessDeniedException("");
+            SupplierDTO sendSupplierDTO = supplierService.getSupplierByUserId(supplierUserId);
+            if (supplierDTO.getId() != sendSupplierDTO.getId()) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-
-            SupplierDTO resSupplier = supplierService.updateSupplierDetails(sendSupplierDTO, supplierDTO.getName(), supplierDTO.getAddress(), supplierDTO.getVat(), supplierDTO.getBic(), supplierDTO.getLogo());
-            
+            SupplierValidator.validateSupplierUpdate(supplierDTO);
+            SupplierDTO resSupplier = supplierService.updateSupplierDetails(sendSupplierDTO, supplierDTO.getName(), supplierDTO.getAddress(), supplierDTO.getAccountNumber(), supplierDTO.getWebsite(), supplierDTO.getLogo());
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Supplier's details updated successfully");
             return new ResponseDTO(true, resSupplier, null);
         } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("AccessDenied on 'updateSupplierDetails' operation.", ade);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to update this supplier's contact details", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'updateSupplierDetails' operation.", e);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This supplier's contact details cannot been updated", e);
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
 
-    //TODO: limit access to this service
-//    @ApiOperation(value = "Delete supplier by specific id")
-//    @RequestMapping(method = RequestMethod.DELETE)
-//    @ResponseBody
-//    public ResponseDTO deleteSupplier(@RequestBody final Integer supplierId, HttpServletResponse response) throws IOException {
-//        try {
-//            SupplierDTO supplierDTO = supplierService.getSupplierById(supplierId);
-//            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-//
-//            if (userDTO.getId() != supplierDTO.getUserId()) {
-//                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-//            }
-//            _log.info("deleteSupplier: " + supplierId);
-//            SupplierDTO resSupplier = supplierService.deleteSupplier(supplierId);
-//            return new ResponseDTO(true, resSupplier, null);
-//        } catch (AccessDeniedException ade) {
-//            response.sendError(HttpStatus.NOT_FOUND.value());
-//            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), ade.getMessage()));
-//        } catch (Exception e) {
-//            if (_log.isErrorEnabled()) {
-//                _log.error("Error on 'deleteSupplier' operation.", e);
-//            }
-//            response.sendError(HttpStatus.NOT_FOUND.value());
-//            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
-//        }
-//    }
-
     @ApiOperation(value = "Submit supplier registration")
     @RequestMapping(value = "/submitRegistration", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO submitSupplierRegistration(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
+    public ResponseDTO submitSupplierRegistration(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response, HttpServletRequest request) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Submitting supplier registration");
         try {
-
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(userDTO.getType() != 0){
-                throw new AppException("");
+            if (userConnected.getType() != 0) {
+                throw new AppException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-
-            _log.info("submitSupplierRegistration");
+            SupplierValidator.validateSupplierCreate(supplierDTO);
+            UserValidator.validateUser(userConnected);
             SupplierDTO resSupplier = supplierService.submitSupplierRegistration(supplierDTO);
+            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Supplier registration submitted successfully");
             return new ResponseDTO(true, resSupplier, null);
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'submitSupplierRegistration' operation.", e);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This registration cannot been submitted", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
 
-    //TODO: limit access to this endpoint
     @ApiOperation(value = "Get supplier by specific user id")
     @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public SupplierDTO getSupplierByUserId(@PathVariable("userId") final Integer userId, HttpServletResponse response) throws IOException {
-        _log.info("getSupplierByUserId: " + userId);
+    public SupplierDTO getSupplierByUserId(@PathVariable("userId") final Integer userId, @RequestParam("date") final Long timestamp, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting supplier by user id " + userId);
         try {
             permissionChecker.check(RightConstants.USER_TABLE + userId);
+            return supplierService.getSupplierByUserId(userId);
         } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Access Denied 'getSupplierByUserId' operation.", ade);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this supplier", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'getSupplierByUserId' operation.", e);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This supplier cannot been retrieved", e);
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return null;
         }
-        return supplierService.getSupplierByUserId(userId);
     }
 
     @ApiOperation(value = "Get suppliers that have the same VAT and/or Account Number as the specific supplier")
     @RequestMapping(value = "/similarSuppliers/{supplierId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<SupplierDTO> findSimilarSuppliers(@PathVariable("supplierId") final Integer supplierId, HttpServletResponse response) throws IOException {
-        _log.info("findSimilarSuppliers");
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
-                throw new AccessDeniedException("");
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
         } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("AccessDenied on 'findSimilarSuppliers' operation.", ade);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to find similar suppliers", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
@@ -355,24 +304,20 @@ public class SupplierResource {
     @RequestMapping(value = "/requestLegalDocuments/{supplierId}", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO requestLegalDocuments(@PathVariable("supplierId") final Integer supplierId, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - requesting legal documents by supplier id " + supplierId);
         try {
-            if (_log.isInfoEnabled()) {
-                _log.info("requestLegalDocuments for supplier: " + supplierId);
-            }
             if (!permissionChecker.checkIfDashboardUser()) {
-                throw new AccessDeniedException("");
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             return new ResponseDTO(supplierService.requestLegalDocuments(supplierId), null, null);
         } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("AccessDenied on 'requestLegalDocuments' operation.", ade);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to request legal documents", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'requestLegalDocuments' operation.", e);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- These legal documents cannot been retrieved", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
@@ -383,25 +328,22 @@ public class SupplierResource {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO invalidateSupplier(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Invalidating supplier");
         try {
-            if (_log.isInfoEnabled()) {
-                _log.info("invalidateSupplier");
-            }
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("");
             }
             SupplierDTO resSupplier = supplierService.invalidateSupplier(supplierDTO);
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Supplier invalidated successfully");
             return new ResponseDTO(true, resSupplier, null);
         } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("AccessDenied on 'invalidateSupplier' operation.", ade);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to invalidate this supplier", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'invalidateSupplier' operation.", e);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This supplier cannot been invalidated", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
@@ -412,54 +354,6 @@ public class SupplierResource {
     @ResponseBody
     public SupplierListItemDTO getSupplierListItemDTO() {
         return new SupplierListItemDTO();
-    }
-
-    @ApiOperation(value = "findDgconnSuppliersList")
-    @RequestMapping(value = "/findDgconnSuppliersList", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseDTO findDgconnSuppliersList(@RequestParam("page") final Integer page, @RequestParam("count") final Integer count, @RequestParam("orderField") String orderField, @RequestParam("orderType") Integer orderType, HttpServletResponse response) throws IOException {
-        try {
-            if (!permissionChecker.checkIfDashboardUser()) {
-                throw new AccessDeniedException("");
-            }
-            return new ResponseDTO(true, supplierService.findDgconnSuppliersList(null, page, count, orderField, orderType), supplierService.getCountAllSuppliers(), null);
-        } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("AccessDenied on 'findDgconnSuppliersList' operation.", ade);
-            }
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'findDgconnSuppliersList': ", e);
-            }
-            response.sendError(HttpStatus.BAD_REQUEST.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
-        }
-    }
-
-    @ApiOperation(value = "findDgconnSuppliersListSearchingName")
-    @RequestMapping(value = "/findDgconnSuppliersListSearchingName", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseDTO findDgconnSuppliersListSearchingName(@RequestParam("name") final String name, @RequestParam("page") final Integer page, @RequestParam("count") final Integer count, @RequestParam("orderField") String orderField, @RequestParam("orderType") Integer orderType, HttpServletResponse response) throws IOException {
-        try {
-            if (!permissionChecker.checkIfDashboardUser()) {
-                throw new AccessDeniedException("");
-            }
-            return new ResponseDTO(true, supplierService.findDgconnSuppliersList(name, page, count, orderField, orderType), supplierService.getCountAllSuppliersContainingName(name), null);
-        } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("AccessDenied on 'findDgconnSuppliersListSearchingName' operation.", ade);
-            }
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'findDgconnSuppliersListSearchingName' (" + name + "): ", e);
-            }
-            response.sendError(HttpStatus.BAD_REQUEST.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
-        }
     }
 
     @ApiOperation(value = "Get suppliers registered by region")
@@ -507,6 +401,114 @@ public class SupplierResource {
                 null);
     }
 
+    @ApiOperation(value = "Get userId from supplier ")
+    @RequestMapping(value = "/getUserId/{supplierId}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseDTO getUserIdFromSupplier(@PathVariable("supplierId") final int supplierId) throws IOException {
+
+        try {
+
+            Integer userId = supplierService.getUserIdFromSupplier(supplierId);
+            return new ResponseDTO(true, userId, null);
+
+        } catch (Exception e) {
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "sendEmailToNewContact")
+    @RequestMapping(value = "/sendEmailToNewContact", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO sendEmailToNewContact(@RequestBody String newUserEmail, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        try {
+
+            UserDTO newUser = userService.getUserByEmail(userConnected.getEmail());
+
+            if (newUser == null || newUser.getType() == 1) {
+                int supplierId = supplierService.getSupplierByUserId(userConnected.getId()).getId();
+
+                boolean emailSent = supplierService.sendEmailToContacts(newUserEmail, supplierId);
+                supplierService.createSupplierUser(supplierId, null, newUserEmail, false);
+
+                return new ResponseDTO(true, emailSent, null);
+            } else {
+                throw new AppException("User already registered");
+            }
+
+
+        } catch (Exception e) {
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
+        }
+
+    }
+
+    //ADD CONTACT
+//    @ApiOperation(value = "Deactivate supplier contact")
+//    @RequestMapping(value = "/deactivateContact/{supplierId}/{userId}", method = RequestMethod.GET, produces = "application/json")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    @ResponseBody
+    public ResponseDTO deactivateSupplierContact(@PathVariable("supplierId") Integer supplierId, @PathVariable("userId") Integer userIdToDeactivate,
+                                                 HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Invalidating supplier");
+        try {
+            permissionChecker.check(RightConstants.USER_TABLE + userConnected.getId());
+
+            SupplierDTO supplier = supplierService.getSupplierByUserId(userIdToDeactivate);
+            //verifying that user connected has permission on this supplier
+            boolean access = false;
+            for (UserDTO user : supplier.getUsers()) {
+                if (user.getId() == userConnected.getId()) {
+                    access = true;
+                    break;
+                }
+            }
+            if (!access) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+
+            //user connected is not user to be deactivated
+            if (userConnected.getId() == userIdToDeactivate) {
+                response.sendError(HttpStatus.BAD_REQUEST.value());
+                _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Trying to deactive itself.");
+                return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
+            }
+
+            return new ResponseDTO(true, supplierService.deactivateSupplierContact(supplierId, userIdToDeactivate, userConnected.getEcasUsername()), null);
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to deactivate this supplier contact", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This supplier contact cannot been deactivated", e);
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
+        }
+    }
+
+    // ADD CONTACT
+    // @ApiOperation(value = "Generate invitation to be a supplier contact")
+    // @RequestMapping(value = "/invitation-contact-supplier", method = RequestMethod.POST)
+    // @ResponseBody
+    public ResponseDTO invitateContactSupplier(@RequestParam("supplierId") final int supplierId, @RequestParam("newContactEmail") final String newContactEmail, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        try {
+            if (Validator.isNull(userConnected) || userConnected.getType() != 1) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            return supplierService.invitateContactSupplier(userConnected, supplierId, newContactEmail.trim());
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Incorrect request when adding contacts for suppliers", e.getMessage());
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
+        }
+    }
+
     // Get all suppliers that supply a specific region
     @ApiOperation(value = "Get suppliers by regionID")
     @RequestMapping(value = "/region/{regionId}", method = RequestMethod.GET, produces = "application/json")
@@ -516,8 +518,7 @@ public class SupplierResource {
         List<SupplierDTO> suppliersList = new ArrayList<>();
         try {
             suppliersList = supplierService.getSuppliersListByRegionId(regionId);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
         return suppliersList;
@@ -533,13 +534,12 @@ public class SupplierResource {
         try {
             _log.info("getValidatedSuppliersListByMunicipalityId " + municipalityId);
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(!permissionChecker.checkIfVoucherAwarded(userDTO, municipalityId)) {
+            if (!permissionChecker.checkIfVoucherAwarded(userDTO, municipalityId)) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             suppliersList = supplierService.getValidatedSuppliersListByMunicipalityId(municipalityId);
             return suppliersList;
-        } 
-        catch (AccessDeniedException ade) {
+        } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
                 _log.error("AccessDenied on 'getValidatedSuppliersListByMunicipalityId' operation.", ade);
             }
@@ -560,7 +560,7 @@ public class SupplierResource {
         _log.info("notify Selected Supplier: " + municipalityId);
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(!permissionChecker.checkIfVoucherAwarded(userDTO, municipalityId)) {
+            if (!permissionChecker.checkIfVoucherAwarded(userDTO, municipalityId)) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             supplierService.notifySelectedSupplier(municipalityId);
@@ -575,7 +575,7 @@ public class SupplierResource {
             }
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
-        return null;    
+        return null;
     }
 
     @ApiOperation(value = "Notify supplier by email that a beneficiary has rejected him")
@@ -585,7 +585,7 @@ public class SupplierResource {
         _log.info("notify Selected Supplier: " + municipalityId);
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(!permissionChecker.checkIfVoucherAwarded(userDTO, municipalityId)) {
+            if (!permissionChecker.checkIfVoucherAwarded(userDTO, municipalityId)) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             supplierService.notifyRejectedSupplier(municipalityId);
@@ -602,5 +602,4 @@ public class SupplierResource {
         }
         return null;
     }
-
 }

@@ -14,6 +14,9 @@
 
     <name>WiFi4EU DGConn Service module</name>
 
+	<properties>
+		<jdk.version>1.8</jdk.version>
+	</properties>
 
     <dependencies>
         <dependency>
@@ -75,6 +78,18 @@
             <artifactId>wifi4eu-common</artifactId>
             <version>${project.version}</version>
         </dependency>
+        
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>wifi4eu-persistence</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>wifi4eu-common-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -89,7 +104,22 @@
         <dependency>
             <groupId>wifi4eu.wifi4eu</groupId>
             <artifactId>wifi4eu-dgconn-persistence</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
+        </dependency>
+		<dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>${apache.poi.version}</version>
+        </dependency>
+		<dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${apache.poi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.5.13</version>
         </dependency>
     </dependencies>
 

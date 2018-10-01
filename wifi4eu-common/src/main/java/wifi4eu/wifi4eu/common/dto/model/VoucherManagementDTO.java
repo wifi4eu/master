@@ -10,18 +10,22 @@ public class VoucherManagementDTO {
     private int id;
     private int call_id;
     private String member_state;
+    private String countryCode;
     private int minimum;
     private int maximum;
+    private int reserve;
 
     public VoucherManagementDTO() {
     }
 
-    public VoucherManagementDTO(int id, int call_id, String member_state, int minimum, int maximum) {
+    public VoucherManagementDTO(int id, int call_id, String member_state, String countryCode, int minimum, int maximum, int reserve) {
         this.id = id;
         this.call_id = call_id;
         this.member_state = member_state;
         this.minimum = minimum;
         this.maximum = maximum;
+        this.reserve = reserve;
+        this.countryCode = countryCode;
     }
 
     public int getId() {
@@ -64,4 +68,19 @@ public class VoucherManagementDTO {
         this.maximum = maximum;
     }
 
+    public int getReserve() {
+        return reserve;
+    }
+
+    public void setReserve(int reserve) {
+        this.reserve = reserve;
+    }
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
 }

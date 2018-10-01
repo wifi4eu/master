@@ -1,23 +1,33 @@
 package wifi4eu.wifi4eu.service.thread;
 
-import com.google.common.collect.Lists;
+import java.util.List;
+import java.util.Locale;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import wifi4eu.wifi4eu.common.dto.model.*;
+
+import wifi4eu.wifi4eu.common.dto.mail.MailData;
+import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
+import wifi4eu.wifi4eu.common.dto.model.ThreadDTO;
+import wifi4eu.wifi4eu.common.dto.model.ThreadMessageDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.mail.MailHelper;
+import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.mapper.thread.ThreadMessageMapper;
+import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.thread.ThreadMessageRepository;
+import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
-import wifi4eu.wifi4eu.util.MailService;
-
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 @Service
 public class ThreadMessageService {
+    Logger _log = LogManager.getLogger(ThreadMessageService.class);
+
     @Autowired
     ThreadMessageMapper threadMessageMapper;
 
@@ -39,76 +49,40 @@ public class ThreadMessageService {
     @Autowired
     MailService mailService;
 
-    public List<ThreadMessageDTO> getAllThreadMessages() {
-        return threadMessageMapper.toDTOList(Lists.newArrayList(threadMessageRepository.findAll()));
-    }
+    @Autowired
+    UserMapper userMapper;
 
-    public ThreadMessageDTO getThreadMessageById(int threadMessageId) {
-        return threadMessageMapper.toDTO(threadMessageRepository.findOne(threadMessageId));
-    }
+    @Autowired
+    UserRepository userRepository;
 
     public ThreadMessageDTO createThreadMessage(ThreadMessageDTO threadMessageDTO) {
+    	if (threadMessageDTO.getId() != 0) {
+    		_log.warn("Call to a create method with id set, the value has been removed ({})", threadMessageDTO.getId());
+    		threadMessageDTO.setId(0);	
+    	}
         ThreadMessageDTO threadMessage = threadMessageMapper.toDTO(threadMessageRepository.save(threadMessageMapper.toEntity(threadMessageDTO)));
         ThreadDTO thread = threadService.getThreadById(threadMessage.getThreadId());
-        switch (thread.getType()) {
-            case 1:
-                List<MunicipalityDTO> municipalities = municipalityService.getMunicipalitiesByLauId(Integer.valueOf(thread.getReason()));
-                if (municipalities.size() <= 10) {
-                    if (!userService.isLocalHost()) {
-                        for (MunicipalityDTO municipality : municipalities) {
-                            UserDTO user = userService.getUserById(municipality.getRegistrations().get(0).getUserId());
-                            if (user != null) {
-                                Locale locale = new Locale(UserConstants.DEFAULT_LANG);
-                                if (user.getLang() != null) {
-                                    locale = new Locale(user.getLang());
-                                }
-                                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                                String subject = bundle.getString("mail.thread.subject");
-                                String msgBody = bundle.getString("mail.thread.body");
-                                mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+        if (thread.getType() == 1) {
+            List<MunicipalityDTO> municipalities = municipalityService.getMunicipalitiesByLauId(Integer.valueOf(thread.getReason()));
+            if (municipalities.size() <= 10) {
+                if (!userService.isLocalHost()) {
+                    for (MunicipalityDTO municipality : municipalities) {
+                        UserDTO user = userMapper.toDTO(userRepository.findMainUserFromRegistration(municipality.getRegistrations().get(0).getId()));
+                        if (user != null) {
+                            Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+                            if (user.getLang() != null) {
+                                locale = new Locale(user.getLang());
                             }
+
+                            MailData mailData = MailHelper.buildMailNewThreadMessage(
+                            		user.getEcasEmail(), MailService.FROM_ADDRESS, 
+                            		municipality.getId(), "createThreadMessage", locale);
+                        	mailService.sendMail(mailData, false);
                         }
                     }
                 }
-                break;
-            case 2:
-            case 3: {
-                List<SupplierDTO> suppliers = null;
-                if (thread.getType() == 2) {
-                    suppliers = supplierService.getSuppliersByVat(thread.getReason());
-                } else if (thread.getType() == 3) {
-                    suppliers = supplierService.getSuppliersByAccountNumber(thread.getReason());
-                }
-                if (suppliers.size() <= 10) {
-                    if (!userService.isLocalHost()) {
-                        for (SupplierDTO supplier : suppliers) {
-                            UserDTO user = userService.getUserById(supplier.getUserId());
-                            if (user != null) {
-                                Locale locale = new Locale(UserConstants.DEFAULT_LANG);
-                                if (user.getLang() != null) {
-                                    locale = new Locale(user.getLang());
-                                }
-                                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                                String subject = bundle.getString("mail.thread.subject");
-                                String msgBody = bundle.getString("mail.thread.body");
-                                mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-                            }
-                        }
-                    }
-                }
-                break;
             }
         }
         return threadMessage;
-    }
-
-    public ThreadMessageDTO deleteThreadMessage(int threadMessageId) {
-        ThreadMessageDTO threadMessageDTO = threadMessageMapper.toDTO(threadMessageRepository.findOne(threadMessageId));
-        if (threadMessageDTO != null) {
-            threadMessageRepository.delete(threadMessageMapper.toEntity(threadMessageDTO));
-            return threadMessageDTO;
-        } else {
-            return null;
-        }
     }
 }

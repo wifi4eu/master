@@ -1,27 +1,39 @@
 package wifi4eu.wifi4eu.service.supplier;
 
-import com.google.common.collect.Lists;
+import java.util.Base64;
+import java.util.List;
+import java.util.Locale;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wifi4eu.wifi4eu.common.Constant;
-import wifi4eu.wifi4eu.common.dto.model.*;
-import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.entity.supplier.SuppliedRegion;
+
+import com.google.common.collect.Lists;
+
+import wifi4eu.wifi4eu.common.dto.mail.MailData;
+import wifi4eu.wifi4eu.common.dto.model.SuppliedRegionDTO;
+import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
+import wifi4eu.wifi4eu.common.dto.model.SupplierListItemDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
+import wifi4eu.wifi4eu.common.mail.MailHelper;
+import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
+import wifi4eu.wifi4eu.mapper.supplier.SupplierListItemMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
+import wifi4eu.wifi4eu.repository.supplier.SupplierListItemRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
-import wifi4eu.wifi4eu.service.thread.ThreadService;
-import wifi4eu.wifi4eu.service.thread.UserThreadsService;
+import wifi4eu.wifi4eu.repository.supplier.SupplierUserRepository;
+import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
-import wifi4eu.wifi4eu.util.MailService;
-
-import java.text.MessageFormat;
-import java.util.*;
 
 @Service("portalSupplierService")
 public class SupplierService {
@@ -29,10 +41,19 @@ public class SupplierService {
     SupplierMapper supplierMapper;
 
     @Autowired
+    SupplierListItemMapper supplierListItemMapper;
+
+    @Autowired
     SupplierRepository supplierRepository;
 
     @Autowired
+    SupplierListItemRepository supplierListItemRepository;
+
+    @Autowired
     SuppliedRegionMapper suppliedRegionMapper;
+
+    @Autowired
+    SupplierUserRepository supplierUserRepository;
 
     @Autowired
     SuppliedRegionRepository suppliedRegionRepository;
@@ -41,13 +62,9 @@ public class SupplierService {
     UserService userService;
 
     @Autowired
-    ThreadService threadService;
-
-    @Autowired
-    UserThreadsService userThreadsService;
-
-    @Autowired
     MailService mailService;
+
+    private final Logger _log = LogManager.getLogger(SupplierService.class);
 
     public List<SupplierDTO> getAllSuppliers() {
         return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findAll()));
@@ -58,25 +75,25 @@ public class SupplierService {
     }
 
     @Transactional
-    public SupplierDTO createSupplier(SupplierDTO supplierDTO) {
-        if (supplierDTO.getSuppliedRegions().isEmpty()) {
-            return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+    public SupplierDTO updateSupplierDetails(SupplierDTO supplierDTO, String name, String address, String vat, String bic, String logo) throws Exception {
+        supplierDTO.setName(name);
+        supplierDTO.setAddress(address);
+        supplierDTO.setVat(vat);
+        supplierDTO.setBic(bic);
+        if (logo != null) {
+            byte[] logoByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(logo));
+            String logoMimeType = LegalFilesService.getMimeType(logo);
+            if (logoByteArray.length > 2560000) {
+                throw new Exception("File size cannot bet greater than 2.5 MB.");
+            } else if (!logoMimeType.equals("image/png") && !logoMimeType.equals("image/jpg") && !logoMimeType.equals("image/jpeg")) {
+                throw new Exception("File must have a valid extension.");
+            } else {
+                supplierDTO.setLogo(logo);
+            }
         } else {
-            Integer supplierId = supplierDTO.getId();
-            List<SuppliedRegionDTO> originalRegions = supplierDTO.getSuppliedRegions();
-            List<SuppliedRegionDTO> correctRegions = new ArrayList<>();
-            if (supplierId == 0) {
-                supplierDTO.setSuppliedRegions(null);
-                supplierDTO = supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
-                supplierId = supplierDTO.getId();
-            }
-            for (SuppliedRegionDTO region : originalRegions) {
-                region.setSupplierId(supplierId);
-                correctRegions.add(region);
-            }
-            supplierDTO.setSuppliedRegions(correctRegions);
-            return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+            supplierDTO.setLogo(null);
         }
+        return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
     }
 
     @Transactional
@@ -84,7 +101,9 @@ public class SupplierService {
         //TODO: change to a soft delete
         SupplierDTO supplierDTO = supplierMapper.toDTO(supplierRepository.findOne(supplierId));
         if (supplierDTO != null) {
+            supplierUserRepository.deleteBySupplierId((long) supplierId);
             supplierRepository.delete(supplierMapper.toEntity(supplierDTO));
+
             return supplierDTO;
         } else {
             return null;
@@ -95,101 +114,8 @@ public class SupplierService {
         return suppliedRegionMapper.toDTOList(Lists.newArrayList(suppliedRegionRepository.findAll()));
     }
 
-    @Transactional
-    public SupplierDTO submitSupplierRegistration(SupplierDTO supplierDTO) throws Exception {
-
-        UserDTO userDTO;
-
-        UserContext userContext = UserHolder.getUser();
-
-        if (userContext != null) {
-            // with ECAS
-            userDTO = userService.getUserByUserContext(userContext);
-        } else {
-            // without ECAS (only testing purpose)
-            userDTO = new UserDTO();
-            String password = "12345678";
-            userDTO.setPassword(password);
-        }
-
-        userDTO.setName(supplierDTO.getContactName());
-        userDTO.setSurname(supplierDTO.getContactSurname());
-        userDTO.setEmail(supplierDTO.getContactEmail());
-        userDTO.setCreateDate(new Date().getTime());
-        userDTO.setType(1);
-        userDTO.setVerified(false);
-        userDTO = userService.saveUserChanges(userDTO);
-        userService.sendActivateAccountMail(userDTO);
-        supplierDTO.setUserId(userDTO.getId());
-        supplierDTO = createSupplier(supplierDTO);
-        checkDuplicateSuppliers(supplierDTO);
-        return supplierDTO;
-    }
-
-    private void checkDuplicateSuppliers(SupplierDTO supplierDTO) {
-        List<SupplierDTO> suppliers = supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findByVat(supplierDTO.getVat())));
-        if (!suppliers.isEmpty()) {
-            for (SupplierDTO supplier : suppliers) {
-                if (supplier.getId() != supplierDTO.getId()) {
-                    ThreadDTO thread = threadService.getThreadByTypeAndReason(2, supplierDTO.getVat());
-                    if (thread == null) {
-                        thread = new ThreadDTO();
-                        thread.setTitle("VAT: " +  supplierDTO.getVat());
-                        thread.setType(Constant.THREAD_REASON_VAT);
-                        thread.setReason(supplierDTO.getVat());
-                        thread = threadService.createThread(thread);
-                    }
-                    UserThreadsDTO specificSupplierUserThreads = userThreadsService.getByUserIdAndThreadId(supplier.getUserId(), thread.getId());
-                    if (specificSupplierUserThreads == null) {
-                        specificSupplierUserThreads = new UserThreadsDTO();
-                        specificSupplierUserThreads.setUserId(supplier.getUserId());
-                        specificSupplierUserThreads.setThreadId(thread.getId());
-                        userThreadsService.createUserThreads(specificSupplierUserThreads);
-                    }
-                    UserThreadsDTO originalSupplierUserThreads = userThreadsService.getByUserIdAndThreadId(supplierDTO.getUserId(), thread.getId());
-                    if (originalSupplierUserThreads == null) {
-                        originalSupplierUserThreads = new UserThreadsDTO();
-                        originalSupplierUserThreads.setUserId(supplierDTO.getUserId());
-                        originalSupplierUserThreads.setThreadId(thread.getId());
-                        userThreadsService.createUserThreads(originalSupplierUserThreads);
-                    }
-                }
-            }
-        }
-        suppliers = supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findByAccountNumber(supplierDTO.getAccountNumber())));
-        if (!suppliers.isEmpty()) {
-            for (SupplierDTO supplier : suppliers) {
-                if (supplier.getId() != supplierDTO.getId()) {
-                    ThreadDTO thread = threadService.getThreadByTypeAndReason(3, supplierDTO.getAccountNumber());
-                    if (thread == null) {
-                        thread = new ThreadDTO();
-                        thread.setTitle("IBAN: " +  supplierDTO.getAccountNumber());
-                        thread.setType(Constant.THREAD_REASON_IBAN);
-                        thread.setReason(supplierDTO.getAccountNumber());
-                        thread = threadService.createThread(thread);
-                    }
-                    UserThreadsDTO specificSupplierUserThreads = userThreadsService.getByUserIdAndThreadId(supplier.getUserId(), thread.getId());
-                    if (specificSupplierUserThreads == null) {
-                        specificSupplierUserThreads = new UserThreadsDTO();
-                        specificSupplierUserThreads.setUserId(supplier.getUserId());
-                        specificSupplierUserThreads.setThreadId(thread.getId());
-                        userThreadsService.createUserThreads(specificSupplierUserThreads);
-                    }
-                    UserThreadsDTO originalSupplierUserThreads = userThreadsService.getByUserIdAndThreadId(supplierDTO.getUserId(), thread.getId());
-                    if (originalSupplierUserThreads == null) {
-                        originalSupplierUserThreads = new UserThreadsDTO();
-                        originalSupplierUserThreads.setUserId(supplierDTO.getUserId());
-                        originalSupplierUserThreads.setThreadId(thread.getId());
-                        userThreadsService.createUserThreads(originalSupplierUserThreads);
-                    }
-                }
-            }
-        }
-    }
-
-    @Cacheable(value = "portalGetSupplierByUserId")
     public SupplierDTO getSupplierByUserId(int userId) {
-        return supplierMapper.toDTO(supplierRepository.findByUserId(userId));
+        return supplierMapper.toDTO(supplierRepository.getByUserId(userId));
     }
 
     public List<SupplierDTO> getSuppliersByVat(String vat) {
@@ -206,47 +132,34 @@ public class SupplierService {
     }
 
     public List<SupplierDTO> findSimilarSuppliers(int supplierId) {
-        List<SupplierDTO> similarSuppliers = new ArrayList<>();
-        SupplierDTO originalSupplier = getSupplierById(supplierId);
-        if (originalSupplier != null) {
-            List<SupplierDTO> suppliersVat = getSuppliersByVat(originalSupplier.getAccountNumber());
-            if (!suppliersVat.isEmpty()) {
-                for (SupplierDTO supp : suppliersVat) {
-                    if (supp.getId() != originalSupplier.getId()) {
-                        similarSuppliers.add(supp);
-                    }
-                }
-            }
-            List<SupplierDTO> suppliersIban = getSuppliersByAccountNumber(originalSupplier.getAccountNumber());
-            if (!suppliersIban.isEmpty()) {
-                for (SupplierDTO supp : suppliersIban) {
-                    if (supp.getId() != originalSupplier.getId()) {
-                        similarSuppliers.add(supp);
-                    }
-                }
-            }
-        }
-        return similarSuppliers;
+        return supplierMapper.toDTOList(supplierRepository.findSimilarSuppliers(supplierId));
+    }
+
+    public ResponseDTO findSimilarSuppliersPaged(int supplierId, int offset, int size) {
+        List<SupplierDTO> suppliers = supplierMapper.toDTOList(supplierRepository.findSimilarSuppliersPaged(supplierId, offset, size));
+        Integer countQuery = supplierRepository.countSimilarSuppliersPaged(supplierId);
+        ResponseDTO response = new ResponseDTO();
+        response.setXTotalCount(countQuery);
+        response.setData(suppliers);
+        return response;
     }
 
     @Transactional
     public boolean requestLegalDocuments(int supplierId) {
         SupplierDTO supplier = getSupplierById(supplierId);
         if (supplier != null) {
-            UserDTO user = userService.getUserById(supplier.getUserId());
+            UserDTO user = userService.getUserById(getUserIdFromSupplier(supplier.getId()));
             if (user != null) {
                 Locale locale = new Locale(UserConstants.DEFAULT_LANG);
                 if (user.getLang() != null) {
                     locale = new Locale(user.getLang());
                 }
-                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                String subject = bundle.getString("mail.dgConn.requestDocuments.subject");
-                String msgBody = bundle.getString("mail.dgConn.requestDocuments.body");
                 String additionalInfoUrl = userService.getBaseUrl() + "supplier-portal/additional-info";
-                msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
-                if (!userService.isLocalHost()) {
-                    mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-                }
+
+                MailData mailData = MailHelper.buildMailRequestSupportingDocumentsForRegistration(
+                		user.getEcasEmail(), MailService.FROM_ADDRESS, additionalInfoUrl, locale);
+            	mailService.sendMail(mailData, false);
+
                 return true;
             }
         }
@@ -260,21 +173,102 @@ public class SupplierService {
 
     @Transactional
     public SupplierDTO invalidateSupplier(SupplierDTO supplierDTO) {
-        supplierDTO.setStatus(0);
+        supplierDTO.setStatus(1);
         supplierDTO = updateSupplier(supplierDTO);
-        UserDTO user = userService.getUserById(supplierDTO.getUserId());
+        UserDTO user = userService.getUserById(getUserIdFromSupplier(supplierDTO.getId()));
         if (user != null) {
             Locale locale = new Locale(UserConstants.DEFAULT_LANG);
             if (user.getLang() != null) {
                 locale = new Locale(user.getLang());
             }
-            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-            String subject = bundle.getString("mail.dgConn.invalidateSupplier.subject");
-            String msgBody = bundle.getString("mail.dgConn.invalidateSupplier.body");
-            if (!userService.isLocalHost()) {
-                mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-            }
+            String company = supplierDTO.getName();    
+            
+            MailData mailData = MailHelper.buildMailInvalidRegistration(
+            		user.getEcasEmail(), MailService.FROM_ADDRESS, company, locale);
+        	mailService.sendMail(mailData, false);
         }
         return supplierDTO;
+    }
+
+    public List<SupplierListItemDTO> findDgconnSuppliersList(String name, int page, int count, String orderField, int orderType) {
+
+        Direction direction;
+        if (orderType == -1) {
+            direction = Direction.DESC;
+        } else {
+            direction = Direction.ASC;
+        }
+
+        if (name == null || name.trim().isEmpty()) {
+            name = "";
+        }
+        List<SupplierListItemDTO> suppliers;
+
+        switch (orderField) {
+            case "website":
+                if (direction.equals(Direction.ASC)) {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByWebsiteAsc(name, page * count, count));
+                } else {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByWebsiteDesc(name, page * count, count));
+                }
+                break;
+            case "vat":
+                if (direction.equals(Direction.ASC)) {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByVatAsc(name, page * count, count));
+                } else {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByVatDesc(name, page * count, count));
+                }
+
+                break;
+            case "numberRegistrations":
+                if (direction.equals(Direction.ASC)) {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByNumberRegistrationsAsc(name, page * count, count));
+                } else {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByNumberRegistrationsDesc(name, page * count, count));
+                }
+
+                break;
+            case "status":
+                if (direction.equals(Direction.ASC)) {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByStatusAsc(name, page * count, count));
+                } else {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByStatusDesc(name, page * count, count));
+                }
+
+                break;
+            case "name":
+            default:
+                if (direction.equals(Direction.ASC)) {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByNameAsc(name, page * count, count));
+                } else {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByNameDesc(name, page * count, count));
+                }
+                break;
+
+        }
+        return suppliers;
+    }
+
+    public Long getCountAllSuppliers() {
+        return supplierRepository.count();
+    }
+
+    public Long getCountAllSuppliersContainingName(String name) {
+        return supplierRepository.countByNameContainingIgnoreCase(name);
+    }
+
+    public Page<String> getSuppliersByRegionOrCountry(String countryCode, int regionId, Pageable pageable) {
+        if (regionId == 0) {
+            return supplierRepository.findSuppliersByCountryCode(countryCode, pageable);
+        }
+        return supplierRepository.findSuppliersByRegion(regionId, pageable);
+    }
+
+    public int getUserIdFromSupplier(int supplierId) {
+        return supplierUserRepository.findUserIdBySupplierId(supplierId);
+    }
+
+    private boolean checkHasNoNotBeingRegisteredBefore(String userEmail, Integer supplierId) {
+        return supplierUserRepository.findByEmailAndSupplierId(userEmail, supplierId).isEmpty();
     }
 }

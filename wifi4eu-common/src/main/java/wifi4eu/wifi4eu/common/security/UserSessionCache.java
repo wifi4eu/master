@@ -3,7 +3,6 @@ package wifi4eu.wifi4eu.common.security;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
 
@@ -12,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class UserSessionCache {
 
-    private final static Logger logger = Logger.getLogger(UserSessionCache.class);
     private final static Long maxSize = 100L;
     private final static Long expirationMinutes = 5L;
 
@@ -25,7 +23,6 @@ public class UserSessionCache {
                 .build(new CacheLoader<String, UserDTO>() {
                     @Override
                     public UserDTO load(String s) throws Exception {
-                        logger.warn("The cache should be loaded. Returning null.");
                         return null;
                     }
                 });

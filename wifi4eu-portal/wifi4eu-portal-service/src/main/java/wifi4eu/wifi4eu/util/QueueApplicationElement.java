@@ -5,6 +5,7 @@ public class QueueApplicationElement {
     int callId;
     int userId;
     int registrationId;
+    int municipalityId;
     long fileUploadTimestamp;
     long queueTimestamp;
     String ipAddress;
@@ -12,10 +13,11 @@ public class QueueApplicationElement {
     public QueueApplicationElement() {
     }
 
-    public QueueApplicationElement(int callId, int userId, int registrationId, long fileUploadTimestamp, long queueTimestamp, String ipAddress) {
+    public QueueApplicationElement(int callId, int userId, int registrationId, int municipalityId, long fileUploadTimestamp, long queueTimestamp, String ipAddress) {
         this.callId = callId;
         this.userId = userId;
         this.registrationId = registrationId;
+        this.municipalityId = municipalityId;
         this.fileUploadTimestamp = fileUploadTimestamp;
         this.queueTimestamp = queueTimestamp;
         this.ipAddress = ipAddress;
@@ -43,6 +45,14 @@ public class QueueApplicationElement {
 
     public void setRegistrationId(int registrationId) {
         this.registrationId = registrationId;
+    }
+
+    public int getMunicipalityId() {
+        return municipalityId;
+    }
+
+    public void setMunicipalityId(int municipalityId) {
+        this.municipalityId = municipalityId;
     }
 
     public long getFileUploadTimestamp() {

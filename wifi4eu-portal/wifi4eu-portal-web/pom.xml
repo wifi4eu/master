@@ -47,6 +47,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.5.0</version>
                         <executions>
+                            <!--
                             <execution>
                                 <phase>generate-sources</phase>
                                 <id>1</id>
@@ -61,6 +62,7 @@
                                     </arguments>
                                 </configuration>
                             </execution>
+                            -->
                             <execution>
                                 <phase>generate-sources</phase>
                                 <id>2</id>
@@ -132,11 +134,13 @@
                                 </goals>
                                 <configuration>
                                     <executable>
-                                        /var/quark/binaries/node/node-v6.11.5-linux-x64/lib/node_modules/@angular/cli/bin/ng
+                                        /usr/lib/node_modules/@angular/cli/bin/ng
                                     </executable>
                                     <workingDirectory>src/main/angular</workingDirectory>
                                     <arguments>
                                         <argument>build</argument>
+                                        <argument>--base-href</argument>
+                                        <argument>/wifi4eu/</argument>
                                         <argument>--env=${ng.env}</argument>
                                         <argument>--prod</argument>
                                         <argument>--aot</argument>

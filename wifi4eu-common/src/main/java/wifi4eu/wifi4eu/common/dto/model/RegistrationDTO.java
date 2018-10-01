@@ -1,23 +1,34 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Date;
 
 public class RegistrationDTO implements Serializable {
     private int id;
-    private int userId;
     private int municipalityId;
     private String role;
     private int status;
-    private String legalFile1;
-    private String legalFile2;
-    private String legalFile3;
-    private String legalFile4;
     private String ipRegistration;
     private String associationName;
     private int organisationId;
-    private long uploadTime;
     private int allFilesFlag;
     private int mailCounter;
+    private List<RegistrationWarningDTO> registrationWarningDTOList;
+    private int idUserPM;
+    private int idUserBPM;
+    private int idStatusBeneficiary;
+    private boolean compliance;
+    private int actionToBeTaken;
+    private int actionTaken;
+    private boolean conformity;
+    private Timestamp firstFalseCheck;
+    private Timestamp dateRegistered;
+    private Date installationSiteSubmission;
+    private Date installationSiteRejection;
+    private Date installationSiteConfirmation;
+    private List<UserDTO> users;
     private Long isSubmission;
     private Long isRejection;
     private Long isConfirmation;
@@ -25,25 +36,60 @@ public class RegistrationDTO implements Serializable {
     public RegistrationDTO() {
     }
 
-    public RegistrationDTO(int id, int userId, int municipalityId, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int organisationId, long uploadTime, int allFilesFlag, int mailCounter, Long isSubmission, Long isRejection, Long isConfirmation) {
+    public RegistrationDTO(int id, int municipalityId, String role, int status, String ipRegistration, String associationName, int organisationId, int allFilesFlag, int
+            mailCounter, List<RegistrationWarningDTO> registrationWarningDTOList, int idUserPM, int idUserBPM, int idStatusBeneficiary, boolean
+                                   compliance, int actionToBeTaken, int actionTaken, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered, Date
+                                   installationSiteSubmission, Date installationSiteRejection, Date installationSiteConfirmation, List<UserDTO> users, Long isSubmission, Long isRejection, Long isConfirmation) {
         this.id = id;
-        this.userId = userId;
         this.municipalityId = municipalityId;
         this.role = role;
         this.status = status;
-        this.legalFile1 = legalFile1;
-        this.legalFile2 = legalFile2;
-        this.legalFile3 = legalFile3;
-        this.legalFile4 = legalFile4;
         this.ipRegistration = ipRegistration;
         this.associationName = associationName;
         this.organisationId = organisationId;
-        this.uploadTime = uploadTime;
         this.allFilesFlag = allFilesFlag;
         this.mailCounter = mailCounter;
+        this.registrationWarningDTOList = registrationWarningDTOList;
+        this.idUserPM = idUserPM;
+        this.idUserBPM = idUserBPM;
+        this.idStatusBeneficiary = idStatusBeneficiary;
+        this.compliance = compliance;
+        this.actionToBeTaken = actionToBeTaken;
+        this.actionTaken = actionTaken;
+        this.conformity = conformity;
+        this.firstFalseCheck = firstFalseCheck;
+        this.dateRegistered = dateRegistered;
+        this.installationSiteSubmission = installationSiteSubmission;
+        this.installationSiteRejection = installationSiteRejection;
+        this.installationSiteConfirmation = installationSiteConfirmation;
+        this.users = users;
         this.isSubmission = isSubmission;
         this.isRejection = isRejection;
         this.isConfirmation = isConfirmation;
+    }
+
+    public Date getInstallationSiteSubmission() {
+        return installationSiteSubmission;
+    }
+
+    public void setInstallationSiteSubmission(Date installationSiteSubmission) {
+        this.installationSiteSubmission = installationSiteSubmission;
+    }
+
+    public Date getInstallationSiteRejection() {
+        return installationSiteRejection;
+    }
+
+    public void setInstallationSiteRejection(Date installationSiteRejection) {
+        this.installationSiteRejection = installationSiteRejection;
+    }
+
+    public Date getInstallationSiteConfirmation() {
+        return installationSiteConfirmation;
+    }
+
+    public void setInstallationSiteConfirmation(Date installationSiteConfirmation) {
+        this.installationSiteConfirmation = installationSiteConfirmation;
     }
 
     public int getId() {
@@ -54,20 +100,8 @@ public class RegistrationDTO implements Serializable {
         this.id = id;
     }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
     public int getMunicipalityId() {
         return municipalityId;
-    }
-
-    public int getStatus() {
-        return status;
     }
 
     public void setMunicipalityId(int municipalityId) {
@@ -82,40 +116,12 @@ public class RegistrationDTO implements Serializable {
         this.role = role;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
     public void setStatus(int status) {
         this.status = status;
-    }
-
-    public String getLegalFile1() {
-        return legalFile1;
-    }
-
-    public void setLegalFile1(String legalFile1) {
-        this.legalFile1 = legalFile1;
-    }
-
-    public String getLegalFile2() {
-        return legalFile2;
-    }
-
-    public void setLegalFile2(String legalFile2) {
-        this.legalFile2 = legalFile2;
-    }
-
-    public String getLegalFile3() {
-        return legalFile3;
-    }
-
-    public void setLegalFile3(String legalFile3) {
-        this.legalFile3 = legalFile3;
-    }
-
-    public String getLegalFile4() {
-        return legalFile4;
-    }
-
-    public void setLegalFile4(String legalFile4) {
-        this.legalFile4 = legalFile4;
     }
 
     public String getIpRegistration() {
@@ -124,24 +130,6 @@ public class RegistrationDTO implements Serializable {
 
     public void setIpRegistration(String ipRegistration) {
         this.ipRegistration = ipRegistration;
-    }
-
-    @Override
-    public String toString() {
-        return "RegistrationDTO{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", municipalityId=" + municipalityId +
-                ", role='" + role + '\'' +
-                ", status=" + status +
-                ", legalFile1='" + legalFile1 + '\'' +
-                ", legalFile2='" + legalFile2 + '\'' +
-                ", legalFile3='" + legalFile3 + '\'' +
-                ", legalFile4='" + legalFile4 + '\'' +
-                ", upload_time='" + uploadTime + '\'' +
-                ", allFiles_flag='" + allFilesFlag + '\'' +
-                ", mail_counter='" + mailCounter + '\'' +
-                '}';
     }
 
     public String getAssociationName() {
@@ -160,14 +148,6 @@ public class RegistrationDTO implements Serializable {
         this.organisationId = organisationId;
     }
 
-    public long getUploadTime() {
-        return uploadTime;
-    }
-
-    public void setUploadTime(long uploadTime) {
-        this.uploadTime = uploadTime;
-    }
-
     public int getAllFilesFlag() {
         return allFilesFlag;
     }
@@ -184,8 +164,96 @@ public class RegistrationDTO implements Serializable {
         this.mailCounter = mailCounter;
     }
 
+    public List<RegistrationWarningDTO> getRegistrationWarningDTOList() {
+        return registrationWarningDTOList;
+    }
+
+    public void setRegistrationWarningDTOList(List<RegistrationWarningDTO> registrationWarningDTOList) {
+        this.registrationWarningDTOList = registrationWarningDTOList;
+    }
+
+    public int getIdStatusBeneficiary() {
+        return idStatusBeneficiary;
+    }
+
+    public void setIdStatusBeneficiary(int idStatusBeneficiary) {
+        this.idStatusBeneficiary = idStatusBeneficiary;
+    }
+
+    public boolean isCompliance() {
+        return compliance;
+    }
+
+    public void setCompliance(boolean compliance) {
+        this.compliance = compliance;
+    }
+
+    public int getActionToBeTaken() {
+        return actionToBeTaken;
+    }
+
+    public void setActionToBeTaken(int actionToBeTaken) {
+        this.actionToBeTaken = actionToBeTaken;
+    }
+
+    public int getActionTaken() {
+        return actionTaken;
+    }
+
+    public void setActionTaken(int actionTaken) {
+        this.actionTaken = actionTaken;
+    }
+
+    public boolean isConformity() {
+        return conformity;
+    }
+
+    public void setConformity(boolean conformity) {
+        this.conformity = conformity;
+    }
+
+    public Timestamp getFirstFalseCheck() {
+        return firstFalseCheck;
+    }
+
+    public void setFirstFalseCheck(Timestamp firstFalseCheck) {
+        this.firstFalseCheck = firstFalseCheck;
+    }
+
+    public Timestamp getDateRegistered() {
+        return dateRegistered;
+    }
+
+    public void setDateRegistered(Timestamp dateRegistered) {
+        this.dateRegistered = dateRegistered;
+    }
+
+    public int getIdUserPM() {
+        return idUserPM;
+    }
+
+    public void setIdUserPM(int idUserPM) {
+        this.idUserPM = idUserPM;
+    }
+
+    public int getIdUserBPM() {
+        return idUserBPM;
+    }
+
+    public void setIdUserBPM(int idUserBPM) {
+        this.idUserBPM = idUserBPM;
+    }
+
+    public List<UserDTO> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<UserDTO> users) {
+        this.users = users;
+    }
+
     public Long getIsSubmission() {
-        return isSubmission; 
+        return isSubmission;
     }
 
     public void setIsSubmission(Long isSubmission) {

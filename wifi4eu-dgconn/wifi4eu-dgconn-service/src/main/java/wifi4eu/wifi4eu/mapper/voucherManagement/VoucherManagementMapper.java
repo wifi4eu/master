@@ -9,10 +9,10 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface VoucherManagementMapper {
-    @Mapping(source = "entity.voucherCall.id", target = "call_id")
+//    @Mapping(source = "entity.voucherCall.id", target = "call_id")
     VoucherManagementDTO toDTO(VoucherManagement entity);
 
-    @Mapping(source = "vo.call_id", target = "voucherCall.id")
+//    @Mapping(source = "vo.call_id", target = "voucherCall.id")
     VoucherManagement toEntity(VoucherManagementDTO vo);
 
     List<VoucherManagementDTO> toDTOList(List<VoucherManagement> list);

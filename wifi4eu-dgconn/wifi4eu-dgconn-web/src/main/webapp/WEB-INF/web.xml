@@ -5,7 +5,7 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
 
-    <display-name>eUI Angular2 application</display-name>
+    <display-name>WIFI4EU - dgconn - eUI - Angular2 application</display-name>
 
     <servlet>
         <servlet-name>spring-REST</servlet-name>
@@ -25,14 +25,30 @@
 
     <session-config>
         <session-timeout>
-            30
+            -1
         </session-timeout>
+        <cookie-config>
+            <http-only>true</http-only>
+            <secure>true</secure>
+        </cookie-config>
     </session-config>
 
     <welcome-file-list>
         <welcome-file>/index.jsp</welcome-file>
     </welcome-file-list>
 
+    <!-- ${enable.appinsights.start}
+    <filter>
+        <filter-name>ApplicationInsightsWebFilter</filter-name>
+        <filter-class>
+            com.microsoft.applicationinsights.web.internal.WebRequestTrackingFilter
+        </filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ApplicationInsightsWebFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    ${enable.appinsights.end} -->
     <filter>
         <filter-name>characterEncodingFilter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -55,11 +71,25 @@
         <filter-name>userFilter</filter-name>
         <filter-class>${user.filter.path}</filter-class>
     </filter>
+
     <filter-mapping>
         <filter-name>userFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+    <!-- ${enable.security.start}
+    <filter>
+        <filter-name>CSRFFilter</filter-name>
+        <filter-class>
+            wifi4eu.wifi4eu.web.filter.CSRFFilter
+        </filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>CSRFFilter</filter-name>
+        <url-pattern>/api/*</url-pattern>
+    </filter-mapping>
+    ${enable.security.end} -->
 
     <filter>
         <filter-name>springSecurityFilterChain</filter-name>
@@ -70,8 +100,6 @@
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
-
 
 
     <!-- This is an example security constraint for a resource that requires only authentication but not authorization: -->
@@ -118,7 +146,7 @@
         <web-resource-collection>
             <web-resource-name>ecas-demo</web-resource-name>
             <description>Requires users to be authenticated but does not require them to be authorized</description>
-            <url-pattern>/*</url-pattern>
+            <url-pattern>/index.jsp</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description>allow users with any role</description>

@@ -54,6 +54,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`users` (
   `access_date`   BIGINT       NULL,
   `ecas_email`    VARCHAR(255) NULL,
   `ecas_username` VARCHAR(255) NULL,
+  `lang`          VARCHAR(255) NULL,
   `type`          INT          NULL     DEFAULT NULL,
   `verified`      TINYINT      NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
@@ -124,16 +125,21 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`municipalities` (
 -- Table `wifi4eu`.`registrations`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wifi4eu`.`registrations` (
-  `id`              INT          NOT NULL AUTO_INCREMENT,
-  `_user`           INT          NOT NULL,
-  `municipality`    INT          NOT NULL,
-  `role`            VARCHAR(500) NULL,
-  `_status`         INT(1)       NOT NULL, --  0=HOLD; 1=KO; 2=OK
-  `legal_file1`     LONGTEXT     NULL,
-  `legal_file2`     LONGTEXT     NULL,
-  `legal_file3`     LONGTEXT     NULL,
-  `legal_file4`     LONGTEXT     NULL,
-  `ip_registration` VARCHAR(30)  NULL,
+  `id`               INT          NOT NULL AUTO_INCREMENT,
+  `_user`            INT          NOT NULL,
+  `municipality`     INT          NOT NULL,
+  `role`             VARCHAR(500) NULL,
+  `_status`          INT(1)       NOT NULL, --  0=HOLD; 1=KO; 2=OK
+  `legal_file1`      LONGTEXT     NULL,
+  `legal_file2`      LONGTEXT     NULL,
+  `legal_file3`      LONGTEXT     NULL,
+  `legal_file4`      LONGTEXT     NULL,
+  `ip_registration`  VARCHAR(30)  NULL,
+  `organisation_id`  INT                   DEFAULT NULL,
+  `association_name` VARCHAR(500)          DEFAULT NULL,
+  `upload_time` bigint(20) DEFAULT NULL,
+  `allFiles_flag` int(1) DEFAULT NULL,
+  `mail_counter` int(1) NOT NULL DEFAULT '3',
   PRIMARY KEY (`id`),
   INDEX `fk_user_idx` (`_user` ASC),
   INDEX `fk_municipality_idx` (`municipality` ASC),
@@ -250,6 +256,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`suppliers` (
   `_user`                INT          NULL,
   `legal_file1`          LONGTEXT     NULL,
   `legal_file2`          LONGTEXT     NULL,
+  `_status`              TINYINT      NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_suppliers_users_idx` (`_user` ASC),
   CONSTRAINT `fk_suppliers_users`
@@ -281,6 +288,8 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`applications` (
   `lc_export`       BIGINT  NULL,
   `lc_import`       BIGINT  NULL,
   `lc_status`       INT     NULL     DEFAULT 0,
+  `_status`         INT     NOT NULL DEFAULT 0,
+  `invalidate_reason` MEDIUMTEXT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_call_idx` (`call_id` ASC),
   INDEX `fk_registration_idx` (`registration` ASC),
@@ -413,6 +422,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`helpdesk_issues` (
   `summary`      MEDIUMTEXT   NULL,
   `create_date`  BIGINT       NULL,
   `_status`      INT          NOT NULL DEFAULT 0,
+  `_ticket`      INT          NOT NULL DEFAULT 0
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
@@ -558,3 +568,23 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`user_threads` (
 SET SQL_MODE = @OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS = @OLD_UNIQUE_CHECKS;
+
+-- -----------------------------------------------------
+-- Table `dbo`.`legal_files`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `wifi4eu`.`legal_files` (
+  `id`					INT NOT NULL AUTO_INCREMENT,
+  `registration`		INT NOT NULL,
+  `type`				INT NOT NULL,
+  `data`				LONGTEXT NULL,
+  `upload_time`			bigint(20) DEFAULT NULL,
+  `request_correction`	TINYINT NOT NULL DEFAULT 0,
+  `correction_reason`	INT DEFAULT NULL,
+  PRIMARY KEY (`id`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_bin;
+
+SET SQL_MODE = @OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS;

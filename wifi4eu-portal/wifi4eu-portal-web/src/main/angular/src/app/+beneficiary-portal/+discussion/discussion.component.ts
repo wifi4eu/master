@@ -123,7 +123,7 @@ export class DiscussionComponent {
     }
 
     private editRegistration() {
-        this.router.navigateByUrl('/beneficiary-portal/profile');
+        this.router.navigateByUrl('/beneficiary-portal/profile/edit-profile');
     }
 
     private withdrawRegistration() {
@@ -191,7 +191,9 @@ export class DiscussionComponent {
         this.displayMediation = false;
     }
 
-    private askMediation() {
+    //COMMENTED BY ORDER OF BERT 06/09/2018
+
+    /*private askMediation() {
         this.displayMediationAlert = true;
         window.scrollTo(0, 0);
         this.threadApi.askMediationThread(this.thread.id).subscribe(
@@ -207,5 +209,5 @@ export class DiscussionComponent {
                 this.sharedService.growlTranslation('Your request for mediation could not be submited due to an error. Please, try again later.', 'discussionForum.discussion.growl.error', 'error');
             }
         );
-    }
+    }*/
 }

@@ -25,7 +25,7 @@
       <div class="col-sm-12 col-md-5">
         <label class="label-select"  for="memberState">{{ 'listMunicipalities.memberState.label' | translate }}</label>
         <select name="memberState" id="memberState" [(ngModel)]="country" (ngModelChange)="selectCountry($event)">
-          <option [ngValue]="null" disabled selected>Select</option>
+          <option [ngValue]="null" disabled selected>{{ 'shared.select.text' | translate }}</option>
           <option *ngFor="let currentCountry of countries" [ngValue]="currentCountry">
             {{ currentCountry.label }}
           </option>
@@ -34,7 +34,7 @@
       <div class="col-sm-12 col-md-5">
         <label class="label-select" for="region">{{ 'listMunicipalities.region.label' | translate }}</label>
         <select name="region" id="region" [(ngModel)]="region" (ngModelChange)="selectRegion($event)">
-          <option [ngValue]="null" disabled selected>Select</option>
+          <option [ngValue]="null" disabled selected>{{ 'shared.select.text' | translate }}</option>
           <option *ngFor="let currentRegion of regions" [ngValue]="currentRegion">
             {{ currentRegion.label }}
           </option>

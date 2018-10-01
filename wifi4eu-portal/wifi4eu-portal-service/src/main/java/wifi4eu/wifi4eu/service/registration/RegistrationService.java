@@ -1,51 +1,108 @@
 package wifi4eu.wifi4eu.service.registration;
 
-import com.google.common.collect.Lists;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.DatatypeConverter;
+
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wifi4eu.wifi4eu.common.dto.model.*;
+
+import com.google.common.collect.Lists;
+
+import eu.cec.digit.ecas.org.bouncycastle.jcajce.provider.asymmetric.rsa.DigestSignatureSpi;
+import wifi4eu.wifi4eu.common.dto.mail.MailData;
+import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
+import wifi4eu.wifi4eu.common.dto.model.CallDTO;
+import wifi4eu.wifi4eu.common.dto.model.LegalFileCorrectionReasonDTO;
+import wifi4eu.wifi4eu.common.dto.model.LegalFileDTO;
+import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
+import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
+import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
+import wifi4eu.wifi4eu.common.dto.model.ThreadDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
-import wifi4eu.wifi4eu.mapper.registration.LegalFileMapper;
+import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
+import wifi4eu.wifi4eu.common.helper.Validator;
+import wifi4eu.wifi4eu.common.mail.MailHelper;
+import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
+import wifi4eu.wifi4eu.common.service.mail.MailService;
+import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
+import wifi4eu.wifi4eu.entity.application.Application;
+import wifi4eu.wifi4eu.entity.registration.LegalFileCorrectionReason;
+import wifi4eu.wifi4eu.entity.registration.Registration;
+import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
+import wifi4eu.wifi4eu.entity.supplier.Supplier;
+import wifi4eu.wifi4eu.entity.user.User;
+import wifi4eu.wifi4eu.entity.user.UserContactDetails;
+import wifi4eu.wifi4eu.mapper.registration.LegalFileCorrectionReasonMapper;
 import wifi4eu.wifi4eu.mapper.registration.RegistrationMapper;
-import wifi4eu.wifi4eu.repository.registration.LegalFileRepository;
+import wifi4eu.wifi4eu.mapper.registration.legal_files.LegalFilesMapper;
+import wifi4eu.wifi4eu.mapper.registrationWarning.RegistrationWarningMapper;
+import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
+import wifi4eu.wifi4eu.mapper.user.UserMapper;
+import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
+import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
+import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
+import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
+import wifi4eu.wifi4eu.repository.user.UserContactDetailsRepository;
+import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
+import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.location.LauService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
+import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
+import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
-import wifi4eu.wifi4eu.util.MailService;
-
-import java.util.ArrayList;
-import java.text.MessageFormat;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import wifi4eu.wifi4eu.service.warning.RegistrationWarningService;
+import wifi4eu.wifi4eu.util.RedisUtil;
+import wifi4eu.wifi4eu.util.UserUtils;
 
 @Service("portalRegistrationService")
 public class RegistrationService {
-    private final Logger _log = LoggerFactory.getLogger(RegistrationService.class);
+    private final Logger _log = LogManager.getLogger(RegistrationService.class);
 
     @Autowired
     RegistrationMapper registrationMapper;
 
     @Autowired
+    RegistrationWarningMapper registrationWarningMapper;
+
+    @Autowired
     RegistrationRepository registrationRepository;
+
+    @Autowired
+    ApplicationIssueUtilRepository applicationIssueUtilRepository;
 
     @Autowired
     ApplicationService applicationService;
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    MailService mailService;
 
     @Autowired
     MunicipalityService municipalityService;
@@ -63,91 +120,388 @@ public class RegistrationService {
     MayorService mayorService;
 
     @Autowired
-    LegalFileMapper legalFileMapper;
+    LegalFilesMapper legalFilesMapper;
 
     @Autowired
-    LegalFileRepository legalFileRepository;
+    LegalFilesRepository legalFilesRepository;
+
+    @Autowired
+    LegalFileCorrectionReasonMapper legalFileCorrectionReasonMapper;
+
+    @Autowired
+    RegistrationWarningService registrationWarningService;
+
+    @Autowired
+    LegalFileCorrectionReasonRepository legalFileCorrectionReasonRepository;
+
+    @Autowired
+    MailService mailService;
+
+    @Autowired
+    ApplicationRepository applicationRepository;
+
+    @Autowired
+    PermissionChecker permissionChecker;
+
+    @Autowired
+    UserUtils userUtils;
+
+    @Autowired
+    SupplierService supplierService;
+
+    @Autowired
+    SupplierMapper supplierMapper;
+
+    @Autowired
+    RegistrationUsersRepository registrationUsersRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    UserMapper userMapper;
+
+    @Autowired
+    CallService callService;
+
+    @Autowired
+    UserContactDetailsRepository userContactDetailsRepository;
+
+    @Autowired
+    private RedisUtil redisUtil;
+    
+    @Autowired
+    AzureBlobConnector azureBlobConnector;
 
     public List<RegistrationDTO> getAllRegistrations() {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
     }
 
+
     public RegistrationDTO getRegistrationById(int registrationId) {
-        return registrationMapper.toDTO(registrationRepository.findOne(registrationId));
+        Registration registration = registrationRepository.findOne(registrationId);
+        RegistrationDTO registrationDTO = registrationMapper.toDTO(registration);
+        registrationDTO.setRegistrationWarningDTOList(registrationWarningMapper.toDTOList(registration.getRegistrationWarningList()));
+        return registrationDTO;
     }
 
     @Transactional
     public RegistrationDTO createRegistration(RegistrationDTO registrationDTO) {
+        RegistrationUsers registrationUsers = new RegistrationUsers();
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         if (registrationDTO.getId() == 0) {
             registrationDTO.setMailCounter(3);
         }
-        return saveRegistration(registrationDTO);
+        RegistrationDTO registrationCreated = saveRegistration(registrationDTO);
+        registrationUsers.setUserId(userConnected.getId());
+        registrationUsers.setRegistrationId(registrationCreated.getId());
+        registrationUsers.setMain(1);
+        registrationUsers.setStatus(RegistrationUsersStatus.REGISTERED.getValue());
+        registrationUsers.setCreationDate(new Date());
+        registrationUsers.setContactEmail(userConnected.getEcasEmail());
+        registrationUsers = registrationUsersRepository.save(registrationUsers);
+        if (Validator.isNotNull(registrationUsers)) {
+            redisUtil.sync(userConnected.getId());
+        }
+
+        registrationWarningService.createWarningsByRegistration(registrationCreated);
+        return registrationCreated;
     }
 
+
     @Transactional
-    public RegistrationDTO deleteRegistrationDocuments(RegistrationDTO registrationDTO){
-
-        RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationDTO.getId()));
-
-        if(registrationDBO.getAllFilesFlag() != 1){
-            if(registrationDTO.getLegalFile1() == null){
-                registrationDBO.setLegalFile1(registrationDTO.getLegalFile1());
-            }
-
-            if(registrationDTO.getLegalFile2() == null){
-                registrationDBO.setLegalFile2(registrationDTO.getLegalFile2());
-            }
-
-            if(registrationDTO.getLegalFile3() == null){
-                registrationDBO.setLegalFile3(registrationDTO.getLegalFile3());
-            }
-
-            if(registrationDTO.getLegalFile4() == null){
-                registrationDBO.setLegalFile4(registrationDTO.getLegalFile4());
+    public ResponseDTO uploadRegistrationDocuments(Integer registrationID, List<LegalFileDTO> legalFile, HttpServletRequest request) throws Exception {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        if(!legalFile.isEmpty()){
+            for( int i = 0 ; i < legalFile.size() ; i++){
+                uploadDocument(registrationID, legalFile.get(i), userConnected, (request == null ? "" : RequestIpRetriever.getIp(request)));
             }
         }
-        return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDBO)));
+
+        Registration registration = registrationRepository.findOne(registrationID);
+        if (hasRegistrationRequiredFiles(registrationID)) {
+            registration.setAllFilesFlag(1);
+        } else {
+            registration.setAllFilesFlag(0);
+        }
+        registration = registrationRepository.save(registration);
+
+        if (Validator.isNotNull(registration)) {
+            redisUtil.sync(userConnected.getId());
+        }
+
+        //if user doesn't have any documents as requested for correction we put its status on HOLD
+        //this is only relevant if the registration has applied to a call!
+        if (hasOneUserWithoutCorrectionRequest(registrationUsersRepository
+                .findByRegistrationId(registrationID), registrationID)) {
+
+            //three cases
+            //1. if last closed call exists it's in the revision period so the status is set automatically to HOLD
+            //2. if last closed call is null then check if some other call is open
+            //2.1 if there's a call going on the user should not be able to edit the documents if he's applied
+            // if he's not applied there's no application
+            //2.2  if there's no call going on we set the status to HOLD
+
+            CallDTO lastCall = callService.getLastCallClosed();
+            if(lastCall != null) {
+                Application applicationDB = applicationRepository.findTopByRegistrationIdAndCallId(registrationID, lastCall.getId());
+                if (applicationDB != null && applicationDB.getStatus() == ApplicationStatus.PENDING_FOLLOWUP.getValue()) {
+                    applicationDB.setStatus(ApplicationStatus.HOLD.getValue());
+                    applicationRepository.save(applicationDB);
+                    _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected
+                            .getEcasUsername() + " - Changing applicant status for HOLD, as it doesn't have any more documents as requested for " +
+                            "correction. Application id: " + applicationDB.getId() + ". Registration id: " + registrationID);
+                }
+            } else {
+                CallDTO currentCall = callService.getCurrentCall();
+                if(currentCall == null){
+                    //do nothing there's no application
+
+                } else {
+                    //call going on
+                    //pending to define when it's allowed to upload documents
+                }
+            }
+        }
+        //DUPLICATED CODE, PLEASE WHEN UNCOMMENTING THIS MAKE IT RIGHT
+        // application has a correction request, set sent_email and sent_email_date to null to enable again the dgconn to validate/invalidate application according to new uploaded documents
+//        CallDTO lastCall = callService.getLastCallClosed();
+//        if(lastCall != null) {
+//            Application applicationDB = applicationRepository.findTopByRegistrationIdAndCallId(registrationID, lastCall.getId());
+//            if(applicationDB != null) {
+//                applicationDB.setSentEmail(false);
+//                applicationDB.setSentEmailDate(null);
+//                applicationRepository.save(applicationDB);
+//                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected
+//                        .getEcasUsername() + " - Changing applicant sent_email and sent_email_date to null, as it has documents requested for " +
+//                        "correction. Dgconn can again validate/invalidate application. Application id: " + applicationDB.getId() + ". Registration id: " + registrationID);
+//            }
+//        }
+        return new ResponseDTO(true, "sucess", null);
     }
 
-    @Transactional
-    public RegistrationDTO updateRegistrationDocuments(RegistrationDTO registrationDTO){
+    private void uploadDocument (Integer registrationID, LegalFileDTO legalFile, UserDTO userConnected, String ip) throws Exception {
+        String legalFileToUpload = legalFile.getFileData();
+        if (legalFileToUpload != null) {
+            String base64 = LegalFilesService.getBase64Data(legalFileToUpload);
+            if(base64 != null && !base64.isEmpty()) {
+                byte[] byteArray = Base64.getMimeDecoder().decode(base64);
+                String extension = LegalFilesService.getValidFileExtension(legalFileToUpload);
+                if (byteArray.length > 1024000) {
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File size cannot bet greater than 1 MB");
+                    throw new Exception("File size cannot bet greater than 1 MB.");
+                } else if (extension == null) {
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File must have a valid extension");
+                    throw new Exception("File must have a valid extension.");
+                } else if (legalFile.getFileName().isEmpty()) {
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File doesn't have a name");
+                    throw new Exception("File must have a valid extension.");
+                } else {
+                	long uploadTimeUTC = System.currentTimeMillis();
+                	MessageDigest msdDigest = MessageDigest.getInstance("SHA-1");
+                    msdDigest.update(legalFile.getFileName().getBytes("UTF-8"), 0, legalFile.getFileName().length());
+                    String codeName = DatatypeConverter.printHexBinary(msdDigest.digest());                	
+                    String azureFileName = String.valueOf(registrationID) + "_" + codeName + "_" + uploadTimeUTC;
 
-        RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationDTO.getId()));
+                	String uri = azureBlobConnector.uploadLegalFile(azureFileName, base64);
+                    boolean docUploaded = !Validator.isEmpty(uri);
+                    legalFile.setAzureUri(uri);
+                    
+                    if (docUploaded) {
+                    	legalFile.setId(0);
+                    	legalFile.setRegistration(registrationID);
+                    	//legalFile.setFileData(LegalFilesService.getBase64Data(legalFileToUpload));
+                    	legalFile.setFileData("");
+                    	legalFile.setUploadTime(uploadTimeUTC);
+                    	legalFile.setFileMime(LegalFilesService.getMimeType(legalFileToUpload));
+                    	legalFile.setFileSize(byteArray.length);
+                    	legalFile.setUserId(userConnected.getId());
+                    	legalFile.setFileName(legalFile.getFileName());
+                    	legalFilesRepository.save(legalFilesMapper.toEntity(legalFile));
 
-        if(registrationDTO.getLegalFile1() != null && !registrationDTO.getLegalFile1().isEmpty()){
-            registrationDBO.setLegalFile1(registrationDTO.getLegalFile1());
+                    	_log.log(Level.getLevel("BUSINESS"), "[ " + ip + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal " +
+                    			"document number type:" + legalFile.getFileType());
+
+                    	List<LegalFileCorrectionReason> legalFilesCorrectionReasons = legalFileCorrectionReasonRepository.findAllCorrectionByRegistrationAndUserAndType(legalFile.getRegistration(),legalFile.getFileType());
+
+                    	for(LegalFileCorrectionReason legalFileCorrectionReason: legalFilesCorrectionReasons){
+                    		legalFileCorrectionReason.setCorrectionReason(null);
+                    		legalFileCorrectionReason.setRequestCorrection(false);
+                    	}
+
+                    	try {
+                    		_log.info("Saving legal file entry on Database");
+                    		legalFileCorrectionReasonRepository.save(legalFilesCorrectionReasons);
+                    	} catch (Exception e) {
+                    		_log.error("Error saving legal_files", e);
+                    		azureBlobConnector.deleteLegalFile(legalFile.getFileName());
+                    	}
+                    }
+                }
+            } else {
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Trying to upload a file its data is in incorrect format");
+                throw new Exception("Data is in incorrect format");
+            }
+        } else{
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Trying to upload a file that is empty");
+            throw new Exception("File is empty");
         }
-
-        if(registrationDTO.getLegalFile2() != null && !registrationDTO.getLegalFile2().isEmpty()){
-            registrationDBO.setLegalFile2(registrationDTO.getLegalFile2());
-        }
-
-        if(registrationDTO.getLegalFile3() != null && !registrationDTO.getLegalFile3().isEmpty()){
-            registrationDBO.setLegalFile3(registrationDTO.getLegalFile3());
-        }
-
-        if(registrationDTO.getLegalFile4() != null && !registrationDTO.getLegalFile4().isEmpty()){
-            registrationDBO.setLegalFile4(registrationDTO.getLegalFile4());
-        }
-
-        registrationDBO.setAllFilesFlag(registrationDTO.getAllFilesFlag());
-        registrationDBO.setMailCounter(registrationDTO.getMailCounter());
-
-        return saveRegistration(registrationDBO);
     }
 
+    /**
+     * True if there's at least one user associated with this registration has no file requested for correction
+     * @param users
+     * @param registrationId
+     * @return
+     */
+    private boolean hasOneUserWithoutCorrectionRequest(List<RegistrationUsers> users, Integer registrationId) {
+        for (int i = 0; i < users.size(); i++) {
+            if (legalFileCorrectionReasonRepository.findLastLegalFilesByRegistrationAndUserCorrection(registrationId, users.get(i).getUserId()).isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public ResponseDTO confirmOrRejectInstallationAndSendCNS(Map<String, Object> map, HttpServletRequest request) {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        ResponseDTO response = new ResponseDTO();
+        if (!map.isEmpty()) {
+            if (map.containsKey("id") && map.containsKey("beneficiaryIndicator")) {
+                Registration registration = registrationRepository.findOne((int) map.get("id"));
+
+                if (!checkPermissionsRegistrations(registration)){
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to confirm or reject");
+                    return permissionChecker.getAccessDeniedResponse();
+                }
+
+                // take origin submitted date
+                if (registration != null && registration.getInstallationSiteSubmission() != null) {
+                    boolean beneficiaryIndicator = (boolean) map.get("beneficiaryIndicator");
+
+                    if (beneficiaryIndicator) {
+                        registration.setInstallationSiteConfirmation(new java.sql.Date(new Date().getTime()));
+                        _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Installation site confirmed");
+                    } else {
+                        registration.setInstallationSiteRejection(new java.sql.Date(new Date().getTime()));
+                        _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Installation site rejected");
+                    }
+                    // we save the new indicators
+                    if (sendEmailOnConfirmOrReject(registration)) {
+                        registrationRepository.save(registration);
+                        //if everything goes ok it's a success
+                        response.setSuccess(true);
+                        MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipality().getId());
+                        response.setData(municipality);
+                        return response;
+                    }
+
+                } else {
+                    response.setSuccess(false);
+                    response.setData("Error querying municipality - registration");
+                    response.setError(new ErrorDTO(404, "error.404.beneficiaryNotFound"));
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The beneficiary is not found");
+                }
+            }
+            response.setSuccess(false);
+            response.setError(new ErrorDTO(400, "error.400.invalidFields"));
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The fields are invalid");
+        } else {
+            response.setSuccess(false);
+            response.setError(new ErrorDTO(400, "error.400.noData"));
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Data not found");
+        }
+        return response;
+    }
+
+    private boolean checkPermissionsRegistrations(Registration registration) {
+        try {
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            permissionChecker.checkBeneficiaryPermission(userDTO.getType(), registration.getMunicipality().getId(), registration.getId());
+            if (registrationUsersRepository.findByUserIdAndRegistrationId(userDTO.getId(), registration.getId()) == null) {
+                throw new AccessDeniedException("403 FORBIDDEN");
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    /* Method called when the user confirms/rejects the installation report. This method sends the CNS email to the
+     * supplier.
+     *
+     * @param registration
+     * @return
+     */
+    private boolean sendEmailOnConfirmOrReject(Registration registration) {
+        //sending CNS
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending email for registration with id " + registration.getId());
+        String beneficiaryName = registration.getMunicipality().getName();
+        Iterable<Application> applicationList = applicationRepository.findByRegistrationId(registration
+                .getId());
+        Supplier supplier = supplierMapper.toEntity(supplierService.getSupplierById(applicationList.iterator().next().getSupplierId()));
+        String name = supplier.getName();
+        String email = supplier.getContactEmail();
+        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+        String lang = userUtils.getUserLangByUserId(supplierService.getUserIdFromSupplier(supplier.getId()));
+        if (lang != null) {
+            _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - No language specified, using the default language");
+            locale = new Locale(lang);
+        }
+        //if beneficiary indicator and wifi indicator are true we send a confirmation email
+        if (registration.getInstallationSiteConfirmation() != null) {
+            MailData mailData = MailHelper.buildMailInstallationConfirmationFromBeneficiary(email, name, beneficiaryName, locale);
+        	mailService.sendMail(mailData, true);
+
+        	_log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Confirmation email for registration " + registration.getId() + " sent to " + email);
+            return true;
+        } else {
+            Date dateSubmission = registration.getInstallationSiteSubmission();
+            Date dateReject = registration.getInstallationSiteRejection();
+            if (dateSubmission.before(dateReject)) {
+                // if rejection date is bigger than submission date, send email
+                User user = userRepository.findMainUserFromRegistration(registration.getId());
+                String ccName = user.getName();
+                String ccEmail = user.getEmail();
+                
+                MailData mailDataSupplier = MailHelper.buildMailInstallationRejectionFromBeneficiary(email, name, beneficiaryName, locale);
+            	mailService.sendMail(mailDataSupplier, true);
+                MailData mailDataUser = MailHelper.buildMailInstallationRejectionFromBeneficiary(ccEmail, ccName, beneficiaryName, locale);
+            	mailService.sendMail(mailDataUser, true);
+
+                _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Rejection email for registration " + registration.getId() + " sent to " + email);
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     @Transactional
-    public RegistrationDTO deleteRegistration(int registrationId) {
+    public RegistrationDTO deleteRegistration(int registrationId, HttpServletRequest request) {
         RegistrationDTO registrationDTO = registrationMapper.toDTO(registrationRepository.findOne(registrationId));
         if (registrationDTO != null) {
             for (ApplicationDTO application : applicationService.getApplicationsByRegistrationId(registrationDTO.getId())) {
-                applicationService.deleteApplication(application.getId());
+                applicationService.deleteApplication(application.getId(), request);
             }
+            legalFilesRepository.deleteByRegistration(registrationDTO.getId());
             registrationRepository.delete(registrationMapper.toEntity(registrationDTO));
             return registrationDTO;
         } else {
             return null;
         }
+    }
+
+
+    public RegistrationDTO invalidateRegistration(int registrationId) {
+        RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationId));
+        registrationDBO.setStatus(RegistrationStatus.KO.getValue());
+        return saveRegistration(registrationDBO);
     }
 
     public List<RegistrationDTO> getRegistrationsByUserId(int userId) {
@@ -178,21 +532,19 @@ public class RegistrationService {
     public boolean requestLegalDocuments(int registrationId) {
         RegistrationDTO registration = getRegistrationById(registrationId);
         if (registration != null) {
-            UserDTO user = userService.getUserById(registration.getUserId());
+            UserDTO user = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationId));
             if (user != null) {
                 Locale locale = new Locale(UserConstants.DEFAULT_LANG);
                 if (user.getLang() != null) {
                     locale = new Locale(user.getLang());
                 }
-                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                String subject = bundle.getString("mail.dgConn.requestDocuments.subject");
-                String msgBody = bundle.getString("mail.dgConn.requestDocuments.body");
+                
                 String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/voucher";
-                msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
-                _log.info("additionalInfoUrl: " + additionalInfoUrl + " msgBody: " + msgBody + " language: " + locale.getLanguage());
-                if (!userService.isLocalHost()) {
-                    mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-                }
+                MailData mailData = MailHelper.buildMailRequestSupportingDocumentsForRegistration(
+                		user.getEcasEmail(), MailService.FROM_ADDRESS, additionalInfoUrl, 
+                		registration.getMunicipalityId(), "requestLegalDocuments", locale);
+            	mailService.sendMail(mailData, false);
+
                 return true;
             }
         }
@@ -223,7 +575,6 @@ public class RegistrationService {
 
     public RegistrationDTO getRegistrationByUserThreadId(int threadId, int userId) {
         ThreadDTO threadDTO = threadService.getThreadById(threadId);
-
         List<RegistrationDTO> registrations = getRegistrationsByUserId(userId);
         for (RegistrationDTO registration : registrations) {
             MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
@@ -247,523 +598,102 @@ public class RegistrationService {
         return registrations;
     }
 
-    public boolean registrationHasWarning1(RegistrationDTO registration) {
-        boolean warning1 = false;
-        MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
-        if (municipality != null) {
-            LauDTO lau = lauService.getLauById(municipality.getLauId());
-            MayorDTO mayor = mayorService.getMayorByMunicipalityId(municipality.getId());
-            if (registration != null && mayor != null && lau != null) {
-                UserDTO user = userService.getUserById(registration.getUserId());
-                if (user.getEmail() != null && user.getEcasEmail() != null && mayor.getEmail() != null) {
-                    switch (lau.getCountryCode().toUpperCase()) {
-                        case "AT":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".at") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".at") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".at")) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "BE":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".be") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".be") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".be")) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "BG":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".bg") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".bg") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".bg")) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "HR":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".hr") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".hr") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".hr")) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "CY":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".cy") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".cy") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".cy")) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "CZ":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".cz") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".cz") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".cz")) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "DK":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".dk") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".dk") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".dk")) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "EE":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".ee") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".ee") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".ee")) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "FI":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".fi") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".fi") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".fi")) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "FR":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".fr") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".fr") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".fr")) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "DE":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".de") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".de") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".de")) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "EL":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".el") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".el") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".el")) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "HU":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".hu") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".hu") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".hu")) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "IS":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".is") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".is") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".is")) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "IE":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".ie") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".ie") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".ie")) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "IT":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".it") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".it") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".it")) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "LV":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".lv") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".lv") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".lv")) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "LT":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".lt") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".lt") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".lt")) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "LU":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".lu") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".lu") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".lu")) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "MT":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".mt") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".mt") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".mt")) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "NL":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".nl") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".nl") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".nl")) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "NO":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".no") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".no") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".no")) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "PL":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".pl") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".pl") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".pl")) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "PT":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".pt") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".pt") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".pt")) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "RO":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".ro") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".ro") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".ro")) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "SK":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".sk") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".sk") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".sk")) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "SI":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".si") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".si") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".si")) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "ES":
-                            if (!(
-                                    user.getEmail().trim().toLowerCase().endsWith(".es") ||
-                                            user.getEmail().trim().toLowerCase().endsWith(".cat") ||
-                                            user.getEmail().trim().toLowerCase().endsWith(".gal") ||
-                                            user.getEmail().trim().toLowerCase().endsWith(".eus")
-                            ) || !(
-                                    user.getEcasEmail().trim().toLowerCase().endsWith(".es") ||
-                                            user.getEcasEmail().trim().toLowerCase().endsWith(".cat") ||
-                                            user.getEcasEmail().trim().toLowerCase().endsWith(".gal") ||
-                                            user.getEcasEmail().trim().toLowerCase().endsWith(".eus")
-                            ) || !(
-                                    mayor.getEmail().trim().toLowerCase().endsWith(".es") ||
-                                            mayor.getEmail().trim().toLowerCase().endsWith(".cat") ||
-                                            mayor.getEmail().trim().toLowerCase().endsWith(".gal") ||
-                                            mayor.getEmail().trim().toLowerCase().endsWith(".eus")
-                            )) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "SE":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".se") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".se") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".se")) {
-                                warning1 = true;
-                            }
-                            break;
-                        case "UK":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".uk") ||
-                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".uk") ||
-                                    !mayor.getEmail().trim().toLowerCase().endsWith(".uk")) {
-                                warning1 = true;
-                            }
-                            break;
-                    }
-                }
-            }
-        }
-        return warning1;
-    }
-
-    public boolean registrationHasWarning2(RegistrationDTO registration) {
-        boolean warning2 = false;
-        MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
-        if (municipality != null && registration != null) {
-            List<RegistrationDTO> ipRegistrations = getRegistrationsByIp(registration.getIpRegistration());
-            for (RegistrationDTO ipRegistration : ipRegistrations) {
-                MunicipalityDTO ipMunicipality = municipalityService.getMunicipalityById(ipRegistration.getMunicipalityId());
-                if (ipRegistration.getId() != registration.getId() && ipMunicipality.getLauId() == municipality.getLauId()) {
-                    warning2 = true;
-                }
-            }
-        }
-        return warning2;
-    }
-
-    public boolean registrationHasWarning3(RegistrationDTO registration) {
-        boolean warning3 = false;
-        MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
-        if (municipality != null) {
-            LauDTO lau = lauService.getLauById(municipality.getLauId());
-            MayorDTO mayor = mayorService.getMayorByMunicipalityId(municipality.getId());
-            if (registration != null && mayor != null && lau != null) {
-                UserDTO user = userService.getUserById(registration.getUserId());
-                if (user.getEmail() != null && user.getEcasEmail() != null && mayor.getEmail() != null) {
-                    switch (lau.getCountryCode().toUpperCase()) {
-                        case "AT":
-                            if (!(user.getLang().toLowerCase().equals("de"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "BE":
-                            if (!(user.getLang().toLowerCase().equals("de") ||
-                                    user.getLang().toLowerCase().equals("nl") ||
-                                    user.getLang().toLowerCase().equals("fr"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "BG":
-                            if (!(user.getLang().toLowerCase().equals("bg"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "HR":
-                            if (!(user.getLang().toLowerCase().equals("hr"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "CY":
-                            if (!(user.getLang().toLowerCase().equals("el"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "CZ":
-                            if (!(user.getLang().toLowerCase().equals("cs"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "DK":
-                            if (!(user.getLang().toLowerCase().equals("da"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "EE":
-                            if (!(user.getLang().toLowerCase().equals("et"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "FI":
-                            if (!(user.getLang().toLowerCase().equals("fi") ||
-                                    user.getLang().toLowerCase().equals("sv"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "FR":
-                            if (!(user.getLang().toLowerCase().equals("fr"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "DE":
-                            if (!(user.getLang().toLowerCase().equals("de"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "EL":
-                            if (!(user.getLang().toLowerCase().equals("el"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "HU":
-                            if (!(user.getLang().toLowerCase().equals("hu"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "IS":
-                            if (!(user.getLang().toLowerCase().equals("en"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "IE":
-                            if (!(user.getLang().toLowerCase().equals("en") ||
-                                    user.getLang().toLowerCase().equals("ga"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "IT":
-                            if (!(user.getLang().toLowerCase().equals("it"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "LV":
-                            if (!(user.getLang().toLowerCase().equals("lv"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "LT":
-                            if (!(user.getLang().toLowerCase().equals("lt"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "LU":
-                            if (!(user.getLang().toLowerCase().equals("fr") ||
-                                    user.getLang().toLowerCase().equals("de"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "MT":
-                            if (!(user.getLang().toLowerCase().equals("mt") ||
-                                    user.getLang().toLowerCase().equals("en"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "NL":
-                            if (!(user.getLang().toLowerCase().equals("nl"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "NO":
-                            if (!(user.getLang().toLowerCase().equals("en"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "PL":
-                            if (!(user.getLang().toLowerCase().equals("pl"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "PT":
-                            if (!(user.getLang().toLowerCase().equals("pt"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "RO":
-                            if (!(user.getLang().toLowerCase().equals("ro"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "SK":
-                            if (!(user.getLang().toLowerCase().equals("sk"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "SI":
-                            if (!(user.getLang().toLowerCase().equals("sl"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "ES":
-                            if (!(user.getLang().toLowerCase().equals("es"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "SE":
-                            if (!(user.getLang().toLowerCase().equals("sv"))) {
-                                warning3 = true;
-                            }
-                            break;
-                        case "UK":
-                            if (!(user.getLang().toLowerCase().equals("en"))) {
-                                warning3 = true;
-                            }
-                            break;
-                    }
-                }
-            }
-        }
-        return warning3;
-    }
-
-    public Integer getRegistrationIssue(RegistrationDTO registration) {
-        Integer issueType = 0;
-        if (registrationHasWarning1(registration)) {
-            issueType = 1;
-        }
-        if (registrationHasWarning3(registration)) {
-            issueType = 3;
-        }
-        return issueType;
-    }
-
-    public List<LegalFileDTO> getLegalFilesByRegistrationId(Integer registrationId) {
-        return legalFileMapper.toDTOList(legalFileRepository.findByRegistrationIdOrderByTypeAsc(registrationId));
+    public List<LegalFileCorrectionReasonDTO> getLegalFilesByRegistrationId(Integer registrationId) {
+        return legalFileCorrectionReasonMapper.toDTOList(legalFileCorrectionReasonRepository.findByRegistrationIdOrderByTypeAsc(registrationId));
     }
 
     @Transactional
-    public LegalFileDTO saveLegalFile(LegalFileDTO legalFileDTO) {
-        return legalFileMapper.toDTO(legalFileRepository.save(legalFileMapper.toEntity(legalFileDTO)));
+    public LegalFileCorrectionReasonDTO saveLegalFile(LegalFileCorrectionReasonDTO legalFileDTO) {
+        return legalFileCorrectionReasonMapper.toDTO(legalFileCorrectionReasonRepository.save(legalFileCorrectionReasonMapper.toEntity(legalFileDTO)));
     }
-
-    /*
-    public void moveRegistrationLegalFilesToNewTable() {
-        List<RegistrationDTO> registrations = getAllRegistrations();
-        for (RegistrationDTO registration : registrations) {
-            generateLegalFilesRecordsInNewTable(registration);
-        }
-    }
-
-    public void generateLegalFilesRecordsInNewTable(RegistrationDTO registration) {
-        LegalFileDTO legalFile1 = legalFileMapper.toDTO(legalFileRepository.findByRegistrationIdAndType(registration.getId(), 1));
-        if (legalFile1 == null) {
-            if (registration.getLegalFile1() != null) {
-                LegalFileDTO legalFile = new LegalFileDTO(null, registration.getId(), 1, registration.getLegalFile1(), registration.getUploadTime(), false, null);
-                legalFileRepository.save(legalFileMapper.toEntity(legalFile));
-            }
-        } else {
-            if (registration.getLegalFile1() != null) {
-                LegalFileDTO legalFile = new LegalFileDTO(legalFile1.getId(), registration.getId(), 1, registration.getLegalFile1(), registration.getUploadTime(), false, null);
-                legalFileRepository.save(legalFileMapper.toEntity(legalFile));
-            } else {
-                legalFileRepository.delete(legalFile1.getId());
-            }
-        }
-        LegalFileDTO legalFile2 = legalFileMapper.toDTO(legalFileRepository.findByRegistrationIdAndType(registration.getId(), 2));
-        if (legalFile2 == null) {
-            if (registration.getLegalFile2() != null) {
-                LegalFileDTO legalFile = new LegalFileDTO(null, registration.getId(), 2, registration.getLegalFile2(), registration.getUploadTime(), false, null);
-                legalFileRepository.save(legalFileMapper.toEntity(legalFile));
-            }
-        } else {
-            if (registration.getLegalFile2() != null) {
-                LegalFileDTO legalFile = new LegalFileDTO(legalFile2.getId(), registration.getId(), 2, registration.getLegalFile2(), registration.getUploadTime(), false, null);
-                legalFileRepository.save(legalFileMapper.toEntity(legalFile));
-            } else {
-                legalFileRepository.delete(legalFile2.getId());
-            }
-        }
-        LegalFileDTO legalFile3 = legalFileMapper.toDTO(legalFileRepository.findByRegistrationIdAndType(registration.getId(), 3));
-        if (legalFile3 == null) {
-            if (registration.getLegalFile3() != null) {
-                LegalFileDTO legalFile = new LegalFileDTO(null, registration.getId(), 3, registration.getLegalFile3(), registration.getUploadTime(), false, null);
-                legalFileRepository.save(legalFileMapper.toEntity(legalFile));
-            }
-        } else {
-            if (registration.getLegalFile3() != null) {
-                LegalFileDTO legalFile = new LegalFileDTO(legalFile3.getId(), registration.getId(), 3, registration.getLegalFile3(), registration.getUploadTime(), false, null);
-                legalFileRepository.save(legalFileMapper.toEntity(legalFile));
-            } else {
-                legalFileRepository.delete(legalFile3.getId());
-            }
-        }
-        LegalFileDTO legalFile4 = legalFileMapper.toDTO(legalFileRepository.findByRegistrationIdAndType(registration.getId(), 4));
-        if (legalFile4 == null) {
-            if (registration.getLegalFile4() != null) {
-                LegalFileDTO legalFile = new LegalFileDTO(null, registration.getId(), 4, registration.getLegalFile4(), registration.getUploadTime(), false, null);
-                legalFileRepository.save(legalFileMapper.toEntity(legalFile));
-            }
-        } else {
-            if (registration.getLegalFile4() != null) {
-                LegalFileDTO legalFile = new LegalFileDTO(legalFile4.getId(), registration.getId(), 4, registration.getLegalFile4(), registration.getUploadTime(), false, null);
-                legalFileRepository.save(legalFileMapper.toEntity(legalFile));
-            } else {
-                legalFileRepository.delete(legalFile4.getId());
-            }
-        }
-    }
-    */
 
     public RegistrationDTO saveRegistration(RegistrationDTO registrationDTO) {
         return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDTO)));
+    }
+
+    public boolean checkIfMayor(RegistrationDTO registrationDTO) {
+        UserDTO user = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
+        MayorDTO mayor = mayorService.getMayorByMunicipalityId(registrationDTO.getMunicipalityId());
+        if (user != null && mayor != null) {
+            if (mayor.getName().equals(user.getName()) && mayor.getSurname().equals(user.getSurname())) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkUserWithRegistration(Integer registrationId, Integer userId){
+        if(registrationUsersRepository.findByUserIdAndRegistrationId(userId, registrationId) != null){
+            return true;
+        }
+        return false;
+    }
+
+    public List<UserContactDetails> findUsersContactDetailsByRegistrationId(Integer registrationId){
+        return userContactDetailsRepository.findUsersContactDetailsByRegistrationId(registrationId);
+    }
+
+    public List<UserContactDetails> findUsersContactDetailsByOrganisationId(Integer organizationId){
+        return userContactDetailsRepository.findUsersContactDetailsByOrganisationId(organizationId);
+    }
+
+    public List<Registration> findRegistrationsByOrganisationId(Integer organizationId){
+        return registrationRepository.findByOrganisationId(organizationId);
+    }
+
+
+    public List<UserDTO> getUsersFromRegistration(Integer registrationId){
+        List<UserDTO> users = userMapper.toDTOList(userRepository.findUsersByRegistrationId(registrationId));
+        return users;
+    }
+
+    /**
+     * Checks if registration has required files ( type 1 and 3 ) to be able to apply. Independent of user
+     *
+     * If it doesn't have the required file return false. if has required files and has correction request for that file return false too.
+     * If it has the required files and has no correction request for those files, returns true
+     * @param registrationID
+     * @return
+     */
+    public boolean hasRegistrationRequiredFiles(Integer registrationID) {
+        boolean hasFilesUploaded = !legalFilesRepository.findLastRequiredLegalFilesByRegistration(registrationID).isEmpty();
+        boolean hasCorrectionRequestedForRequiredFiles = !legalFileCorrectionReasonRepository.findLastRequiredLegalFilesCorrectionByRegistration
+                (registrationID).isEmpty();
+
+        if(!hasFilesUploaded || hasCorrectionRequestedForRequiredFiles){
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Gets all documents that belong to that user and the mayor documents as well.
+     * If type is not null it returns all documents uploaded for that type.
+     * @param registrationId
+     * @param type
+     * @param userId
+     * @return
+     */
+    public List<LegalFileDTO> getHistoryDocuments(Integer registrationId, Integer type, Integer userId) {
+        if (type == null || type == 0) {
+            return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryAll(registrationId, userId));
+        }
+        if (type == 1 || type == 3) {
+            return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryRequiredType(registrationId, type));
+        }
+        return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryForType(registrationId, userId, type));
+    }
+
+    public List<RegistrationDTO> updateAssociationName(String associationName, Integer userId) {
+        List<RegistrationDTO> originalRegistrations = getRegistrationsByUserId(userId);
+        List<RegistrationDTO> newRegistrations = new ArrayList<>();
+        for (RegistrationDTO reg : originalRegistrations) {
+            RegistrationDTO newReg = reg;
+            newReg.setAssociationName(associationName);
+            newRegistrations.add(saveRegistration(newReg));
+        }
+        return newRegistrations;
     }
 }

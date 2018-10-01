@@ -2,11 +2,12 @@ package wifi4eu.pub.web.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.session.RecoverHttpSession;
 
 import javax.servlet.http.HttpSession;
 
@@ -15,7 +16,8 @@ import javax.servlet.http.HttpSession;
 @Api(value = "/user", description = "User object REST API services")
 @RequestMapping("user")
 public class UserResource {
-    Logger _log = LoggerFactory.getLogger(UserResource.class);
+
+    Logger _log = LogManager.getLogger(UserResource.class);
 
     @ApiOperation(value = "getUser")
     @RequestMapping(value = "/getUser", method = RequestMethod.GET)
