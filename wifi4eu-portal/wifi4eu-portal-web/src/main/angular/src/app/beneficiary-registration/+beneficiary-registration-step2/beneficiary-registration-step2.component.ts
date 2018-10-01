@@ -91,26 +91,38 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
         }
     }
 
-    private checkMunicipalitiesSelected() {
-        for (let i = 0; i < this.laus.length; i++) {
-            if (!this.laus[i].id) {
+    private checkMunicipalitiesSelected(j) {
+            if (!this.laus[j].id) {
                 if (!this.multipleMunicipalities) {
                     this.municipalityForm.controls['municipality'].setErrors({ 'incorrect': true });
                 }
                 else {
-                    this.municipalityForm.controls[`municipality-${i}`].setErrors({ 'incorrect': true });
+                    var municipalityFields = [];
+                    Object.keys(this.municipalityForm.controls).forEach((key) => {
+                        if(key.includes("municipality")){
+                            municipalityFields.push(this.municipalityForm.controls[key]);
+                        }
+                    })
+                    municipalityFields[j].setErrors({ 'incorrect': true });
+
                 }
-                this.css_class_municipalities[i] = 'notValid';
+                this.css_class_municipalities[j] = 'notValid';
             } else {
                 if (!this.multipleMunicipalities) {
                     if (this.municipalityForm.controls['municipality'] != undefined) this.municipalityForm.controls['municipality'].setErrors(null);
                 }
                 else {
-                    this.municipalityForm.controls[`municipality-${i}`].setErrors(null);
+                    var municipalityFields = [];
+                    Object.keys(this.municipalityForm.controls).forEach((key) => {
+                        if(key.includes("municipality")){
+                            municipalityFields.push(this.municipalityForm.controls[key]);
+                        }
+                    })
+                    municipalityFields[j].setErrors(null);
                 }
-                this.css_class_municipalities[i] = 'isValid';
+                this.css_class_municipalities[j] = 'isValid';
             }
-        }
+        
     }
 
     private checkEmailsMatch() {
@@ -140,7 +152,6 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
             this.css_class_email.push('notValid');
             this.css_class_municipalities.push('notValid');
         }
-        this.checkMunicipalitiesSelected();
     }
 
     private removeMunicipality(index: number, deleteCount: number = 1) {
@@ -150,8 +161,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
         this.emailConfirmations.splice(index, deleteCount);
         this.css_class_email.splice(index, deleteCount);
         this.css_class_municipalities.splice(index, deleteCount);
-        this.checkMunicipalitiesSelected();
-        this.checkButtonEnabled(null);
+       /*this.checkButtonEnabled(null);*/
 
     }
 
@@ -182,8 +192,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     private checkButtonEnabled(event, i?) {
         if (this.municipalities) {
             this.checButtonNextEnabled();
-            this.checkMunicipalitiesSelected();
-            this.checkEmailsMatch();
+            this.checkEmailsMatch();            
         }
     }
 

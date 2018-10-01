@@ -30,8 +30,8 @@
                                 <p-autoComplete id="municipality" class="form-control {{css_class_municipalities[0]}}"
                                                 name="municipality" field="name1" [(ngModel)]="laus[0]"
                                                 [suggestions]="lauSuggestions" (completeMethod)="search($event)"
-                                                (onSelect)="checkMunicipalitiesSelected()"
-                                                (input)="checkMunicipalitiesSelected()"
+                                                (onSelect)="checkMunicipalitiesSelected(0)"
+                                                (input)="checkMunicipalitiesSelected(0)"
                                                 (focusout)="clearMunicipality(0)" required></p-autoComplete>
                             </div>
                         </div>
@@ -143,8 +143,8 @@
                                                             [(ngModel)]="laus[i]"
                                                             [suggestions]="lauSuggestions"
                                                             (completeMethod)="search($event)"
-                                                            (onSelect)="checkMunicipalitiesSelected()"
-                                                            (input)="checkMunicipalitiesSelected()"
+                                                            (onSelect)="checkMunicipalitiesSelected(i)"
+                                                            (input)="checkMunicipalitiesSelected(i)"
                                                             (focusout)="clearMunicipality(i)"
                                                             required></p-autoComplete>
                                         </div>
