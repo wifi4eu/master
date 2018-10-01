@@ -178,6 +178,11 @@ export class BeneficiaryEditProfileComponent {
                                                 this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
                                                     (mayor: MayorDTOBase) => {
                                                         this.municipalities.push(municipality);
+                                                        this.municipalities.sort(function(a: MunicipalityDTOBase, b: MunicipalityDTOBase){
+                                                            if(a.id > b.id) return 1;
+                                                            else if (a.id < b.id) return -1;
+                                                            return 0
+                                                        } );
                                                         this.checkEditPermissionMunicipality(municipality.id);
                                                         this.mayors.push(mayor);
                                                         if (this.municipalities.length > 0 && this.municipalities.length < 2) {

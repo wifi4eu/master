@@ -3,7 +3,7 @@ import { Component } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { UserApi } from "../../shared/swagger/api/UserApi";
 import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
-import { MunicipalityDTOBase } from "../../shared/swagger/model/MunicipalityDTO";
+import { MunicipalityDTOBase, MunicipalityDTO } from "../../shared/swagger/model/MunicipalityDTO";
 import { RegistrationDTOBase } from "../../shared/swagger/model/RegistrationDTO";
 import { RegistrationApi } from "../../shared/swagger/api/RegistrationApi";
 import { BeneficiaryApi } from "../../shared/swagger/api/BeneficiaryApi";
@@ -17,10 +17,10 @@ import { MayorApi } from "../../shared/swagger/api/MayorApi";
 import { MayorDTOBase } from "../../shared/swagger/model/MayorDTO";
 import { ThreadApi } from "../../shared/swagger/api/ThreadApi";
 import { ThreadDTOBase } from "../../shared/swagger/model/ThreadDTO";
-import {UserRegistrationDTOBase} from "../../shared/swagger/model/UserRegistrationDTO";
+import { UserRegistrationDTOBase } from "../../shared/swagger/model/UserRegistrationDTO";
 
 // Languages functionality
-import {UxEuLanguages, UxLanguage} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
+import { UxEuLanguages, UxLanguage } from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
 import { UserDetailsService } from "../../core/services/user-details.service";
 import { elementAt } from "../../../../node_modules/rxjs/operator/elementAt";
 import { CookieService } from "ngx-cookie-service";
@@ -35,12 +35,12 @@ import { UserContactDetailsBase } from "../../shared/swagger";
         trigger(
             'enterSpinner', [
                 transition(':enter', [
-                    style({opacity: 0}),
-                    animate('200ms', style({opacity: 1}))
+                    style({ opacity: 0 }),
+                    animate('200ms', style({ opacity: 1 }))
                 ]),
                 transition(':leave', [
-                    style({opacity: 1}),
-                    animate('200ms', style({opacity: 0}))
+                    style({ opacity: 1 }),
+                    animate('200ms', style({ opacity: 0 }))
                 ])
             ]
         )
@@ -75,15 +75,15 @@ export class BeneficiaryProfileComponent {
     private allDocumentsUploaded: boolean[] = [];
     private documentUploaded: boolean = false;
     private oneRegistrationNumber: number = 0;
-    private userThreads: ThreadDTOBase [] = [];
-    private orderedUserThreads: ThreadDTOBase [] = [];
-    private threadsByUser : UserThreadsDTOBase[] = [];
+    private userThreads: ThreadDTOBase[] = [];
+    private orderedUserThreads: ThreadDTOBase[] = [];
+    private threadsByUser: UserThreadsDTOBase[] = [];
     private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
     private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr,ga";
     private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode['en'];
     protected modalIsOpen: boolean = false;
-    protected languageRows: UxLanguage [] [];
-    protected languages: UxLanguage [];
+    protected languageRows: UxLanguage[][];
+    protected languages: UxLanguage[];
     private withdrawingRegistrationConfirmation: boolean = false;
     private registrations: RegistrationDTOBase[] = [];
     private nameCookieApply: string = "hasRequested";
@@ -124,11 +124,16 @@ export class BeneficiaryProfileComponent {
                             this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
                                 (mayor: MayorDTOBase) => {
                                     this.municipalities.push(municipality);
+                                    this.municipalities.sort(function(a: MunicipalityDTOBase, b: MunicipalityDTOBase){
+                                        if(a.id > b.id) return 1;
+                                        else if (a.id < b.id) return -1;
+                                        return 0
+                                    } );
                                     this.mayors.push(mayor);
                                     // Order the threads array with the municipalities
                                     if (this.municipalities.length == registrations.length) {
-                                        let indexedThreads = this.userThreads.map(function(element) {return element.title});
-                                        for(let municipality of this.municipalities) {
+                                        let indexedThreads = this.userThreads.map(function (element) { return element.title });
+                                        for (let municipality of this.municipalities) {
                                             let exists = indexedThreads.indexOf(municipality.name);
                                             if (exists != -1)
                                                 this.orderedUserThreads.push(this.userThreads[exists]);
@@ -152,45 +157,62 @@ export class BeneficiaryProfileComponent {
             }
         );
         this.userThreadsApi.getUserThreadsByUserId(this.user.id).subscribe(
-                        (utsByUser: UserThreadsDTOBase[]) => {
-                            for (let utByUser of utsByUser) {
-                                this.threadApi.getThreadById(utByUser.threadId).subscribe(
-                                    (thread: ThreadDTOBase) => {
-                                        if (thread != null) {
-                                            this.userThreadsApi.getUserThreadsByThreadId(thread.id).subscribe(
-                                                (utsByThread: UserThreadsDTOBase[]) => {
-                                                    this.discussionThreads.push(thread);
-                                                    if (utsByThread.length > 1) {
-                                                        this.userThreads.push(thread);
-                                                         for (let i = 0; i < utsByThread.length; ++i) {
-                                                            if (utsByThread[i].userId != this.user.id) {
-                                                                this.threadsByUser.push(utsByThread[i]);
+            (utsByUser: UserThreadsDTOBase[]) => {
+                for (let utByUser of utsByUser) {
+                    this.threadApi.getThreadById(utByUser.threadId).subscribe(
+                        (thread: ThreadDTOBase) => {
+                            if (thread != null) {
+                                this.userThreadsApi.getUserThreadsByThreadId(thread.id).subscribe(
+                                    (utsByThread: UserThreadsDTOBase[]) => {
+                                        this.discussionThreads.push(thread);
+                                        if (utsByThread.length > 1) {
+                                            this.userThreads.push(thread);
+                                            for (let i = 0; i < utsByThread.length; ++i) {
+                                                if (utsByThread[i].userId != this.user.id) {
+                                                    this.threadsByUser.push(utsByThread[i]);
 
-                                                            }
-                                                        }
-                                                    }
                                                 }
-                                            );
+                                            }
                                         }
                                     }
                                 );
                             }
-                        }, error => {
-                            console.log("service error: ", error);
                         }
                     );
+                }
+            }, error => {
+                console.log("service error: ", error);
+            }
+        );
     }
-    
 
-    private withdrawRegistration(){
+
+
+    private dynamicSort(property) {
+        let sortOrder = 1;
+        if (property[0] === '-') {
+            sortOrder = -1;
+            property = property.substr(1);
+        }
+
+        return function (a, b) {
+            if (sortOrder == -1) {
+                return b.property.localeCompare(a.property);
+            } else {
+                return a.property.localeCompare(b.property);
+            }
+        }
+    }
+
+    private withdrawRegistration() {
         this.withdrawingRegistrationConfirmation = true;
     }
 
-    private checkIfWithdrawAble(){
+    private checkIfWithdrawAble() {
         this.userApi.checkIfApplied().subscribe(
-            (hasApplied : ResponseDTOBase) => {
+            (hasApplied: ResponseDTOBase) => {
                 this.withdrawAble = hasApplied.data;
-            }, error =>{
+            }, error => {
                 console.log(error);
             }
         );
@@ -272,21 +294,21 @@ export class BeneficiaryProfileComponent {
         this.displayLanguageModal = false;
     }
 
-    private isVoucherApplied(idRegistration:number){
-      if (this.cookieService.check(this.nameCookieApply+"_"+idRegistration)){
-          if (this.cookieService.get(this.nameCookieApply+"_"+idRegistration) == "true"){
-              return true;
-          }
-      }
-      return false;
+    private isVoucherApplied(idRegistration: number) {
+        if (this.cookieService.check(this.nameCookieApply + "_" + idRegistration)) {
+            if (this.cookieService.get(this.nameCookieApply + "_" + idRegistration) == "true") {
+                return true;
+            }
+        }
+        return false;
     }
 
     private deleteRegistration() {
         this.withdrawingRegistrationConfirmation = false;
         var appliedExist = this.registrations.some(registration => this.isVoucherApplied(registration.id) === true);
-        if(appliedExist){
-          this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.withdraw.existingApplication.error', 'warn');
-          return;
+        if (appliedExist) {
+            this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.withdraw.existingApplication.error', 'warn');
+            return;
         }
         if (!this.withdrawingRegistration && !this.withdrawnSuccess) {
             this.withdrawingRegistration = true;
@@ -298,12 +320,12 @@ export class BeneficiaryProfileComponent {
                         this.withdrawnSuccess = true;
                         this.localStorageService.remove('user');
                         var port = window.location.port ? ':' + window.location.port : '';
-                        window.location.href = window.location.protocol + "//" + window.location.hostname + port+'/wifi4eu/index.html';
+                        window.location.href = window.location.protocol + "//" + window.location.hostname + port + '/wifi4eu/index.html';
                     } else {
-                        if(data.error != null){
-                          this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', data.error.errorMessage, 'warn');  
-                        }else{
-                          this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.deleteApplication.Failure', 'error');
+                        if (data.error != null) {
+                            this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', data.error.errorMessage, 'warn');
+                        } else {
+                            this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.deleteApplication.Failure', 'error');
                         }
                         this.withdrawingRegistration = false;
                         this.withdrawnSuccess = true;
@@ -317,16 +339,16 @@ export class BeneficiaryProfileComponent {
         }
     }
 
-    private checkHasDiscussion(municipality){
-      return this.userThreads.some(userThread => userThread.title === municipality.name);
+    private checkHasDiscussion(municipality) {
+        return this.userThreads.some(userThread => userThread.title === municipality.name);
     }
 
     private goToDiscussion(index) {
-        for(let i = 0; i < this.userThreads.length; i++){
-            if(this.userThreads[i].title == this.municipalities[index].name){
+        for (let i = 0; i < this.userThreads.length; i++) {
+            if (this.userThreads[i].title == this.municipalities[index].name) {
                 this.threadId = this.discussionThreads[i].id;
-                this.router.navigate(['../discussion-forum/', this.threadId], {relativeTo: this.route});
-           }
+                this.router.navigate(['../discussion-forum/', this.threadId], { relativeTo: this.route });
+            }
         }
     }
 
@@ -341,7 +363,7 @@ export class BeneficiaryProfileComponent {
     /* Language functionalities */
     private loadLanguages() {
         if (this.newLanguageArray != null) {
-            let codes: string [] = this.newLanguageArray.split(/[ ,]+/g);
+            let codes: string[] = this.newLanguageArray.split(/[ ,]+/g);
             this.languages = UxEuLanguages.getLanguages(codes);
         } else {
             this.languages = UxEuLanguages.getLanguages();
@@ -352,9 +374,9 @@ export class BeneficiaryProfileComponent {
         this.selectedLanguage = userLang;
     }
 
-    private prepareLanguageRows(): UxLanguage [] [] {
-        let rows: UxLanguage [] [] = [];
-        let row: UxLanguage [] = [];
+    private prepareLanguageRows(): UxLanguage[][] {
+        let rows: UxLanguage[][] = [];
+        let row: UxLanguage[] = [];
         for (let i = 0; i < this.languages.length; i++) {
             if (i % 4 == 0) {
                 if (row.length > 0) {
