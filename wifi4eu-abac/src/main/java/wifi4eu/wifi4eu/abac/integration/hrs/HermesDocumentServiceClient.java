@@ -20,6 +20,9 @@ import java.util.GregorianCalendar;
 
 public class HermesDocumentServiceClient {
 
+    private static final String FILE_NAME_PATTERN = "Grant n° %s/Wifi4EU/Call %d identifying %d/%s/%s";
+    private static final String DOCUMENT_NAME_PATTERN = "Grant n° Inea/Wifi4EU/Call %d identifying %d/%s/%s - %s";
+
     private static final Logger logger = LoggerFactory.getLogger(HermesDocumentServiceClient.class);
 
     private DocumentService documentService;
@@ -73,7 +76,7 @@ public class HermesDocumentServiceClient {
         DocumentCreationRequest request = new DocumentCreationRequest();
 
         LegalEntity legalEntity = document.getLegalEntity();
-        String documentName = String.format("Grant n° Inea/Wifi4EU/Call %d identifying %d/%s/%s - %s", legalEntity.getCallNumber(), legalEntity.getMid(), legalEntity.getAbacLatinName(), legalEntity.getCountry().getName(), document.getType().getValue());
+        String documentName = String.format(DOCUMENT_NAME_PATTERN, legalEntity.getCallNumber(), legalEntity.getMid(), legalEntity.getAbacLatinName(), legalEntity.getCountry().getName(), document.getType().getValue());
 
         request.setTitle(documentName);
         request.setDocumentDate(getGregorianDate(document.getDateCreated()));
@@ -137,7 +140,7 @@ public class HermesDocumentServiceClient {
         }
 
         String fileName = String.format(
-                "Grant n° %s/Wifi4EU/Call %d identifying %d/%s/%s",
+                FILE_NAME_PATTERN,
                 legalEntity.getRegistrationNumber(),
                 legalEntity.getCallNumber(),
                 legalEntity.getMid(),
@@ -171,47 +174,6 @@ public class HermesDocumentServiceClient {
         document.setHermesFileId(createFileResponse.getFile().getFileId());
         legalEntity.setHermesFileId(createFileResponse.getFile().getFileId());
 
-
-        return document;
-    }
-
-    @Deprecated
-    public Document registerDocument(Document document) throws Exception {
-
-        if(document.getRegistrationNumber() != null){
-            logger.info("A document is already registered for DOC {} RegistrationNumber {}", document.getId(), document.getRegistrationNumber());
-            return document;
-        }
-
-        LegalEntity legalEntity = document.getLegalEntity();
-        String documentName = String.format("Grant n° Inea/Wifi4EU/Call %d identifying %d/%s/%s - %s", legalEntity.getCallNumber(), legalEntity.getMid(), legalEntity.getAbacLatinName(), legalEntity.getCountry().getName(), document.getType().getValue());
-
-        DocumentRegistrationRequest registrationRequest = new DocumentRegistrationRequest();
-        registrationRequest.setTitle(documentName);
-        registrationRequest.setDocumentDate(getGregorianDate(document.getDateCreated()));
-        registrationRequest.setSentDate(getGregorianDate(new Date()));
-        registrationRequest.setSecurityClassification(SecurityClassification.NORMAL);
-        registrationRequest.setSenders(createIneaSender());
-
-
-        DocumentRegistrationRequest.Items items = new DocumentRegistrationRequest.Items();
-        UploadedItemToAdd uploadedItemToAdd = new UploadedItemToAdd();
-        uploadedItemToAdd.setName(document.getFileName());
-        uploadedItemToAdd.setContentId(document.getHermesAttachmentId());
-        uploadedItemToAdd.setLanguage("EN");
-        uploadedItemToAdd.setKind(ItemKindToAdd.MAIN);
-        uploadedItemToAdd.setAttachmentType(AttachmentTypeToAdd.NATIVE_ELECTRONIC);
-        uploadedItemToAdd.setExternalReference("HRS");
-        items.getUploadedItem().add(uploadedItemToAdd);
-        registrationRequest.setItems(items);
-
-        RegisterDocument registerDocument = new RegisterDocument();
-        registerDocument.setRequest(registrationRequest);
-
-        RegisterDocumentResponse registerDocumentResponse = documentService.registerDocument(registerDocument);
-
-        document.setRegistrationNumber(registerDocumentResponse.getDocument().getRegistrationNumber());
-        document.setAresReference(registerDocumentResponse.getDocument().getRegistrationNumber());
 
         return document;
     }

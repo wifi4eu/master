@@ -92,7 +92,6 @@ public class DocumentService {
 		hermesDocumentServiceClient.createFile(document);
 		hermesDocumentServiceClient.uploadAttachment(document);
 		hermesDocumentServiceClient.createDocument(document);
-		//hermesDocumentServiceClient.fileDocument(document); COMMENTED OUT because registerDocumentById already files the document
 		hermesDocumentServiceClient.registerDocumentById(document);
 
         return saveDocument(document);
