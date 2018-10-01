@@ -16,11 +16,12 @@ import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "127.0.0.1")
 @Controller
 @Api(value = "/application", description = "Application object REST API services")
 @RequestMapping("application")
@@ -37,11 +38,10 @@ public class ApplicationResource {
     @ApiOperation(value = "Send email to notify the applicandts for a given call id")
     @RequestMapping(value = "/sendApplicationEmails/{callId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ResponseDTO sendApplicationEmails (@PathVariable("callId") final Integer callId) throws IOException {
-        // more security?
-        // what if the call id does not exist?
+    public ResponseDTO sendApplicationEmails(HttpServletRequest http, @PathVariable("callId") final Integer callId) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.info("IP ADDRESS => "+http.getRemoteAddr());
         try {
                 if (userConnected.getType() != 5) {
                     throw new AccessDeniedException("This user is not authorized to use this functionality.");
