@@ -25,7 +25,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.service.exportImport.ExportImportWifi4euAbacService;
+import wifi4eu.wifi4eu.service.exportImport.ExportImportAbacService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -38,15 +38,15 @@ import java.io.IOException;
 @Controller
 @Api(value = "/exportImport", description = "Export and import registration data")
 @RequestMapping("exportImport")
-public class ExportImportWifi4euAbacResource {
+public class ExportImportAbacResource {
 
-    private final Logger _log = LoggerFactory.getLogger(ExportImportWifi4euAbacResource.class);
+    private final Logger _log = LoggerFactory.getLogger(ExportImportAbacResource.class);
 
     @Autowired
     private UserService userService;
 
     @Autowired
-    private ExportImportWifi4euAbacService exportImportWifi4euAbacService;
+    private ExportImportAbacService exportImportAbacService;
 
 
     @RequestMapping(value = "/importLegalEntityFBCValidate", method = RequestMethod.POST, produces = "application/JSON")
@@ -55,7 +55,7 @@ public class ExportImportWifi4euAbacResource {
         try {
             _log.debug("importLegalEntityFBCValidate: file size = {}", file.getSize());
 
-            boolean success = exportImportWifi4euAbacService.importLegalEntitiesFromAbac(file.getInputStream());
+            boolean success = exportImportAbacService.importLegalEntitiesFromAbac(file.getInputStream());
 
             _log.debug("Import of the LEF result: {}", success);
 
@@ -74,7 +74,7 @@ public class ExportImportWifi4euAbacResource {
     public ResponseDTO importBudgetaryCommitment(@Validated @NotNull @RequestParam("importFile") MultipartFile file) {
         _log.debug("importBudgetaryCommitment: file size = {}", file.getSize());
         try {
-            boolean success = exportImportWifi4euAbacService.importBudgetaryCommitment(file.getInputStream());
+            boolean success = exportImportAbacService.importBudgetaryCommitment(file.getInputStream());
             return new ResponseDTO(success);
         } catch (IOException e) {
             _log.error("Error in operation.", e);
@@ -87,7 +87,7 @@ public class ExportImportWifi4euAbacResource {
     public ResponseDTO importLegalCommitment(@Validated @NotNull @RequestParam("importFile") MultipartFile file) {
         _log.debug("importLegalCommitment: file size = {}", file.getSize());
         try {
-            boolean success = exportImportWifi4euAbacService.importLegalCommitment(file.getInputStream());
+            boolean success = exportImportAbacService.importLegalCommitment(file.getInputStream());
             return new ResponseDTO(success);
         } catch (IOException e) {
             _log.error("Error in operation.", e);
@@ -114,7 +114,7 @@ public class ExportImportWifi4euAbacResource {
             headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 
             _log.debug("exportBeneficiaryInformation - generating zip file content");
-            ByteArrayOutputStream file = exportImportWifi4euAbacService.exportLegalEntities();
+            ByteArrayOutputStream file = exportImportAbacService.exportLegalEntities();
             ResponseEntity<byte[]> responseReturn = new ResponseEntity<>(file.toByteArray(), headers, HttpStatus.OK);
 
             _log.info("exportBeneficiaryInformation - csv file exported successfully");
@@ -147,8 +147,8 @@ public class ExportImportWifi4euAbacResource {
             headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 
             _log.debug("exportBudgetaryCommitment - generating csv file content");
-            byte[] responseData = exportImportWifi4euAbacService.exportBudgetaryCommitment();
-            // getBytes(Charset.forName("UTF-8"));
+            byte[] responseData = exportImportAbacService.exportBudgetaryCommitment();
+
             ResponseEntity<byte[]> responseReturn = new ResponseEntity<>(responseData, headers, HttpStatus.OK);
 
             _log.debug("exportBudgetaryCommitment - csv file exported successfully");
@@ -181,7 +181,7 @@ public class ExportImportWifi4euAbacResource {
             headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 
             _log.debug("exportLegalCommitment - generating zip file content");
-            ByteArrayOutputStream file = exportImportWifi4euAbacService.exportLegalCommitment();
+            ByteArrayOutputStream file = exportImportAbacService.exportLegalCommitment();
             ResponseEntity<byte[]> responseReturn = new ResponseEntity<>(file.toByteArray(), headers, HttpStatus.OK);
 
             _log.info("exportLegalCommitmentInformation - csv file exported successfully");
@@ -208,7 +208,7 @@ public class ExportImportWifi4euAbacResource {
             if (userService.getUserByUserContext(UserHolder.getUser()).getType() != 5) {
                 throw new AccessDeniedException("");
             }
-            exportImportWifi4euAbacService.exportRegistrationData();
+            exportImportAbacService.exportRegistrationData();
             return new ResponseDTO(true, null, null);
         } catch (AccessDeniedException ade) {
             return new ResponseDTO(false, null, new ErrorDTO(0, null));
@@ -224,7 +224,7 @@ public class ExportImportWifi4euAbacResource {
         try {
             _log.debug("importRegistrationData");
 
-            boolean success = exportImportWifi4euAbacService.importDgBudgList(file.getInputStream());
+            boolean success = exportImportAbacService.importDgBudgList(file.getInputStream());
 
             return new ResponseDTO(success);
         } catch (AccessDeniedException ade) {

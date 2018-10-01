@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.entity.exportImport.ExportFile;
-import wifi4eu.wifi4eu.service.exportImport.ExportImportWifi4euAbacService;
 import wifi4eu.wifi4eu.util.parsing.LegalEntityCSVColumn;
 import wifi4eu.wifi4eu.util.parsing.LegalEntityDocumentCSVColumn;
 
@@ -21,7 +20,7 @@ public class ExportFileUtils {
     public static final String SEPARATOR = ",";
     public static final String QUOTE = "\"";
 
-    private final Logger log = LoggerFactory.getLogger(ExportImportWifi4euAbacService.class);
+    private final Logger log = LoggerFactory.getLogger(ExportFileUtils.class);
 
     public ByteArrayOutputStream generateZipFileStream(List<ExportFile> includedExportFiles) {
         if (includedExportFiles == null || includedExportFiles.size() == 0) {
