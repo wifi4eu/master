@@ -110,6 +110,7 @@ export class MyVoucherComponent {
                                                         (grantAgreement: GrantAgreementDTOBase)=>{
                                                           if(grantAgreement != null && grantAgreement.dateSignature != null){
                                                               grantAgreement.dateSignature = new Date(grantAgreement.dateSignature);
+                                                              grantAgreement['formattedDateSignature'] = ('0' + grantAgreement.dateSignature.getUTCDate()).slice(-2) + "/" + ('0' + ( grantAgreement.dateSignature.getUTCMonth() + 1)).slice(-2) + "/" +  grantAgreement.dateSignature.getUTCFullYear();
                                                               this.hasSigned.push(grantAgreement);
                                                               this.date[i] = ('0' + grantAgreement.dateSignature.getUTCDate()).slice(-2) + "/" + ('0' + ( grantAgreement.dateSignature.getUTCMonth() + 1)).slice(-2) + "/" +  grantAgreement.dateSignature.getUTCFullYear();
                                                           } else {

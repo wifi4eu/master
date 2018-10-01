@@ -58,7 +58,7 @@
                         <br>
                         <br>
                         <span class="entity-subtitle">
-                            {{ 'dgConn.beneficiaries.applied' | translate }}: {{ applications[i].date | date:'dd-MM-yyyy h:mm a'}}
+                            {{ 'dgConn.beneficiaries.applied' | translate }}: {{ applications[i].date | date:'dd-MM-yyyy'}} {{ applications[i].date | date:'shortTime'}}
                         </span>
                     </span>
                     <!-- Validate & Invalidate application buttons -->
@@ -326,9 +326,9 @@
                                                     </ng-template>
                                                 </p-column>
                                                 <p-column [style]="{'width':'53%'}" field="comment" header="{{ 'dgConn.applicantDetails.comments.table.comment' | translate }}"
-                                                    styleClass="padding-cell">
+                                                    styleClass="padding-cell text-adjust">
                                                     <ng-template let-row="rowData" pTemplate="body">
-                                                        <p style="margin: 0px; white-space: pre-wrap;word-break: break-all;">{{ row.comment }}</p>
+                                                        <p style="margin: 0px; white-space: pre-wrap;">{{ row.comment }}</p>
                                                     </ng-template>
                                                 </p-column>
                                             </p-dataTable>
@@ -586,7 +586,7 @@
                         <span class="ui-g-12" style="margin-bottom: 1em;">
                             <select [(ngModel)]="selectedReasonTypes[selectedIndex][index]" (ngModelChange)="selectCorrectionReason($event)" [id]="'invalidateReason'+index"
                                 [name]="'invalidateReason'+index" class="form-control">
-                                <option *ngIf="selectedReasonTypes[selectedIndex][index]  != null" [ngValue]="-1">
+                                <option *ngIf="file.requestCorrection" [ngValue]="-1">
                                     -
                                 </option>
                                 <option *ngFor="let invalidateReason of invalidateReasonsList; let reasonIndex = index" [ngValue]="reasonIndex">

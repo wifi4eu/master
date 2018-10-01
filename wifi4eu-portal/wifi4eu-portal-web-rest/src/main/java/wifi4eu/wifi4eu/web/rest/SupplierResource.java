@@ -116,7 +116,7 @@ public class SupplierResource {
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating contact details");
         try {
             SupplierDTO supplier = supplierService.getSupplierByUserId(userConnected.getId());
-            boolean access = false;
+            /*boolean access = false;
             for (UserDTO user : supplier.getUsers()) {
                 if (user.getId() == userConnected.getId()) {
                     access = true;
@@ -125,6 +125,14 @@ public class SupplierResource {
 
             }
             if (!access) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }*/
+            if(Validator.isNotNull(supplier)) {
+                if (supplierDTO.getId() != supplier.getId()) {
+                    throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+                }
+            }
+            else{
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             List<UserDTO> resSupplier = supplierService.updateContactDetails(supplierDTO);
@@ -197,7 +205,7 @@ public class SupplierResource {
     @ApiOperation(value = "Get supplier by specific user id")
     @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public SupplierDTO getSupplierByUserId(@PathVariable("userId") final Integer userId, HttpServletResponse response) throws IOException {
+    public SupplierDTO getSupplierByUserId(@PathVariable("userId") final Integer userId, @RequestParam("date") final Long timestamp, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting supplier by user id " + userId);

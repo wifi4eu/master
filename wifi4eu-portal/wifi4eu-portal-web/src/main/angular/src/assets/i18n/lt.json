@@ -374,7 +374,7 @@
   "shared.error.api.generic": "Bandant siųsti duomenis iš serverio įvyko klaida . Bandykite vėliau.",
   "helpdesk.helpdeskform.success": "Jūsų klausimas išsiųstas Europos Komisijai. Susisieksime su jumis tuojau pat, kai tik rasime jūsų problemos sprendimą.",
   "benefPortal.request.additionalInfo.instructions": "Sistema aptiko, kad kaip sąlygas atitinkantys subjektai užsiregistravo keli jūsų savivaldybės atstovai. Speciali diskusijų erdvė nesuteikė jums galimybės išspręsti šią problemą.<br> <br>Dėl to turime prašyti jūsų pateikti toliau nurodytus dokumentus.",
-  "benefPortal.request.additionalInfo.doc1.label": "1. Išsami teisinio atstovo (mero / savivaldybės vadovo) sutikimo įrodymo forma <a href=\"https://ec.europa.eu/digital-single-market/news-redirect/624101\" target=\"_blank\"> </a> IR jo tapatybės dokumento (tapatybės kortelės, paso) kopija.",
+  "benefPortal.request.additionalInfo.doc1.label": "1. Išsami teisinio atstovo (mero / savivaldybės vadovo) <a href=\"https://ec.europa.eu/digital-single-market/news-redirect/624101\" target=\"_blank\"> sutikimo įrodymo forma</a> IR jo tapatybės dokumento (tapatybės kortelės, paso) kopija.",
   "benefPortal.request.additionalInfo.doc2.label": "2. Paskyrimo akto arba dokumento kuriuo patvirtinama, kad teisinis atstovas (meras / savivaldybės vadovas) atstovauja savivaldybei, kopija. ",
   "benefPortal.request.additionalInfo.doc3.label": "3. <a href=\"https://ec.europa.eu/digital-single-market/news-redirect/624099\" target=\"_blank\">Įgalioto asmens forma</a>, pasirašyta teisinio atstovo (mero / savivaldybės vadovo) ir įgaliojamo asmens.",
   "benefPortal.request.additionalInfo.doc4.label": "4. Įgalioto asmens tapatybės dokumento (tapatybės kortelės, paso) kopija.",

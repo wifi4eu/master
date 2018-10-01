@@ -34,6 +34,7 @@ import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentAuxiliarDTO;
 import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentDTO;
 import wifi4eu.wifi4eu.common.dto.model.VoucherManagementDTO;
 import wifi4eu.wifi4eu.common.dto.model.VoucherSimulationDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.SelectionStatus;
@@ -58,6 +59,7 @@ import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.security.INEAPermissionChecker;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.warning.RegistrationWarningService;
@@ -131,7 +133,7 @@ public class VoucherService {
     ApplicationRepository applicationRepository;
 
     @Autowired
-    ApplicationContext context;    
+    ApplicationContext context;
 
     @Autowired
     TaskExecutor taskExecutor;
@@ -142,7 +144,7 @@ public class VoucherService {
     @PostConstruct
     public void init() {
         AdminActions adminActions = adminActionsRepository.findOneByAction("voucher_send_notifications");
-        if(Validator.isNotNull(adminActions)){
+        if (Validator.isNotNull(adminActions)) {
             adminActions.setAction("voucher_send_notifications");
             adminActions.setStartDate(null);
             adminActions.setRunning(false);
@@ -167,12 +169,12 @@ public class VoucherService {
         return voucherAssignmentAuxiliarMapper.toDTO(voucherAssignmentAuxiliarRepository.findByCallIdAndStatusAux(callId, status));
     }
 
-    public int checkIfApplicationInFreeze(Integer applicationId){
+    public int checkIfApplicationInFreeze(Integer applicationId) {
         ApplicationDTO applicationDTO = applicationService.getApplicationById(applicationId);
         return voucherSimulationRepository.checkIfApplicationIsFreeze(applicationDTO.getId(), applicationDTO.getCallId(), VoucherAssignmentStatus.FREEZE_LIST.getValue());
     }
 
-    public int checkIfApplicationInSimulation(Integer applicationId){
+    public int checkIfApplicationInSimulation(Integer applicationId) {
         ApplicationDTO applicationDTO = applicationService.getApplicationById(applicationId);
         return voucherSimulationRepository.checkIfSimulationExistByCallId(applicationDTO.getCallId(), VoucherAssignmentStatus.SIMULATION.getValue(), VoucherAssignmentStatus.PRE_LIST.getValue());
     }
@@ -262,7 +264,11 @@ public class VoucherService {
     }
 
     @Transactional
-    public VoucherAssignmentDTO saveFreezeListSimulation(int voucherAssignmentId, int callId) {
+    public ResponseDTO saveFreezeListSimulation(String freezePsswd, int voucherAssignmentId, int callId) {
+
+        if (!INEAPermissionChecker.freezePsswd.equals(freezePsswd)) {
+            return new ResponseDTO(false, null, new ErrorDTO(20, "dgConn.voucherAssignment.error.incorrectPassword"));
+        }
 
         CallDTO callDTO = callService.getCallById(callId);
 
@@ -313,12 +319,16 @@ public class VoucherService {
         }
 
         result.setVoucherSimulations(simulationDTOSet);
-        return voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(result)));
+        return new ResponseDTO(true, voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(result))), null);
     }
 
     @Transactional
-    public VoucherAssignmentDTO savePreListSimulation(int voucherAssignmentId, int callId) {
+    public ResponseDTO savePreListSimulation(String savePrelistPsswd, int voucherAssignmentId, int callId) {
         CallDTO callDTO = callService.getCallById(callId);
+        
+        if (!INEAPermissionChecker.savePrelistPsswd.equals(savePrelistPsswd)) {
+            return new ResponseDTO(false, null, new ErrorDTO(20, "dgConn.voucherAssignment.error.incorrectPassword"));
+        }
 
         if (callDTO == null) {
             throw new AppException("Call not exists");
@@ -371,7 +381,7 @@ public class VoucherService {
             result = voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(result)));
 
             voucherSimulationRepository.updateApplicationsInVoucherSimulationByVoucherAssignment(1, result.getId());
-            return result;
+            return new ResponseDTO(true, result, null);
         } else {
             throw new AppException("Error saving pre-selected list");
         }
@@ -860,7 +870,10 @@ public class VoucherService {
         return false;
     }
 
-    public ResponseDTO sendNotificationForApplicants(int callId) {
+    public ResponseDTO sendNotificationForApplicants(String psswdNotification, int callId) {
+        if (!INEAPermissionChecker.notificationsPsswd.equals(psswdNotification)) {
+            return new ResponseDTO(false, null, new ErrorDTO(20, "dgConn.voucherAssignment.error.incorrectPassword"));
+        }
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         if (!permissionChecker.checkIfDashboardUser()) {
@@ -870,14 +883,14 @@ public class VoucherService {
         VoucherAssignmentAuxiliar voucherAssignment = voucherAssignmentAuxiliarRepository
                 .findByCallIdAndStatusAux(callId, VoucherAssignmentStatus.FREEZE_LIST.getValue());
 
-            if(voucherAssignment.getNotifiedDate() != null){
-                return new ResponseDTO(false, voucherAssignment, null);
-            } else {
-                AdminActions adminActions = adminActionsRepository.findOneByAction("voucher_send_notifications");
-                if(adminActions.isRunning()){
-                    return new ResponseDTO(false, adminActions, null);
-                }
+        if (voucherAssignment.getNotifiedDate() != null) {
+            return new ResponseDTO(false, voucherAssignment, null);
+        } else {
+            AdminActions adminActions = adminActionsRepository.findOneByAction("voucher_send_notifications");
+            if (adminActions != null && adminActions.isRunning()) {
+                return new ResponseDTO(false, adminActions, null);
             }
+        }
 
         // Let the task executor manage the execution of the new thread to send the mails
         _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Launched notification for applicants, starting thread...");

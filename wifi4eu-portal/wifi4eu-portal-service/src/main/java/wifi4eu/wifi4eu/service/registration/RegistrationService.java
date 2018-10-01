@@ -1,5 +1,6 @@
 package wifi4eu.wifi4eu.service.registration;
 
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
@@ -8,7 +9,9 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.DatatypeConverter;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
 
+import eu.cec.digit.ecas.org.bouncycastle.jcajce.provider.asymmetric.rsa.DigestSignatureSpi;
 import wifi4eu.wifi4eu.common.dto.mail.MailData;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
 import wifi4eu.wifi4eu.common.dto.model.CallDTO;
@@ -296,7 +300,10 @@ public class RegistrationService {
                     throw new Exception("File must have a valid extension.");
                 } else {
                 	long uploadTimeUTC = System.currentTimeMillis();
-                    String azureFileName = String.valueOf(registrationID) + "_" + legalFile.getFileName() + "_" + uploadTimeUTC;
+                	MessageDigest msdDigest = MessageDigest.getInstance("SHA-1");
+                    msdDigest.update(legalFile.getFileName().getBytes("UTF-8"), 0, legalFile.getFileName().length());
+                    String codeName = DatatypeConverter.printHexBinary(msdDigest.digest());                	
+                    String azureFileName = String.valueOf(registrationID) + "_" + codeName + "_" + uploadTimeUTC;
 
                 	String uri = azureBlobConnector.uploadLegalFile(azureFileName, base64);
                     boolean docUploaded = !Validator.isEmpty(uri);
