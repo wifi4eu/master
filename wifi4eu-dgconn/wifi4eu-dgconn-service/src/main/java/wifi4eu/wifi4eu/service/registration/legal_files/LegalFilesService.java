@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import wifi4eu.wifi4eu.common.dto.model.LegalFileDTO;
 import wifi4eu.wifi4eu.common.enums.FileTypes;
+import wifi4eu.wifi4eu.common.enums.LegalFileStatus;
 import wifi4eu.wifi4eu.entity.registration.LegalFile;
 import wifi4eu.wifi4eu.mapper.registration.legal_files.LegalFilesMapper;
 import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
@@ -103,5 +104,13 @@ public class LegalFilesService {
 			}
 		}
 		return false;
+	}
+
+	public void setNotNewFile(LegalFileDTO legalFileDTO) {
+		LegalFile legalFile = legalFilesRepository.findOne(legalFileDTO.getId());
+		if (legalFile.getIsNew() == LegalFileStatus.NEW.getValue()) {
+			legalFile.setIsNew(LegalFileStatus.RECENT.getValue());
+		}
+		legalFilesRepository.save(legalFile);
 	}
 }
