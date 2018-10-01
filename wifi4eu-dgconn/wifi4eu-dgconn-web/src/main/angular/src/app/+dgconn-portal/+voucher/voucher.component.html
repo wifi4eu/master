@@ -231,7 +231,7 @@
                                   </div>
                                 </a>
                               </div>
-                              <div class="row"  *ngIf="!callVoucherAssignment?.hasFreezeListSaved">
+                              <div class="row" *ngIf="!callVoucherAssignment?.hasFreezeListSaved">
                                 <a *ngIf="!rowData.application.rejected" [class.reject-disabled]="!callVoucherAssignment?.hasPreListSaved" (click)="rejectApplication(rowData.application.id)">
                                   <div class="col-sm-2">
                                     <span class="fa fa-ban"></span>
