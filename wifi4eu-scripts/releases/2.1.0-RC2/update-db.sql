@@ -288,6 +288,7 @@ DROP TABLE IF EXISTS dbo.NUTCALLCUSTOM;
 DROP TABLE IF EXISTS dbo.USERAUTHORIZEDPERSON;
 DROP TABLE IF EXISTS dbo.USERCONTACTDETAILS;
 
+--WIFIFOREU-3278
 -- Add new column for laus
 ALTER TABLE laus ADD name_national nvarchar(255) NULL;
 ALTER TABLE laus ADD name_latin nvarchar(255) NULL;
@@ -298,4 +299,5 @@ ALTER TABLE laus ADD display_name nvarchar(255) NULL;
 UPDATE laus
     SET name_latin=l2.name2, name_national=l2.name1, abac_name=l2.name2, display_name=l2.name2
     FROM laus l2 WHERE id = l2.id
+
 

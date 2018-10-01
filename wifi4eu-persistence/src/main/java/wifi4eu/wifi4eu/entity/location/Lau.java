@@ -26,10 +26,10 @@ public class Lau {
     @Column(name = "_change")
     private String change;
 
-    @Column(name = "name1")
+    @Column(name = "name_national", updatable = false, insertable = false)
     private String name1;
 
-    @Column(name = "name2")
+    @Column(name = "display_name", updatable = false, insertable = false)
     private String name2;
 
     @Column(name = "pop")
@@ -56,7 +56,8 @@ public class Lau {
     public Lau() {
     }
 
-    public Lau(Integer id, String countryCode, String nuts3, String lau1, String lau2, String change, String name1, String name2, Integer pop, Integer area, String physicalAddress, String nationalName, String latinName, String abacName, String displayName) {
+    public Lau(Integer id, String countryCode, String nuts3, String lau1, String lau2, String change, String name1, String name2, Integer pop,
+               Integer area, String physicalAddress, String nationalName, String latinName, String abacName, String displayName) {
         this.id = id;
         this.countryCode = countryCode;
         this.nuts3 = nuts3;
