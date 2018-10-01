@@ -250,10 +250,11 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
 
             if (CollectionUtils.isNotEmpty(beneficiariesInformation)) {
                 Set<String> loadedMunicipalities = new HashSet<>();
+                Set<String> documentGeneratedMunicipalities = new HashSet<>();
 
                 beneficiariesInformation.forEach(beneficiaryInformation -> {
                     processBeneficiaryInformation(beneficiaryInformation, loadedMunicipalities, entitiesPrinter);
-                    processDocumentInformation(beneficiaryInformation, documentsPrinter, exportFiles);
+                    processDocumentInformation(beneficiaryInformation, documentGeneratedMunicipalities, documentsPrinter, exportFiles);
                 });
             }
 
@@ -309,8 +310,14 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
         return StringUtils.defaultString(source);
     }
 
-    private void processDocumentInformation(BeneficiaryInformation beneficiaryInformation, CSVPrinter csvPrinter, List<ExportFile> exportFiles) {
+    private void processDocumentInformation(BeneficiaryInformation beneficiaryInformation, Set<String> documentGeneratedMunicipalities, CSVPrinter csvPrinter, List<ExportFile> exportFiles) {
 
+        // needed because BeneficiaryInformation is not an entity but a cartesian product of municipalities x legal files, and we don't want to export a municipality more than once
+        if (documentGeneratedMunicipalities.contains(beneficiaryInformation.getMun_id())) {
+            return;
+        } else {
+            documentGeneratedMunicipalities.add(beneficiaryInformation.getMun_id());
+        }
         //if (StringUtils.isNotBlank(beneficiaryInformation.getAzureUri())) {
 
             //String fileName = getMunicipalityPrefixedFileName(beneficiaryInformation);
