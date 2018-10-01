@@ -17,7 +17,7 @@ export class SupplierRegistrationStep1Component {
     @ViewChild('logoInput') private logoInput: any;
     @ViewChild('supplierForm') private supplierForm: NgForm;
     private logoFile: File;
-    private websitePattern: string = "(([wW][wW][wW]\\.)|([hH][tT][tT][pP][sS]?:\\/\\/([wW][wW][wW]\\.)?))?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,256}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)";
+    private websitePattern: string = "(([wW][wW][wW]\\.)|([hH][tT][tT][pP][sS]?:\\/\\/([wW][wW][wW]\\.)?))?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,256}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)$";
     private buttonEnabled: boolean = false;
 
     constructor(private sharedService: SharedService) {
