@@ -311,16 +311,18 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
 
     private void processDocumentInformation(BeneficiaryInformation beneficiaryInformation, CSVPrinter csvPrinter, List<ExportFile> exportFiles) {
 
-        if (StringUtils.isNotBlank(beneficiaryInformation.getAzureUri())) {
+        //if (StringUtils.isNotBlank(beneficiaryInformation.getAzureUri())) {
 
-            String fileName = getMunicipalityPrefixedFileName(beneficiaryInformation);
+            //String fileName = getMunicipalityPrefixedFileName(beneficiaryInformation);
 
             try {
+                String fileName = "lef_supporting_document-" + beneficiaryInformation.getMun_id() + ".pdf";
+
                 csvPrinter.printRecord(
                         beneficiaryInformation.getMun_id(),
                         beneficiaryInformation.getDoc_portalId(),
                         "lef_supporting_document.pdf",
-                        beneficiaryInformation.getMun_id() + ".pdf",
+                        fileName,
                         "application/pdf",
                         dateUtilities.convertDate2String(beneficiaryInformation.getDoc_date()),
                         defaultEmpty(beneficiaryInformation.getDoc_type()),
@@ -352,7 +354,7 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
                 _log.error(ERROR_WRITING_DOWN_TO_THE_CSV_FILE, e);
             }
 
-        }
+        //}
     }
 
     /**
