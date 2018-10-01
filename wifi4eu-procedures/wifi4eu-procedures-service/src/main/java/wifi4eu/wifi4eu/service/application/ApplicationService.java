@@ -50,12 +50,11 @@ public class ApplicationService {
 
     public void sendCreateApplicationEmail(User user, Integer municipalityId, ApplicationDTO application) throws Exception {
         Locale locale = new Locale(UserConstants.DEFAULT_LANG);
-        if (user.getLang() != null) {
+        if (Validator.isNotNull(user.getLang())) {
             locale = new Locale(user.getLang());
         } else {
             _log.warn("Create Application Emails - The user " + user.getEcasUsername() + " has not specified a language");
         }
-
     	MailData mailData = MailHelper.buildMailCreateApplication(user.getEcasEmail(), MailService.FROM_ADDRESS, municipalityId, "createApplication", locale);
     	mailService.sendMail(mailData, true);
         application.setSentEmail(true);
@@ -71,16 +70,16 @@ public class ApplicationService {
         Integer sentEmailsUsers = 0;
         Integer sentEmailsMunicipalities = 0;
         _log.debug("Create Application Emails - STARTING");
-        //in case of server failure also search for applications that weren't sent the email and that were created at least four hours ago
+        // in case of server failure also search for applications that weren't sent the email and that were created at least four hours ago
         List<ApplicationDTO> applicationList = applicationMapper.toDTOList(applicationRepository.findByCreateApplicationEmailNotSent(callId, new Date().getTime()));
         _log.info("Create Application Emails - There is " + applicationList.size() + " municipalities to be sent the email in this " +
                 "last four hours.");
         for (ApplicationDTO app : applicationList) {
             Integer municipalityId = municipalityRepository.findByRegistrationId(app.getRegistrationId()).getId();
             List<User> users = userRepository.findUsersByRegistrationId(app.getRegistrationId());
-            if(users != null && !users.isEmpty()) {
+            if(Validator.isNotNull(users) && !users.isEmpty()) {
                 for (User user : users) {
-                    if (municipalityId != null && user != null) {
+                    if (Validator.isNotNull(municipalityId) && Validator.isNotNull(user)) {
                         sendCreateApplicationEmail(user, municipalityId, app);
                         sentEmailsUsers++;
                     } else {

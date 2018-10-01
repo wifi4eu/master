@@ -12,7 +12,9 @@ import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.exportImport.ValidatedBC;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
@@ -41,15 +43,15 @@ public class ApplicationResource {
         _log.info("IP ADDRESS => "+http.getRemoteAddr());
         if (http.getRemoteAddr().equals(HARCODED_LOCALHOST)){
             try {
-                    Integer[] sentEmails = applicationService.sendEmailApplications(callId);
-                    if (sentEmails != null) {
-                        Map<String, Long> response = new HashMap<>();
-                        response.put("sentEmailsUsers", sentEmails[0].longValue());
-                        response.put("sentEmailsMunicipalities", sentEmails[1].longValue());
-                        return new ResponseDTO(true, response, null);
-                    } else {
-                        throw new Exception("ERROR - Could not create application emails");
-                    }
+                Integer[] sentEmails = applicationService.sendEmailApplications(callId);
+                if (Validator.isNotNull(sentEmails)) {
+                    Map<String, Long> response = new HashMap<>();
+                    response.put("sentEmailsUsers", sentEmails[0].longValue());
+                    response.put("sentEmailsMunicipalities", sentEmails[1].longValue());
+                    return new ResponseDTO(true, response, null);
+                } else {
+                    throw new Exception("ERROR - Could not create application emails");
+                }
             } catch (AccessDeniedException ade) {
                 return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
             } catch (Exception e) {
