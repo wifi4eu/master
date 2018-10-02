@@ -9,10 +9,6 @@ DB_NAME=$3
 DB_USER=$4
 DB_PASS=$5
 
-echo $6;
-echo $7;
-echo $8;
-
 # Get query parameters
 CALL_ID=$6
 START_DATE=$7
@@ -22,12 +18,18 @@ END_DATE=$8
 re='^[0-9]+$'
 if ! [[ $CALL_ID =~ $re ]] ; then
    echo "error: Call_Id is not a number" >&2; exit 1
+else
+   echo "Call_Id="$CALL_ID
 fi
 if ! [[ $START_DATE =~ $re ]] ; then
    echo "error: Start_Date is not a number" >&2; exit 1
+else
+   echo "Start_Date="$START_DATE
 fi
 if ! [[ $END_DATE =~ $re ]] ; then
    echo "error: End_Date is not a number" >&2; exit 1
+else
+   echo "End_Date="$END_DATE
 fi
 
 # Update calls
