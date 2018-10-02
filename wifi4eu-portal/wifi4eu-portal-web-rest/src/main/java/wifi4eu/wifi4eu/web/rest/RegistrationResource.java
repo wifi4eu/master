@@ -304,7 +304,7 @@ public class RegistrationResource {
 			if (!Validator.isEmpty(content)) {
 				try {
 					response.setContentType(fileMime);
-					response.setHeader("Content-disposition", "inline; filename=\"" + fileName + fileExtension + "\"");
+					response.setHeader("Content-disposition", "attachment; filename=\"" + fileName + fileExtension + "\"");
 
 					byte[] fileBytes = Base64Utils.decodeFromString(content);
 					response.getOutputStream().write(fileBytes);
@@ -337,7 +337,7 @@ public class RegistrationResource {
 	@RequestMapping(value = "/getHistory/{registrationId}/{type}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public ResponseDTO getHistoryForType(@PathVariable("registrationId") final Integer registrationId,
-			@PathVariable("type") final Integer type, HttpServletResponse response, HttpServletRequest request)
+			@PathVariable("type") final Integer type, @RequestParam("date") final Long timestamp, HttpServletResponse response, HttpServletRequest request)
 			throws IOException {
 		UserContext userContext = UserHolder.getUser();
 		UserDTO userConnected = userService.getUserByUserContext(userContext);

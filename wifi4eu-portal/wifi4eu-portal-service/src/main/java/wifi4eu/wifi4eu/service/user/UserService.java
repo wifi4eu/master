@@ -104,6 +104,9 @@ public class UserService {
     @Value("${server.address}")
     private String serverAddress;
 
+    @Value("${server.schemes}")
+    private String serverSchemes;
+
     @Autowired
     UserMapper userMapper;
 
@@ -166,7 +169,7 @@ public class UserService {
 
     @Autowired
     ConditionsAgreementRepository conditionsAgreementRepository;
-    
+
     @Autowired
     ApplicationService applicationService;
 
@@ -546,7 +549,7 @@ public class UserService {
         if (userDTO.getLang() != null) {
             locale = new Locale(userDTO.getLang());
         }
-        
+
         MailData mailData = MailHelper.buildMailBeneficiaryRegistration(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, locale);
     	mailService.sendMail(mailData, false);
     }
@@ -557,7 +560,7 @@ public class UserService {
         if (userDTO.getLang() != null) {
             locale = new Locale(userDTO.getLang());
         }
-        
+
         MailData mailData = MailHelper.buildMailSupplierRegistration(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, locale);
     	mailService.sendMail(mailData, false);
     }
@@ -604,7 +607,7 @@ public class UserService {
                     String token = Long.toString(secureRandom.nextLong()).concat(Long.toString(now.getTime())).replaceAll("-", "");
                     tempTokenDTO.setToken(token);
                     tempTokenRepository.save(tempTokenMapper.toEntity(tempTokenDTO));
-                    
+
                     String url = baseUrl + UserConstants.RESET_PASS_URL + tempTokenDTO.getToken();
                     MailData mailData = MailHelper.buildMailForgotPassword(email, MailService.FROM_ADDRESS, url, locale);
                     mailService.sendMail(mailData, false);
@@ -649,6 +652,10 @@ public class UserService {
         return serverAddress;
     }
 
+    public String getServerSchemes(){
+        return serverSchemes;
+    }
+
     private void removeTempToken(UserDTO userDTO) {
         for (TempToken tempToken : tempTokenRepository.findByUserId(userDTO.getId())) {
             tempTokenRepository.delete(tempToken);
@@ -676,7 +683,7 @@ public class UserService {
         List<Integer> voucherAwarded = userRepository.getIfUserHasVouchersAwarded(userDTO.getId());
         if (Validator.isNotNull(voucherAwarded)) {
             for (int vouch : voucherAwarded) {
-                if (vouch == 1) {
+                if (vouch >= 1) {
                     return true;
                 }
             }
@@ -741,6 +748,31 @@ public class UserService {
         User contactToDeactivate = userRepository.findOne(userId);
         contactToDeactivate.setType((int) Constant.ROLE_DEACTIVATED);
         userRepository.save(contactToDeactivate);
+    }
+
+    /*
+     *   MAIN USERS can edit themselves and contacts
+     *   CONTACT USERS only can edit themselves
+     */
+    public boolean userIsAuthorisedToMakeThisChanges(List<UserContactDetails> usersList, UserDTO userDTO){
+        return userOnlyModifiesHimSelf(usersList, userDTO) || userIsMain(userDTO);
+    }
+
+    private boolean userOnlyModifiesHimSelf(List<UserContactDetails> usersList, UserDTO user){
+        return usersList.size() == 1 && user.getEcasEmail().equals(usersList.get(0).getEmail());
+    }
+
+    /*
+     * There so RegistrationUsers for user as registrations
+     * If an user is main for a registration, will be main for all
+     * So we recover one and check the first
+     */
+    private boolean userIsMain(UserDTO userDTO){
+        List<RegistrationUsers> registrationUsersList = registrationUsersRepository.findByContactEmail(userDTO.getEcasEmail());
+        if (registrationUsersList.isEmpty()) return false;
+
+        RegistrationUsers ru = registrationUsersList.get(0);
+        return ru.getMain() == 1;
     }
 
 }

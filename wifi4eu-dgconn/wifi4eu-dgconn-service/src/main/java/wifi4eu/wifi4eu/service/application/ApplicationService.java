@@ -1,5 +1,12 @@
 package wifi4eu.wifi4eu.service.application;
 
+import com.google.common.collect.Lists;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
 import java.text.MessageFormat;
 import java.time.DateTimeException;
 import java.util.ArrayList;
@@ -15,31 +22,26 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.google.common.collect.Lists;
-
 import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.mail.MailData;
-import wifi4eu.wifi4eu.common.dto.model.ApplicantListItemDTO;
-import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
-import wifi4eu.wifi4eu.common.dto.model.ApplicationVoucherInfoDTO;
-import wifi4eu.wifi4eu.common.dto.model.CallDTO;
-import wifi4eu.wifi4eu.common.dto.model.CorrectionRequestEmailDTO;
-import wifi4eu.wifi4eu.common.dto.model.LegalFileCorrectionReasonDTO;
-import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
-import wifi4eu.wifi4eu.common.dto.model.PagingSortingDTO;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
-import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentAuxiliarDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
+import wifi4eu.wifi4eu.common.enums.LegalFileStatus;
+import wifi4eu.wifi4eu.common.enums.LegalFileValidationStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
 import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
+import wifi4eu.wifi4eu.entity.admin.AdminActions;
 import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
 import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
 import wifi4eu.wifi4eu.entity.registration.Registration;
@@ -48,27 +50,34 @@ import wifi4eu.wifi4eu.mapper.application.ApplicationInvalidateReasonMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.application.CorrectionRequestEmailMapper;
 import wifi4eu.wifi4eu.mapper.registration.LegalFileCorrectionReasonMapper;
+import wifi4eu.wifi4eu.mapper.registration.legal_files.LegalFilesMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
-import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
-import wifi4eu.wifi4eu.repository.application.ApplicationInvalidateReasonRepository;
-import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
-import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
-import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
+import wifi4eu.wifi4eu.repository.application.*;
 import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
+import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.repository.warning.RegistrationWarningRepository;
+import wifi4eu.wifi4eu.service.admin.AdminActionsService;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
+import wifi4eu.wifi4eu.service.security.INEAPermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.voucher.VoucherService;
 import wifi4eu.wifi4eu.util.ExcelExportGenerator;
+import wifi4eu.wifi4eu.util.ExcelExportGeneratorAsync;
+import wifi4eu.wifi4eu.util.SendNotificationsAsync;
+
+import javax.servlet.http.HttpServletRequest;
+import java.text.MessageFormat;
+import java.time.DateTimeException;
+import java.util.*;
 
 @Service
 public class ApplicationService {
@@ -152,6 +161,26 @@ public class ApplicationService {
     @Autowired
     LegalFileCorrectionReasonMapper legalFileCorrectionReasonMapper;
 
+    @Autowired
+    LegalFilesMapper legalFilesMapper;
+
+    @Autowired
+    LegalFilesRepository legalFilesRepository;
+
+    @Autowired
+    ApplicationContext context;
+
+    @Autowired
+    TaskExecutor taskExecutor;
+
+    @Autowired
+    AdminActionsService adminActionsService;
+
+    @Autowired
+    AzureBlobConnector azureBlobConnector;
+
+    public static final String TMP_DIR = System.getProperty("java.io.tmpdir");
+
     public ApplicationDTO getApplicationById(int applicationId) {
         return applicationMapper.toDTO(applicationRepository.findOne(applicationId));
     }
@@ -175,37 +204,37 @@ public class ApplicationService {
                 _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - The queue is from the specified call");
                 //check information on the queue is right
 //                if (registrationDTO.getUploadTime() == uploadDocTimestamp && registrationUsersRepository.findByUserIdAndRegistrationId(userId, registrationDTO.getId()) != null) {
-                    _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - All the information of this queue is right");
-                    //check if this application was received previously
-                    ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
-                    if (applicationDTO == null || applicationDTO.getDate() > queueTimestamp) {
-                        //create the application
-                        if (applicationDTO == null) {
-                            applicationDTO = new ApplicationDTO();
-                            applicationDTO.setRegistrationId(registrationDTO.getId());
-                            applicationDTO.setCallId(callDTO.getId());
-                            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - New application created");
-                        }
-                        applicationDTO.setDate(queueTimestamp);
-                        applicationDTO = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
-                        _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Application " + applicationDTO.getId() + " created successfully");
-                        return applicationDTO;
-                    } else {
-                        _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Trying to register an application existent on the DB, callId: "
-                                + callId + " userId: " + userId + " registrationId: " + registrationId +
-                                " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
-                        return applicationDTO;
+                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - All the information of this queue is right");
+                //check if this application was received previously
+                ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
+                if (applicationDTO == null || applicationDTO.getDate() > queueTimestamp) {
+                    //create the application
+                    if (applicationDTO == null) {
+                        applicationDTO = new ApplicationDTO();
+                        applicationDTO.setRegistrationId(registrationDTO.getId());
+                        applicationDTO.setCallId(callDTO.getId());
+                        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - New application created");
                     }
+                    applicationDTO.setDate(queueTimestamp);
+                    applicationDTO = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+                    _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Application " + applicationDTO.getId() + " created successfully");
+                    return applicationDTO;
                 } else {
-                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Trying to register an application with incorrect uploadDocTimestamp or userId not match, callId: "
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Trying to register an application existent on the DB, callId: "
                             + callId + " userId: " + userId + " registrationId: " + registrationId +
                             " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
+                    return applicationDTO;
                 }
             } else {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Trying to register an application out of the call period, callId: "
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Trying to register an application with incorrect uploadDocTimestamp or userId not match, callId: "
                         + callId + " userId: " + userId + " registrationId: " + registrationId +
                         " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
             }
+        } else {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Trying to register an application out of the call period, callId: "
+                    + callId + " userId: " + userId + " registrationId: " + registrationId +
+                    " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
+        }
 //        } else {
 //            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The information provided is wrong, callId: "
 //                    + callId + " userId: " + userId + " registrationId: " + registrationId +
@@ -242,17 +271,17 @@ public class ApplicationService {
                 } else {
                     _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - The user " + user.getEcasUsername() + " has not specified a language");
                 }
-                
+
                 MailData mailData = MailHelper.buildMailCreateApplication(
-                		user.getEcasEmail(), MailService.FROM_ADDRESS, 
-                		municipality.getId(), "createApplication", locale);
-            	mailService.sendMail(mailData, true);
-                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to" + user.getEcasEmail());                
+                        user.getEcasEmail(), MailService.FROM_ADDRESS,
+                        municipality.getId(), "createApplication", locale);
+                mailService.sendMail(mailData, true);
+                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to" + user.getEcasEmail());
             }
             if (applicationDTO.getId() != 0) {
                 _log.warn("Call to a create method with id set, the value has been removed ({})", applicationDTO.getId());
-                applicationDTO.setId(0);    
-            }            
+                applicationDTO.setId(0);
+            }
             ApplicationDTO application = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
             _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Application created");
             return application;
@@ -319,9 +348,9 @@ public class ApplicationService {
     }
 
     public List<ApplicantListItemDTO> findDgconnApplicantsList(Integer callId, String country, String name, PagingSortingDTO pagingSortingData) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving applicants");
+//        UserContext userContext = UserHolder.getUser();
+//        UserDTO userConnected = userService.getUserByUserContext(userContext);
+//        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving applicants");
         List<ApplicantListItemDTO> applicantsList;
         if (country == null) {
             country = "%";
@@ -384,6 +413,7 @@ public class ApplicationService {
                     applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByCounterAsc(callId, country, pagingSortingData.getOffset(), pagingSortingData.getCount()));
                 }
                 break;
+                /*
             case "mediation":
                 if (pagingSortingData.getOrderType() == -1) {
                     if (name != null) {
@@ -403,6 +433,7 @@ public class ApplicationService {
                     applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByMediationAsc(callId, country, pagingSortingData.getOffset(), pagingSortingData.getCount()));
                 }
                 break;
+                */
             case "supportingdocuments":
                 if (pagingSortingData.getOrderType() == -1) {
                     if (name != null) {
@@ -486,30 +517,32 @@ public class ApplicationService {
     public byte[] exportExcelDGConnApplicantsList(Integer callId, String country) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Exporting excel");
-        PagingSortingDTO pagingSortingData = new PagingSortingDTO(0,
-                municipalityService.getCountDistinctMunicipalitiesThatAppliedCall(callId, country), "lauId", 1);
-        List<ApplicantListItemDTO> applicants = findDgconnApplicantsList(callId, country, null, pagingSortingData);
-
-        ExcelExportGenerator excelExportGenerator = new ExcelExportGenerator(applicants, ApplicantListItemDTO.class);
-        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Excel exported");
-        return excelExportGenerator.exportExcelFile("applicants").toByteArray();
+        taskExecutor.execute(context.getBean(ExcelExportGeneratorAsync.class, callId, country, userConnected, ApplicantListItemDTO.class));
+        return new ByteArrayOutputStream().toByteArray();
     }
 
+    public byte[] downloadExportExcelApplicantsList(){
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        AdminActionsDTO adminActionsDTO = adminActionsService.getByActionNameAndUser("export_municipality_applications", userConnected.getId());
+        if(adminActionsDTO.isRunning()){
+            return null;
+        }
+        return azureBlobConnector.downloadExcelExportApplicants(adminActionsDTO.getData());
+    }
+    
     public byte[] exportExcelDGConnApplicantsListContainingName(Integer callId, String country, String name) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Exporting excel");
-        int pageSize = municipalityService.getCountDistinctMunicipalitiesThatAppliedCallContainingName(callId, country, name);
-        PagingSortingDTO pagingSortingData = new PagingSortingDTO(0, pageSize, "lauId", 1);
-        List<ApplicantListItemDTO> applicants = findDgconnApplicantsList(callId, country, name, pagingSortingData);
-
-        ExcelExportGenerator excelExportGenerator = new ExcelExportGenerator(applicants, ApplicantListItemDTO.class);
-        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Excel exported");
-        return excelExportGenerator.exportExcelFile("applicants").toByteArray();
+        taskExecutor.execute(context.getBean(ExcelExportGeneratorAsync.class, callId, country, name, userConnected, ApplicantListItemDTO.class));
+        return new ByteArrayOutputStream().toByteArray();
     }
 
-    public CorrectionRequestEmailDTO sendCorrectionEmails(Integer callId) throws Exception {
+    public ResponseDTO sendCorrectionEmails(String sendNotificationsPsswd, Integer callId) throws Exception {
+
+        if (!INEAPermissionChecker.sendNotificationsPsswd.equals(sendNotificationsPsswd)) {
+            return new ResponseDTO(false, null, new ErrorDTO(20, "dgConn.voucherAssignment.error.incorrectPassword"));
+        }
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         if (!checkIfCorrectionRequestEmailIsAvailable(callId)) {
@@ -530,7 +563,7 @@ public class ApplicationService {
         LogEmail lastEmailSent = logEmailRepository.findTopByActionOrderBySentDateDesc(Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS);
         int countCorrecionsToSend = legalFileCorrectionReasonRepository.countLegalFileCorrectionsAfterDate(getDateOfLogEmail(lastEmailSent));
 
-        if (countCorrecionsToSend  > 0) {
+        if (countCorrecionsToSend > 0) {
             for (ApplicationIssueUtil application : applications) {
                 Locale locale = application.getUserLang() == null ? new Locale(UserConstants.DEFAULT_LANG) : new Locale(application.getUserLang());
 
@@ -557,29 +590,29 @@ public class ApplicationService {
                 List<LegalFileCorrectionReasonDTO> legalFilesCorrectionReasons = legalFileCorrectionReasonMapper.toDTOList(legalFileCorrectionReasonRepository.findLegalFileCorrectionsAfterDateByRegistrationId(getDateOfLogEmail(lastEmailSent), registration.getId()));
 
                 for (LegalFileCorrectionReasonDTO legalFileCorrectionReason : legalFilesCorrectionReasons) {
-                        String emailString = "";
-                        switch (legalFileCorrectionReason.getType()) {
-                            case 1:
-                                correctionReasons[4] = reason5Case1;
-                                emailString = bundle.getString("mail.correctionRequestEmail.type1");
-                                documentTypesBody1[0] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
-                                break;
-                            case 2:
-                                correctionReasons[4] = reason5Case1;
-                                emailString = bundle.getString("mail.correctionRequestEmail.type3");
-                                documentTypesBody2[0] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
-                                break;
-                            case 3:
-                                correctionReasons[4] = reason5Case2;
-                                emailString = bundle.getString("mail.correctionRequestEmail.type2");
-                                documentTypesBody1[1] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
-                                break;
-                            case 4:
-                                correctionReasons[4] = reason5Case3;
-                                emailString = bundle.getString("mail.correctionRequestEmail.type4");
-                                documentTypesBody2[1] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
-                                break;
-                        }
+                    String emailString = "";
+                    switch (legalFileCorrectionReason.getType()) {
+                        case 1:
+                            correctionReasons[4] = reason5Case1;
+                            emailString = bundle.getString("mail.correctionRequestEmail.type1");
+                            documentTypesBody1[0] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                            break;
+                        case 2:
+                            correctionReasons[4] = reason5Case1;
+                            emailString = bundle.getString("mail.correctionRequestEmail.type3");
+                            documentTypesBody2[0] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                            break;
+                        case 3:
+                            correctionReasons[4] = reason5Case2;
+                            emailString = bundle.getString("mail.correctionRequestEmail.type2");
+                            documentTypesBody1[1] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                            break;
+                        case 4:
+                            correctionReasons[4] = reason5Case3;
+                            emailString = bundle.getString("mail.correctionRequestEmail.type4");
+                            documentTypesBody2[1] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                            break;
+                    }
                 }
                 //if document is type 1 or 3 then we need to show body 1
                 boolean isBody1 = !documentTypesBody1[0].isEmpty() || !documentTypesBody1[1].isEmpty();
@@ -596,16 +629,16 @@ public class ApplicationService {
                 }
 
                 if (!emailBody.isEmpty()) {
-                	MailData mailData = new MailData(application.getUserEcasEmail(), MailService.FROM_ADDRESS, 
-                			subject, emailBody, locale, 
-                			registration.getMunicipality().getId(), Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS, true);
-                	mailService.sendMail(mailData, false);
+                    MailData mailData = new MailData(application.getUserEcasEmail(), MailService.FROM_ADDRESS,
+                            subject, emailBody, locale,
+                            registration.getMunicipality().getId(), Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS, true);
+                    mailService.sendMail(mailData, false);
                 }
             }
             correctionRequest = new CorrectionRequestEmailDTO(null, callId, new Date().getTime(), buttonPressedCounter);
             correctionRequest = correctionRequestEmailMapper.toDTO(correctionRequestEmailRepository.save(correctionRequestEmailMapper.toEntity(correctionRequest)));
         }
-        return correctionRequest;
+        return new ResponseDTO(true, correctionRequest, null);
     }
 
     public CorrectionRequestEmailDTO getLastCorrectionRequestEmailInCall(Integer callId) {
@@ -656,11 +689,33 @@ public class ApplicationService {
         return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
     }
 
-    private Long getDateOfLogEmail(LogEmail logEmail){
+    private Long getDateOfLogEmail(LogEmail logEmail) {
         return logEmail == null ? 0 : logEmail.getSentDate();
     }
 
-    public Integer getNumberOfValidatedApplications(Integer callId){
+    public Integer getNumberOfValidatedApplications(Integer callId) {
         return applicationRepository.countValidatedApplicationsByCall(callId);
+    }
+
+    @Transactional
+    public ResponseDTO changeStatusRegistrationDocuments(Integer applicationId) {
+        ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findOne(applicationId));
+        List<LegalFileDTO> legalFileDTOS = legalFilesMapper.toDTOList(legalFilesRepository.findByRegistration(applicationDTO.getRegistrationId()));
+        if (!legalFileDTOS.isEmpty()) {
+            for (LegalFileDTO legalFileDTO : legalFileDTOS) {
+                if (legalFileDTO.getIsNew() == LegalFileStatus.RECENT.getValue() && legalFilesRepository.checkIfNewFile(legalFileDTO.getFileType(), legalFileDTO.getRegistration()) != 0) {
+                    legalFileDTO.setIsNew(LegalFileStatus.OLD.getValue());
+                }
+                if (legalFileDTO.getIsNew() == LegalFileStatus.NEW.getValue() || (legalFileDTO.getIsNew() == LegalFileStatus.RECENT.getValue() && legalFilesRepository.checkIfNewFile(legalFileDTO.getFileType(), legalFileDTO.getRegistration()) != 0)) {
+                    if (applicationDTO.getStatus() == ApplicationStatus.KO.getValue()) {
+                        legalFileDTO.setStatus(LegalFileValidationStatus.INVALID.getValue());
+                    } else if (applicationDTO.getStatus() == ApplicationStatus.OK.getValue()) {
+                        legalFileDTO.setStatus(LegalFileValidationStatus.VALID.getValue());
+                    }
+                }
+                legalFilesRepository.save(legalFilesMapper.toEntity(legalFileDTO));
+            }
+        }
+        return new ResponseDTO(true, "success", null);
     }
 }

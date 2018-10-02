@@ -17,7 +17,7 @@ export class SupplierRegistrationStep1Component {
     @ViewChild('logoInput') private logoInput: any;
     @ViewChild('supplierForm') private supplierForm: NgForm;
     private logoFile: File;
-    private websitePattern: string = "(([wW][wW][wW]\\.)|([hH][tT][tT][pP][sS]?:\\/\\/([wW][wW][wW]\\.)?))?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,256}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)";
+    private websitePattern: string = "(([wW][wW][wW]\\.)|([hH][tT][tT][pP][sS]?:\\/\\/([wW][wW][wW]\\.)?))?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,256}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)$";
     private buttonEnabled: boolean = false;
 
     constructor(private sharedService: SharedService) {
@@ -27,9 +27,16 @@ export class SupplierRegistrationStep1Component {
     }
 
     private submit() {
+        this.trimFields();
         this.supplierChange.emit(this.supplier);
         this.logoUrlChange.emit(this.logoUrl);
         this.onNext.emit();
+    }
+
+    private trimFields(){
+        this.supplier.name = this.supplier.name.trim();
+        this.supplier.address = this.supplier.address.trim();
+        this.supplier.vat = this.supplier.vat.trim();
     }
 
     private changeLogo(event) {

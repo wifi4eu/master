@@ -113,10 +113,16 @@ public class PermissionChecker {
     public boolean checkIfAuthorizedGrantAgreement(Integer applicationId) {
         UserContext userContext = UserHolder.getUser();
         UserDTO currentUserDTO = userMapper.toDTO(userRepository.findByEcasUsername(userContext.getUsername()));
-        ApplicationAuthorizedPersonDTO applicationAuthorizedPerson = applicationAuthorizedPersonService.findByApplicationAndAuthorisedPerson(applicationId, currentUserDTO.getId());
-        if(applicationAuthorizedPerson == null){
-            return false;
-        }else{
+        if(!applicationAuthorizedPersonService.findByApplicationUserAuthorized(applicationId, currentUserDTO.getId())){
+            ApplicationAuthorizedPersonDTO applicationAuthorizedPerson = applicationAuthorizedPersonService.findByApplicationAndAuthorisedPerson(applicationId, currentUserDTO.getId());
+            if(applicationAuthorizedPerson == null){
+                return false;
+            }else{
+                return true;
+            }
+        }
+        else{
+            //  The user is the legal representative and does not need to be authorized
             return true;
         }
     }

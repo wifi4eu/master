@@ -12,11 +12,15 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.*;
+import wifi4eu.wifi4eu.common.dto.model.ApplicationAuthorizedPersonDTO;
 import wifi4eu.wifi4eu.common.dto.model.GrantAgreementDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.service.application.ApplicationAuthorizedPersonService;
 import wifi4eu.wifi4eu.service.grantAgreement.GrantAgreementService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
@@ -42,9 +46,12 @@ public class GrantAgreementResource {
     GrantAgreementService grantAgreementService;
 
     @Autowired
+    ApplicationAuthorizedPersonService applicationAuthorizedPersonService;
+
+    @Autowired
     PermissionChecker permissionChecker;
 
-    @ApiOperation(value = "Confirm or request revision of installation report")
+    @ApiOperation(value = "Download grant agreement pdf without signature")
     @RequestMapping(value = "/exportExcelBeneficiary", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<byte[]> downloadGrantAgreementPdf(@RequestBody GrantAgreementDTO inputGrantAgreement, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -52,13 +59,13 @@ public class GrantAgreementResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
 
         try {
-            if (userConnected == null || userConnected.getType() == 1) {
+            if(!permissionChecker.checkIfAuthorizedGrantAgreement(inputGrantAgreement.getApplicationId())){
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.parseMediaType("application/pdf"));
-            String filename = "grantAgreementPdf_" + inputGrantAgreement.getDocumentLanguage() + ".pdf";
+            String filename = "grantAgreement_" + inputGrantAgreement.getApplicationId() + "_" + inputGrantAgreement.getDocumentLanguage() + ".pdf";
             headers.setContentDispositionFormData(filename, filename);
             headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
             ByteArrayOutputStream file = grantAgreementService.generateGrantAgreementDocument(inputGrantAgreement);
@@ -86,9 +93,7 @@ public class GrantAgreementResource {
     @RequestMapping(value = "/createGrantAgreement", method = RequestMethod.POST)
     @ResponseBody
     public GrantAgreementDTO createGrantAgreement(@RequestBody GrantAgreementDTO inputGrantAgreement) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        if (userConnected == null || userConnected.getType() == 1 || userConnected.getType() == 5) {
+        if(!permissionChecker.checkIfAuthorizedGrantAgreement(inputGrantAgreement.getApplicationId())){
             throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
         }
         return grantAgreementService.createGrantAgreement(inputGrantAgreement);
@@ -99,12 +104,36 @@ public class GrantAgreementResource {
     @RequestMapping(value = "/getGrantAgreementByApplicationId/{applicationId}", method = RequestMethod.GET)
     @ResponseBody
     public GrantAgreementDTO getGrantAgreementByApplicationId(@PathVariable("applicationId") Integer applicationId) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        if (userConnected == null || userConnected.getType() == 1 || userConnected.getType() == 5) {
+
+        if(!permissionChecker.checkIfAuthorizedGrantAgreement(applicationId)){
             throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
         }
-        return grantAgreementService.getGrantAgreementByApplicationId(applicationId);
+
+        GrantAgreementDTO grantAgreementDTO = grantAgreementService.getGrantAgreementByApplicationId(applicationId);
+        if(Validator.isNotNull(grantAgreementDTO)){
+            grantAgreementDTO.setDocumentLocation(null);
+            grantAgreementDTO.setDocumentLocationCounterSigned(null);
+        }
+        return grantAgreementDTO;
+    }
+
+    @ApiOperation(value = "Get grant agreement pdf signed by grantAgreementId")
+    @RequestMapping(value = "/exportExcelBeneficiary/{applicationId}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<byte[]> downloadGrantAgreementPdf(@PathVariable("applicationId") Integer applicationId) {
+
+        if(!permissionChecker.checkIfAuthorizedGrantAgreement(applicationId)){
+            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+        }
+
+        GrantAgreementDTO grantAgreementDTO = grantAgreementService.getGrantAgreementByApplicationId(applicationId);
+        byte[] file = grantAgreementService.downloadGrantAgreementSigned(applicationId, grantAgreementDTO);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType("application/pdf"));
+        String filename = "grant_agreement_" + applicationId + "_"+ grantAgreementDTO.getDocumentLanguage() + "_signed.pdf";
+        headers.setContentDispositionFormData("filename", filename);
+        return new ResponseEntity<>(file, headers, HttpStatus.OK);
     }
 
 }

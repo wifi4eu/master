@@ -92,6 +92,12 @@ export class BeneficiaryListComponent implements OnInit {
             dateFront = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
             this.finalBeneficiaries[i].dateSignature = dateFront;
           }
+          if(this.finalBeneficiaries[i].dateCounterSignature != null){
+            let dateFront;
+            let date = new Date(this.finalBeneficiaries[i].dateCounterSignature);
+            dateFront = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
+            this.finalBeneficiaries[i].dateCounterSignature = dateFront;
+          }
         }
       }
     )
@@ -122,7 +128,7 @@ export class BeneficiaryListComponent implements OnInit {
   }
 
   private downloadPdfGrantAgreement(registrationId: number){
-    this.beneficiaryApi.exportBeneficiaryPdfGrantAgreement(registrationId).subscribe(          
+    this.beneficiaryApi.exportBeneficiaryPdfGrantAgreement(registrationId, this.currentCall.id).subscribe(          
       (response) => {
           let blob = new Blob([response], {type: 'application/pdf'});
           FileSaver.saveAs(blob, 'grantAgreementPdf.pdf');
