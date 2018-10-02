@@ -15,16 +15,21 @@
             <a routerLink="../profile">
                 <i class="fa fa-share"></i> {{'benefPortal.profile.title' | translate }}</a>
         </div>
+        <!--
         <h2 *ngIf="voucherCompetitionState == 1" class="beneficiaryTitle marginTop">
             {{ 'home.part3.text4' | translate }}
         </h2>
+        -->
+        <!--
         <h2 *ngIf="voucherCompetitionState == 2 || voucherCompetitionState == 3" class="beneficiaryTitle marginTop">
             {{ 'benefPortal.voucher.statusmessage4' | translate }}
         </h2>
+        -->
         <p *ngIf="voucherCompetitionState == 0">
-            {{ 'benefPortal.voucher.step2' | translate }}
+            <!--{{ 'benefPortal.voucher.step2' | translate }}-->
+            {{ 'shared.announce.noCallPlanned' | translate}}
         </p>
-        <p *ngIf="voucherCompetitionState == 2 || voucherCompetitionState == 3" class="offset-lg-3 ui-lg-6"
+        <p *ngIf="voucherCompetitionState > 1" class="offset-lg-3 ui-lg-6"
            [innerHTML]="
             'benefPortal.voucher.counterSubtitle' | translate:{date:startDate, hour:startHour, endDate:endDate, endHour:endHour}">
         </p>
