@@ -72,7 +72,7 @@ export class DgConnSupplierRegistrationsComponent {
                         this.sortOrder = -1;
                 }
                 if (queryParams['sortField']) {
-                    let sortField = queryParams['sortField'].toString().toLowerCase().trim();
+                    let sortField = queryParams['sortField'].toString();
                     if (sortField == 'website' || sortField == 'vat' || sortField == 'numberRegistrations')
                         this.sortField = sortField;
                     else
