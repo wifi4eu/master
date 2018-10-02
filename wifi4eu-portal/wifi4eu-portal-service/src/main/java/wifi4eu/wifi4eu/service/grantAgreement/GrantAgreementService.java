@@ -40,6 +40,7 @@ import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.location.LauService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.ParametrizedDocConverter;
 
@@ -80,6 +81,9 @@ public class GrantAgreementService {
 
     @Autowired
     ApplicationAuthorizedPersonService applicationAuthorizedPersonService;
+
+    @Autowired
+    PermissionChecker permissionChecker;
 
     static final HashMap<String, String> languagesMap = new HashMap<>();
 
@@ -166,12 +170,6 @@ public class GrantAgreementService {
     public ByteArrayOutputStream generateGrantAgreementDocument(GrantAgreementDTO grantAgreement) throws Exception {
 
         UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-
-        ApplicationAuthorizedPersonDTO applicationAuthorizedPerson = applicationAuthorizedPersonService.findByApplicationAndAuthorisedPerson(grantAgreement.getApplicationId(), userDTO.getId());
-
-        if(applicationAuthorizedPerson == null){
-            throw new AccessDeniedException("This user doesn't have permissions to sign the grant agreement");
-        }
 
         ApplicationDTO applicationDTO = applicationService.getApplicationById(grantAgreement.getApplicationId());
         RegistrationDTO registrationDTO = registrationService.getRegistrationById(applicationDTO.getRegistrationId());

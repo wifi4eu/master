@@ -65,10 +65,10 @@ export class SignGrantAgreementComponent {
                             this.applicationApi.getApplicationByCallIdAndRegistrationId(this.call.id, registrationId).subscribe(
                                 (application: ApplicationDTOBase) => {
                                     this.application = application;
-                                    this.applicationAuthorizedPersonApi.findByApplicationAndUserId(this.application.id, this.user.id).subscribe(
-                                        (applicationAuthorized: ApplicationAuthorizedPersonDTOBase  ) =>{
-                                            if(applicationAuthorized != null){
-                                                this.userApi.getUserById(applicationAuthorized['authorized_person']).subscribe(
+                                    this.applicationAuthorizedPersonApi.findByApplication(this.application.id).subscribe(
+                                        (response: ResponseDTO) =>{
+                                            if(response.success && response.data){
+                                                this.userApi.getUserById(this.user.id).subscribe(
                                                     (user: UserDTOBase) => {
                                                         this.authorizedUser = user;
                                                         this.inputGrantAgreement.applicationId = this.application.id;
