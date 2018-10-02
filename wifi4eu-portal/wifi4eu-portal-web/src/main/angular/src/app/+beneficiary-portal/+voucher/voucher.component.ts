@@ -63,9 +63,7 @@ export class VoucherComponent {
         if (this.user != null) {
             this.callCustomApi.getCallForApply().subscribe(
                 (responseDTO: ResponseDTOBase) => {
-                    console.log("NOT ERROR");
                     if (responseDTO.success){
-                        console.log("SUCCESS");
                         this.currentCall = responseDTO.data;
                         if (this.currentCall) {
                             this.voucherCompetitionState = this.currentCall.voucherCompetitionState;
@@ -78,7 +76,6 @@ export class VoucherComponent {
                             this.loadVoucherDataWithoutCall(-1);
                         }
                     }else{
-                        console.log("NOT SUCCESS");
                         this.voucherCompetitionState = 0;
                     }
                 },
