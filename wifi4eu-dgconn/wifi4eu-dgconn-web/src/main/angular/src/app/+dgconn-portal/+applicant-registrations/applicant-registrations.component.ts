@@ -19,7 +19,10 @@ import { AdminActionsDTO, AdminactionsApi } from "../../shared/swagger";
 import { ReplaySubject } from "rxjs/ReplaySubject";
 import { IntervalObservable } from "rxjs/observable/IntervalObservable";
 import { Observable } from "rxjs/Observable";
-import { Subject } from "rxjs";
+import { Subject, BehaviorSubject } from "rxjs";
+import { LocalStorageService } from "angular-2-local-storage";
+import { timer } from "rxjs/observable/timer";
+import { switchMap } from "rxjs/operator/switchMap";
 
 @Component({
     templateUrl: 'applicant-registrations.component.html',
@@ -80,10 +83,14 @@ export class DgConnApplicantRegistrationsComponent {
     private excelInterval: any;
     private adminAction: AdminActionsDTO;
     private subject = new Subject();
+    private adminRequestFinish: boolean = true;
+    private userEcas = null;
 
-    constructor(private adminActionsApi: AdminactionsApi, private applicationApi: ApplicationApi, private callApi: CallApi, private nutsApi: NutsApi, private activatedRoute: ActivatedRoute, private router: Router, private sharedService: SharedService, private translateService: TranslateService) {
+    constructor(private adminActionsApi: AdminactionsApi, private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private nutsApi: NutsApi, private activatedRoute: ActivatedRoute, private router: Router, private sharedService: SharedService, private translateService: TranslateService) {
       this.excelInterval = IntervalObservable.create(15000);
-      this.adminActionsApi.getByActionName("export_municipality_applications").subscribe((response: ResponseDTO) => {
+      var storedUser = this.localStorage.get('user');
+      this.userEcas = storedUser ? JSON.parse(storedUser.toString()) : null;
+      this.adminActionsApi.getByActionNameAndUserId("export_municipality_applications", this.userEcas.id).subscribe((response: ResponseDTO) => {
         if (response.success) {
           this.adminAction = response.data; 
           if(this.adminAction.running){
@@ -164,19 +171,23 @@ export class DgConnApplicantRegistrationsComponent {
     }
   
     private exportIsRunning(){
-      this.adminActionsApi.getByActionName("export_municipality_applications").subscribe((response: ResponseDTO) => {
+      this.adminRequestFinish = false;
+      this.adminActionsApi.getByActionNameAndUserId("export_municipality_applications", this.userEcas.id)
+      .finally(() => {
+        this.adminRequestFinish = true;
+      })
+      .subscribe((response: ResponseDTO) => {
         if (response.success) {
           this.adminAction = response.data; 
           if(!this.adminAction.running){
             this.subject.next();
             this.applicationApi.downloadExportExcelApplicantsList().subscribe((response) => {
-              console.log(response);
               let blob = new Blob([response], {type: 'application/vnd.ms-excel'});
               FileSaver.saveAs(blob, `applicants.xls`);
               this.downloadingList = false; 
             })
-          }          
-        }                      
+          }
+        }                   
       });
     }
 
@@ -184,7 +195,9 @@ export class DgConnApplicantRegistrationsComponent {
       this.excelInterval
           .takeUntil(this.subject)
           .subscribe(execution => {
-              this.exportIsRunning();              
+            if(this.adminRequestFinish){
+              this.exportIsRunning();  
+            }                     
           });
     }
 
@@ -355,11 +368,15 @@ export class DgConnApplicantRegistrationsComponent {
                 this.applicationApi.exportExcelDGConnApplicantsListSearchingName(this.currentCall.id, countryCode, this.nameSearched).subscribe(
                     (response) => {
                         this.excelExportInterval();
+                    }, error => {
+                        this.excelExportInterval();
                     }
                 );
             } else {
                 this.applicationApi.exportExcelDGConnApplicantsList(this.currentCall.id, countryCode).subscribe(
                     (response) => {
+                        this.excelExportInterval();
+                    }, error => {
                         this.excelExportInterval();
                     }
                 );

@@ -1,10 +1,6 @@
 package wifi4eu.wifi4eu.service.application;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.Files;
 import java.text.MessageFormat;
 import java.time.DateTimeException;
 import java.util.ArrayList;
@@ -35,6 +31,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
@@ -55,6 +52,7 @@ import wifi4eu.wifi4eu.repository.application.ApplicationInvalidateReasonReposit
 import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
+import wifi4eu.wifi4eu.repository.admin.AdminActionsRepository;
 import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
@@ -168,6 +166,9 @@ public class ApplicationService {
 
     @Autowired
     AzureBlobConnector azureBlobConnector;
+
+    @Autowired
+    AdminActionsRepository adminActionsRepository;
 
     public static final String TMP_DIR = System.getProperty("java.io.tmpdir");
 
@@ -507,6 +508,28 @@ public class ApplicationService {
     public byte[] exportExcelDGConnApplicantsList(Integer callId, String country) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
+
+        AdminActions adminActions = adminActionsRepository.findOneByActionAndUserId("export_municipality_applications", userConnected.getId());
+
+        if(Validator.isNull(adminActions)){
+            adminActions = new AdminActions();
+            adminActions.setAction("export_municipality_applications");
+            adminActions.setStartDate(new Date());
+            adminActions.setRunning(true);
+            adminActions.setUser(userMapper.toEntity(userConnected));
+            adminActionsRepository.save(adminActions);
+        }
+        else{
+            if(adminActions.isRunning()){
+                throw new AppException("Applicants list export is already running");
+            }
+            adminActions.setStartDate(new Date());
+            adminActions.setRunning(true);
+            adminActions.setEndDate(null);
+            adminActions.setUser(userMapper.toEntity(userConnected));
+            adminActionsRepository.save(adminActions);
+        }
+
         taskExecutor.execute(context.getBean(ExcelExportGeneratorAsync.class, callId, country, userConnected, ApplicantListItemDTO.class));
         return new ByteArrayOutputStream().toByteArray();
     }
@@ -524,6 +547,28 @@ public class ApplicationService {
     public byte[] exportExcelDGConnApplicantsListContainingName(Integer callId, String country, String name) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
+
+        AdminActions adminActions = adminActionsRepository.findOneByActionAndUserId("export_municipality_applications", userConnected.getId());
+
+        if(Validator.isNull(adminActions)){
+            adminActions = new AdminActions();
+            adminActions.setAction("export_municipality_applications");
+            adminActions.setStartDate(new Date());
+            adminActions.setRunning(true);
+            adminActions.setUser(userMapper.toEntity(userConnected));
+            adminActionsRepository.save(adminActions);
+        }
+        else{
+            if(adminActions.isRunning()){
+                throw new AppException("Applicants list export is already running");
+            }
+            adminActions.setStartDate(new Date());
+            adminActions.setRunning(true);
+            adminActions.setEndDate(null);
+            adminActions.setUser(userMapper.toEntity(userConnected));
+            adminActionsRepository.save(adminActions);
+        }
+
         taskExecutor.execute(context.getBean(ExcelExportGeneratorAsync.class, callId, country, name, userConnected, ApplicantListItemDTO.class));
         return new ByteArrayOutputStream().toByteArray();
     }

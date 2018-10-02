@@ -266,7 +266,7 @@ public class ApplicationResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Excel cannot been exported", e);
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Excel cannot been exported", e.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }

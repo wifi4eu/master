@@ -64,6 +64,30 @@ public class AdminActionsResource {
         }
     }
 
+    @ApiOperation(value = "Get export excel action by user id")
+    @RequestMapping(value = "/by-name/{name}/user/{userId}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseDTO getByActionNameAndUserId(@PathVariable("name") String name, @PathVariable("userId") Integer userId, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        try{
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("Access denied: getByActionName");
+            }
+            return new ResponseDTO(true, adminActionsService.getByActionNameAndUser(name, userId), new ErrorDTO());
+        }
+        catch (AccessDeniedException ade){
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to see admin actions", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, null);
+        }
+        catch (Exception e){
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Admin action with name " + name + " cannot been retrieved", e);
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, null);
+        }
+    }
+
     @ApiOperation(value = "Disabled")
     @RequestMapping(value = "/disabled", method = RequestMethod.GET)
     @ResponseBody

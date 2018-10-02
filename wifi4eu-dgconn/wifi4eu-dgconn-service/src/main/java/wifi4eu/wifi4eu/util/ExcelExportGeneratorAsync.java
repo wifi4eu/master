@@ -74,31 +74,10 @@ public class ExcelExportGeneratorAsync implements Runnable  {
     public void run() {
         AdminActions adminActions = null;
         try {
-
-
             if (dataClass == BeneficiaryListItem.class || dataClass == BeneficiaryListItemDTO.class) {
                 adminActions = adminActionsRepository.findOneByActionAndUserId("export_beneficiaries", userConnected.getId());
             } else if (dataClass == ApplicantListItem.class || dataClass == ApplicantListItemDTO.class) {
                 adminActions = adminActionsRepository.findOneByActionAndUserId("export_municipality_applications", userConnected.getId());
-
-                if(Validator.isNull(adminActions)){
-                    adminActions = new AdminActions();
-                    adminActions.setAction("export_municipality_applications");
-                    adminActions.setStartDate(new Date());
-                    adminActions.setRunning(true);
-                    adminActions.setUser(userMapper.toEntity(userConnected));
-                    adminActions = adminActionsRepository.save(adminActions);
-                }
-                else{
-                    if(adminActions.isRunning()){
-                        throw new AppException("Send notifications is already running");
-                    }
-                    adminActions.setStartDate(new Date());
-                    adminActions.setRunning(true);
-                    adminActions.setEndDate(null);
-                    adminActions.setUser(userMapper.toEntity(userConnected));
-                    adminActions = adminActionsRepository.save(adminActions);
-                }
 
                 PagingSortingDTO pagingSortingData = new PagingSortingDTO(0,
                         municipalityService.getCountDistinctMunicipalitiesThatAppliedCall(callId, country), "lauId", 1);
