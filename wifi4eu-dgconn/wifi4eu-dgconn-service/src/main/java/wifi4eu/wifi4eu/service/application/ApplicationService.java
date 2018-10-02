@@ -1,5 +1,7 @@
 package wifi4eu.wifi4eu.service.application;
 
+import com.google.common.collect.Lists;
+
 import java.io.ByteArrayOutputStream;
 import java.text.MessageFormat;
 import java.time.DateTimeException;
@@ -21,8 +23,6 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.common.collect.Lists;
-
 import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.mail.MailData;
 import wifi4eu.wifi4eu.common.dto.model.*;
@@ -30,6 +30,8 @@ import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
+import wifi4eu.wifi4eu.common.enums.LegalFileStatus;
+import wifi4eu.wifi4eu.common.enums.LegalFileValidationStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.mail.MailHelper;
@@ -46,7 +48,9 @@ import wifi4eu.wifi4eu.mapper.application.ApplicationInvalidateReasonMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.application.CorrectionRequestEmailMapper;
 import wifi4eu.wifi4eu.mapper.registration.LegalFileCorrectionReasonMapper;
+import wifi4eu.wifi4eu.mapper.registration.legal_files.LegalFilesMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
+import wifi4eu.wifi4eu.repository.application.*;
 import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationInvalidateReasonRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
@@ -57,6 +61,7 @@ import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
+import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.repository.warning.RegistrationWarningRepository;
 import wifi4eu.wifi4eu.service.admin.AdminActionsService;
@@ -72,6 +77,11 @@ import wifi4eu.wifi4eu.service.voucher.VoucherService;
 import wifi4eu.wifi4eu.util.ExcelExportGenerator;
 import wifi4eu.wifi4eu.util.ExcelExportGeneratorAsync;
 import wifi4eu.wifi4eu.util.SendNotificationsAsync;
+
+import javax.servlet.http.HttpServletRequest;
+import java.text.MessageFormat;
+import java.time.DateTimeException;
+import java.util.*;
 
 @Service
 public class ApplicationService {
@@ -154,6 +164,12 @@ public class ApplicationService {
 
     @Autowired
     LegalFileCorrectionReasonMapper legalFileCorrectionReasonMapper;
+
+    @Autowired
+    LegalFilesMapper legalFilesMapper;
+
+    @Autowired
+    LegalFilesRepository legalFilesRepository;
 
     @Autowired
     ApplicationContext context;
@@ -730,5 +746,27 @@ public class ApplicationService {
 
     public Integer getNumberOfValidatedApplications(Integer callId) {
         return applicationRepository.countValidatedApplicationsByCall(callId);
+    }
+
+    @Transactional
+    public ResponseDTO changeStatusRegistrationDocuments(Integer applicationId) {
+        ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findOne(applicationId));
+        List<LegalFileDTO> legalFileDTOS = legalFilesMapper.toDTOList(legalFilesRepository.findByRegistration(applicationDTO.getRegistrationId()));
+        if (!legalFileDTOS.isEmpty()) {
+            for (LegalFileDTO legalFileDTO : legalFileDTOS) {
+                if (legalFileDTO.getIsNew() == LegalFileStatus.RECENT.getValue() && legalFilesRepository.checkIfNewFile(legalFileDTO.getFileType(), legalFileDTO.getRegistration()) != 0) {
+                    legalFileDTO.setIsNew(LegalFileStatus.OLD.getValue());
+                }
+                if (legalFileDTO.getIsNew() == LegalFileStatus.NEW.getValue() || (legalFileDTO.getIsNew() == LegalFileStatus.RECENT.getValue() && legalFilesRepository.checkIfNewFile(legalFileDTO.getFileType(), legalFileDTO.getRegistration()) != 0)) {
+                    if (applicationDTO.getStatus() == ApplicationStatus.KO.getValue()) {
+                        legalFileDTO.setStatus(LegalFileValidationStatus.INVALID.getValue());
+                    } else if (applicationDTO.getStatus() == ApplicationStatus.OK.getValue()) {
+                        legalFileDTO.setStatus(LegalFileValidationStatus.VALID.getValue());
+                    }
+                }
+                legalFilesRepository.save(legalFilesMapper.toEntity(legalFileDTO));
+            }
+        }
+        return new ResponseDTO(true, "success", null);
     }
 }

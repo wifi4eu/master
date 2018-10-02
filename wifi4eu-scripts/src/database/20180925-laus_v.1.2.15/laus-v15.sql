@@ -35,4 +35,7 @@ UPDATE laus SET name_national=N'Le Breuil (Saône-et-Loire)', name_latin=N'Le Br
 --RO OK
 --SK-duplicates leave it as it is 
 
---122
+--123
+
+--underscore not allowed in abac
+update laus set abac_name='Saint-Barthelemy (Antilles-francaises)' where id=88306;

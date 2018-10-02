@@ -3,10 +3,12 @@
       {{'shared.session.expired' | translate}}<br>
       {{'shared.session.expired.reload' | translate}}
   </span>
-    <button typeClass="warning" class="pull-right btn btn-primary changePassword confirm-button topButtonSession" (click)="reload()">Reload</button>
+    <button typeClass="warning" class="pull-right btn btn-primary changePassword confirm-button topButtonSession"
+            (click)="reload()">Reload
+    </button>
 </ux-alert>
 <div class="{{sessionExpired ? 'sessionOff' : 'sessionOn'}}">
-    <div *ngIf="sessionExpired" class="disabledUserWork"> <br> </div>
+    <div *ngIf="sessionExpired" class="disabledUserWork"><br></div>
     <ux-layout-app>
         <uxLayoutAppMainContainer>
             <ux-layout-app-main>
@@ -15,7 +17,8 @@
                                           [isCustomRightContent]="true"
                                           logoUrl="https://ec.europa.eu/">
                         <uxLayoutHeaderRightContent>
-                            <ux-language-selector [selectedLanguage]="selectedLanguage" [languageCodes]="newLanguageArray"
+                            <ux-language-selector [selectedLanguage]="selectedLanguage"
+                                                  [languageCodes]="newLanguageArray"
                                                   (languageChanged)="changeLanguage($event)"></ux-language-selector>
                             <div class="profile-wrapper" isCompact="false">
                                 <div class="left-panel">
@@ -73,7 +76,7 @@
                 </uxLayoutAppMainContentContainer>
                 <uxLayoutAppMainFooterContainer>
                     <ux-layout-footer isCompact="true">
-                    	{{ 'home.footer.update' | translate:{version:"2.1.0_RC9.24", versionDate:"24/09/2018"} }}
+                        {{ 'home.footer.update' | translate:{version:"2.2.3", versionDate:"02/10/2018"} }}
                         <a (click)="goToTop()">{{ 'home.footer.top' | translate }}</a>
                     </ux-layout-footer>
                 </uxLayoutAppMainFooterContainer>

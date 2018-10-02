@@ -1,10 +1,10 @@
-import { Component } from "@angular/core";
-import { MunicipalityApi } from "../shared/swagger/api/MunicipalityApi";
-import { UserDTOBase } from "../shared/swagger/model/UserDTO";
-import { CallDTOBase } from "../shared/swagger/model/CallDTO";
-import { LocalStorageService } from "angular-2-local-storage";
-import { ResponseDTOBase } from "../shared/swagger/model/ResponseDTO";
-import { CallcustomApi, CallCustomBase } from "../shared/swagger";
+import {Component} from "@angular/core";
+import {MunicipalityApi} from "../shared/swagger/api/MunicipalityApi";
+import {UserDTOBase} from "../shared/swagger/model/UserDTO";
+import {CallDTOBase} from "../shared/swagger/model/CallDTO";
+import {LocalStorageService} from "angular-2-local-storage";
+import {ResponseDTOBase} from "../shared/swagger/model/ResponseDTO";
+import {CallcustomApi, CallCustomBase} from "../shared/swagger";
 
 @Component({
     selector: 'app-home',
@@ -50,7 +50,7 @@ export class HomeComponent {
                 this.currentCall = call;
                 if (this.currentCall) {
                     this.callState = this.currentCall.voucherCompetitionState;
-                    if (this.callState == 1) {
+                    if (this.callState >= 1) {
                         let date = new Date(this.currentCall.startDate);
                         this.dateNumber = ('0' + date.getUTCDate()).toString().slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
                         this.hourNumber = ('0' + (date.getUTCHours() + 2)).toString().slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
