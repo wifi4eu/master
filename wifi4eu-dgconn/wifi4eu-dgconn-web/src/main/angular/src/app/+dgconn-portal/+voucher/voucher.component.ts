@@ -103,6 +103,7 @@ export class DgConnVoucherComponent {
   private confirmFreezeBtn : boolean = true;
   private confirmNotificationsBtn: boolean = true;
   private showNotificationModal : boolean = false;
+  private displaySimulation : boolean = false;
 
   private showPrelistModal: boolean =  false;
   private psswdPrelist: string = '';
@@ -499,6 +500,7 @@ export class DgConnVoucherComponent {
     this.applicationApi.rejectApplicationVoucherAssigment(applicationId).subscribe((response: ResponseDTO) => {
       var index = this.listAssignment.findIndex((x) => x.application.id == response.data.id)
       this.listAssignment[index].application = <ApplicationDTO>response.data;
+      this.displaySimulation = true;
     }, error => {
       this.sharedService.growlTranslation('An error occurred while rejecting an application.', 'dgConn.voucherAssignment.error.rejectingApplication', 'error');
     })
@@ -511,6 +513,7 @@ export class DgConnVoucherComponent {
     this.applicationApi.selectApplicationVoucherAssigment(applicationId).subscribe((response: ResponseDTO) => {
       var index = this.listAssignment.findIndex((x) => x.application.id == response.data.id)
       this.listAssignment[index].application = <ApplicationDTO>response.data;
+      this.displaySimulation = true;
     }, error => {
       this.sharedService.growlTranslation('An error occurred while selecting an application.', 'dgConn.voucherAssignment.error.selectingApplication', 'error');
     })
@@ -623,4 +626,7 @@ export class DgConnVoucherComponent {
     this.loadingFreezeList = false;
   }
 
+  private closeModal(){
+    this.displaySimulation = false;
+  }
 }
