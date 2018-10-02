@@ -93,9 +93,11 @@ export class DgConnApplicantRegistrationsComponent {
       this.adminActionsApi.getByActionNameAndUserId("export_municipality_applications", this.userEcas.id).subscribe((response: ResponseDTO) => {
         if (response.success) {
           this.adminAction = response.data; 
-          if(this.adminAction.running){
-            this.downloadingList = true;
-            this.excelExportInterval();
+          if(this.adminAction != null) {
+            if(this.adminAction.running){
+              this.downloadingList = true;
+              this.excelExportInterval();
+            }
           }
         } 
       })
@@ -179,13 +181,15 @@ export class DgConnApplicantRegistrationsComponent {
       .subscribe((response: ResponseDTO) => {
         if (response.success) {
           this.adminAction = response.data; 
-          if(!this.adminAction.running){
-            this.subject.next();
-            this.applicationApi.downloadExportExcelApplicantsList().subscribe((response) => {
-              let blob = new Blob([response], {type: 'application/vnd.ms-excel'});
-              FileSaver.saveAs(blob, `applicants.xls`);
-              this.downloadingList = false; 
-            })
+          if(this.adminAction != null) {
+            if(!this.adminAction.running){
+              this.subject.next();
+              this.applicationApi.downloadExportExcelApplicantsList().subscribe((response) => {
+                let blob = new Blob([response], {type: 'application/vnd.ms-excel'});
+                FileSaver.saveAs(blob, `applicants.xls`);
+                this.downloadingList = false; 
+              })
+            }
           }
         }                   
       });
