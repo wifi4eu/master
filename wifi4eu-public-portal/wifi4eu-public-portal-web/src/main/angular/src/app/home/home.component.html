@@ -86,8 +86,8 @@
             </div>
             <!-- call planned or open -->
             <div *ngIf="callState>=1">
-                <h2 class="apply">{{ 'home.part2.text1' |
-                    translate:{date:dateNumber,hour:hourNumber}}}</h2>
+                <h2 class="apply" [innerHTML]="'home.part2.text1' |
+                    translate:{date:dateNumber,hour:hourNumber}"/>
             </div>
         </div>
         <div class="col-xl-6">
