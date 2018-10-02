@@ -12,7 +12,7 @@
   "home.part2.text1": "Další výzva k předkládání projektů bude zahájena {{date}} v {{hour}} (středoevropský letní čas). ",
   "home.part2.subtitle4": "Kdo může zažádat:",
   "home.part2.list1": "- Obce",
-  "home.part2.subtitle5": "Zde najdete #seznam způsobilých subjektů# z jednotlivých zemí.",
+  "home.part2.subtitle5": "Zde najdete <a href=\"https://ec.europa.eu/digital-single-market/news-redirect/624101\"  target=\"_blank\">seznam způsobilých subjektů</a> z jednotlivých zemí. ",
   "home.part2.list2": "– sdružení tvořená obcí jednající jménem svých členů",
   "home.part2.subtitle6": "Poukázky WiFi4EU se budou vztahovat na vybavení a na náklady spojené s instalací Wi-Fi hotspotů. Obce, jimž bude přidělena poukázka, se zavazují hradit náklady za samotné internetové připojení a za údržbu zařízení, aby uživatelé mohli využívat skutečně bezplatné a vysoce kvalitní wi-fi připojení po dobu nejméně 3 let.",
   "home.part2.subtitle2": "Co můžete očekávat?",
@@ -143,7 +143,7 @@
   "suppRegistration.eu.requirements": "Potvrzuji, že jsem si přečetl(a) následující podmínky projektu WiFi4EU a že s nimi souhlasím:",
   "suppRegistration.eu.requirementsTitle": "1. Instalace přístupových bodů wi-fi, které by duplikovaly již existující bezplatné soukromé nebo veřejné služby podobných vlastností, včetně kvality, v témže veřejném prostoru, není k financování z projektu WiFi4EU způsobilá. Zdvojení lze zabránit tak, že dosah přístupových bodů bude pokrývat nejdůležitější veřejné prostory a nebude se překrývat s oblastí dosahu stávajících soukromých či veřejných služeb podobných vlastností.",
   "suppRegistration.eu.requirements2": "2. Poukázky WiFi4EU se poskytují ke krytí nákladů na nákup a instalaci přístupových bodů k vytvoření místní wi-fi sítě. Provozní náklady (včetně poplatků za internetové připojení pro poskytovatele) nejsou k financování způsobilé.",
-  "suppRegistration.eu.requirements3": "3. Pokud si naši společnost vybere některá z obcí, které obdrží poukázku, zařízení a instalace, které v rámci projektu WiFi4EU zajistíme, budou v souladu s technickými specifikacemi uvedenými v #textu výzvy#.",
+  "suppRegistration.eu.requirements3": "3. Pokud si naši společnost vybere některá z obcí, které obdrží poukázku, zařízení a instalace, které v rámci projektu WiFi4EU zajistíme, budou v souladu s technickými specifikacemi uvedenými v textu výzvy.",
   "suppRegistration.submit.application": "Potvrzuji, že informace uvedené na tomto portálu a v souvislosti s projektem WiFi4EU jsou pravdivé, úplné a přesné. Potvrzuji, že Evropská komise či Výkonná agentura pro inovace a sítě (INEA) si může zde uvedené informace ze zdrojů stanovených právními předpisy ověřit.",
   "shared.submitregistration.failure.title": "Došlo k chybě při registraci.",
   "shared.submitregistration.failure.text.part1": "Zkuste to znovu nebo se obraťte na asistenční službu.",
@@ -180,7 +180,7 @@
   "itemMenu.myAccount": "Moje registrace",
   "benefPortal.profile.editRegistrationText": "Zde si můžete až do zveřejnění výzvy procházet a měnit vaše registrační údaje. Registrační složku otevřete kliknutím níže.",
   "benefPortal.beneficiary.editApplication": "Zobrazit/Upravit registraci",
-  "benefPortal.beneficiary.goDiscussionText": "Tato obec, kterou jste zaregistrovali, již byla na portálu WiFi4EU zaregistrována jinou osobou. Opravte své údaje nebo #přejděte do diskusního fóra# a věc si s touto osobou vyjasněte.",
+  "benefPortal.beneficiary.goDiscussionText": "Tato obec, kterou jste zaregistrovali, již byla na portálu WiFi4EU zaregistrována jinou osobou. Opravte své údaje nebo přejděte do diskusního fóra a věc si s touto osobou vyjasněte.",
   "itemMenu.appPortal": "Moje žádost",
   "submitregistration.success.text.part1": "Ještě je třeba registraci potvrdit:",
   "discussionForum.beneficiary.goDiscussion": "Přejít do diskusního fóra",
@@ -495,7 +495,7 @@
   "benefPortal.myVoucher.datatable.grantAgreement": "Grantová dohoda podepsána dne {{date}}. ",
   "shared.statusDocsUploaded": "Potvrzujeme, že jsme vaše dokumenty obdrželi.",
   "benefPortal.selectSupplier.details.title": "Vyberte společnost, která bude provádět instalaci sítě wi-fi.",
-  "benefPortal.selectSupplier.feedback.selected": "Volba společnosti, která bude instalovat wi-fi zařízení, byla provedena dne {{date}}. #Podrobnosti#",
+  "benefPortal.selectSupplier.feedback.selected": "Volba společnosti, která bude instalovat wi-fi zařízení, byla provedena dne {{date}}. Podrobnosti",
   "benefPortal.myVoucher.datatable.confirmInstallation": "Potvrďte instalaci sítě",
   "shared.supportingDocuments.info": "Níže nahrajte všechny požadované dokumenty. Soubory musí být ve formátu .pdf, .png, nebo .jpg.",
   "shared.supportingDocuments.info2": "Pozor: Dokud neposkytnete VŠECHNY požadované dokumenty, nebudete moci o poukázku zažádat. Dokumenty, které nahrajete, MUSÍ být úplné a dobře čitelné, jinak nebude vaše žádost pro potřeby této výzvy potvrzena.",
@@ -954,5 +954,6 @@
   "discussionForum.discussionForum.discussion.growl": "Komise neposkytuje mediační služby.",
   "dgConn.voucherAssignment.password": "Password",
   "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct",
-  "dgconn.voucherAssignment.runningFreze": "Freezing..."
+  "dgconn.voucherAssignment.runningFreze": "Freezing...",
+  "dgconn.voucherAssignment.runningPreSelectionList": "Creating Pre-selection List…"
 }

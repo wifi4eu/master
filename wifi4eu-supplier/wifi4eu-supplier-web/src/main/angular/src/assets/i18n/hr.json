@@ -12,7 +12,7 @@
   "home.part2.text1": "Sljedeći poziv na podnošenje prijava otvorit će se {{date}} u {{hour}} (srednjoeuropsko ljetno vrijeme). ",
   "home.part2.subtitle4": "Prijaviti se mogu:",
   "home.part2.list1": "- općine",
-  "home.part2.subtitle5": "#Popis prihvatljivih subjekata# u svojoj zemlji pogledajte ovdje.",
+  "home.part2.subtitle5": "<a href=\"https://ec.europa.eu/digital-single-market/news-redirect/624101\"  target=\"_blank\">Popis prihvatljivih subjekata</a> u svojoj zemlji pogledajte ovdje.",
   "home.part2.list2": "- udruženja koja su osnovale općine koja djeluju u ime svojih članova",
   "home.part2.subtitle6": "Vaučer WiFi4EU pokrit će troškove opreme i ugradnje pristupnih točaka za Wi-Fi. Općine koje dobiju vaučer trebale bi platiti za povezivost (internetska pretplata) i održavanje opreme kako bi mogle pružati besplatnu i visokokvalitetnu bežičnu vezu najmanje tri godine.",
   "home.part2.subtitle2": "Što možete očekivati?",
@@ -143,7 +143,7 @@
   "suppRegistration.eu.requirements": "Potvrđujem da sam pročitao/pročitala i da prihvaćam sljedeće uvjete inicijative WiFi4EU:",
   "suppRegistration.eu.requirementsTitle": "1. Instaliranje točaka s pristupom bežičnom internetu koje se u istom javnom prostoru podudaraju s postojećim besplatnim privatnim ili javnim ponudama sličnih obilježja (uključujući kvalitetu usluge), nisu prihvatljive za financiranje iz programa WiFi4EU. Takvo podudaranje može se izbjeći osiguravanjem da raspon pristupnih točaka bude osmišljen tako da obuhvaća ponajprije javne prostore te da se ne preklapa s postojećim privatnim ili javnim ponudama sličnih obilježja.",
   "suppRegistration.eu.requirements2": "2. Vaučer WiFi4EU namijenjen je pokrivanju troškova kupnje i ugradnje točaka s pristupom bežičnom internetu za uspostavu lokalne bežične mreže. Operativni troškovi (uključujući pretplatu na povezivost) nisu prihvatljivi za financiranje.",
-  "suppRegistration.eu.requirements3": "3. Ako više općina koje dobiju vaučer odabere moje poduzeće, oprema i instaliranje osigurani u okviru inicijative WiFi4EU bit će u skladu s tehničkim specifikacijama kako je navedeno u #tekstu poziva#.",
+  "suppRegistration.eu.requirements3": "3. Ako više općina koje dobiju vaučer odabere moje poduzeće, oprema i instaliranje osigurani u okviru inicijative WiFi4EU bit će u skladu s tehničkim specifikacijama kako je navedeno u tekstu poziva.",
   "suppRegistration.submit.application": "Ovime potvrđujem da su informacije navedene na ovom portalu i u vezi s inicijativom WiFi4EU istinite, potpune i točne. Ovime potvrđujem da Europska komisija ili Izvršna agencija za inovacije i mreže (INEA) mogu s pomoću zakonito dostupnih izvora provjeriti ovdje navedene podatke.",
   "shared.submitregistration.failure.title": "Došlo je do pogreške u sustavu registracije.",
   "shared.submitregistration.failure.text.part1": "Pokušajte ponovno ili se obratite službi za korisnike.",
@@ -180,7 +180,7 @@
   "itemMenu.myAccount": "Moja registracija",
   "benefPortal.profile.editRegistrationText": "Svoju registraciju možete pregledavati i uređivati do otvaranja poziva. Kliknite ispod kako biste otvorili stranicu s registracijom.",
   "benefPortal.beneficiary.editApplication": "Pregled/uređivanje registracije",
-  "benefPortal.beneficiary.goDiscussionText": "Općinu koju ste registrirali već je netko drugi registrirao na portal WiFi4EU. Izmijenite podatke ili #idite na forum za raspravu# kako biste taj problem razjasnili s tom osobom",
+  "benefPortal.beneficiary.goDiscussionText": "Općinu koju ste registrirali već je netko drugi registrirao na portal WiFi4EU. Izmijenite podatke ili idite na forum za raspravu kako biste taj problem razjasnili s tom osobom",
   "itemMenu.appPortal": "Moja prijava",
   "submitregistration.success.text.part1": "Potvrdite registraciju",
   "discussionForum.beneficiary.goDiscussion": "Idite na forum za rasprave",
@@ -495,7 +495,7 @@
   "benefPortal.myVoucher.datatable.grantAgreement": "Sporazum o dodjeli bespovratnih sredstava potpisan {{date}}. ",
   "shared.statusDocsUploaded": "Potvrđujemo primitak vaših dokumenata.",
   "benefPortal.selectSupplier.details.title": "Odaberi poduzeće koje instalira Wi-Fi mrežu",
-  "benefPortal.selectSupplier.feedback.selected": "Poduzeće za instalaciju Wi-Fi mrežu odabrano {{date}}. #Vidi pojedinosti#",
+  "benefPortal.selectSupplier.feedback.selected": "Poduzeće za instalaciju Wi-Fi mrežu odabrano {{date}}. Vidi pojedinosti",
   "benefPortal.myVoucher.datatable.confirmInstallation": "Potvrdi instalaciju mreže",
   "shared.supportingDocuments.info": "U nastavku možete učitati svoje popratne dokumente. Datoteke moraju biti u jednom od sljedećih formata: .pdf, .png ili .jpg.",
   "shared.supportingDocuments.info2": "Napominjemo da se možete prijaviti za kupon tek kad dostavite SVE obavezne popratne dokumente. Učitani dokumenti MORAJU biti potpuni i čitljivi. U protivnom se vaša prijava na ovaj poziv može smatrati nevaljanom.",
@@ -954,5 +954,6 @@
   "discussionForum.discussionForum.discussion.growl": "Komisija ne pruža usluge posredovanja.",
   "dgConn.voucherAssignment.password": "Password",
   "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct",
-  "dgconn.voucherAssignment.runningFreze": "Freezing..."
+  "dgconn.voucherAssignment.runningFreze": "Freezing...",
+  "dgconn.voucherAssignment.runningPreSelectionList": "Creating Pre-selection List…"
 }

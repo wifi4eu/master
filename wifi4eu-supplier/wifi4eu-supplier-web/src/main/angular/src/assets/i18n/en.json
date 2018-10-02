@@ -12,7 +12,7 @@
   "home.part2.text1": "The next call for applications will open on {{date}} at {{hour}} (Central European Time). ",
   "home.part2.subtitle4": "It is open to:",
   "home.part2.list1": "- Municipalities",
-  "home.part2.subtitle5": "See the #list of eligible entities# in your country.",
+  "home.part2.subtitle5": "See the  <a href=\"https://ec.europa.eu/digital-single-market/news-redirect/624101\"  target=\"_blank\">list of eligible entities</a> in your country.",
   "home.part2.list2": "- Associations formed by Municipalities acting on behalf of their members",
   "home.part2.subtitle6": "The WiFi4EU voucher will cover the equipment and installation costs of Wi-Fi hotspots. Municipalities receiving a voucher should pay for the connectivity (internet subscription) and maintenance of the equipment to offer free and high-quality Wi-Fi connectivity for at least 3 years.",
   "home.part2.subtitle2": "What can you expect?",
@@ -143,7 +143,7 @@
   "suppRegistration.eu.requirements": "I confirm that I have read and agree to the following conditions of the WiFi4EU initiative:",
   "suppRegistration.eu.requirementsTitle": "1. Installation of Wi-Fi access points duplicating existing free private or public offers of similar characteristics (including quality of service) in the same public space shall not be eligible to receive funding. Such duplication may be avoided by ensuring that the range of the access points is designed to cover primary public spaces and not to overlap with that of existing private or public offers of similar characteristics.",
   "suppRegistration.eu.requirements2": "2. The WiFi4EU voucher is available to cover the purchase and installation costs of wireless Internet access points to set up a local Wi-Fi network. Operating costs (including any connectivity subscription) are not eligible for funding.",
-  "suppRegistration.eu.requirements3": "3. If my company is selected by a municipality receiving a voucher, the equipment and installation that will be provided in the context of the WiFi4EU initiative will be compliant with the technical specifications as set out in the #call text#.",
+  "suppRegistration.eu.requirements3": "3. If my company is selected by a municipality receiving a voucher, the equipment and installation that will be provided in the context of the WiFi4EU initiative will be compliant with the technical specifications as set out in the call text.",
   "suppRegistration.submit.application": "I hereby confirm that the information provided on this portal and in connection with the WiFi4EU initiative is true, complete and accurate. I hereby acknowledge that the European Commission or the Innovation and Networks Executive Agency (INEA) may verify the information set forth herein from source accessible under law.",
   "shared.submitregistration.failure.title": "Something went wrong with the registration.",
   "shared.submitregistration.failure.text.part1": "Please try again or consult the Help Desk.",
@@ -180,7 +180,7 @@
   "itemMenu.myAccount": "My registration(s)",
   "benefPortal.profile.editRegistrationText": "You can view and edit your registration up to the opening of the call. Click below to open your registration.",
   "benefPortal.beneficiary.editApplication": "View/edit registration",
-  "benefPortal.beneficiary.goDiscussionText": "This municipality you registered is also registered in the WiFi4EU Portal by another person. Please change your data or #go to the discussion# forum to clarify this issue with this person",
+  "benefPortal.beneficiary.goDiscussionText": "This municipality you registered is also registered in the WiFi4EU Portal by another person. Please change your data or go to the discussion forum to clarify this issue with this person",
   "itemMenu.appPortal": "My application",
   "submitregistration.success.text.part1": "Please validate your registration",
   "discussionForum.beneficiary.goDiscussion": "Go to discussion",
@@ -528,7 +528,7 @@
   "benefPortal.myVoucher.datatable.grantAgreement": "Grant agreement signed on {{date}}.",
   "shared.statusDocsUploaded": "We confirm receipt of your documents.",
   "benefPortal.selectSupplier.details.title": "Select Wi-Fi installation company",
-  "benefPortal.selectSupplier.feedback.selected": "Wi-Fi installation company selected on {{date}}. #See details#",
+  "benefPortal.selectSupplier.feedback.selected": "Wi-Fi installation company selected on {{date}}. See details",
   "benefPortal.myVoucher.datatable.confirmInstallation": "Confirm network installation",
   "shared.supportingDocuments.info": "Please upload your supporting documents below, ensuring that the files you upload are in a suitable file format (.pdf, .png, or .jpg).",
   "shared.supportingDocuments.info2": "Please note that you will not be able to apply for a voucher until you provide ALL mandatory supporting documents. Your uploaded documents MUST be complete and readable, or your application may be invalidated for this call.",
@@ -1029,5 +1029,6 @@
   "suppRegistration.uploadLogo.info": "Please upload your logo, ensuring that the files you upload are in a suitable file format (.png or .jpg).",
   "dgConn.voucherAssignment.password": "Password",
   "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct",
-  "dgconn.voucherAssignment.runningFreze": "Freezing..."
+  "dgconn.voucherAssignment.runningFreze": "Freezing...",
+  "dgconn.voucherAssignment.runningPreSelectionList": "Creating Pre-selection List…"
 }

@@ -12,7 +12,7 @@
   "home.part2.text1": "Seuraava hakukierros alkaa {{date}} klo {{hour}} (Keski-Euroopan kesäaikaa). ",
   "home.part2.subtitle4": "Rahoitusta voivat hakea",
   "home.part2.list1": "- kunnat",
-  "home.part2.subtitle5": "#Hakukelpoiset yhteisöt# maittain",
+  "home.part2.subtitle5": "<a href=\"https://ec.europa.eu/digital-single-market/news-redirect/624101\"  target=\"_blank\">Hakukelpoiset yhteisöt</a> maittain",
   "home.part2.list2": "- kuntien muodostamat yhteenliittymät, jotka edustavat jäseniään",
   "home.part2.subtitle6": "WiFi4EU-järjestelmän rahoitus kattaa WiFi-verkon laitteisto- ja asennuskulut. Tuensaajakuntien on maksettava internetyhteys (liittymätilaus) ja laitteiden ylläpito ja taattava maksuton ja laadukas verkkoyhteys vähintään 3 vuoden ajan.",
   "home.part2.subtitle2": "Mitä komission tuki kattaa?",
@@ -143,7 +143,7 @@
   "suppRegistration.eu.requirements": "Vahvistan, että olen lukenut ja hyväksynyt seuraavat WiFi4EU-hankkeen ehdot:",
   "suppRegistration.eu.requirementsTitle": "1. Rahoitusta ei anneta sellaisten WiFi-liityntäpisteiden asentamiseen, jotka ovat päällekkäisiä samassa julkisessa tilassa olevan ilmaisen ja ominaisuuksiltaan (esim. palvelun laatu) samankaltaisen yksityisen tai julkisen tarjonnan kanssa. Tällaista päällekkäisyyttä voidaan välttää varmistamalla, että liityntäpisteiden kantama suunnitellaan kattamaan ensisijaisesti julkisia tiloja eikä se ole päällekkäinen olemassa olevan ja ominaisuuksiltaan samankaltaisen yksityisen tai julkisen tarjonnan kanssa.",
   "suppRegistration.eu.requirements2": "2. WiFi4EU-rahoitusta on saatavilla paikallisen WiFi-verkon perustamiseen tarvittavien langattomien internetliityntäpisteiden hankkimis- ja asentamiskustannuksia varten. Toimintakustannuksia (kuten liittymäsopimuksia) ei rahoiteta.",
-  "suppRegistration.eu.requirements3": "3. Jos tuensaajakunta valitsee yritykseni, WiFi4EU-hankkeen yhteydessä toimitettavat laitteet ja asennustoimet ovat #hakuilmoituksen# teknisten eritelmien mukaisia.",
+  "suppRegistration.eu.requirements3": "3. Jos tuensaajakunta valitsee yritykseni, WiFi4EU-hankkeen yhteydessä toimitettavat laitteet ja asennustoimet ovat hakuilmoituksen teknisten eritelmien mukaisia.",
   "suppRegistration.submit.application": "Vahvistan, että tässä portaalissa ja WiFi4EU-hankkeen yhteydessä antamani tiedot ovat totuudenmukaisia, täydellisiä ja tarkkoja. Vahvistan, että Euroopan komissio tai EU:n innovoinnin ja verkkojen toimeenpanovirasto (INEA) voivat tarkistaa tässä annetut tiedot lainsäädännön nojalla saatavilla olevasta lähteestä.",
   "shared.submitregistration.failure.title": "Rekisteröinti ei onnistunut.",
   "shared.submitregistration.failure.text.part1": "Yritä uudelleen tai ota yhteyttä käyttötukeen.",
@@ -180,7 +180,7 @@
   "itemMenu.myAccount": "Oma(t) rekisteröintini",
   "benefPortal.profile.editRegistrationText": "Voit tarkastella ja muokata rekisteröintiäsi seuraavan hakukierroksen alkuun asti. Voit avata rekisteröintisi seuraavalla painikkeella.",
   "benefPortal.beneficiary.editApplication": "Tarkastele/muokkaa rekisteröintiä",
-  "benefPortal.beneficiary.goDiscussionText": "Tämän kunnan on rekisteröinyt WiFi4EU-portaalissa lisäksesi joku toinenkin henkilö. Muuta tietoja tai #siirry keskusteluosioon# selvittämään asia tämän henkilön kanssa",
+  "benefPortal.beneficiary.goDiscussionText": "Tämän kunnan on rekisteröinyt WiFi4EU-portaalissa lisäksesi joku toinenkin henkilö. Muuta tietoja tai siirry keskusteluosioon selvittämään asia tämän henkilön kanssa",
   "itemMenu.appPortal": "Hakemukseni",
   "submitregistration.success.text.part1": "Vahvista rekisteröinti",
   "discussionForum.beneficiary.goDiscussion": "Siirry keskusteluosioon",
@@ -495,7 +495,7 @@
   "benefPortal.myVoucher.datatable.grantAgreement": "Avustussopimus allekirjoitettu {{date}}.",
   "shared.statusDocsUploaded": "Vahvistamme vastaanottaneemme toimittamasi asiakirjat.",
   "benefPortal.selectSupplier.details.title": "Valitse WiFi-verkkoyhteyden asentava yritys",
-  "benefPortal.selectSupplier.feedback.selected": "WiFi-verkkoyhteyden asentava yritys valittu {{date}}. #Lisätiedot#",
+  "benefPortal.selectSupplier.feedback.selected": "WiFi-verkkoyhteyden asentava yritys valittu {{date}}. Lisätiedot",
   "benefPortal.myVoucher.datatable.confirmInstallation": "Vahvista verkon asennus",
   "shared.supportingDocuments.info": "Lataa oheen vaadittavat liiteasiakirjat. Varmista, että ladattavat tiedostot ovat .pdf-, .png-, tai .jpg-muodossa.",
   "shared.supportingDocuments.info2": "Huomaa, että et voi hakea rahoitusta ennen kuin olet toimittanut KAIKKI vaadittavat liiteasiakirjat. Hakemusta ei oteta huomioon tällä hakukierroksella, jos kaikkia asiakirjoja ei ole toimitettu tai jos ne eivät ole selvästi luettavissa.",
@@ -954,5 +954,6 @@
   "discussionForum.discussionForum.discussion.growl": "Komissio ei tarjoa sovittelupalvelua.",
   "dgConn.voucherAssignment.password": "Password",
   "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct",
-  "dgconn.voucherAssignment.runningFreze": "Freezing..."
+  "dgconn.voucherAssignment.runningFreze": "Freezing...",
+  "dgconn.voucherAssignment.runningPreSelectionList": "Creating Pre-selection List…"
 }

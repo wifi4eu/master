@@ -12,7 +12,7 @@
   "home.part2.text1": "Kitas kvietimas teikti paraiškas bus paskelbtas {{date}} {{hour}} (Vidurio Europos vasaros laiku). ",
   "home.part2.subtitle4": "Dalyvauti gali:",
   "home.part2.list1": "- savivaldybės,",
-  "home.part2.subtitle5": "Susipažinkite su savo šalies #reikalavimus atitinkančių subjektų sąrašu#.",
+  "home.part2.subtitle5": "Susipažinkite su savo šalies <a href=\"https://ec.europa.eu/digital-single-market/news-redirect/624101\"  target=\"_blank\">reikalavimus atitinkančių subjektų sąrašu</a>.",
   "home.part2.list2": "- savivaldybių sudarytos asociacijos, veikiančios savo narių vardu.",
   "home.part2.subtitle6": "„WiFi4EU“ čekiu bus padengtos belaidžio interneto prieigos zonų įrangos ir jos diegimo išlaidos. Čekį gaunančios savivaldybės turėtų sumokėti už ryšį (interneto abonementą) ir įrangos priežiūrą, kad ne trumpiau kaip 3 metus būtų nemokamai teikiamas kokybiškas belaidis internetas.",
   "home.part2.subtitle2": "Ko galite tikėtis?",
@@ -143,7 +143,7 @@
   "suppRegistration.eu.requirements": "Patvirtinu, kad perskaičiau iniciatyvos „WiFi4EU“ sąlygas ir su jomis sutinku:",
   "suppRegistration.eu.requirementsTitle": "1. Belaidžio interneto ryšio prieigos punktų, kuriais dubliuojami esami nemokami privatūs arba viešieji panašių savybių (įskaitant paslaugos kokybę) pasiūlymai, įrengimas neatitinka finansavimo reikalavimų. Tokio dubliavimosi galima išvengti užtikrinant, kad prieigos taškai būtų išdėstyti tokiu atstumu, kad pirmiausia aprėptų viešąsias erdves, o ne dubliuotųsi su jau esamomis privačiosiomis ar viešosiomis panašaus pobūdžio paslaugomis.",
   "suppRegistration.eu.requirements2": "2. „WiFi4EU“ čekis skiriamas belaidžio interneto ryšio prieigos taškų įrangos, būtinos belaidžiam vietiniam tinklui sukurti, įsigijimo ir diegimo išlaidoms padengti. Eksploatacinės išlaidos (įskaitant ryšio abonementą) nepadengiamos.",
-  "suppRegistration.eu.requirements3": "3. Jeigu čekį gavusi savivaldybė pasirinks mano bendrovę, pagal iniciatyvą „WiFi4EU“ tiekiama įranga ir jos įdiegimas atitiks #kvietimo tekste# nurodytas technines specifikacijas.",
+  "suppRegistration.eu.requirements3": "3. Jeigu čekį gavusi savivaldybė pasirinks mano bendrovę, pagal iniciatyvą „WiFi4EU“ tiekiama įranga ir jos įdiegimas atitiks kvietimo tekste nurodytas technines specifikacijas.",
   "suppRegistration.submit.application": "Patvirtinu, kad šiame portale pateikta su iniciatyva „WiFi4EU“ susijusi informacija yra teisinga, išsami ir tiksli. Pripažįstu, kad Europos Komisija arba Inovacijų ir tinklų programų vykdomoji įstaiga (INEA), naudodamasi teisėtai prieinamu šaltiniu, gali patikrinti čia pateiktą informaciją.",
   "shared.submitregistration.failure.title": "Užsiregistruoti nepavyko.",
   "shared.submitregistration.failure.text.part1": "Bandykite dar kartą arba kreipkitės į pagalbos tarnybą.",
@@ -180,7 +180,7 @@
   "itemMenu.myAccount": "Mano registracija (-os)",
   "benefPortal.profile.editRegistrationText": "Galite peržiūrėti ir patikslinti savo registracijos duomenis iki pat kvietimo teikti paraiškas paskelbimo. Spustelėkite nuorodą žemiau, kad atsiverstumėte savo registracijos duomenų puslapį.",
   "benefPortal.beneficiary.editApplication": "Peržiūrėti / taisyti registracijos duomenis",
-  "benefPortal.beneficiary.goDiscussionText": "Šią jūsų užregistruotą savivaldybę „WiFi4EU“ portale taip pat yra užregistravęs kitas asmuo. Pakeiskite savo nurodytus duomenis arba #eikite į diskusijų# forumą, kad su tuo asmeniu išsiaiškintumėte šį klausimą",
+  "benefPortal.beneficiary.goDiscussionText": "Šią jūsų užregistruotą savivaldybę „WiFi4EU“ portale taip pat yra užregistravęs kitas asmuo. Pakeiskite savo nurodytus duomenis arba eikite į diskusijų forumą, kad su tuo asmeniu išsiaiškintumėte šį klausimą",
   "itemMenu.appPortal": "Mano paraiška",
   "submitregistration.success.text.part1": "Prašome patvirtinti savo registraciją",
   "discussionForum.beneficiary.goDiscussion": "Eiti į diskusiją",
@@ -495,7 +495,7 @@
   "benefPortal.myVoucher.datatable.grantAgreement": "Dotacijos susitarimas pasirašytas {{date}}.",
   "shared.statusDocsUploaded": "Patvirtiname, kad gavome jūsų dokumentus.",
   "benefPortal.selectSupplier.details.title": "Pasirinkti belaidžio ryšio įrengimo bendrovę",
-  "benefPortal.selectSupplier.feedback.selected": "Belaidžio ryšio įrengimo bendrovė pasirinkta {{date}}. #Išsami informacija#",
+  "benefPortal.selectSupplier.feedback.selected": "Belaidžio ryšio įrengimo bendrovė pasirinkta {{date}}. Išsami informacija",
   "benefPortal.myVoucher.datatable.confirmInstallation": "Patvirtinti tinklo įrengimą",
   "shared.supportingDocuments.info": "Toliau įkelkite savo patvirtinamuosius dokumentus tinkamu formatu (.pdf, .png arba .jpg).",
   "shared.supportingDocuments.info2": "Atkreipkite dėmesį, kad čekio paraiškos negalėsite teikti tol, kol nepateiksite VISŲ privalomų patvirtinamųjų dokumentų. Jūsų įkelti dokumentai PRIVALO būti išsamūs ir įskaitomi, kitaip jūsų paraiška per šį kvietimą teikti paraiškas gali būti pripažinta negaliojančia.",
@@ -954,5 +954,6 @@
   "discussionForum.discussionForum.discussion.growl": "Komisija neteikia tarpininkavimo paslaugų.",
   "dgConn.voucherAssignment.password": "Password",
   "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct",
-  "dgconn.voucherAssignment.runningFreze": "Freezing..."
+  "dgconn.voucherAssignment.runningFreze": "Freezing...",
+  "dgconn.voucherAssignment.runningPreSelectionList": "Creating Pre-selection List…"
 }

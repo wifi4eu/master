@@ -12,7 +12,7 @@
   "home.part2.text1": "Die nächste Ausschreibung zur Einreichung von Anträgen ergeht am {{date}} um {{hour}} (Mitteleuropäische Sommerzeit). ",
   "home.part2.subtitle4": "Sie steht offen für",
   "home.part2.list1": "- Gemeinden",
-  "home.part2.subtitle5": "#Liste zugelassener Einrichtungen# in Ihrem Land",
+  "home.part2.subtitle5": " <a href=\"https://ec.europa.eu/digital-single-market/news-redirect/624101\"  target=\"_blank\">Liste zugelassener Einrichtungen</a> in Ihrem Land",
   "home.part2.list2": "- Gemeindeverbände, die im Namen ihrer Mitglieder tätig werden",
   "home.part2.subtitle6": "Der WiFi4EU-Gutschein gilt für Ausrüstung und Installation der Wifi-Hotspots. Gemeinden, die einen Gutschein erhalten, müssen mindestens drei Jahre lang für den Internetzugang und die Wartung der Ausrüstung zahlen, um eine kostenlose und hochwertige WLAN-Internetanbindung zu gewährleisten.",
   "home.part2.subtitle2": "Was können Sie erwarten?",
@@ -143,7 +143,7 @@
   "suppRegistration.eu.requirements": "Ich habe die folgenden Bedingungen der WiFi4EU-Initiative zur Kenntnis genommen und bin damit einverstanden:",
   "suppRegistration.eu.requirementsTitle": "1. Die Installation von WLAN-Zugangspunkten, die sich mit vorhandenen, auch qualitativ ähnlichen, kostenlosen privaten oder öffentlichen Angeboten in derselben öffentlich zugänglichen Örtlichkeit überschneiden, kommt nicht für eine Förderung infrage. Eine derartige Überschneidung lässt sich vermeiden, indem sichergestellt wird, dass die Reichweite der Zugangspunkte so ausgelegt wird, dass in erster Linie öffentlich zugängliche Örtlichkeiten abgedeckt werden und keine Überschneidungen mit bestehenden privaten oder öffentlichen Angeboten mit ähnlichen Merkmalen entstehen.",
   "suppRegistration.eu.requirements2": "2. Der WiFi4EU-Gutschein dient zur Deckung der Anschaffungs- und Installationskosten drahtloser Internetzugangspunkte zur Einrichtung eines lokalen WLAN-Netzes. Betriebskosten (einschließlich etwaiger Verbindungsentgelte) fallen nicht unter die Förderung.",
-  "suppRegistration.eu.requirements3": "3. Sollte mein Unternehmen von einer Gemeinde ausgewählt werden, die einen WiFi4EU-Gutschein erhält, wird die bereitgestellte Ausrüstung und Installation den in der #Aufforderung# genannten technischen Spezifikationen entsprechen.",
+  "suppRegistration.eu.requirements3": "3. Sollte mein Unternehmen von einer Gemeinde ausgewählt werden, die einen WiFi4EU-Gutschein erhält, wird die bereitgestellte Ausrüstung und Installation den in der Aufforderung genannten technischen Spezifikationen entsprechen.",
   "suppRegistration.submit.application": "Ich versichere hiermit, dass die Angaben auf diesem Portal und in Verbindung mit WiFi4EU richtig, vollständig und genau sind. Ich erkenne hiermit an, dass die Europäische Kommission oder die Exekutivagentur für Innovation und Netze (INEA) diese Informationen unter Nutzung aller legal zugänglichen Quellen verifizieren kann.",
   "shared.submitregistration.failure.title": "Bei der Registrierung ist ein Fehler aufgetreten.",
   "shared.submitregistration.failure.text.part1": "Bitte versuchen Sie es erneut oder kontaktieren Sie das Helpdesk.",
@@ -180,7 +180,7 @@
   "itemMenu.myAccount": "Meine Registrierung(en)",
   "benefPortal.profile.editRegistrationText": "Solange noch keine Ausschreibung ergangen ist, können Sie Ihre Registrierung ansehen und bearbeiten. Zum Öffnen der Registrierung klicken Sie unten.",
   "benefPortal.beneficiary.editApplication": "Registrierung ansehen/bearbeiten",
-  "benefPortal.beneficiary.goDiscussionText": "Die von Ihnen registrierte Gemeinde wurde auf dem WiFi4EU-Portal schon von einer anderen Person registriert. Bitte ändern Sie Ihre Angaben oder #klären Sie die Angelegenheit im Diskussionsforum#.",
+  "benefPortal.beneficiary.goDiscussionText": "Die von Ihnen registrierte Gemeinde wurde auf dem WiFi4EU-Portal schon von einer anderen Person registriert. Bitte ändern Sie Ihre Angaben oder klären Sie die Angelegenheit im Diskussionsforum.",
   "itemMenu.appPortal": "Mein Antrag",
   "submitregistration.success.text.part1": "Bitte validieren Sie Ihre Registrierung",
   "discussionForum.beneficiary.goDiscussion": "Zum Diskussionsforum",
@@ -495,7 +495,7 @@
   "benefPortal.myVoucher.datatable.grantAgreement": "Finanzhilfevereinbarung unterzeichnet am {{date}} ",
   "shared.statusDocsUploaded": "Wir bestätigen den Eingang Ihrer Unterlagen.",
   "benefPortal.selectSupplier.details.title": "WLAN-Installationsfirma auswählen",
-  "benefPortal.selectSupplier.feedback.selected": "WLAN-Installationsfirma ausgewählt am {{date}} #Einzelheiten#",
+  "benefPortal.selectSupplier.feedback.selected": "WLAN-Installationsfirma ausgewählt am {{date}} Einzelheiten",
   "benefPortal.myVoucher.datatable.confirmInstallation": "Netzwerkinstallation bestätigen",
   "shared.supportingDocuments.info": "Bitte laden Sie die unten genannten Begleitunterlagen in einem geeigneten Dateiformat (.pdf, .png oder.jpg) hoch.",
   "shared.supportingDocuments.info2": "Bitte beachten Sie, dass Sie keinen Gutschein beantragen können, solange nicht ALLE erforderlichen Begleitunterlagen vorliegen. Ihre hochgeladenen Unterlagen MÜSSEN vollständig und lesbar sein, andernfalls kann Ihr Antrag zu dieser Aufforderung für ungültig erklärt werden.",
@@ -954,5 +954,6 @@
   "discussionForum.discussionForum.discussion.growl": "Die Kommission erbringt keine Schlichtungsdienste.",
   "dgConn.voucherAssignment.password": "Password",
   "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct",
-  "dgconn.voucherAssignment.runningFreze": "Freezing..."
+  "dgconn.voucherAssignment.runningFreze": "Freezing...",
+  "dgconn.voucherAssignment.runningPreSelectionList": "Creating Pre-selection List…"
 }
