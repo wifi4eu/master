@@ -1,6 +1,8 @@
 package wifi4eu.wifi4eu.util.reports;
 
 import com.google.common.collect.Lists;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -41,6 +43,8 @@ public class ReportCallOpen {
     @Autowired
     RegistrationWarningRepository registrationWarningRepository;
 
+    private static final Logger _log = LogManager.getLogger(ReportCallOpen.class);
+
     private Integer idCurrentCall = 0,
             warningsType1 = 0,
             warningsType2 = 0,
@@ -54,6 +58,7 @@ public class ReportCallOpen {
 
     public void generate(HSSFWorkbook workbook) {
         if (Validator.isNotNull(callRepository.getIdCurrentCall())) {
+            _log.info("Reporting System: Call Open => Starting report");
             idCurrentCall = callRepository.getIdCurrentCall();
             HSSFSheet sheet = workbook.createSheet("State of play Report");
             int numColumn = 0;
@@ -71,6 +76,7 @@ public class ReportCallOpen {
             generateTotalPercentValues(sheet, 0);
             putCountriesCallOpen(sheet, firstRow, 3);
             ReportingUtils.autoSizeColumns(workbook);
+            _log.info("Reporting System: Call Open => Ending report");
         } else {
             // send email notifying that no open call is available?
             System.out.println("No call open found");
@@ -78,6 +84,7 @@ public class ReportCallOpen {
     }
 
     private void putCountriesCallOpen(HSSFSheet sheet, HSSFRow row, int numColumn) {
+        _log.info("Reporting System: Call Open => Put countries values");
         ArrayList<NutCallCustom> nuts = nutCallCustomRepository.findNutsByCall(idCurrentCall);
         HSSFRow intialRow = row;
         int[] passedNuts = new int[nuts.size()];
@@ -103,6 +110,7 @@ public class ReportCallOpen {
     }
 
     private void generateTotalValues(HSSFSheet sheet, int idNut) {
+        _log.info("Reporting System: Call Open => Generating total values");
         int column = 1;
         Map<String, Object> allValues = getAllValues(idNut);
         HSSFRow row;
@@ -117,6 +125,7 @@ public class ReportCallOpen {
     }
 
     private void generateTotalPercentValues(HSSFSheet sheet, int idNut) {
+        _log.info("Reporting System: Call Open => Generating total percent values");
         int column = 2;
         Map<String, Object> allValues = getAllPercentages(idNut);
         HSSFRow row;
