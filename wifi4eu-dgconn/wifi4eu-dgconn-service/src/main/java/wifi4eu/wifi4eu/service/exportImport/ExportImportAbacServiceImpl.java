@@ -1,7 +1,6 @@
 package wifi4eu.wifi4eu.service.exportImport;
 
 import com.google.common.collect.Lists;
-import com.itextpdf.text.Chapter;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -9,7 +8,6 @@ import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfDocument;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.csv.CSVFormat;
@@ -17,7 +15,6 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.util.Strings;
 import org.apache.poi.util.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +23,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
 import wifi4eu.wifi4eu.common.dto.model.ExportImportRegistrationDataDTO;
 import wifi4eu.wifi4eu.common.dto.model.LauDTO;
 import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
@@ -324,21 +320,21 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
         }
         //if (StringUtils.isNotBlank(beneficiaryInformation.getAzureUri())) {
 
-            //String fileName = getMunicipalityPrefixedFileName(beneficiaryInformation);
+        //String fileName = getMunicipalityPrefixedFileName(beneficiaryInformation);
 
-            try {
-                String fileName = "lef_supporting_document-" + beneficiaryInformation.getMun_id() + ".pdf";
+        try {
+            String fileName = "lef_supporting_document-" + beneficiaryInformation.getMun_id() + ".pdf";
 
-                csvPrinter.printRecord(
-                        beneficiaryInformation.getMun_id(),
-                        beneficiaryInformation.getDoc_portalId(),
-                        "lef_supporting_document.pdf",
-                        fileName,
-                        "application/pdf",
-                        dateUtilities.convertDate2String(beneficiaryInformation.getDoc_date()),
-                        defaultEmpty(beneficiaryInformation.getDoc_type()),
-                        defaultEmpty(beneficiaryInformation.getAresReference())
-                );
+            csvPrinter.printRecord(
+                    beneficiaryInformation.getMun_id(),
+                    beneficiaryInformation.getDoc_portalId(),
+                    "lef_supporting_document.pdf",
+                    fileName,
+                    "application/pdf",
+                    dateUtilities.convertDate2String(beneficiaryInformation.getDoc_date()),
+                    defaultEmpty(beneficiaryInformation.getDoc_type()),
+                    defaultEmpty(beneficiaryInformation.getAresReference())
+            );
 
                 /* we should really keep this instead
                 csvPrinter.printRecord(
@@ -357,13 +353,13 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
                 byte[] fileData = StringUtils.isNotEmpty(base64FileData) ? Base64Utils.decodeFromString(base64FileData) : new byte[0];
                 */
 
-                ByteArrayOutputStream os = new ByteArrayOutputStream();
-                createBeneficiaryAbacPDF(beneficiaryInformation, os);
-                ExportFile exportFile = new ExportFile(fileName, os.toByteArray());
-                exportFiles.add(exportFile);
-            } catch (IOException e) {
-                _log.error(ERROR_WRITING_DOWN_TO_THE_CSV_FILE, e);
-            }
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            createBeneficiaryAbacPDF(beneficiaryInformation, os);
+            ExportFile exportFile = new ExportFile(fileName, os.toByteArray());
+            exportFiles.add(exportFile);
+        } catch (IOException e) {
+            _log.error(ERROR_WRITING_DOWN_TO_THE_CSV_FILE, e);
+        }
 
         //}
     }
@@ -443,10 +439,6 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
             _log.error("unable to create beneficiary pdf", e);
         }
         return os;
-    }
-
-    private String getMunicipalityPrefixedFileName(BeneficiaryInformation beneficiaryInformation) {
-        return StringUtils.isNotEmpty(beneficiaryInformation.getDoc_fileName()) ? beneficiaryInformation.getDoc_portalId() + "-" + beneficiaryInformation.getDoc_fileName() : Strings.EMPTY;
     }
 
     @Override
