@@ -298,7 +298,6 @@ export class BeneficiaryProfileComponent {
                         this.withdrawnSuccess = true;
                         this.localStorageService.remove('user');
                         var port = window.location.port ? ':' + window.location.port : '';
-                        //TODO should try in other environments
                         window.location.replace(window.location.protocol + "//" + window.location.hostname + port +'/wifi4eu/index.jsp');
                     } else {
                         if(data.error != null){
