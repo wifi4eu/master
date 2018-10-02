@@ -352,4 +352,8 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
             "WHERE a.call_id = ?#{[0]} AND n.level = 0 AND n.id = ?#{[1]} AND air.reason = ?#{[2]}", nativeQuery = true)
     Integer countApplicationsInvalidatedByReasonAndCall(Integer callId, Integer idNut, Integer reason);
 
+    @Query(value = "SELECT ((((SELECT va.notified_date FROM voucher_assignments va " +
+            "INNER JOIN calls c ON c.id = va.call))-(SELECT c.end_date FROM calls c WHERE c.id = ?#{[0]}))/86400000)", nativeQuery = true)
+    Integer findDaysBetweenCloseAndNotified(Integer idCall);
+
 }

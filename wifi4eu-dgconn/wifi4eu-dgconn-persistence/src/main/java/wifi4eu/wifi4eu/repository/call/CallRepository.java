@@ -22,4 +22,7 @@ public interface CallRepository extends CrudRepository<Call,Integer> {
 
     @Query(value = "SELECT * FROM calls WHERE end_date < cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000", nativeQuery = true)
     List<Call> findAllCallsClosed();
+
+    @Query(value = "SELECT COUNT(*) FROM calls WHERE end_date < cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000", nativeQuery = true)
+    Integer countCallsClosed();
 }

@@ -24,6 +24,10 @@ public class GenerateReports {
                 reportingUtils.generateCallOpenReporting(workbook);
                 break;
 
+            case Constant.REPORTING_TIME_TO_INFORM:
+                reportingUtils.generateTimeToInformReporting(workbook);
+                break;
+
             case Constant.REPORTING_TYPES_INSTALLATION_REPORT:
                 reportingUtils.generateTypesInstallationReport(workbook);
                 break;
@@ -55,10 +59,6 @@ public class GenerateReports {
             case Constant.REPORTING_NOTIFICATIONS_SENT_OUT:
                 reportingUtils.generateNotificationsSentOutReporting(workbook, callId);
                 break;
-
-          /*  case Constant.REPORTING_TIME_TO_INFORM:
-                reportingUtils.generateTimeToInformReporting(workbook);
-                break;*/
 
             default:
                 break;
