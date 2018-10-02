@@ -41,7 +41,13 @@ public class ReportCallOpen {
     @Autowired
     RegistrationWarningRepository registrationWarningRepository;
 
-    private Integer idCurrentCall = 0;
+    private Integer idCurrentCall = 0,
+            warningsType1 = 0,
+            warningsType2 = 0,
+            warningsType3 = 0,
+            warning1Applicant = 0,
+            warning2Applicant = 0,
+            warning3Applicant = 0;
 
     static String[] fields = {"Number of applicants for the current call up to date", "Number of applicants with 1 warning (NO MATTER WHICH WARNING)", "Number of applicants with 2 warnings (NO MATTER WHICH WARNING)", "Number of applicants with 3 warnings (NO MATTER WHICH WARNING)", "Number of applicants with warning 1 (may have more than 1 warning)", "Number of applicants with warning 2 (may have more than 1 warning)", "Number of applicants with warning 3 (may have more than 1 warning)", "Number of duplicates", "Number of duplicates invalidated", "Number of invalidated for reason 1: After the follow-up request, the application provided a document which was corrupt/impossible to open in the format supplied", "Number of invalidated for reason 2: After the follow-up request, the applicant provided the same document(s) as originally supplied with the application", "Number of invalidated for reason 3: After the follow-up request, the applicant provided a document which was unreadable", "Number of invalidated for reason 4: After the follow-up request, the applicant provided a document which was incomplete", "Number of invalidated for reason 5: After the follow-up request, the applicant provided a document which was incorrect/did not correspond to the required document (or still contained incorrect information)", "Number of invalidated for reason 6: After the follow-up request, the applicant provided a document which was missing a signature", "Number of invalidated for reason 7: The deadline for the request of correction of the required supporting documents passed without compliance by the applicant", "Number of invalidated for reason 8: The application included a merged municipality","Number of invalidated for reason 9: Due to irregularities found in the application, it was invalidated"};
     static String[] totalValues = {"callApplicants", "warning1Applicant", "warning2Applicant", "warning3Applicant", "warningsType1", "warningsType2", "warningsType3", "numberDuplicates", "numberDuplicatesInvalidated", "reason1", "reason2", "reason3", "reason4", "reason5", "reason6", "reason7", "reason8", "reason9"};
@@ -135,15 +141,28 @@ public class ReportCallOpen {
     }
 
     @Transactional
+    private int getCountRegistrationWarnings(Integer registrationId) {
+        int warnings = 0;
+        if (Validator.isNotNull(registrationId)) {
+            warnings = registrationWarningRepository.countByRegistration(registrationId);
+        }
+        return warnings;
+    }
+
+    @Transactional
     private Map<String, Object> getAllValues(int idNut) {
         Map<String, Object> mapResult = new HashMap<>();
         int callApplicants = getAllCallApplicants(idNut);
-        int warningsType1 = getWarningsByType(1, idNut);
-        int warningsType2 = getWarningsByType(2, idNut);
-        int warningsType3 = getWarningsByType(3, idNut);
-        int warning1Applicant = getApplicantsWithWarnings(1, idNut);
-        int warning2Applicant = getApplicantsWithWarnings(2, idNut);
-        int warning3Applicant = getApplicantsWithWarnings(3, idNut);
+        // calculate warnings by type
+        warningsType1 = 0;
+        warningsType2 = 0;
+        warningsType3 = 0;
+        getWarningsByType(idNut);
+        warning1Applicant = 0;
+        warning2Applicant = 0;
+        warning3Applicant = 0;
+        // calculate how much applicants with warnings
+        getApplicantsWithWarnings(idNut);
         int numberDuplicates = getNumberDuplicates(idNut);
         int numberDuplicatesInvalidated = getNumberDuplicatesInvalidated(idNut);
         int reason1 = getNumberInvalidatedByReason(1, idNut);
@@ -181,12 +200,6 @@ public class ReportCallOpen {
         Map<String, Object> mapResult = new HashMap<>();
         int callApplicants = getAllCallApplicants(idNut);
         int callApplicantsInvalidated = getAllCallApplicantsInvalidated(idNut);
-        int warningsType1 = getWarningsByType(1, idNut);
-        int warningsType2 = getWarningsByType(2, idNut);
-        int warningsType3 = getWarningsByType(3, idNut);
-        int warning1Applicant = getApplicantsWithWarnings(1, idNut);
-        int warning2Applicant = getApplicantsWithWarnings(2, idNut);
-        int warning3Applicant = getApplicantsWithWarnings(3, idNut);
         int numberDuplicates = getNumberDuplicates(idNut);
         int numberDuplicatesInvalidated = getNumberDuplicatesInvalidated(idNut);
         int reason1 = getNumberInvalidatedByReason(1, idNut);
@@ -244,8 +257,8 @@ public class ReportCallOpen {
     }
 
     @Transactional
-    private int getApplicantsWithWarnings(int warningsNumber, int idNut) {
-        int applicantsResult = 0;
+    private void getApplicantsWithWarnings(int idNut) {
+        int counterWarnings;
         ArrayList<Application> allApplicants;
         if (idNut != 0) {
             allApplicants = Lists.newArrayList(applicationRepository.findApplicationsByCallId(idCurrentCall, idNut));
@@ -253,90 +266,25 @@ public class ReportCallOpen {
             allApplicants = Lists.newArrayList(applicationRepository.findApplicationsByCallId(idCurrentCall));
         }
         if (Validator.isNotNull(allApplicants)) {
-            switch (warningsNumber) {
-                case 1: {
-                    for (int i = 0; i < allApplicants.size(); i++) {
-                        boolean warning = false;
-                        if (!warning) {
-                            warning = registrationHasWarning(allApplicants.get(i).getRegistrationId(), 1);
-                            if (warning) {
-                                applicantsResult++;
-                            } else {
-                                if (!warning) {
-                                    warning = registrationHasWarning(allApplicants.get(i).getRegistrationId(), 2);
-                                    if (warning) {
-                                        applicantsResult++;
-                                    } else {
-                                        if (!warning) {
-                                            warning = registrationHasWarning(allApplicants.get(i).getRegistrationId(), 3);
-                                            if (warning) {
-                                                applicantsResult++;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    break;
-                }
-                case 2: {
-                    for (int i = 0; i < allApplicants.size(); i++) {
-                        boolean firstWarning = false;
-                        boolean secondWarning = false;
-                        boolean warning = false;
-                        if (!warning) {
-                            warning = registrationHasWarning(allApplicants.get(i).getRegistrationId(), 1);
-                            if (warning) {
-                                firstWarning = warning;
-                                warning = false;
-                            }
-                        }
-                        if (!warning) {
-                            warning = registrationHasWarning(allApplicants.get(i).getRegistrationId(), 2);
-                            if (warning) {
-                                if (firstWarning) {
-                                    secondWarning = warning;
-                                } else {
-                                    firstWarning = warning;
-                                }
-                                warning = false;
-                            }
-                        }
-                        if (!warning) {
-                            warning = registrationHasWarning(allApplicants.get(i).getRegistrationId(), 3);
-                            if (warning) {
-                                secondWarning = warning;
-                            }
-                        }
-                        if (firstWarning && secondWarning) {
-                            applicantsResult++;
-                        }
-                    }
-                    break;
-                }
-                case 3: {
-                    for (int i = 0; i < allApplicants.size(); i++) {
-                        boolean firstWarning;
-                        boolean secondWarning;
-                        boolean thirdWarning;
-                        firstWarning = registrationHasWarning(allApplicants.get(i).getRegistrationId(), 1);
-                        secondWarning = registrationHasWarning(allApplicants.get(i).getRegistrationId(), 2);
-                        thirdWarning = registrationHasWarning(allApplicants.get(i).getRegistrationId(), 3);
-                        if (firstWarning && secondWarning && thirdWarning) {
-                            applicantsResult++;
-                        }
-                    }
-                    break;
+            for (int i = 0; i < allApplicants.size(); i++) {
+                counterWarnings = getCountRegistrationWarnings(allApplicants.get(i).getRegistrationId());
+                switch (counterWarnings){
+                    case 1:
+                        warning1Applicant++;
+                        break;
+                    case 2:
+                        warning2Applicant++;
+                        break;
+                    case 3:
+                        warning3Applicant++;
+                        break;
                 }
             }
         }
-        return applicantsResult;
     }
 
     @Transactional
-    private int getWarningsByType(int warningType, int idNut) {
-        int warningsResult = 0;
+    private void getWarningsByType(int idNut) {
         ArrayList<Application> allApplicants;
         if (idNut != 0) {
             allApplicants = Lists.newArrayList(applicationRepository.findApplicationsByCallId(idCurrentCall, idNut));
@@ -344,34 +292,22 @@ public class ReportCallOpen {
             allApplicants = Lists.newArrayList(applicationRepository.findApplicationsByCallId(idCurrentCall));
         }
         if (Validator.isNotNull(allApplicants)) {
-            switch (warningType) {
-                case 1: {
-                    for (int i = 0; i < allApplicants.size(); i++) {
-                        if (registrationHasWarning(allApplicants.get(i).getRegistrationId(),1)) {
-                            warningsResult++;
-                        }
-                    }
-                    break;
+            for (int i = 0; i < allApplicants.size(); i++) {
+                // TODO - Implement custom query to retrieve all the counts with one query - Need Entity / DTO
+                // SELECT (select count(*) from registration_warnings where warning = 1 and registration_id = 22758) as warning1,
+                //(select count(*) as warning1 from registration_warnings where warning = 2 and registration_id = 22758) as warning2,
+                //(select count(*) as warning1 from registration_warnings where warning = 3 and registration_id = 22758) as warning3
+                if (registrationHasWarning(allApplicants.get(i).getRegistrationId(), 1)) {
+                    warningsType1++;
                 }
-                case 2: {
-                    for (int i = 0; i < allApplicants.size(); i++) {
-                        if (registrationHasWarning(allApplicants.get(i).getRegistrationId(), 2)) {
-                            warningsResult++;
-                        }
-                    }
-                    break;
+                if (registrationHasWarning(allApplicants.get(i).getRegistrationId(), 2)) {
+                    warningsType2++;
                 }
-                case 3: {
-                    for (int i = 0; i < allApplicants.size(); i++) {
-                        if (registrationHasWarning(allApplicants.get(i).getRegistrationId(), 3)) {
-                            warningsResult++;
-                        }
-                    }
-                    break;
+                if (registrationHasWarning(allApplicants.get(i).getRegistrationId(), 2)) {
+                    warningsType3++;
                 }
             }
         }
-        return warningsResult;
     }
 
     @Transactional

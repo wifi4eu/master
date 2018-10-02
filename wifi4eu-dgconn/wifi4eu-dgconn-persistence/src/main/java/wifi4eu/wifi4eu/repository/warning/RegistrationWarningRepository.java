@@ -14,4 +14,6 @@ public interface RegistrationWarningRepository extends CrudRepository<Registrati
     List<Integer> findAllByLauId(Integer registrationId);
 
     Integer countByRegistrationAndWarning(Integer registration, Integer warning);
+
+    Integer countByRegistration(Integer registration);
 }
