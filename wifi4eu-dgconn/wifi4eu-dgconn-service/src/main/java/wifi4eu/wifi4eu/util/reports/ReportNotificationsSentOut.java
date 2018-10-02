@@ -36,7 +36,7 @@ public class ReportNotificationsSentOut {
     private static String[] totalValues = {"applicants", "preSelectedApplicants", "reservedApplicants", "unsuccessfulApplicants", "duplicates", "duplicatesInvalidated", "followUp", "invalidatedReason1", "invalidatedReason2", "invalidatedReason3", "invalidatedReason4", "invalidatedReason5", "invalidatedReason6", "invalidatedReason7", "invalidatedReason8", "invalidatedReason9"};
 
     public void generate(HSSFWorkbook workbook, Integer callId) {
-        if (Validator.isNotNull(callRepository.getIdCurrentCall())) {
+        if (Validator.isNotNull(callRepository.findAllCallsClosed())) {
             HSSFSheet sheet = workbook.createSheet("Status after notifications");
             int numColumn = 0;
             HSSFRow firstRow = sheet.createRow((short) numColumn);
