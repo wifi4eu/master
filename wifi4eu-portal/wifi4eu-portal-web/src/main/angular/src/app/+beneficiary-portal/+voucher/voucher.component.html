@@ -29,7 +29,7 @@
             <!--{{ 'benefPortal.voucher.step2' | translate }}-->
             {{ 'shared.announce.noCallPlanned' | translate}}
         </p>
-        <p *ngIf="voucherCompetitionState > 1" class="offset-lg-3 ui-lg-6"
+        <p *ngIf="voucherCompetitionState >= 1" class="offset-lg-3 ui-lg-6"
            [innerHTML]="
             'benefPortal.voucher.counterSubtitle' | translate:{date:startDate, hour:startHour, endDate:endDate, endHour:endHour}">
         </p>
