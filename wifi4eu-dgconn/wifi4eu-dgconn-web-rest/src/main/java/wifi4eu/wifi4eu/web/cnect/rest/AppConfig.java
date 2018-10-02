@@ -7,13 +7,16 @@ import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.task.SyncTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+// TODO: remove duplicated XML or Annotation-based configuration
 @EnableCaching
 @Configuration
-@ComponentScan(basePackages = "wifi4eu.wifi4eu.service")
+@ComponentScan(basePackages = {"wifi4eu.wifi4eu.service", "wifi4eu.wifi4eu.web.util.authorisation"})
+@EnableAspectJAutoProxy
 public class AppConfig {
 
     //EhCache based CacheManager, most commonly used in Enterprise applications.

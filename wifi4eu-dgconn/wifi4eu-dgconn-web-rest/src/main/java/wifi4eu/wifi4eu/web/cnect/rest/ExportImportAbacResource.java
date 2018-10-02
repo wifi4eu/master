@@ -5,13 +5,12 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,16 +18,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
-import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
-import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.helper.Validator;
-import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.dto.rest.ServerErrorResponseDTO;
 import wifi4eu.wifi4eu.service.exportImport.ExportImportAbacService;
-import wifi4eu.wifi4eu.service.user.UserService;
 
-import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -40,160 +34,112 @@ import java.io.IOException;
 @RequestMapping("exportImport")
 public class ExportImportAbacResource {
 
-    private final Logger _log = LoggerFactory.getLogger(ExportImportAbacResource.class);
+    private final Logger logger = LoggerFactory.getLogger(ExportImportAbacResource.class);
 
-    @Autowired
-    private UserService userService;
+    private static final String APPLICATION_JSON = "application/JSON";
+    private static final String APPLICATION_ZIP = "application/zip";
+    private static final String TEXT_CSV = "text/csv";
+    private static final String IMPORT_FILE = "importFile";
+
+    @Value("${lef.export.zip.fileName}")
+    private String lefExportZipFileName;
+
+    @Value("${budgetaryCommitment.export.fileName}")
+    private String budgetaryCommitmentZipFileName;
+
+    @Value("${legalCommitment.export.zip.fileName}")
+    private String legalCommitmentZipFileName;
 
     @Autowired
     private ExportImportAbacService exportImportAbacService;
 
-
-    @RequestMapping(value = "/importLegalEntityFBCValidate", method = RequestMethod.POST, produces = "application/JSON")
+    @RequestMapping(value = "/importLegalEntityFBCValidate", method = RequestMethod.POST, produces = APPLICATION_JSON)
     @ResponseBody
-    public ResponseDTO importLegalEntitiesFromAbac(@Validated @NotNull @RequestParam("importFile") MultipartFile file) {
+    public ResponseDTO importLegalEntitiesFromAbac(@Valid @NotNull @RequestParam(IMPORT_FILE) MultipartFile file) {
         try {
-            _log.debug("importLegalEntityFBCValidate: file size = {}", file.getSize());
+            logger.debug("importLegalEntityFBCValidate: file size = {}", file.getSize());
 
             boolean success = exportImportAbacService.importLegalEntitiesFromAbac(file.getInputStream());
 
-            _log.debug("Import of the LEF result: {}", success);
+            logger.debug("Import of the LEF result: {}", success);
 
             return new ResponseDTO(success);
-        } catch (AccessDeniedException ade) {
-            _log.error("Error with permission in operation.", ade);
-            return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
         } catch (Exception e) {
-            _log.error("Error in operation.", e);
-            return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
+            logger.error("Error in operation.", e);
+            return new ServerErrorResponseDTO(e.getMessage());
         }
     }
 
-    @RequestMapping(value = "/importBudgetaryCommitment", method = RequestMethod.POST, produces = "application/JSON")
+    @RequestMapping(value = "/importBudgetaryCommitment", method = RequestMethod.POST, produces = APPLICATION_JSON)
     @ResponseBody
-    public ResponseDTO importBudgetaryCommitment(@Validated @NotNull @RequestParam("importFile") MultipartFile file) {
-        _log.debug("importBudgetaryCommitment: file size = {}", file.getSize());
+    public ResponseDTO importBudgetaryCommitment(@Valid @NotNull @RequestParam(IMPORT_FILE) MultipartFile file) {
+        logger.debug("importBudgetaryCommitment: file size = {}", file.getSize());
         try {
             boolean success = exportImportAbacService.importBudgetaryCommitment(file.getInputStream());
+
             return new ResponseDTO(success);
         } catch (IOException e) {
-            _log.error("Error in operation.", e);
-            return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
+            logger.error("Error in operation.", e);
+            return new ServerErrorResponseDTO(e.getMessage());
         }
     }
 
-    @RequestMapping(value = "/importLegalCommitment", method = RequestMethod.POST, produces = "application/JSON")
+    @RequestMapping(value = "/importLegalCommitment", method = RequestMethod.POST, produces = APPLICATION_JSON)
     @ResponseBody
-    public ResponseDTO importLegalCommitment(@Validated @NotNull @RequestParam("importFile") MultipartFile file) {
-        _log.debug("importLegalCommitment: file size = {}", file.getSize());
+    public ResponseDTO importLegalCommitment(@Valid @NotNull @RequestParam(IMPORT_FILE) MultipartFile file) {
+        logger.debug("importLegalCommitment: file size = {}", file.getSize());
         try {
             boolean success = exportImportAbacService.importLegalCommitment(file.getInputStream());
+
             return new ResponseDTO(success);
         } catch (IOException e) {
-            _log.error("Error in operation.", e);
-            return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
+            logger.error("Error in operation.", e);
+            return new ServerErrorResponseDTO(e.getMessage());
         }
     }
 
     @ApiOperation(value = "Export Beneficiary Information")
-    @RequestMapping(value = "/exportBeneficiaryInformation", method = RequestMethod.GET, produces = "application/zip")
+    @RequestMapping(value = "/exportBeneficiaryInformation", method = RequestMethod.GET, produces = APPLICATION_ZIP)
     @ResponseBody
-    public ResponseEntity<byte[]> exportBeneficiaryInformation(final HttpServletResponse response) throws Exception {
-        _log.debug("exportBeneficiaryInformation");
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        try {
-            if (Validator.isNull(userConnected) || userConnected.getType() != 5) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.parseMediaType("application/zip"));
+    public ResponseEntity<byte[]> exportBeneficiaryInformation() throws IOException {
+        logger.debug("exportBeneficiaryInformation");
 
-            String filename = "exportBeneficiaryInformation.zip";
-            headers.setContentDispositionFormData(filename, filename);
-            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        ByteArrayOutputStream file = exportImportAbacService.exportLegalEntities();
 
-            _log.debug("exportBeneficiaryInformation - generating zip file content");
-            ByteArrayOutputStream file = exportImportAbacService.exportLegalEntities();
-            ResponseEntity<byte[]> responseReturn = new ResponseEntity<>(file.toByteArray(), headers, HttpStatus.OK);
+        HttpHeaders httpHeaders = createHeaders(lefExportZipFileName, APPLICATION_ZIP);
+        ResponseEntity<byte[]> responseReturn = new ResponseEntity<>(file.toByteArray(), httpHeaders, HttpStatus.OK);
 
-            _log.info("exportBeneficiaryInformation - csv file exported successfully");
-            return responseReturn;
-        } catch (AccessDeniedException ade) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to export beneficiary information", ade.getMessage());
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The exportBeneficiaryInformation cannot be executed", e);
-            response.sendError(HttpStatus.BAD_REQUEST.value());
-        }
-        return null;
+        logger.info("exportBeneficiaryInformation - csv file exported successfully");
+        return responseReturn;
     }
 
     @ApiOperation(value = "Export Budgetary Commitment")
-    @RequestMapping(value = "/exportBudgetaryCommitment", method = RequestMethod.GET, produces = "text/csv")
+    @RequestMapping(value = "/exportBudgetaryCommitment", method = RequestMethod.GET, produces = TEXT_CSV)
     @ResponseBody
-    public ResponseEntity<byte[]> exportBudgetaryCommitment(final HttpServletResponse response) throws Exception {
-        _log.debug("exportBudgetaryCommitment");
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        try {
-            if (Validator.isNull(userConnected) || userConnected.getType() != 5) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.parseMediaType("text/csv"));
-            String filename = "exportBudgetaryCommitment.csv";
-            headers.setContentDispositionFormData(filename, filename);
-            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+    public ResponseEntity<byte[]> exportBudgetaryCommitment() throws IOException {
+        logger.debug("exportBudgetaryCommitment");
 
-            _log.debug("exportBudgetaryCommitment - generating csv file content");
-            byte[] responseData = exportImportAbacService.exportBudgetaryCommitment();
+        byte[] responseData = exportImportAbacService.exportBudgetaryCommitment();
 
-            ResponseEntity<byte[]> responseReturn = new ResponseEntity<>(responseData, headers, HttpStatus.OK);
+        HttpHeaders httpHeaders = createHeaders(budgetaryCommitmentZipFileName, TEXT_CSV);
+        ResponseEntity<byte[]> responseReturn = new ResponseEntity<>(responseData, httpHeaders, HttpStatus.OK);
 
-            _log.debug("exportBudgetaryCommitment - csv file exported successfully");
-            return responseReturn;
-        } catch (AccessDeniedException ade) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to export budgetary commitment", ade.getMessage());
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The exportBudgetaryCommitment cannot be executed", e);
-            response.sendError(HttpStatus.BAD_REQUEST.value());
-        }
-        return null;
+        logger.debug("exportBudgetaryCommitment - csv file exported successfully");
+        return responseReturn;
     }
 
-    @RequestMapping(value = "/exportLegalCommitment", method = RequestMethod.GET, produces = "application/zip")
+    @RequestMapping(value = "/exportLegalCommitment", method = RequestMethod.GET, produces = APPLICATION_ZIP)
     @ResponseBody
-    public ResponseEntity<byte[]> exportLegalCommitment(final HttpServletResponse response) throws Exception {
-        _log.debug("exportLegalCommitment");
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        try {
-            if (Validator.isNull(userConnected) || userConnected.getType() != 5) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.parseMediaType("application/zip"));
+    public ResponseEntity<byte[]> exportLegalCommitment() throws IOException {
+        logger.debug("exportLegalCommitment");
 
-            String filename = "exportLegalCommitment.zip";
-            headers.setContentDispositionFormData(filename, filename);
-            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        ByteArrayOutputStream file = exportImportAbacService.exportLegalCommitment();
 
-            _log.debug("exportLegalCommitment - generating zip file content");
-            ByteArrayOutputStream file = exportImportAbacService.exportLegalCommitment();
-            ResponseEntity<byte[]> responseReturn = new ResponseEntity<>(file.toByteArray(), headers, HttpStatus.OK);
+        HttpHeaders httpHeaders = createHeaders(legalCommitmentZipFileName, APPLICATION_ZIP);
+        ResponseEntity<byte[]> responseReturn = new ResponseEntity<>(file.toByteArray(), httpHeaders, HttpStatus.OK);
 
-            _log.info("exportLegalCommitmentInformation - csv file exported successfully");
-            return responseReturn;
-        } catch (AccessDeniedException ade) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to export legal commitment", ade.getMessage());
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The exportLegalCommitment cannot be executed", e);
-            response.sendError(HttpStatus.BAD_REQUEST.value());
-        }
-        return null;
+        logger.debug("exportLegalCommitmentInformation - csv file exported successfully");
+        return responseReturn;
     }
 
     @Deprecated
@@ -203,36 +149,38 @@ public class ExportImportAbacResource {
     @ResponseBody
     public ResponseDTO exportRegistrationData() {
         try {
-            _log.debug("exportRegistrationData");
+            logger.debug("exportRegistrationData");
 
-            if (userService.getUserByUserContext(UserHolder.getUser()).getType() != 5) {
-                throw new AccessDeniedException("");
-            }
             exportImportAbacService.exportRegistrationData();
-            return new ResponseDTO(true, null, null);
-        } catch (AccessDeniedException ade) {
-            return new ResponseDTO(false, null, new ErrorDTO(0, null));
+
+            return new ResponseDTO(true, null);
         } catch (Exception e) {
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            return new ServerErrorResponseDTO(e.getMessage());
         }
     }
 
     @RequestMapping(value = "/importDgBudgList", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO importRegistrationData(@Validated @NotNull @RequestParam("importFile") MultipartFile file) {
+    public ResponseDTO importRegistrationData(@Valid @NotNull @RequestParam(IMPORT_FILE) MultipartFile file) {
         try {
-            _log.debug("importRegistrationData");
+            logger.debug("importDgBudgList");
 
             boolean success = exportImportAbacService.importDgBudgList(file.getInputStream());
 
             return new ResponseDTO(success);
-        } catch (AccessDeniedException ade) {
-            _log.error("Error with permission in operation.", ade);
-            return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
         } catch (Exception e) {
-            _log.error("Error in operation.", e);
-            return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
+            logger.error("Error in operation.", e);
+            return new ServerErrorResponseDTO(e.getMessage());
         }
+    }
+
+    private HttpHeaders createHeaders(String filename, String mediaType) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType(mediaType));
+
+        headers.setContentDispositionFormData(filename, filename);
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        return headers;
     }
 }

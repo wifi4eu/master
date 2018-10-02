@@ -22,6 +22,11 @@ public class ResponseDTO {
         this.error = error;
     }
 
+    public ResponseDTO(boolean success, ErrorDTO error) {
+        this.success = success;
+        this.error = error;
+    }
+
     public ResponseDTO(boolean success, Object data, Long XTotalCount, ErrorDTO error) {
         this.success = success;
         this.data = data;

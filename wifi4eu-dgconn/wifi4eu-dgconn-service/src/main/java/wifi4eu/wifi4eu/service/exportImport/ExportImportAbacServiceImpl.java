@@ -143,7 +143,7 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
     @Autowired
     private ApplicationRepository applicationRepository;
 
-    @Value("${budgetary.commitment.amount:15000}")
+    @Value("${budgetaryCommitment.amount:15000}")
     private int grantedAmount;
 
     @Value("${lef.export.legalEntities.fileName}")
@@ -184,18 +184,24 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
         ExportImportRegistrationData municipalitiesAbac = null;
         String abacReference = csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_REFERENCE);
         if (StringUtils.isNotEmpty(abacReference)) {
-            String municipalityId = csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_PORTAL_ID);
             String abacStatus = csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_STATUS);
-            String abacLatinName = csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_LATIN_NAME);
-
             _log.debug("ABAC Reference from LEF reference [{}] and status [{}]", abacReference, abacStatus);
+
+            String municipalityId = csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_PORTAL_ID);
 
             try {
                 Municipality municipality = municipalityRepository.findOne(Integer.parseInt(municipalityId));
                 if (municipality != null) {
-                    municipalitiesAbac = new ExportImportRegistrationData();
-                    municipalitiesAbac.setMunicipality(municipality);
+                    if (municipality.getMunicipalitiesAbac().isEmpty()) {
+                        municipalitiesAbac = new ExportImportRegistrationData();
+                        municipalitiesAbac.setMunicipality(municipality);
+                    } else {
+                        municipalitiesAbac = municipality.getMunicipalitiesAbac().get(0);
+                    }
+
                     municipalitiesAbac.setAbacReference(abacReference);
+
+                    String abacLatinName = csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_LATIN_NAME);
                     municipalitiesAbac.setAbacStandarName(abacLatinName);
                 } else {
                     _log.warn("Municipality cannot be found: [{}]. Skipped.", municipalityId);
@@ -373,27 +379,39 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
         try (InputStreamReader inputStreamReader = new InputStreamReader(inputStream)) {
 
             CSVParser csvParser = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(inputStreamReader);
-            csvParser.forEach(this::updateAbacData);
+            csvParser.forEach(this::createAbacData);
         }
         return true;
     }
 
-    private void updateAbacData(CSVRecord csvRecord) {
+    // TODO: close to importLegalEntitiesFromAbac, can it be replaced?
+    private void createAbacData(CSVRecord csvRecord) {
         Integer municipalityId = Integer.parseInt(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_PORTAL_ID));
-        List<ExportImportRegistrationData> exportImportRegistrationData = exportImportRegistrationDataRepository.findByMunicipalityId(municipalityId);
 
-        if (CollectionUtils.isNotEmpty(exportImportRegistrationData)) {
-            exportImportRegistrationData.forEach(data -> {
+        Municipality municipality = municipalityRepository.findOne(municipalityId);
 
-                String abacName = csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_LATIN_NAME.getValue());
-                data.setAbacStandarName(abacName);
+        if (municipality != null) {
+            String abacName = StringUtils.defaultIfBlank(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_LATIN_NAME.getValue()), null);
+            String abacReference = StringUtils.defaultIfBlank(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_REFERENCE.getValue()), null);
 
-                String abacReference = csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_REFERENCE.getValue());
-                data.setAbacReference(abacReference);
+            if (!municipality.getMunicipalitiesAbac().isEmpty()) {
+                // If it exists, normally it should be only one.
+                for (ExportImportRegistrationData municipalitiesAbac : municipality.getMunicipalitiesAbac()) {
+                    municipalitiesAbac.setAbacStandarName(abacName);
+                    municipalitiesAbac.setAbacReference(abacReference);
 
-            });
+                    exportImportRegistrationDataRepository.save(municipalitiesAbac);
+                }
+            } else {
+                ExportImportRegistrationData municipalitiesAbac = new ExportImportRegistrationData();
+                municipalitiesAbac.setMunicipality(municipality);
+                municipalitiesAbac.setAbacStandarName(abacName);
+                municipalitiesAbac.setAbacReference(abacReference);
 
-            exportImportRegistrationDataRepository.save(exportImportRegistrationData);
+                exportImportRegistrationDataRepository.save(municipalitiesAbac);
+            }
+        } else {
+            _log.warn("Municipality [{}] was not found. Skipped.");
         }
     }
 
@@ -487,6 +505,305 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
         } catch (IOException e) {
             _log.error("Error writing a BC record to a CSV file", e);
         }
+    }
+
+    @Override
+    public boolean importBudgetaryCommitment(InputStream fileDataStream) throws IOException {
+        _log.debug("importBudgetaryCommitment");
+
+        try (InputStreamReader inputStreamReader = new InputStreamReader(fileDataStream)) {
+            CSVParser csvParser = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(inputStreamReader);
+            csvParser.forEach(csvRecord -> {
+                BudgetaryCommitment budgetaryCommitment = parseBudgetaryCommitment(csvRecord);
+                if (budgetaryCommitment != null) {
+                    budgetaryCommitmentRepository.save(budgetaryCommitment);
+                }
+            });
+        }
+        return true;
+    }
+
+    private BudgetaryCommitment parseBudgetaryCommitment(CSVRecord csvRecord) {
+
+        AbacStatus abacStatus = AbacStatus.fromValue(csvRecord.get(BudgetaryCommitmentCSVColumn.ABAC_STATUS));
+        if (abacStatus == AbacStatus.ABAC_VALID) {
+            String municipalityId = csvRecord.get(BudgetaryCommitmentCSVColumn.MUNICIPALITY_ID);
+            String commitmentLevel2Position = csvRecord.get(BudgetaryCommitmentCSVColumn.COMMITMENT_LEVEL2_POSITION);
+            String commitmentLevel2PositionAmount = csvRecord.get(BudgetaryCommitmentCSVColumn.COMMITMENT_LEVEL2_POSITION_AMOUNT);
+
+            BudgetaryCommitment budgetaryCommitment = budgetaryCommitmentRepository.findByMunicipalityIdAndPositionAndAmmount(
+                    Integer.parseInt(municipalityId),
+                    Integer.parseInt(commitmentLevel2Position),
+                    Integer.parseInt(commitmentLevel2PositionAmount)
+            );
+
+            if (budgetaryCommitment != null) {
+                String level2AbacKey = csvRecord.get(BudgetaryCommitmentCSVColumn.COMMITMENT_LEVEL2_ABAC_KEY);
+                budgetaryCommitment.setAbacBcKey(level2AbacKey);
+
+                return budgetaryCommitment;
+            }
+        } else {
+            _log.warn(THE_RECORD_WAS_SKIPPED_AS_ITS_STATUS_IS_NOT_VALID);
+        }
+
+        return null;
+    }
+
+    @Override
+    public boolean importLegalCommitment(InputStream inputStream) throws IOException {
+
+        // TODO: needs o be improved for the really big files
+        byte[] zipFile = IOUtils.toByteArray(inputStream);
+
+        ZipFileReader.ZipFileEntry informationFile = parseEntryFromFile(new ByteArrayInputStream(zipFile), legalCommitmentImportFileName);
+
+        try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(informationFile.getContent());
+             InputStreamReader inputStreamReader = new InputStreamReader(byteArrayInputStream)) {
+
+            Map<Integer, String> municipalityDocuments = parseLegalCommitmentFileNames(new ByteArrayInputStream(zipFile));
+
+            CSVParser csvParser = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(inputStreamReader);
+            csvParser.forEach(csvRecord -> {
+
+                AbacStatus abacStatus = AbacStatus.fromValue(csvRecord.get(LegalCommitmentCSVColumn.ABAC_STATUS));
+                if (abacStatus == AbacStatus.ABAC_VALID) {
+                    updateGrantAgreement(csvRecord, municipalityDocuments, zipFile);
+                } else {
+                    _log.warn(THE_RECORD_WAS_SKIPPED_AS_ITS_STATUS_IS_NOT_VALID);
+                }
+            });
+        }
+
+        return true;
+    }
+
+    private void updateGrantAgreement(CSVRecord csvRecord, Map<Integer, String> municipalityDocuments, byte[] zipFile) {
+
+        Integer municipalityId = Integer.parseInt(csvRecord.get(LegalCommitmentCSVColumn.MUNICIPALITY_ID));
+
+        GrantAgreement grantAgreement =
+                grantAgreementRepository.findByApplicationRegistrationMunicipalityIdAndDateCounterSignatureIsNull(municipalityId);
+
+        if (grantAgreement == null) {
+            _log.error("Cannot find a grant agreement for the municipality [{}]", municipalityId);
+        } else {
+            Date counterSignatureDate = dateUtilities.convertToDate(csvRecord.get(LegalCommitmentCSVColumn.COUNTERSIGNATURE_DATE));
+            grantAgreement.setDateCounterSignature(counterSignatureDate);
+
+            // TODO: needs to be saved in Budgetary Commitment. The import file format needs to be changed for it.
+//            String abacKey = csvRecord.get(LegalCommitmentCSVColumn.ABAC_KEY);
+
+            String pdfFileName = municipalityDocuments.get(municipalityId);
+
+            if (StringUtils.isEmpty(pdfFileName)) {
+                _log.error("Inconsistency in the documents list and legal commitments files. Specified pdf file cannot be found.");
+            } else {
+                String counterSignedDocumentPath = uploadCounterSignedDocument(pdfFileName, zipFile);
+
+                grantAgreement.setDocumentLocationCounterSigned(counterSignedDocumentPath);
+
+                grantAgreementRepository.save(grantAgreement);
+            }
+
+        }
+    }
+
+    private String uploadCounterSignedDocument(String pdfFileName, byte[] zipFile) {
+        try {
+
+            ZipFileReader.ZipFileEntry pdfFile = parseEntryFromFile(new ByteArrayInputStream(zipFile), pdfFileName);
+
+            if (pdfFile == null || pdfFile.getContent() == null) {
+                throw new IllegalStateException("Error parsing a file " + pdfFileName + ". Please, check if Zip file is consistent.");
+            }
+
+            return azureBlobConnector.uploadLegalFile(pdfFileName, new ByteArrayInputStream(pdfFile.getContent()), pdfFile.getContent().length);
+        } catch (IOException e) {
+            _log.error("Error processing and uploading the file " + pdfFileName, e);
+        }
+
+        return null;
+    }
+
+    private Map<Integer, String> parseLegalCommitmentFileNames(ByteArrayInputStream zipFile) throws IOException {
+
+        ZipFileReader.ZipFileEntry documentFile = parseEntryFromFile(zipFile, legalCommitmentImportDocumentsFileName);
+
+        // TODO: needs o be improved for the really big files
+        // Too heavy to hold all FileEntries thus we keep only file names.
+        Map<Integer, String> municipalityDocuments = new HashMap<>();
+
+        try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(documentFile.getContent());
+             InputStreamReader inputStreamReader = new InputStreamReader(byteArrayInputStream)) {
+
+            CSVParser csvParser = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(inputStreamReader);
+            csvParser.forEach(csvRecord -> {
+
+                String municipalityId = csvRecord.get(LegalCommitmentDocumentCSVColumn.MUNICIPALITY_ID);
+                String documentFileName = csvRecord.get(LegalCommitmentDocumentCSVColumn.DOC_FILE_NAME);
+
+                municipalityDocuments.put(Integer.parseInt(municipalityId), documentFileName);
+
+            });
+        }
+
+        return municipalityDocuments;
+    }
+
+    private ZipFileReader.ZipFileEntry parseEntryFromFile(InputStream zipFile, String fileName) throws IOException {
+
+        try (ZipFileReader zipFileReader = new ZipFileReader(zipFile)) {
+
+            ZipFileReader.ZipFileEntry fileEntry = zipFileReader.getFileEntry(fileName);
+            if (fileEntry != null) {
+                return fileEntry;
+            } else {
+                throw new IllegalStateException("File " + fileName + " is missing");
+            }
+
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ByteArrayOutputStream exportLegalCommitment() throws IOException {
+
+        _log.debug("exportLegalCommitment");
+
+        List<ExportFile> exportFiles = new ArrayList<>();
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try (OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
+             CSVPrinter printer = new CSVPrinter(outputStreamWriter, CSVFormat.EXCEL.withHeader(
+                     "mun_id", "doc_portalId", "doc_name", "doc_fileName", "doc_mimeType", "doc_date", "doc_type", "ares_reference"
+             ))) {
+
+            List<ExportImportLegalCommitmentInformation> legalCommitmentsInformations = searchLegalCommitments();
+            this._log.debug("legalCommitmentsData.size [{}]", legalCommitmentsInformations.size());
+
+            if (CollectionUtils.isNotEmpty(legalCommitmentsInformations)) {
+                for (ExportImportLegalCommitmentInformation legalCommitmentInformation : legalCommitmentsInformations) {
+
+                    List<ExportFile> listExportFile = legalCommitmentInformation.getFiles();
+
+                    for (ExportFile exportFile : listExportFile) {
+
+                        try {
+                            printer.printRecord(
+                                    legalCommitmentInformation.getMunicipalityId(),
+                                    legalCommitmentInformation.getDocumentId(),
+                                    legalCommitmentInformation.getDocumentName(),
+                                    legalCommitmentInformation.getZipFileDocumentName(),
+                                    legalCommitmentInformation.getDocumentMimeType(),
+                                    legalCommitmentInformation.getDocumentSignatureDate(),
+                                    legalCommitmentInformation.getDocumentType(),
+                                    legalCommitmentInformation.getAresReference()
+                            );
+                        } catch (IOException e) {
+                            _log.error("Error writing a BC record to a CSV file", e);
+                        }
+
+                        exportFiles.add(exportFile);
+                    }
+                }
+
+            }
+        }
+
+        // Add the Legal Commitment CSV file
+        byte[] fileBytes = outputStream.toByteArray();
+
+        this._log.debug("Exporting to file. FileName [{}]", legalCommitmentExportFileName);
+
+        ExportFile csvLegalCommitmentsFile = new ExportFile(legalCommitmentExportFileName, fileBytes);
+        exportFiles.add(csvLegalCommitmentsFile);
+
+        return exportFileUtilities.generateZipFileStream(exportFiles);
+    }
+
+
+    private List<ExportImportLegalCommitmentInformation> searchLegalCommitments() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        List<BudgetaryCommitment> listBudgetaryCommitment = budgetaryCommitmentRepository.findByAbacBcKeyIsNotNullAndAbacLcKeyIsNull();
+        this._log.debug("listBudgetaryCommitment.size [{}]", listBudgetaryCommitment.size());
+        List<Application> listApplications = new ArrayList<>();
+
+        // TODO Change this query logic
+        for (BudgetaryCommitment budgetaryCommitment : listBudgetaryCommitment) {
+            Municipality municipality = budgetaryCommitment.getMunicipality();
+            List<Registration> listRegistrations = municipality.getRegistrations();
+
+            List<Integer> registrationIds = listRegistrations.stream().map(Registration::getId).collect(Collectors.toList());
+            List<Application> applications = applicationRepository.findByRegistrationIdIn(registrationIds);
+            if (CollectionUtils.isNotEmpty(applications)) {
+                listApplications.addAll(applications);
+            }
+        }
+
+        int listApplicationsSize = listApplications.size();
+        this._log.debug("Applications.size [{}]", listApplicationsSize);
+
+        List<ExportImportLegalCommitmentInformation> listLegalCommitmentInformation = new ArrayList<>();
+        int i = 0;
+
+        for (Application application : listApplications) {
+            Integer applicationId = application.getId();
+
+            this._log.debug("Processing applications. Application.Id [{}]. Progress [{}]/[{}]", applicationId, ++i, listApplicationsSize);
+
+            List<GrantAgreement> listGrantAgreement = application.getGrantAgreements();
+            this._log.debug("   listGrantAgreement.size()[{}]", listGrantAgreement.size());
+
+            GrantAgreement grantAgreement = !listGrantAgreement.isEmpty() ? listGrantAgreement.get(0) : null;
+            this._log.debug("   First Grant Agreement. grantAgreement.id [{}]", grantAgreement == null ? "NULL" : grantAgreement.getId());
+
+            ExportImportLegalCommitmentInformation legalCommitmentInformation = new ExportImportLegalCommitmentInformation();
+            legalCommitmentInformation.setFiles(new ArrayList<>());
+
+            if (grantAgreement != null) {
+                String documentLocation = grantAgreement.getDocumentLocation();
+
+                _log.debug("Downloading from URI [{}]", documentLocation);
+
+                URL aURL = null;
+                try {
+                    aURL = new URL(documentLocation);
+                } catch (MalformedURLException e) {
+                    _log.error("Error", e);
+                }
+
+                if (aURL != null) {
+                    String path = aURL.getPath();
+
+                    String fileName = path.substring(path.lastIndexOf("/") + 1);
+
+                    legalCommitmentInformation.setMunicipalityId(application.getRegistration().getMunicipality().getId().longValue());
+                    legalCommitmentInformation.setDocumentId(grantAgreement.getId().longValue());
+                    legalCommitmentInformation.setDocumentName(fileName);
+                    legalCommitmentInformation.setZipFileDocumentName(grantAgreement.getId() + "-" + fileName);
+                    legalCommitmentInformation.setDocumentMimeType("application/pdf");
+
+                    String signatureDate = sdf.format(grantAgreement.getDateSignature());
+                    legalCommitmentInformation.setDocumentSignatureDate(signatureDate);
+                    legalCommitmentInformation.setDocumentType("GRANT_AGREEMENT");
+                    legalCommitmentInformation.setAresReference("");
+
+                    byte[] fileContent = this.azureBlobConnector.downloadFileByUri(documentLocation);
+
+                    byte[] fileData = fileContent == null ? new byte[0] : fileContent;
+                    this._log.debug("   Downloaded fileContent.length [{}] bytes", fileContent == null ? "NULL" : fileContent.length);
+                    ExportFile exportFile = new ExportFile(legalCommitmentInformation.getZipFileDocumentName(), fileData);
+
+                    legalCommitmentInformation.getFiles().add(exportFile);
+                }
+            }
+
+            listLegalCommitmentInformation.add(legalCommitmentInformation);
+        }
+
+        return listLegalCommitmentInformation;
     }
 
     @Deprecated
@@ -820,304 +1137,5 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
             }
         }
         return issueType;
-    }
-
-    @Override
-    public boolean importBudgetaryCommitment(InputStream fileDataStream) throws IOException {
-        _log.debug("importBudgetaryCommitment");
-
-        try (InputStreamReader inputStreamReader = new InputStreamReader(fileDataStream)) {
-            CSVParser csvParser = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(inputStreamReader);
-            csvParser.forEach(csvRecord -> {
-                BudgetaryCommitment budgetaryCommitment = parseBudgetaryCommitment(csvRecord);
-                if (budgetaryCommitment != null) {
-                    budgetaryCommitmentRepository.save(budgetaryCommitment);
-                }
-            });
-        }
-        return true;
-    }
-
-    private BudgetaryCommitment parseBudgetaryCommitment(CSVRecord csvRecord) {
-
-        AbacStatus abacStatus = AbacStatus.fromValue(csvRecord.get(BudgetaryCommitmentCSVColumn.ABAC_STATUS));
-        if (abacStatus == AbacStatus.ABAC_VALID) {
-            String municipalityId = csvRecord.get(BudgetaryCommitmentCSVColumn.MUNICIPALITY_ID);
-            String commitmentLevel2Position = csvRecord.get(BudgetaryCommitmentCSVColumn.COMMITMENT_LEVEL2_POSITION);
-            String commitmentLevel2PositionAmount = csvRecord.get(BudgetaryCommitmentCSVColumn.COMMITMENT_LEVEL2_POSITION_AMOUNT);
-
-            BudgetaryCommitment budgetaryCommitment = budgetaryCommitmentRepository.findByMunicipalityIdAndPositionAndAmmount(
-                    Integer.parseInt(municipalityId),
-                    Integer.parseInt(commitmentLevel2Position),
-                    Integer.parseInt(commitmentLevel2PositionAmount)
-            );
-
-            if (budgetaryCommitment != null) {
-                String level2AbacKey = csvRecord.get(BudgetaryCommitmentCSVColumn.COMMITMENT_LEVEL2_ABAC_KEY);
-                budgetaryCommitment.setAbacBcKey(level2AbacKey);
-
-                return budgetaryCommitment;
-            }
-        } else {
-            _log.warn(THE_RECORD_WAS_SKIPPED_AS_ITS_STATUS_IS_NOT_VALID);
-        }
-
-        return null;
-    }
-
-    @Override
-    public boolean importLegalCommitment(InputStream inputStream) throws IOException {
-
-        // TODO: needs o be improved for the really big files
-        byte[] zipFile = IOUtils.toByteArray(inputStream);
-
-        ZipFileReader.ZipFileEntry informationFile = parseEntryFromFile(new ByteArrayInputStream(zipFile), legalCommitmentImportFileName);
-
-        try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(informationFile.getContent());
-             InputStreamReader inputStreamReader = new InputStreamReader(byteArrayInputStream)) {
-
-            Map<Integer, String> municipalityDocuments = parseLegalCommitmentFileNames(new ByteArrayInputStream(zipFile));
-
-            CSVParser csvParser = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(inputStreamReader);
-            csvParser.forEach(csvRecord -> {
-
-                AbacStatus abacStatus = AbacStatus.fromValue(csvRecord.get(LegalCommitmentCSVColumn.ABAC_STATUS));
-                if (abacStatus == AbacStatus.ABAC_VALID) {
-                    updateGrantAgreement(csvRecord, municipalityDocuments, zipFile);
-                } else {
-                    _log.warn(THE_RECORD_WAS_SKIPPED_AS_ITS_STATUS_IS_NOT_VALID);
-                }
-            });
-        }
-
-        return true;
-    }
-
-    private void updateGrantAgreement(CSVRecord csvRecord, Map<Integer, String> municipalityDocuments, byte[] zipFile) {
-
-        Integer municipalityId = Integer.parseInt(csvRecord.get(LegalCommitmentCSVColumn.MUNICIPALITY_ID));
-
-        GrantAgreement grantAgreement =
-                grantAgreementRepository.findByApplicationRegistrationMunicipalityIdAndDateCounterSignatureIsNull(municipalityId);
-
-        if (grantAgreement == null) {
-            _log.error("Cannot find a grant agreement for the municipality [{}]", municipalityId);
-        } else {
-            Date counterSignatureDate = dateUtilities.convertToDate(csvRecord.get(LegalCommitmentCSVColumn.COUNTERSIGNATURE_DATE));
-            grantAgreement.setDateCounterSignature(counterSignatureDate);
-
-            // TODO: needs to be saved in Budgetary Commitment. The import file format needs to be changed for it.
-//            String abacKey = csvRecord.get(LegalCommitmentCSVColumn.ABAC_KEY);
-
-            String pdfFileName = municipalityDocuments.get(municipalityId);
-
-            if (StringUtils.isEmpty(pdfFileName)) {
-                _log.error("Inconsistency in the documents list and legal commitments files. Specified pdf file cannot be found.");
-            } else {
-                String counterSignedDocumentPath = uploadCounterSignedDocument(pdfFileName, zipFile);
-
-                grantAgreement.setDocumentLocationCounterSigned(counterSignedDocumentPath);
-
-                grantAgreementRepository.save(grantAgreement);
-            }
-
-        }
-    }
-
-    private String uploadCounterSignedDocument(String pdfFileName, byte[] zipFile) {
-        try {
-
-            ZipFileReader.ZipFileEntry pdfFile = parseEntryFromFile(new ByteArrayInputStream(zipFile), pdfFileName);
-
-            if (pdfFile == null || pdfFile.getContent() == null) {
-                throw new IllegalStateException("Error parsing a file " + pdfFileName + ". Please, check if Zip file is consistent.");
-            }
-
-            return azureBlobConnector.uploadLegalFile(pdfFileName, new ByteArrayInputStream(pdfFile.getContent()), pdfFile.getContent().length);
-        } catch (IOException e) {
-            _log.error("Error processing and uploading the file " + pdfFileName, e);
-        }
-
-        return null;
-    }
-
-    private Map<Integer, String> parseLegalCommitmentFileNames(ByteArrayInputStream zipFile) throws IOException {
-
-        ZipFileReader.ZipFileEntry documentFile = parseEntryFromFile(zipFile, legalCommitmentImportDocumentsFileName);
-
-        // TODO: needs o be improved for the really big files
-        // Too heavy to hold all FileEntries thus we keep only file names.
-        Map<Integer, String> municipalityDocuments = new HashMap<>();
-
-        try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(documentFile.getContent());
-             InputStreamReader inputStreamReader = new InputStreamReader(byteArrayInputStream)) {
-
-            CSVParser csvParser = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(inputStreamReader);
-            csvParser.forEach(csvRecord -> {
-
-                String municipalityId = csvRecord.get(LegalCommitmentDocumentCSVColumn.MUNICIPALITY_ID);
-                String documentFileName = csvRecord.get(LegalCommitmentDocumentCSVColumn.DOC_FILE_NAME);
-
-                municipalityDocuments.put(Integer.parseInt(municipalityId), documentFileName);
-
-            });
-        }
-
-        return municipalityDocuments;
-    }
-
-    private ZipFileReader.ZipFileEntry parseEntryFromFile(InputStream zipFile, String fileName) throws IOException {
-
-        try (ZipFileReader zipFileReader = new ZipFileReader(zipFile)) {
-
-            ZipFileReader.ZipFileEntry fileEntry = zipFileReader.getFileEntry(fileName);
-            if (fileEntry != null) {
-                return fileEntry;
-            } else {
-                throw new IllegalStateException("File " + fileName + " is missing");
-            }
-
-        }
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public ByteArrayOutputStream exportLegalCommitment() throws IOException {
-
-        _log.debug("exportLegalCommitment");
-
-        List<ExportFile> exportFiles = new ArrayList<>();
-
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        try (OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
-             CSVPrinter printer = new CSVPrinter(outputStreamWriter, CSVFormat.EXCEL.withHeader(
-                     "mun_id", "doc_portalId", "doc_name", "doc_fileName", "doc_mimeType", "doc_date", "doc_type", "ares_reference"
-             ))) {
-
-            List<ExportImportLegalCommitmentInformation> legalCommitmentsInformations = searchLegalCommitments();
-            this._log.debug("legalCommitmentsData.size [{}]", legalCommitmentsInformations.size());
-
-            if (CollectionUtils.isNotEmpty(legalCommitmentsInformations)) {
-                for (ExportImportLegalCommitmentInformation legalCommitmentInformation : legalCommitmentsInformations) {
-
-                    List<ExportFile> listExportFile = legalCommitmentInformation.getFiles();
-
-                    for (ExportFile exportFile : listExportFile) {
-
-                        try {
-                            printer.printRecord(
-                                    legalCommitmentInformation.getMunicipalityId(),
-                                    legalCommitmentInformation.getDocumentId(),
-                                    legalCommitmentInformation.getDocumentName(),
-                                    legalCommitmentInformation.getZipFileDocumentName(),
-                                    legalCommitmentInformation.getDocumentMimeType(),
-                                    legalCommitmentInformation.getDocumentSignatureDate(),
-                                    legalCommitmentInformation.getDocumentType(),
-                                    legalCommitmentInformation.getAresReference()
-                            );
-                        } catch (IOException e) {
-                            _log.error("Error writing a BC record to a CSV file", e);
-                        }
-
-                        exportFiles.add(exportFile);
-                    }
-                }
-
-            }
-        }
-
-        // Add the Legal Commitment CSV file
-        byte[] fileBytes = outputStream.toByteArray();
-
-        this._log.debug("Exporting to file. FileName [{}]", legalCommitmentExportFileName);
-
-        ExportFile csvLegalCommitmentsFile = new ExportFile(legalCommitmentExportFileName, fileBytes);
-        exportFiles.add(csvLegalCommitmentsFile);
-
-        return exportFileUtilities.generateZipFileStream(exportFiles);
-    }
-
-
-    private List<ExportImportLegalCommitmentInformation> searchLegalCommitments() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-        List<BudgetaryCommitment> listBudgetaryCommitment = budgetaryCommitmentRepository.findByAbacBcKeyIsNotNullAndAbacLcKeyIsNull();
-        this._log.debug("listBudgetaryCommitment.size [{}]", listBudgetaryCommitment.size());
-        List<Application> listApplications = new ArrayList<>();
-
-        // TODO Change this query logic
-        for (BudgetaryCommitment budgetaryCommitment : listBudgetaryCommitment) {
-            Municipality municipality = budgetaryCommitment.getMunicipality();
-            List<Registration> listRegistrations = municipality.getRegistrations();
-
-            List<Integer> registrationIds = listRegistrations.stream().map(Registration::getId).collect(Collectors.toList());
-            List<Application> applications = applicationRepository.findByRegistrationIdIn(registrationIds);
-            if (CollectionUtils.isNotEmpty(applications)) {
-                listApplications.addAll(applications);
-            }
-        }
-
-        int listApplicationsSize = listApplications.size();
-        this._log.debug("Applications.size [{}]", listApplicationsSize);
-
-        List<ExportImportLegalCommitmentInformation> listLegalCommitmentInformation = new ArrayList<>();
-        int i = 0;
-
-        for (Application application : listApplications) {
-            Integer applicationId = application.getId();
-
-            this._log.debug("Processing applications. Application.Id [{}]. Progress [{}]/[{}]", applicationId, ++i, listApplicationsSize);
-
-            List<GrantAgreement> listGrantAgreement = application.getGrantAgreements();
-            this._log.debug("   listGrantAgreement.size()[{}]", listGrantAgreement.size());
-
-            GrantAgreement grantAgreement = !listGrantAgreement.isEmpty() ? listGrantAgreement.get(0) : null;
-            this._log.debug("   First Grant Agreement. grantAgreement.id [{}]", grantAgreement == null ? "NULL" : grantAgreement.getId());
-
-            ExportImportLegalCommitmentInformation legalCommitmentInformation = new ExportImportLegalCommitmentInformation();
-            legalCommitmentInformation.setFiles(new ArrayList<>());
-
-            if (grantAgreement != null) {
-                String documentLocation = grantAgreement.getDocumentLocation();
-
-                _log.debug("Downloading from URI [{}]", documentLocation);
-
-                URL aURL = null;
-                try {
-                    aURL = new URL(documentLocation);
-                } catch (MalformedURLException e) {
-                    _log.error("Error", e);
-                }
-
-                if (aURL != null) {
-                    String path = aURL.getPath();
-
-                    String fileName = path.substring(path.lastIndexOf("/") + 1);
-
-                    legalCommitmentInformation.setMunicipalityId(application.getRegistration().getMunicipality().getId().longValue());
-                    legalCommitmentInformation.setDocumentId(grantAgreement.getId().longValue());
-                    legalCommitmentInformation.setDocumentName(fileName);
-                    legalCommitmentInformation.setZipFileDocumentName(grantAgreement.getId() + "-" + fileName);
-                    legalCommitmentInformation.setDocumentMimeType("application/pdf");
-
-                    String signatureDate = sdf.format(grantAgreement.getDateSignature());
-                    legalCommitmentInformation.setDocumentSignatureDate(signatureDate);
-                    legalCommitmentInformation.setDocumentType("GRANT_AGREEMENT");
-                    legalCommitmentInformation.setAresReference("");
-
-                    byte[] fileContent = this.azureBlobConnector.downloadFileByUri(documentLocation);
-
-                    byte[] fileData = fileContent == null ? new byte[0] : fileContent;
-                    this._log.debug("   Downloaded fileContent.length [{}] bytes", fileContent == null ? "NULL" : fileContent.length);
-                    ExportFile exportFile = new ExportFile(legalCommitmentInformation.getZipFileDocumentName(), fileData);
-
-                    legalCommitmentInformation.getFiles().add(exportFile);
-                }
-            }
-
-            listLegalCommitmentInformation.add(legalCommitmentInformation);
-        }
-
-        return listLegalCommitmentInformation;
     }
 }
