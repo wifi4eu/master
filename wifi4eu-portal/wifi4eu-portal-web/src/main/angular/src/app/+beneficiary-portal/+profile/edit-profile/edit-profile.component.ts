@@ -265,7 +265,6 @@ export class BeneficiaryEditProfileComponent {
             (response: ResponseDTOBase) => {
                 if (response.success) {
                     this.isMunicipalityEditable[municipalityId] = response.data;
-                    console.log (response.data);
                     if (response.data) {
                         //Check if municipality have applied cookie and then disable input fields
                         let appliedExist = false;
