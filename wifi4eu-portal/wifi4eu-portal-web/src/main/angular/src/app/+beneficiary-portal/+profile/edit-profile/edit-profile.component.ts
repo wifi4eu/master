@@ -178,6 +178,7 @@ export class BeneficiaryEditProfileComponent {
                                                 this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
                                                     (mayor: MayorDTOBase) => {
                                                         this.municipalities.push(municipality);
+                                                        console.log(this.municipalities);
                                                         this.checkEditPermissionMunicipality(municipality.id);
                                                         this.mayors.push(mayor);
                                                         if (this.municipalities.length > 0 && this.municipalities.length < 2) {
@@ -265,9 +266,16 @@ export class BeneficiaryEditProfileComponent {
             (response: ResponseDTOBase) => {
                 if (response.success) {
                     this.isMunicipalityEditable[municipalityId] = response.data;
+                    console.log (response.data);
                     if (response.data) {
                         //Check if municipality have applied cookie and then disable input fields
-                        var appliedExist = this.registrations.some(registration => this.isVoucherApplied(registration.id) === true);
+                        let appliedExist = false;
+                        this.registrations.forEach(registration => {
+                            if(registration.municipalityId == municipalityId){
+                                appliedExist = this.isVoucherApplied(registration.id)
+                            }
+                            
+                        });
                         this.isMunicipalityEditable[municipalityId] = !appliedExist;
                     }
                 }
