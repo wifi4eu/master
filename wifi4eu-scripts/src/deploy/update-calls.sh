@@ -1,21 +1,31 @@
 #!/bin/bash
 
+# Get DB connection
+DB_URL=$1
+DB_PORT=$2
+DB_NAME=$3
+
+# Get credentials
+DB_USER=${$4%:*}
+DB_PASS=${$4#*:}
+
+# Get query parameters
+P_CALL_ID=$5
+P_START_DATE=$6
+P_END_DATE=$7
+
 # Validate parameter's type
 re='^[0-9]+$'
-if ! [[ $3 =~ $re ]] ; then
+if ! [[ $P_CALL_ID =~ $re ]] ; then
    echo "error: Call_Id is not a number" >&2; exit 1
 fi
-if ! [[ $4 =~ $re ]] ; then
+if ! [[ $P_START_DATE =~ $re ]] ; then
    echo "error: Start_Date is not a number" >&2; exit 1
 fi
-if ! [[ $5 =~ $re ]] ; then
+if ! [[ $P_END_DATE =~ $re ]] ; then
    echo "error: End_Date is not a number" >&2; exit 1
 fi
 
-# Get credentials
-DB_USER=${CREDENTIALS%:*}
-DB_PASS=${CREDENTIALS#*:}
-
 # Update calls
-sqlcmd -S $1,$2 -U $DB_USER -d $DB_NAME -P '$DB_PASS' -Q "UPDATE calls SET start_date=$4, end_date=$5 where id=$3";
+sqlcmd -S $DB_URL,$DB_PORT -U $DB_USER -d $DB_NAME -P '$DB_PASS' -Q "UPDATE calls SET start_date=$P_START_DATE, end_date=$P_END_DATE where id=$P_CALL_ID";
 
