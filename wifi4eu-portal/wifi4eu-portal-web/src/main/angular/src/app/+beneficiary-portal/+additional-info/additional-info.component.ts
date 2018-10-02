@@ -54,48 +54,7 @@ export class AdditionalInfoComponent {
             let municipalityId;
             this.route.params.subscribe(params => municipalityId = params['municipalityId']);
             if (municipalityId != null) {
-                this.municipalityApi.getMunicipalityById(municipalityId).subscribe(
-                    (municipality: MunicipalityDTOBase) => {
-                        this.municipality = municipality;
-                        this.registrationApi.getRegistrationByMunicipalityId(this.municipality.id).subscribe(
-                            (registration: RegistrationDTOBase) => {
-                                this.registration = registration;
-                                this.filesUploaded = this.registration.allFilesFlag == 1 ? true : false;
-                                this.registrationApi.getHistoryForType(this.registration.id, 1, new Date().getTime()).subscribe(
-                                    (response: ResponseDTOBase) => {
-                                        this.documentFilesType1 = response.data;
-                                    }, error => {
 
-                                    }
-                                );
-                                this.registrationApi.getHistoryForType(this.registration.id, 2, new Date().getTime()).subscribe(
-                                    (response: ResponseDTOBase) => {
-                                        this.documentFilesType2 = response.data;
-                                    }, error => {
-
-                                    }
-                                );
-                                this.registrationApi.getHistoryForType(this.registration.id, 3, new Date().getTime()).subscribe(
-                                    (response: ResponseDTOBase) => {
-                                        this.documentFilesType3 = response.data;
-                                    }, error => {
-
-                                    }
-                                );
-                                this.registrationApi.getHistoryForType(this.registration.id, 4, new Date().getTime()).subscribe(
-                                    (response: ResponseDTOBase) => {
-                                        this.documentFilesType4 = response.data;
-                                    }, error => {
-
-                                    }
-                                );
-                            }, error => {
-                            }
-                        );
-
-                    }, error => {
-                    }
-                );
                 this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
                     (registrations: RegistrationDTOBase[]) => {
                         if (registrations.length == 1) {
@@ -117,6 +76,53 @@ export class AdditionalInfoComponent {
                     }
                 );
 
+                this.municipalityApi.getMunicipalityById(municipalityId).subscribe(
+                    (municipality: MunicipalityDTOBase) => {
+                        this.municipality = municipality;
+                        this.registrationApi.getRegistrationByMunicipalityId(this.municipality.id).subscribe(
+                            (registration: RegistrationDTOBase) => {
+                                this.registration = registration;
+                                this.filesUploaded = this.registration.allFilesFlag == 1 ? true : false;
+                                this.registrationApi.getHistoryAll(this.registration.id).subscribe(
+                                    (response: ResponseDTOBase) => {
+
+                                        let documentFilesResponse: LegalFileDTOBase[] = response.data;
+                                        let documentFile: LegalFileDTOBase
+
+                                        for(let i = 0 ; i < documentFilesResponse.length; i++){
+                                            documentFile = documentFilesResponse[i];
+
+                                            switch (documentFile.fileType) {
+                                                case 1:
+                                                    this.documentFilesType1.push(documentFile);
+                                                    break;
+                                                case 2:
+                                                    this.documentFilesType2.push(documentFile);
+                                                    break;
+                                                case 3:
+                                                    this.documentFilesType3.push(documentFile);
+                                                    break;
+                                                case 4:
+                                                    this.documentFilesType4.push(documentFile);
+                                                    break;
+                                                default:
+                                                    break;
+                                            } 
+                                        }
+
+                                        this.documentFilesType1 = response.data;
+                                    }, error => {
+
+                                    }
+                                );
+                            }, error => {
+                            }
+                        );
+
+                    }, error => {
+                    }
+                );
+            
             }
 
         } else {

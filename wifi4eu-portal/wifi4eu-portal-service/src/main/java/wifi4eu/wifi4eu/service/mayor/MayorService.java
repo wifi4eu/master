@@ -92,4 +92,16 @@ public class MayorService {
     public MayorDTO getMayorByMunicipalityId(int municipalityId) {
         return mayorMapper.toDTO(mayorRepository.findByMunicipalityId(municipalityId));
     }
+
+    public MayorDTO findByNameAndSurname(String name, String surname) {
+        return mayorMapper.toDTO(mayorRepository.findByNameAndSurname(name, surname));
+    }
+
+    public MayorDTO updateMayorDetails(MayorDTO mayorDTO, String name, String surname) {
+        mayorDTO.setName(name);
+        mayorDTO.setSurname(surname);
+
+        return mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDTO)));
+    }
+
 }

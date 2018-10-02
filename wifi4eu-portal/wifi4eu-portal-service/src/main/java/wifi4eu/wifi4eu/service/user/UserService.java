@@ -1,13 +1,6 @@
 package wifi4eu.wifi4eu.service.user;
 
-import java.security.SecureRandom;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
@@ -20,17 +13,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-
-import com.google.common.collect.Lists;
-
 import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.mail.MailData;
-import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
-import wifi4eu.wifi4eu.common.dto.model.SuppliedRegionDTO;
-import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserRegistrationDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserThreadsDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
@@ -45,8 +30,6 @@ import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.security.TokenGenerator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.service.mail.MailService;
-import wifi4eu.wifi4eu.entity.invitationContacts.InvitationContact;
-import wifi4eu.wifi4eu.entity.mayor.Mayor;
 import wifi4eu.wifi4eu.common.utils.Utils;
 import wifi4eu.wifi4eu.entity.invitationContacts.InvitationContact;
 import wifi4eu.wifi4eu.entity.mayor.Mayor;
@@ -76,6 +59,7 @@ import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierUserRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
+import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
@@ -85,9 +69,10 @@ import wifi4eu.wifi4eu.util.RedisUtil;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.security.SecureRandom;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 @Configuration
 @PropertySource("classpath:env.properties")
@@ -169,6 +154,9 @@ public class UserService {
     
     @Autowired
     ApplicationService applicationService;
+
+    @Autowired
+    MayorService mayorService;
 
     @Autowired
     RightRepository rightRepository;
@@ -437,9 +425,14 @@ public class UserService {
     @Transactional
     public ResponseDTO updateUserDetails(UserDTO userConnected, List<UserContactDetails> users) {
         //verifying data
-        List<UserDTO> usersToSave = new ArrayList<UserDTO>();
+        List<UserDTO> usersToSave = new ArrayList<>();
+
         for (UserContactDetails userDetails : users) {
             UserDTO user = getUserById(userDetails.getId());
+
+            String nameUserDb = user.getName();
+            String surnameUserDb = user.getSurname();
+
             user.setName(userDetails.getName());
             user.setSurname(userDetails.getSurname());
             user.setAddress(userDetails.getAddress());
@@ -453,13 +446,15 @@ public class UserService {
                         .HttpStatus.BAD_REQUEST.getReasonPhrase()));
             } else {
                 usersToSave.add(user);
+
+                MayorDTO mayorDTO = mayorService.findByNameAndSurname(nameUserDb, surnameUserDb);
+                if (mayorDTO != null){
+                    mayorService.updateMayorDetails(mayorDTO, userDetails.getName(), userDetails.getSurname());
+                }
             }
         }
 
-        for (UserDTO user : usersToSave) {
-            userRepository.save(userMapper.toEntity(user));
-        }
-
+        userRepository.save(userMapper.toEntityList(usersToSave));
         return new ResponseDTO(true, "success", null);
     }
 
