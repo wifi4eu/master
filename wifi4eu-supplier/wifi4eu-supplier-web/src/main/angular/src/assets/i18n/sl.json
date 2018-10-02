@@ -12,7 +12,7 @@
   "home.part2.text1": "Naslednji razpis za zbiranje prijav bo objavljen dne {{date}} ob {{hour}} (srednjeevropski poletni čas). ",
   "home.part2.subtitle4": "Na razpis se lahko prijavijo:",
   "home.part2.list1": "- občine",
-  "home.part2.subtitle5": "Seznam #upravičenih subjektov# v vaši državi.",
+  "home.part2.subtitle5": "Seznam <a href=\"https://ec.europa.eu/digital-single-market/news-redirect/624101\"  target=\"_blank\">upravičenih subjektov</a> v vaši državi.",
   "home.part2.list2": "- Zveze občin v imenu svojih članic ",
   "home.part2.subtitle6": "Z bonom WiFi4EU bo mogoče financirati stroške nakupa in namestitve opreme (javne točke dostopa do interneta). Občine, ki prejmejo bon, krijejo stroške povezljivosti (internetna naročnina) in vzdrževanje opreme za brezplačno in visokokakovostno brezžično internetno povezljivost najmanj tri leta.",
   "home.part2.subtitle2": "Kaj lahko pričakujete",
@@ -143,7 +143,7 @@
   "suppRegistration.eu.requirements": "Potrjujem, da sem prebral(a) in se strinjam z naslednjimi pogoji sheme WiFi4EU:",
   "suppRegistration.eu.requirementsTitle": "1. Namestitev točk dostopa Wi-Fi, ki na istem javnem mestu podvajajo obstoječo brezplačno zasebno ali javno ponudbo podobnih značilnosti, vključno s kakovostjo storitve, ni upravičena do finančnih sredstev. Takšno podvajanje se lahko prepreči z razporeditvijo točk dostopa tako, da zajamejo predvsem javna mesta in se ne prekrivajo z obstoječimi podobnimi točkami dostopa zasebne ali javne ponudbe.",
   "suppRegistration.eu.requirements2": "2. Bon WiFi4EU je namenjen kritju stroškov nakupa opreme in namestitve točk brezžičnega dostopa do interneta, da se vzpostavi lokalno omrežje Wi-Fi. Operativni stroški (vključno naročnina na internet) niso upravičeni do financiranja.",
-  "suppRegistration.eu.requirements3": "3. Če bo občina, prejemnica bona, izbrala moje podjetje, bomo v okviru pobude WiFi4EU zagotovili opremo in namestitev v skladu s tehničnimi specifikacijami iz #razpisnega dokumenta#. ",
+  "suppRegistration.eu.requirements3": "3. Če bo občina, prejemnica bona, izbrala moje podjetje, bomo v okviru pobude WiFi4EU zagotovili opremo in namestitev v skladu s tehničnimi specifikacijami iz razpisnega dokumenta. ",
   "suppRegistration.submit.application": "Potrjujem, da so informacije, dane na tem portalu v zvezi s pobudo WiFi4EU, resnične, popolne in točne. Potrjujem, da lahko Evropska komisija oziroma Izvajalska agencija za inovacije in omrežja (INEA) preveri tu navedene informacije pri viru, dostopnem v skladu z zakonom.",
   "shared.submitregistration.failure.title": "Pri registraciji so nastale težave.",
   "shared.submitregistration.failure.text.part1": "Poskusite znova ali se obrnite na službo za pomoč uporabnikom.",
@@ -180,7 +180,7 @@
   "itemMenu.myAccount": "Moja(e) registracija(e)",
   "benefPortal.profile.editRegistrationText": "Registracijo lahko vidite in spremenite do objave razpisa. Kliknite spodaj in odprite registracijo.",
   "benefPortal.beneficiary.editApplication": "Prikaži/Uredi registracijo",
-  "benefPortal.beneficiary.goDiscussionText": "Občino, ki ste jo registrirali, je na portalu WiFi4EU že registrirala neka druga oseba. Spremenite podatke oziroma razrešite zadevo s to drugo osebo #na forumu za razpravo#.",
+  "benefPortal.beneficiary.goDiscussionText": "Občino, ki ste jo registrirali, je na portalu WiFi4EU že registrirala neka druga oseba. Spremenite podatke oziroma razrešite zadevo s to drugo osebo na forumu za razpravo.",
   "itemMenu.appPortal": "Moja prijava",
   "submitregistration.success.text.part1": "Potrditev registracije",
   "discussionForum.beneficiary.goDiscussion": "Na forum za razpravo",
@@ -495,7 +495,7 @@
   "benefPortal.myVoucher.datatable.grantAgreement": "Sporazum o nepovratnih sredstvih podpisan dne {{date}}. ",
   "shared.statusDocsUploaded": "Potrjujemo prejem vaših dokumentov.",
   "benefPortal.selectSupplier.details.title": "Izberi podjetje za namestitev Wi-Fi",
-  "benefPortal.selectSupplier.feedback.selected": "Podjetje za namestitev Wi-Fi izbrano dne {{date}}. #Podrobnosti#",
+  "benefPortal.selectSupplier.feedback.selected": "Podjetje za namestitev Wi-Fi izbrano dne {{date}}. Podrobnosti",
   "benefPortal.myVoucher.datatable.confirmInstallation": "Potrdi namestitev omrežja",
   "shared.supportingDocuments.info": "Spodaj naložite dokazila; naložene datoteke morajo biti v ustrezni obliki (.pdf, .png, or .jpg).",
   "shared.supportingDocuments.info2": "Dokler ne boste naložili VSEH obveznih dokazil, se ne boste mogli prijaviti za bon. Naloženi dokumenti MORAJO biti popolni in berljivi, sicer se vaša prijava na ta razpis lahko razveljavi.",
@@ -954,5 +954,6 @@
   "discussionForum.discussionForum.discussion.growl": "Evropska komisija ne ponuja mediacije.",
   "dgConn.voucherAssignment.password": "Password",
   "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct",
-  "dgconn.voucherAssignment.runningFreze": "Freezing..."
+  "dgconn.voucherAssignment.runningFreze": "Freezing...",
+  "dgconn.voucherAssignment.runningPreSelectionList": "Creating Pre-selection List…"
 }

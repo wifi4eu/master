@@ -12,7 +12,7 @@
   "home.part2.text1": "Järgmine osalemiskutse avaldatakse {{date}} kl {{hour}} (Kesk-Euroopa suveaeg). ",
   "home.part2.subtitle4": "Sellel saavad osaleda:",
   "home.part2.list1": "- omavalitsused",
-  "home.part2.subtitle5": "Tutvuge oma riigi #toetuskõlblike üksuste nimekirjaga#.",
+  "home.part2.subtitle5": "Tutvuge oma riigi <a href=\"https://ec.europa.eu/digital-single-market/news-redirect/624101\"  target=\"_blank\">toetuskõlblike üksuste nimekirjaga</a>.",
   "home.part2.list2": "- omavalitsuste ühendused, kes tegutsevad oma liikmete nimel",
   "home.part2.subtitle6": "WiFi4EU vautšeri alusel hüvitatakse WiFi kohtvõrgu seadmete ja paigaldamise kulud. Vautšeri saanud omavalitsus peab tasuma vähemalt kolme aasta jooksul tasuta ja kvaliteetse WiFi-ühenduse jaoks vajaliku internetiühenduse ja seadmete hoolduskulude eest.",
   "home.part2.subtitle2": "Mida algatuse raames pakutakse?",
@@ -143,7 +143,7 @@
   "suppRegistration.eu.requirements": "Kinnitan, et olen lugenud ja nõustun järgmiste algatuse WiFi4EU tingimustega:",
   "suppRegistration.eu.requirementsTitle": "1. Rahastust ei saa taotleda selliste WiFi juurdepääsupunktide paigaldamiseks, mis dubleerivad samasuguste omadustega (sh samasuguse kvaliteediga) tasuta pakkumisi, mille avalik või erasektor on samas avalikus ruumis välja töötanud. Dubleerimist saab vältida, kui on tagatud, et uued juurdepääsupunktid luuakse selliselt, et need hõlmaksid eelkõige avalikku ruumi ega kattuks sarnaste omadustega pakkumistega, mille avalik või erasektor on juba välja töötanud.",
   "suppRegistration.eu.requirements2": "2. WiFi4EU vautšerit saab kasutada WiFi kohtvõrgu loomiseks vajaliku traadita internetiühenduse juurdepääsupunkti seadmete ostu- ja paigaldamiskulude katmiseks. Tegevuskulud (sh internetiühenduse lepinguga seotud kulud) ei ole toetuskõlblikud.",
-  "suppRegistration.eu.requirements3": "3. Kui vautšeri saanud omavalitsus valib teenusepakkujaks minu ettevõtte, vastavad algatuse WiFi4EU raames pakutavad seadmed ja paigaldustööd #osalemiskutse tekstis# sisalduvale tehnilisele kirjeldusele.",
+  "suppRegistration.eu.requirements3": "3. Kui vautšeri saanud omavalitsus valib teenusepakkujaks minu ettevõtte, vastavad algatuse WiFi4EU raames pakutavad seadmed ja paigaldustööd osalemiskutse tekstis sisalduvale tehnilisele kirjeldusele.",
   "suppRegistration.submit.application": "Kinnitan, et selles portaalis ja seoses algatusega WiFi4EU esitatud teave on õige, täielik ja täpne. Annan Euroopa Komisjonile ning Innovatsiooni ja Võrkude Rakendusametile (INEA) loa kontrollida esitatud teavet õigusnormide kohaselt kättesaadavate allikate põhjal.",
   "shared.submitregistration.failure.title": "Registreerimisel ilmnes viga.",
   "shared.submitregistration.failure.text.part1": "Palun proovige uuesti või küsige abi kasutajatoelt.",
@@ -180,7 +180,7 @@
   "itemMenu.myAccount": "Minu registreerimistaotlus(ed)",
   "benefPortal.profile.editRegistrationText": "Saate oma registreeringut kuni osalemiskutse avaldamiseni vaadata ja muuta. Registreeringu avamiseks klõpsake allpool.",
   "benefPortal.beneficiary.editApplication": "Vaata/muuda registreeringut",
-  "benefPortal.beneficiary.goDiscussionText": "Teie registreeritud omavalitsuse on keegi teine juba WiFi4EU portaalis registreerinud. Palun muutke oma andmeid või suunduge küsimuse lahendamiseks foorumisse ja #algatage vestlus#",
+  "benefPortal.beneficiary.goDiscussionText": "Teie registreeritud omavalitsuse on keegi teine juba WiFi4EU portaalis registreerinud. Palun muutke oma andmeid või suunduge küsimuse lahendamiseks foorumisse ja algatage vestlus",
   "itemMenu.appPortal": "Minu taotlus",
   "submitregistration.success.text.part1": "Palun valideerige oma registreering",
   "discussionForum.beneficiary.goDiscussion": "Mine vestluste juurde",
@@ -495,7 +495,7 @@
   "benefPortal.myVoucher.datatable.grantAgreement": "Toetusleping allkirjastati {{date}}. ",
   "shared.statusDocsUploaded": "Kinnitame, et oleme teie dokumendid kätte saanud.",
   "benefPortal.selectSupplier.details.title": "Valige WiFi paigaldusettevõte",
-  "benefPortal.selectSupplier.feedback.selected": "Paigaldusettevõte valitud {{date}}. #Lisateave#",
+  "benefPortal.selectSupplier.feedback.selected": "Paigaldusettevõte valitud {{date}}. Lisateave",
   "benefPortal.myVoucher.datatable.confirmInstallation": "Kinnitage võrgu paigaldamine",
   "shared.supportingDocuments.info": "Laadige tõendavad dokumendid üles sobivas vormingus (.pdf, .png või .jpg).",
   "shared.supportingDocuments.info2": "Pange tähele, et te ei saa vautšerit taotleda enne, kui olete esitanud KÕIK kohustuslikud tõendavad dokumendid. Teie üleslaaditud dokumendid PEAVAD OLEMA täielikud ja loetavad, vastasel juhul märgitakse teie taotlus sellel konkursil kehtetuks.",
@@ -954,5 +954,6 @@
   "discussionForum.discussionForum.discussion.growl": "Komisjon ei osuta vahendusteenust.",
   "dgConn.voucherAssignment.password": "Password",
   "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct",
-  "dgconn.voucherAssignment.runningFreze": "Freezing..."
+  "dgconn.voucherAssignment.runningFreze": "Freezing...",
+  "dgconn.voucherAssignment.runningPreSelectionList": "Creating Pre-selection List…"
 }
