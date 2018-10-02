@@ -28,7 +28,7 @@ export class BeneficiaryRegistrationStep3Component {
     private hasEcasEmail: boolean = false;
     private storedUser;
     private userEcas;
-    private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
+    private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])$");
 
 
     @Output() private onNext: EventEmitter<any>;
@@ -36,6 +36,7 @@ export class BeneficiaryRegistrationStep3Component {
     @Output() private associationNameChange: EventEmitter<string>;
 
     private css_class_email: string = '';
+    private nullCountry: NutsDTOBase = {}; //IE needs an object to check x.label, if is null has an error
 
     constructor(private sharedService: SharedService, private localStorage: LocalStorageService) {
         this.onNext = new EventEmitter<any>();
@@ -85,7 +86,10 @@ export class BeneficiaryRegistrationStep3Component {
             this.repeatEmail = '';
             this.initialUser.country = '';
             this.initialUser.city = '';
-            /* this.checkEmailsMatch(); */
+            if(!this.hasEcasEmail){
+                this.checkEmailsMatch();
+            }
+        
         }
         this.checkButtonEnabled();
     }

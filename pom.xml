@@ -571,7 +571,7 @@
                 <ng.env>dev</ng.env>
                 <schemes>https</schemes>
                 <server.address>${server.azure.sec.address}</server.address>
-                <server.dgconn.address>${server.azure.dev.dgconn.address}</server.dgconn.address>
+                <server.dgconn.address>${server.azure.sec.dgconn.address}</server.dgconn.address>
                 <dgconn.name>dashboard</dgconn.name>
                 <dgconn.context.name>/dashboard</dgconn.context.name>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>

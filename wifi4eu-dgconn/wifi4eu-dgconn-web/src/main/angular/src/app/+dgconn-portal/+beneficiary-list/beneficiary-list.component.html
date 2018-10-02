@@ -86,7 +86,7 @@
         <p-column field="dateCounterSignature" [sortable]="true" header="{{ 'dgConn.beneficiariesList.table.dateCounterSignature' | translate }}" styleClass="text-center">
             <ng-template let-row="rowData" pTemplate="body">
                 <span *ngIf="row.dateCounterSignature == null">-</span>
-                <span *ngIf="row.dateCounterSignature != null">{{ row.dateCounterSignature }}</span>
+                <span *ngIf="row.dateCounterSignature != null">{{row.dateCounterSignature}}</span>
               </ng-template>
         </p-column>
         <p-column [sortable]="false" header="{{ 'dgConn.actions' | translate }}" styleClass="text-center not-hide-overflow">

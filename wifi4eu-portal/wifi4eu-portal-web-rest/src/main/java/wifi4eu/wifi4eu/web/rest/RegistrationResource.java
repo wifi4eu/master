@@ -337,7 +337,7 @@ public class RegistrationResource {
 	@RequestMapping(value = "/getHistory/{registrationId}/{type}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public ResponseDTO getHistoryForType(@PathVariable("registrationId") final Integer registrationId,
-			@PathVariable("type") final Integer type, HttpServletResponse response, HttpServletRequest request)
+			@PathVariable("type") final Integer type, @RequestParam("date") final Long timestamp, HttpServletResponse response, HttpServletRequest request)
 			throws IOException {
 		UserContext userContext = UserHolder.getUser();
 		UserDTO userConnected = userService.getUserByUserContext(userContext);
