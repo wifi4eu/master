@@ -92,4 +92,8 @@ export class TimerComponent {
             "error"
         )
     }
+
+    public validCountDown(value) {
+        return !Number.isNaN(value) && typeof value === "number";
+    }
 }
