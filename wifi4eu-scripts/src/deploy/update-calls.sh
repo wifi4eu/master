@@ -36,5 +36,5 @@ if ! [[ $P_END_DATE =~ $re ]] ; then
 fi
 
 # Update calls
-sqlcmd -S $DB_URL,$DB_PORT -U $DB_USER -d $DB_NAME -P '$DB_PASS' -Q "UPDATE calls SET start_date=$P_START_DATE, end_date=$P_END_DATE where id=$P_CALL_ID";
+sqlcmd -S $DB_URL,$DB_PORT -U $DB_USER -d $DB_NAME -P $DB_PASS -Q "UPDATE calls SET start_date=$P_START_DATE, end_date=$P_END_DATE where id=$P_CALL_ID";
 
