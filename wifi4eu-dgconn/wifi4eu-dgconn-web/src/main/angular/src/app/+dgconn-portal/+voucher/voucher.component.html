@@ -439,8 +439,10 @@
         <form (ngSubmit)="closeModal()" #validateConfirmationForm="ngForm">
             <div class="form-group">
                 <div style="padding: 2em; padding-top: 0em;" class="center">
-                    <p [innerHTML]="'dgConn.applicantDetails.invalidateApplication.rerunVoucherSimulation' | translate"></p>
-                </div>
+                    <p *ngIf="isRejection" [innerHTML]="'dgConn.applicantDetails.rejectApplication.rerunVoucherSimulation' | translate"></p>
+                    <p *ngIf="isSelection" [innerHTML]="'dgConn.applicantDetails.selectingApplication.rerunVoucherSimulation' | translate"></p>
+                
+                  </div>
                 <div style="padding: 2em; padding-top: 0em;">
                     <div class="row center">
                         <div class="col-sm-12">

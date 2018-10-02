@@ -115,6 +115,8 @@ export class DgConnVoucherComponent {
   @ViewChild("municipalitySearch") municipalitySearch: ElementRef;
 
   private displayAlreadyLaunched: boolean = false;
+  private isRejection : boolean = false;
+  private isSelection : boolean = false;
 
   constructor(private adminActionsApi: AdminactionsApi, private sharedService: SharedService, private callApi: CallApi, private applicationApi: ApplicationApi, private nutsApi: NutsApi,
     private voucherApi: VoucherApi, private router: Router, private route: ActivatedRoute, private registrationWarningApi: RegistrationWarningApi) {
@@ -501,6 +503,7 @@ export class DgConnVoucherComponent {
       var index = this.listAssignment.findIndex((x) => x.application.id == response.data.id)
       this.listAssignment[index].application = <ApplicationDTO>response.data;
       this.displaySimulation = true;
+      this.isRejection = true;
     }, error => {
       this.sharedService.growlTranslation('An error occurred while rejecting an application.', 'dgConn.voucherAssignment.error.rejectingApplication', 'error');
     })
@@ -514,6 +517,7 @@ export class DgConnVoucherComponent {
       var index = this.listAssignment.findIndex((x) => x.application.id == response.data.id)
       this.listAssignment[index].application = <ApplicationDTO>response.data;
       this.displaySimulation = true;
+      this.isSelection = true;
     }, error => {
       this.sharedService.growlTranslation('An error occurred while selecting an application.', 'dgConn.voucherAssignment.error.selectingApplication', 'error');
     })
@@ -628,5 +632,7 @@ export class DgConnVoucherComponent {
 
   private closeModal(){
     this.displaySimulation = false;
+    this.isRejection = false;
+    this.isSelection = false;
   }
 }

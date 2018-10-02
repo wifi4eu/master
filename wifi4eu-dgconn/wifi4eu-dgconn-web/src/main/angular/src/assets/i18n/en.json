@@ -1029,5 +1029,7 @@
   "suppRegistration.uploadLogo.info": "Please upload your logo, ensuring that the files you upload are in a suitable file format (.png or .jpg).",
   "dgConn.voucherAssignment.password": "Password",
   "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct",
-  "dgconn.voucherAssignment.runningFreze": "Freezing..."
+  "dgconn.voucherAssignment.runningFreze": "Freezing...",
+  "dgConn.applicantDetails.rejectApplication.rerunVoucherSimulation": "You need to re-run the voucher simulation process after rejecting a municipality.",
+  "dgConn.applicantDetails.selectingApplication.rerunVoucherSimulation": "You need to re-run the voucher simulation process after selecting a municipality."
 }
