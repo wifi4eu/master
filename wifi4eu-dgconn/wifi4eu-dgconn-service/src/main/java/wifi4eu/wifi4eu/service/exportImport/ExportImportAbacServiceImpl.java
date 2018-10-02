@@ -1,6 +1,16 @@
 package wifi4eu.wifi4eu.service.exportImport;
 
 import com.google.common.collect.Lists;
+import com.itextpdf.text.Chapter;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfDocument;
+import com.itextpdf.text.pdf.PdfWriter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -33,8 +43,10 @@ import wifi4eu.wifi4eu.entity.exportImport.ExportImportLegalCommitmentInformatio
 import wifi4eu.wifi4eu.entity.exportImport.ExportImportRegistrationData;
 import wifi4eu.wifi4eu.entity.exportImport.GlobalCommitment;
 import wifi4eu.wifi4eu.entity.grantAgreement.GrantAgreement;
+import wifi4eu.wifi4eu.entity.mayor.Mayor;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.entity.registration.Registration;
+import wifi4eu.wifi4eu.entity.representation.Representation;
 import wifi4eu.wifi4eu.mapper.exportImport.ExportImportRegistrationDataMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.exportImport.BeneficiaryInformationRepository;
@@ -42,7 +54,9 @@ import wifi4eu.wifi4eu.repository.exportImport.BudgetaryCommitmentRepository;
 import wifi4eu.wifi4eu.repository.exportImport.ExportImportRegistrationDataRepository;
 import wifi4eu.wifi4eu.repository.exportImport.GlobalCommitmentRepository;
 import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
+import wifi4eu.wifi4eu.repository.mayor.MayorRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
+import wifi4eu.wifi4eu.repository.representation.RepresentationRepository;
 import wifi4eu.wifi4eu.service.exportImport.file.CreateFile;
 import wifi4eu.wifi4eu.service.location.LauService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
@@ -63,6 +77,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -115,6 +130,12 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
 
     @Autowired
     private MayorService mayorService;
+
+    @Autowired
+    private MayorRepository mayorRepository;
+
+    @Autowired
+    private RepresentationRepository representationRepository;
 
     @Autowired
     private RegistrationService registrationService;
@@ -233,10 +254,11 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
 
             if (CollectionUtils.isNotEmpty(beneficiariesInformation)) {
                 Set<String> loadedMunicipalities = new HashSet<>();
+                Set<String> documentGeneratedMunicipalities = new HashSet<>();
 
                 beneficiariesInformation.forEach(beneficiaryInformation -> {
                     processBeneficiaryInformation(beneficiaryInformation, loadedMunicipalities, entitiesPrinter);
-                    processDocumentInformation(beneficiaryInformation, documentsPrinter, exportFiles);
+                    processDocumentInformation(beneficiaryInformation, documentGeneratedMunicipalities, documentsPrinter, exportFiles);
                 });
             }
 
@@ -292,13 +314,33 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
         return StringUtils.defaultString(source);
     }
 
-    private void processDocumentInformation(BeneficiaryInformation beneficiaryInformation, CSVPrinter csvPrinter, List<ExportFile> exportFiles) {
+    private void processDocumentInformation(BeneficiaryInformation beneficiaryInformation, Set<String> documentGeneratedMunicipalities, CSVPrinter csvPrinter, List<ExportFile> exportFiles) {
 
-        if (StringUtils.isNotBlank(beneficiaryInformation.getAzureUri())) {
+        // needed because BeneficiaryInformation is not an entity but a cartesian product of municipalities x legal files, and we don't want to export a municipality more than once
+        if (documentGeneratedMunicipalities.contains(beneficiaryInformation.getMun_id())) {
+            return;
+        } else {
+            documentGeneratedMunicipalities.add(beneficiaryInformation.getMun_id());
+        }
+        //if (StringUtils.isNotBlank(beneficiaryInformation.getAzureUri())) {
 
-            String fileName = getMunicipalityPrefixedFileName(beneficiaryInformation);
+            //String fileName = getMunicipalityPrefixedFileName(beneficiaryInformation);
 
             try {
+                String fileName = "lef_supporting_document-" + beneficiaryInformation.getMun_id() + ".pdf";
+
+                csvPrinter.printRecord(
+                        beneficiaryInformation.getMun_id(),
+                        beneficiaryInformation.getDoc_portalId(),
+                        "lef_supporting_document.pdf",
+                        fileName,
+                        "application/pdf",
+                        dateUtilities.convertDate2String(beneficiaryInformation.getDoc_date()),
+                        defaultEmpty(beneficiaryInformation.getDoc_type()),
+                        defaultEmpty(beneficiaryInformation.getAresReference())
+                );
+
+                /* we should really keep this instead
                 csvPrinter.printRecord(
                         beneficiaryInformation.getMun_id(),
                         defaultEmpty(beneficiaryInformation.getDoc_portalId()),
@@ -313,13 +355,94 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
                 // What if a file is too big?
                 String base64FileData = azureBlobConnector.downloadLegalFile(beneficiaryInformation.getAzureUri());
                 byte[] fileData = StringUtils.isNotEmpty(base64FileData) ? Base64Utils.decodeFromString(base64FileData) : new byte[0];
-                ExportFile exportFile = new ExportFile(fileName, fileData);
+                */
+
+                ByteArrayOutputStream os = new ByteArrayOutputStream();
+                createBeneficiaryAbacPDF(beneficiaryInformation, os);
+                ExportFile exportFile = new ExportFile(fileName, os.toByteArray());
                 exportFiles.add(exportFile);
             } catch (IOException e) {
                 _log.error(ERROR_WRITING_DOWN_TO_THE_CSV_FILE, e);
             }
 
+        //}
+    }
+
+    /**
+     * Meant as a temporary solution while we try to convince BUDG that this is meaningless
+     * Create a pdf containing municipality and mayor/representation data
+     *
+     * @param beneficiaryInformation
+     * @param os
+     * @return
+     */
+    private OutputStream createBeneficiaryAbacPDF(BeneficiaryInformation beneficiaryInformation, OutputStream os) {
+        Document document = new Document();
+        try {
+            int chapterNum = 0;
+            PdfWriter.getInstance(document, os);
+            document.open();
+            Font tittleFont = FontFactory.getFont(FontFactory.HELVETICA, 24, Font.BOLD);
+            Font chapterFont = FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLDITALIC);
+            Font paragraphFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL);
+
+            Chunk titleTxt = new Chunk("LEF supporting document", tittleFont);
+            Paragraph titlePar = new Paragraph(titleTxt);
+            titlePar.setAlignment(Element.ALIGN_CENTER);
+            document.add(titlePar);
+
+            document.add(new Paragraph(new Chunk("Municipality information", chapterFont)));
+
+            StringBuilder municipalityParagraphText = new StringBuilder();
+            municipalityParagraphText.append("Municipality id: ").append(beneficiaryInformation.getMun_id()).append("\n");
+            municipalityParagraphText.append("Municipality name: ").append(beneficiaryInformation.getMun_name()).append("\n");
+            municipalityParagraphText.append("Municipality ABAC name: ").append(beneficiaryInformation.getMun_abacName()).append("\n");
+            municipalityParagraphText.append("Municipality adress: ").append(beneficiaryInformation.getMun_address()).append("\n");
+            municipalityParagraphText.append("Municipality postal code: ").append(beneficiaryInformation.getMun_postalCode()).append("\n");
+            municipalityParagraphText.append("Municipality country code: ").append(beneficiaryInformation.getMun_countryCodeISO()).append("\n");
+
+            document.add(new Paragraph(new Chunk(municipalityParagraphText.toString(), paragraphFont)));
+
+            Mayor mayor = mayorRepository.findByMunicipalityId(Integer.parseInt(beneficiaryInformation.getMun_id()));
+            if (mayor != null) {
+
+                document.add(new Paragraph(new Chunk("Mayor information", chapterFont)));
+
+                StringBuilder mayorParagraphText = new StringBuilder();
+                mayorParagraphText.append("Mayor id: ").append(mayor.getId()).append("\n");
+                mayorParagraphText.append("Mayor name: ").append(mayor.getName()).append("\n");
+                mayorParagraphText.append("Mayor surname: ").append(mayor.getSurname()).append("\n");
+                mayorParagraphText.append("Mayor email: ").append(mayor.getEmail()).append("\n");
+
+                document.add(new Paragraph(new Chunk(mayorParagraphText.toString(), paragraphFont)));
+            }
+
+            Iterable<Representation> representations = representationRepository.findByMunicipalityId(Integer.parseInt(beneficiaryInformation.getMun_id()));
+            if (representations.iterator().hasNext()) {
+
+                document.add(new Paragraph(new Chunk("Representations information", chapterFont)));
+
+                representations.forEach(representation -> {
+                    StringBuilder representationParagraphText = new StringBuilder();
+                    Mayor mayorRep = representation.getMayor();
+                    representationParagraphText.append("Mayor id: ").append(mayorRep.getId()).append("\n");
+                    representationParagraphText.append("Mayor name: ").append(mayorRep.getName()).append("\n");
+                    representationParagraphText.append("Mayor surname: ").append(mayorRep.getSurname()).append("\n");
+                    representationParagraphText.append("Mayor email: ").append(mayorRep.getEmail()).append("\n");
+
+                    try {
+                        document.add(new Paragraph(new Chunk(representationParagraphText.toString(), paragraphFont)));
+                    } catch (DocumentException e) {
+                        _log.error("unable to create representation in beneficiary pdf", e);
+                    }
+                });
+            }
+
+            document.close();
+        } catch (DocumentException e) {
+            _log.error("unable to create beneficiary pdf", e);
         }
+        return os;
     }
 
     private String getMunicipalityPrefixedFileName(BeneficiaryInformation beneficiaryInformation) {
@@ -585,25 +708,31 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
         GrantAgreement grantAgreement =
                 grantAgreementRepository.findByApplicationRegistrationMunicipalityIdAndDateCounterSignatureIsNull(municipalityId);
 
+        List<BudgetaryCommitment> budgetaryCommitments = budgetaryCommitmentRepository.findByMunicipalityId(municipalityId);
+
         if (grantAgreement == null) {
             _log.error("Cannot find a grant agreement for the municipality [{}]", municipalityId);
         } else {
             Date counterSignatureDate = dateUtilities.convertToDate(csvRecord.get(LegalCommitmentCSVColumn.COUNTERSIGNATURE_DATE));
             grantAgreement.setDateCounterSignature(counterSignatureDate);
 
-            // TODO: needs to be saved in Budgetary Commitment. The import file format needs to be changed for it.
-//            String abacKey = csvRecord.get(LegalCommitmentCSVColumn.ABAC_KEY);
+            String abacLCKey = csvRecord.get(LegalCommitmentCSVColumn.ABAC_KEY);
 
             String pdfFileName = municipalityDocuments.get(municipalityId);
 
             if (StringUtils.isEmpty(pdfFileName)) {
                 _log.error("Inconsistency in the documents list and legal commitments files. Specified pdf file cannot be found.");
             } else {
+                //save the countersigned grant agreement
                 String counterSignedDocumentPath = uploadCounterSignedDocument(pdfFileName, zipFile);
-
                 grantAgreement.setDocumentLocationCounterSigned(counterSignedDocumentPath);
-
                 grantAgreementRepository.save(grantAgreement);
+
+                //save the abac LC key in all positions of the budgetary commitment (1 or 2 positions)
+                budgetaryCommitments.forEach(budgetaryCommitment -> {
+                    budgetaryCommitment.setAbacLcKey(abacLCKey);
+                    budgetaryCommitmentRepository.save(budgetaryCommitment);
+                });
             }
 
         }

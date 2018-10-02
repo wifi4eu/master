@@ -339,6 +339,15 @@
 
         <!-- ENVIRONMENT PROFILES -->
         <profile>
+            <id>VAGRANT</id>
+            <properties>
+                <ng.env>test</ng.env>
+                <server.address>172.30.10.10:8080</server.address>
+                <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.local}</azure.blob.legal.files.key>
+            </properties>
+        </profile>
+        <profile>
             <id>TEST</id>
             <properties>
                 <ng.env>test</ng.env>
