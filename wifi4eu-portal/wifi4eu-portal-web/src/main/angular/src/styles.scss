@@ -481,7 +481,7 @@ body {
 
 .changePassword {
   margin-top: 0.5em;
-  width: 85%;
+  width: 90%;
   padding-top: 15px;
   padding-bottom: 15px;
   font-size: 1.2em;
@@ -1860,6 +1860,7 @@ input.email_profile::-ms-clear{
 
 .whiteButton {
   font-size: 0.8em;
+  word-break: break-word;
 }
 
 .grantAgreementImg{

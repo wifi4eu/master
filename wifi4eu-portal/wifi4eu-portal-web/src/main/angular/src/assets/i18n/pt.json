@@ -201,7 +201,7 @@
   "discussionForum.sendMessage.subject": "A sua mensagem",
   "shared.back.button": "Anterior",
   "discussionForum.title": "Espaço de debate sobre inscrições múltiplas ",
-  "discussionForum.description": "O sistema detetou {{duplicateCount}} outros representantes inscritos em nome de {{municipality]] no portal WiFi4EU. Utilize o espaço de debate para esclarecer esta questão com os outros utilizadores inscritos. ",
+  "discussionForum.description": "O sistema detetou {{duplicateCount}} outros representantes inscritos em nome de {{municipality}} no portal WiFi4EU. Utilize o espaço de debate para esclarecer esta questão com os outros utilizadores inscritos. ",
   "discussionForum.beneficiary.registrations": "Inscrições",
   "discussionForum.beneficiary.registration1": "Inscrição {{selfRegistration}} (a sua)",
   "shared.postal-code.label": "Código postal",

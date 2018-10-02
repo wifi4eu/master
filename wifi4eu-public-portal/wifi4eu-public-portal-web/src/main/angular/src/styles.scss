@@ -312,6 +312,10 @@ body {
   margin-top: 20px !important;
 }
 
+.landingButton {
+  word-break: break-word;
+}
+
 .information {
   font-size: 40px;
   font-weight: bold;
@@ -467,7 +471,7 @@ body {
 
 .changePassword {
   margin-top: 0.5em;
-  width: 71%;
+  width: 90%;
   padding-top: 15px;
   padding-bottom: 15px;
   font-size: 1.2em;
