@@ -31,6 +31,8 @@ import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.enums.LegalFileStatus;
+import wifi4eu.wifi4eu.common.enums.LegalFileValidationStatus;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
 import wifi4eu.wifi4eu.common.mail.MailHelper;
@@ -425,10 +427,13 @@ public class RegistrationService {
     @Transactional
     public LegalFileCorrectionReasonDTO saveLegalFile(LegalFileCorrectionReasonDTO legalFileDTO) throws Exception {
         legalFileDTO.setRequestCorrectionDate(new Date().getTime());
+        LegalFileDTO legalFile = legalFilesMapper.toDTO(legalFilesRepository.findOne(legalFileDTO.getLegalFile()));
+        legalFile.setStatus(LegalFileValidationStatus.INVALID.getValue());
+        legalFile.setIsNew(LegalFileStatus.RECENT.getValue());
         if (legalFileDTO.getCorrectionReason() == null) {
             legalFileDTO.setRequestCorrection(false);
         }
-
+        legalFilesRepository.save(legalFilesMapper.toEntity(legalFile));
         return legalFileCorrectionReasonMapper.toDTO(legalFileCorrectionReasonRepository.save(legalFileCorrectionReasonMapper.toEntity(legalFileDTO)));
     }
 

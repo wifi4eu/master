@@ -80,13 +80,13 @@
         <p-column field="dateSignature" [sortable]="true" header="{{ 'dgConn.beneficiariesList.table.dateSignature' | translate }}" styleClass="text-center">
             <ng-template let-row="rowData" pTemplate="body">
                 <span *ngIf="row.dateSignature == null">-</span>
-                <span *ngIf="row.dateSignature != null">{{row.dateSignature | date: 'shortDate'}}</span>
+                <span *ngIf="row.dateSignature != null">{{row.dateSignature}}</span>
               </ng-template>
         </p-column>
         <p-column field="dateCounterSignature" [sortable]="true" header="{{ 'dgConn.beneficiariesList.table.dateCounterSignature' | translate }}" styleClass="text-center">
             <ng-template let-row="rowData" pTemplate="body">
                 <span *ngIf="row.dateCounterSignature == null">-</span>
-                <span *ngIf="row.dateCounterSignature != null">{{ row.dateCounterSignature | date: 'shortDate'}}</span>
+                <span *ngIf="row.dateCounterSignature != null">{{row.dateCounterSignature}}</span>
               </ng-template>
         </p-column>
         <p-column [sortable]="false" header="{{ 'dgConn.actions' | translate }}" styleClass="text-center not-hide-overflow">

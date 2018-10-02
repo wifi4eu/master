@@ -29,7 +29,7 @@
                         </p-column>
                         <p-column field="date" [sortable]="true" header="{{ 'dgConn.dateandtime' | translate }}">
                             <ng-template let-row="rowData" pTemplate="body">
-                                 {{ row.date | date: 'short' }}
+                                 {{ row.date | date: 'dd/MM/yyyy' }}
                             </ng-template>
                         </p-column>
                     </p-dataTable>
