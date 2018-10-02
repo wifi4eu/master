@@ -41,15 +41,18 @@ public class ReportCallOpen {
     @Autowired
     RegistrationWarningRepository registrationWarningRepository;
 
+    private Integer idCurrentCall = 0;
+
     static String[] fields = {"Number of applicants for the current call up to date", "Number of applicants with 1 warning (NO MATTER WHICH WARNING)", "Number of applicants with 2 warnings (NO MATTER WHICH WARNING)", "Number of applicants with 3 warnings (NO MATTER WHICH WARNING)", "Number of applicants with warning 1 (may have more than 1 warning)", "Number of applicants with warning 2 (may have more than 1 warning)", "Number of applicants with warning 3 (may have more than 1 warning)", "Number of duplicates", "Number of duplicates invalidated", "Number of invalidated for reason 1: After the follow-up request, the application provided a document which was corrupt/impossible to open in the format supplied", "Number of invalidated for reason 2: After the follow-up request, the applicant provided the same document(s) as originally supplied with the application", "Number of invalidated for reason 3: After the follow-up request, the applicant provided a document which was unreadable", "Number of invalidated for reason 4: After the follow-up request, the applicant provided a document which was incomplete", "Number of invalidated for reason 5: After the follow-up request, the applicant provided a document which was incorrect/did not correspond to the required document (or still contained incorrect information)", "Number of invalidated for reason 6: After the follow-up request, the applicant provided a document which was missing a signature", "Number of invalidated for reason 7: The deadline for the request of correction of the required supporting documents passed without compliance by the applicant", "Number of invalidated for reason 8: The application included a merged municipality","Number of invalidated for reason 9: Due to irregularities found in the application, it was invalidated"};
     static String[] totalValues = {"callApplicants", "warning1Applicant", "warning2Applicant", "warning3Applicant", "warningsType1", "warningsType2", "warningsType3", "numberDuplicates", "numberDuplicatesInvalidated", "reason1", "reason2", "reason3", "reason4", "reason5", "reason6", "reason7", "reason8", "reason9"};
 
     public void generate(HSSFWorkbook workbook) {
         if (Validator.isNotNull(callRepository.getIdCurrentCall())) {
+            idCurrentCall = callRepository.getIdCurrentCall();
             HSSFSheet sheet = workbook.createSheet("State of play Report");
             int numColumn = 0;
             HSSFRow firstRow = sheet.createRow((short) numColumn);
-            firstRow.createCell(0).setCellValue(callRepository.getNameCurrentCall());
+            firstRow.createCell(0).setCellValue(callRepository.getNameByCallId(idCurrentCall));
             firstRow.createCell(1).setCellValue("Total");
             firstRow.createCell(2).setCellValue("%");
             numColumn++;
@@ -69,7 +72,7 @@ public class ReportCallOpen {
     }
 
     private void putCountriesCallOpen(HSSFSheet sheet, HSSFRow row, int numColumn) {
-        ArrayList<NutCallCustom> nuts = nutCallCustomRepository.findNutsAndCallNameByCurrentCall();
+        ArrayList<NutCallCustom> nuts = nutCallCustomRepository.findNutsByCall(idCurrentCall);
         HSSFRow intialRow = row;
         int[] passedNuts = new int[nuts.size()];
         int a = 0;
@@ -233,9 +236,9 @@ public class ReportCallOpen {
     private int getNumberInvalidatedByReason(int reason, int idNut){
         int numberInvalidatedByReason;
         if (idNut != 0){
-            numberInvalidatedByReason = applicationRepository.findApplicationsInvalidatedByCallAndReasonAndNut(callRepository.getIdCurrentCall(),reason, idNut);
+            numberInvalidatedByReason = applicationRepository.findApplicationsInvalidatedByCallAndReasonAndNut(idCurrentCall, reason, idNut);
         } else {
-            numberInvalidatedByReason = applicationRepository.findApplicationInvalidatedByCallAndReason(callRepository.getIdCurrentCall(),reason);
+            numberInvalidatedByReason = applicationRepository.findApplicationInvalidatedByCallAndReason(idCurrentCall,reason);
         }
         return numberInvalidatedByReason;
     }
@@ -245,9 +248,9 @@ public class ReportCallOpen {
         int applicantsResult = 0;
         ArrayList<Application> allApplicants;
         if (idNut != 0) {
-            allApplicants = Lists.newArrayList(applicationRepository.findApplicationsForCurrentCall(idNut));
+            allApplicants = Lists.newArrayList(applicationRepository.findApplicationsByCallId(idCurrentCall, idNut));
         } else {
-            allApplicants = Lists.newArrayList(applicationRepository.findApplicationsForCurrentCall());
+            allApplicants = Lists.newArrayList(applicationRepository.findApplicationsByCallId(idCurrentCall));
         }
         if (Validator.isNotNull(allApplicants)) {
             switch (warningsNumber) {
@@ -336,9 +339,9 @@ public class ReportCallOpen {
         int warningsResult = 0;
         ArrayList<Application> allApplicants;
         if (idNut != 0) {
-            allApplicants = Lists.newArrayList(applicationRepository.findApplicationsForCurrentCall(idNut));
+            allApplicants = Lists.newArrayList(applicationRepository.findApplicationsByCallId(idCurrentCall, idNut));
         } else {
-            allApplicants = Lists.newArrayList(applicationRepository.findApplicationsForCurrentCall());
+            allApplicants = Lists.newArrayList(applicationRepository.findApplicationsByCallId(idCurrentCall));
         }
         if (Validator.isNotNull(allApplicants)) {
             switch (warningType) {
@@ -374,18 +377,18 @@ public class ReportCallOpen {
     @Transactional
     private int getAllCallApplicants(int idNut) {
         if (idNut != 0) {
-            return (int) applicationRepository.countApplicationsForCurrentCall(idNut);
+            return (int) applicationRepository.countApplicationsByCallId(idCurrentCall, idNut);
         } else {
-            return (int) applicationRepository.countApplicationsForCurrentCall();
+            return (int) applicationRepository.countApplicationsForCurrentCall(idCurrentCall);
         }
     }
 
     @Transactional
     private int getAllCallApplicantsInvalidated(int idNut) {
         if (idNut != 0) {
-            return (int) applicationRepository.countApplicationsForCurrentCallInvalidated(idNut);
+            return (int) applicationRepository.countApplicationsByCallIdInvalidated(idCurrentCall, idNut);
         } else {
-            return (int) applicationRepository.countApplicationsForCurrentCallInvalidated();
+            return (int) applicationRepository.countApplicationsByCallIdInvalidated(idCurrentCall);
         }
     }
 
@@ -395,18 +398,18 @@ public class ReportCallOpen {
         long municipalityDuplicates;
         ArrayList<String> allMunicipalities = null;
         if (idNut == 0) {
-            List<Integer> countListed = Lists.newArrayList(applicationRepository.countAplicationsDuplicatedForCall());
+            List<Integer> countListed = Lists.newArrayList(applicationRepository.countAplicationsDuplicatedForCallId(idCurrentCall));
             for (Integer i : countListed) {
                 if (i != 0) {
                     numberDuplicates += i - 1;
                 }
             }
         } else {
-            allMunicipalities = Lists.newArrayList(municipalityRepository.findAllMunicipalitiesByCountry(idNut));
+            allMunicipalities = Lists.newArrayList(municipalityRepository.findAllMunicipalitiesByCountryAndCallId(idCurrentCall, idNut));
         }
         if (idNut != 0) {
             for (String m : allMunicipalities) {
-                municipalityDuplicates = applicationRepository.countApplicationsForMunicipalityByCountry(idNut, m);
+                municipalityDuplicates = applicationRepository.countApplicationsForMunicipalityByCountryAndCallId(idCurrentCall, idNut, m);
                 if (municipalityDuplicates != 0) {
                     numberDuplicates += (int) municipalityDuplicates - 1;
                 }
@@ -421,18 +424,18 @@ public class ReportCallOpen {
         long municipalityDuplicates;
         ArrayList<String> allMunicipalities = null;
         if (idNut == 0) {
-            List<Integer> countListed = Lists.newArrayList(applicationRepository.countAplicationsDuplicatedForCallInvalidated());
+            List<Integer> countListed = Lists.newArrayList(applicationRepository.countAplicationsDuplicatedByCallIdInvalidated(idCurrentCall));
             for (Integer i : countListed) {
                 if (i != 0) {
                     numberDuplicatesInvalidated += i - 1;
                 }
             }
         } else {
-            allMunicipalities = Lists.newArrayList(municipalityRepository.findAllMunicipalitiesByCountry(idNut));
+            allMunicipalities = Lists.newArrayList(municipalityRepository.findAllMunicipalitiesByCountryAndCallId(idCurrentCall, idNut));
         }
         if (idNut != 0) {
             for (String m : allMunicipalities) {
-                municipalityDuplicates = applicationRepository.countApplicationsForMunicipalityByCountryInvalidated(idNut, m);
+                municipalityDuplicates = applicationRepository.countApplicationsForMunicipalityByCountryInvalidated(idCurrentCall, idNut, m);
                 if (municipalityDuplicates != 0) {
                     numberDuplicatesInvalidated += (int) municipalityDuplicates - 1;
                 }

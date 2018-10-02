@@ -63,6 +63,6 @@ public interface MunicipalityRepository extends CrudRepository<Municipality, Int
             "INNER JOIN registrations r ON r.municipality = m.id " +
             "INNER JOIN applications a ON a.registration = r.id " +
             "INNER JOIN calls c ON c.id = a.call_id " +
-            "WHERE cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000 BETWEEN start_date AND end_date AND n.id = ?1 GROUP BY m.name", nativeQuery = true)
-    List<String> findAllMunicipalitiesByCountry(int idNut);
+            "WHERE c.id = ?1 AND n.id = ?2 GROUP BY m.name", nativeQuery = true)
+    List<String> findAllMunicipalitiesByCountryAndCallId(int callId, int idNut);
 }
