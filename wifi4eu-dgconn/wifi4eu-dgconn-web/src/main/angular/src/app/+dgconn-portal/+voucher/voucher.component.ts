@@ -126,6 +126,9 @@ export class DgConnVoucherComponent {
 
   private displayConfirmingDataFreeze: boolean = false;
 
+  private destroyedPreSelectionList: Subject<boolean> = new Subject();
+  private displayPreSelectionList: boolean = false;
+
   constructor(private adminActionsApi: AdminactionsApi, private sharedService: SharedService, private callApi: CallApi, private applicationApi: ApplicationApi, private nutsApi: NutsApi,
     private voucherApi: VoucherApi, private router: Router, private route: ActivatedRoute, private registrationWarningApi: RegistrationWarningApi) {
    
@@ -267,6 +270,23 @@ export class DgConnVoucherComponent {
 
                 }            
               }                      
+            });
+        });
+  }
+
+  startIntervalPreListSave() {
+    this.sessionInterval
+        .takeUntil(this.destroyedPreSelectionList)
+        .subscribe(execution => {
+          this.adminActionsApi.getByActionName("pre_select_list").subscribe((response: ResponseDTO) => {
+              if (response.success) {
+                this.adminAction = response.data;
+                if(!this.adminAction.running){
+                  this.destroyedPreSelectionList.next(true);
+                  this.reloadData();
+                  this.displayPreSelectionList = false;
+                }
+              }
             });
         });
   }
@@ -437,25 +457,23 @@ export class DgConnVoucherComponent {
     if (this.callVoucherAssignment.hasPreListSaved) {
       return;
     }
+
+    this.displayPreSelectionList = true;
     this.voucherApi.savePreListSimulation(this.psswdPrelist, this.callVoucherAssignment.id, this.callSelected.id).subscribe((response: ResponseDTO) => {
       if(!response.success){
         if(response.error.errorCode == 20){
           this.sharedService.growlTranslation('An error occurred while freezing the list.', response.error.errorMessage, 'error');
+          this.displayPreSelectionList = false;
         }
       }else{
-        this.preSelectedEnabled = null;
-        this.callVoucherAssignment.hasPreListSaved = true;
-        this.callVoucherAssignment.preListExecutionDate = response.data.executionDate;
-        let date = new Date(this.callVoucherAssignment.preListExecutionDate);
-        this.freezeButtonEnabled = true;
-        this.filterTable();
-        this.dateNumberPreList = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
-        this.hourNumberPreList = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
-        this.showPrelistModal = false;
+        this.startIntervalPreListSave();
+        this.showPrelistModal =  false;
+        this.psswdPrelist = '';
       }
       }, error => {
         this.sharedService.growlTranslation('An error ocurred while saving pre-list', 'dgConn.voucherAssignment.error.savingPreList', 'error');
         this.showPrelistModal = false;
+        this.displayPreSelectionList = false;
       });
   }
 

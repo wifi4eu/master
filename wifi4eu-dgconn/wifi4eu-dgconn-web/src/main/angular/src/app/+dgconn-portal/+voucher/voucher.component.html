@@ -344,6 +344,16 @@
   <h1 class="Modalh1Confirmation">{{ 'dgconn.voucherAssignment.downloading' | translate }}</h1>
 </p-dialog>
 
+<p-dialog [(visible)]="displayPreSelectionList" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
+          [closable]="false" [closeOnEscape]="false">
+  <p class="ModalLoaderDots">
+    <span>.</span>
+    <span>.</span>
+    <span>.</span>
+  </p>
+  <h1 class="Modalh1Confirmation">{{ 'dgconn.voucherAssignment.runningPreSelectionList' | translate }}</h1>
+</p-dialog>
+
 <p-dialog [(visible)]="preSelectedEnabled != null && !preSelectedEnabled" [modal]="true" [responsive]="true" [resizable]="false"
   [draggable]="false" [closable]="false" [closeOnEscape]="false">
   <h1 class="Modalh1Confirmation">{{ 'dgconn.voucherAssignment.runningSimulation.preSelectedError.title' | translate }}</h1>
