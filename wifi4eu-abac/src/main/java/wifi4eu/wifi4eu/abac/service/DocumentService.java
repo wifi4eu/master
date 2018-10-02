@@ -1,10 +1,8 @@
 package wifi4eu.wifi4eu.abac.service;
 
-import eu.europa.ec.research.fp.services.document_management.v5.DocumentFault;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -18,10 +16,7 @@ import wifi4eu.wifi4eu.abac.data.enums.DocumentWorkflowStatus;
 import wifi4eu.wifi4eu.abac.data.repository.DocumentRepository;
 import wifi4eu.wifi4eu.abac.data.repository.DocumentTypeMetadataRepository;
 import wifi4eu.wifi4eu.abac.integration.hrs.HermesDocumentServiceClient;
-
-
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DocumentService {
@@ -53,13 +48,12 @@ public class DocumentService {
 		}
 	}
 
-	@Transactional
+	@Transactional(propagation = Propagation.REQUIRED)
 	public Document saveDocument(Document document) {
 		validate(document);
 		return documentRepository.save(document);
 	}
 
-	@Transactional( propagation = Propagation.REQUIRES_NEW )
 	public Document updateStatusInNewTransaction(Document document, DocumentWorkflowStatus workflowStatus){
 		document.setWfStatus(workflowStatus);
 		saveDocument(document);

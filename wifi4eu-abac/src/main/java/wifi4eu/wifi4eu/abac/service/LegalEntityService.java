@@ -1,15 +1,12 @@
 package wifi4eu.wifi4eu.abac.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityInformationCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.Country;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
@@ -19,7 +16,9 @@ import wifi4eu.wifi4eu.abac.data.repository.LegalEntityRepository;
 import wifi4eu.wifi4eu.abac.utils.XCharacterDecoder;
 import wifi4eu.wifi4eu.abac.utils.csvparser.LegalEntityCSVFileParser;
 
-import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class LegalEntityService {
@@ -54,6 +53,7 @@ public class LegalEntityService {
 		return legalEntityRepository.findByMidOrOfficialNameIgnoreCase(mid, officialName);
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED)
 	public LegalEntity saveLegalEntity(LegalEntity legalEntity) {
 
 		validate(legalEntity);

@@ -1,43 +1,33 @@
 package wifi4eu.wifi4eu.abac.service;
 
 
-import eu.cec.digit.ecas.client.jaas.DetailedUser;
-import eu.cec.digit.ecas.client.jaas.SubjectNotFoundException;
-
 import org.apache.commons.lang.text.StrBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import wifi4eu.wifi4eu.abac.data.dto.BudgetaryCommitmentCSVRow;
 import wifi4eu.wifi4eu.abac.data.dto.FileDTO;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityDocumentCSVRow;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityInformationCSVRow;
-import wifi4eu.wifi4eu.abac.data.entity.*;
+import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitmentPosition;
+import wifi4eu.wifi4eu.abac.data.entity.Document;
+import wifi4eu.wifi4eu.abac.data.entity.ImportLog;
+import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
-
 import wifi4eu.wifi4eu.abac.data.enums.DocumentType;
 import wifi4eu.wifi4eu.abac.data.enums.NotificationType;
-import wifi4eu.wifi4eu.abac.data.repository.ImportLogRepository;
-
 import wifi4eu.wifi4eu.abac.utils.ZipFileReader;
-import wifi4eu.wifi4eu.abac.utils.ZipFileWriter;
 import wifi4eu.wifi4eu.abac.utils.csvparser.BudgetaryCommitmentCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.csvparser.DocumentCSVFileParser;
-import wifi4eu.wifi4eu.abac.utils.csvparser.LegalCommitmentCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.csvparser.LegalEntityCSVFileParser;
-
-import javax.print.Doc;
-import javax.transaction.Transactional;
-import javax.wsdl.Import;
-
-import java.io.IOException;
 
 import java.util.*;
 
 @Service
-@SuppressWarnings("unchecked")
 public class ImportDataService {
 
 	@Autowired
@@ -59,9 +49,6 @@ public class ImportDataService {
 	private BudgetaryCommitmentService budgetaryCommitmentService;
 
 	@Autowired
-	private ImportLogRepository importLogRepository;
-
-	@Autowired
 	private NotificationService notificationService;
 
 	@Autowired
@@ -69,6 +56,9 @@ public class ImportDataService {
 	
 	@Autowired
 	ECASUserService ecasUserService;
+
+	@Autowired
+	public ImportLogService importLogService;
 
 
 	static final String LEGAL_ENTITY_INFORMATION_CSV_FILENAME = "portal_exportBeneficiaryInformation.csv";
@@ -79,20 +69,14 @@ public class ImportDataService {
 	FileDTO documentsCSVFile;
 	private Map<String, FileDTO> documentsToBeImported = new TreeMap<>();
 
-	public ImportLog importLegalEntities(String filename, byte[] file) {
-
-		//generate a unique batch file ID
-		String batchRef = UUID.randomUUID().toString();
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void importLegalEntities(String filename, byte[] file, String batchRef) {
 
 		String errors = importDataViaZipFile(file, batchRef);
 
-		//log the imported file
-		ImportLog importLog = logImport(filename, batchRef, ecasUserService.getCurrentUsername(), errors);
-
-		//create user notification
-		notificationService.createValidationProcessPendingNotification(batchRef, NotificationType.LEF_CREATION);
-
-		return importLog;
+		if (errors != null && !errors.trim().isEmpty()) {
+			throw new RuntimeException(errors);
+		}
 	}
 
 	public ImportLog importBudgetaryCommitments(String filename, byte[] file) {
@@ -143,7 +127,7 @@ public class ImportDataService {
 		}
 
 		//log the imported file
-		ImportLog importLog = logImport(filename, batchRef, ecasUserService.getCurrentUsername(), errors.toString());
+		ImportLog importLog = importLogService.logImport(filename, batchRef, errors.toString());
 
 		//create user notification
 		notificationService.createValidationProcessPendingNotification(batchRef, NotificationType.BC_CREATION);
@@ -163,7 +147,7 @@ public class ImportDataService {
 		String errors = importDataViaZipFile(file, batchRef);
 
 		//log the imported file
-		ImportLog importLog = logImport(filename, batchRef, ecasUserService.getCurrentUsername(), errors);
+		ImportLog importLog = importLogService.logImport(filename, batchRef, errors);
 
 		//create user notification
 		notificationService.createValidationProcessPendingNotification(batchRef, NotificationType.LC_CREATION);
@@ -171,7 +155,7 @@ public class ImportDataService {
 		return importLog;
 	}
 
-	@Transactional(Transactional.TxType.REQUIRES_NEW)
+	@Transactional(propagation = Propagation.MANDATORY)
 	public String importDataViaZipFile(byte[] file, String batchRef) {
 
 		StrBuilder errors = new StrBuilder();
@@ -207,7 +191,8 @@ public class ImportDataService {
 		return errors.toString();
 	}
 
-	private String processLegalEntityInformationFile(FileDTO fileDTO, String batchRef) {
+	@Transactional(propagation = Propagation.MANDATORY)
+	public String processLegalEntityInformationFile(FileDTO fileDTO, String batchRef) {
 
 		StrBuilder errors = new StrBuilder();
 		List<LegalEntityInformationCSVRow> legalEntities = new ArrayList<>();
@@ -256,15 +241,6 @@ public class ImportDataService {
 		return  errors.toString();
 	}
 
-	private ImportLog logImport(String filename, String batchRef, String userId, String errors){
-		ImportLog importLog = new ImportLog();
-		importLog.setFileName(filename);
-		importLog.setBatchRef(batchRef);
-		importLog.setUserId(userId);
-		importLog.setErrors(errors);
-		return importLogRepository.save(importLog);
-	}
-
 	private void addDocumentsCSVIndexFile(final FileDTO fileDTO) {
 		documentsCSVFile = fileDTO;
 	}
@@ -273,7 +249,8 @@ public class ImportDataService {
 		documentsToBeImported.put(fileDTO.getFileName(), fileDTO);
 	}
 
-	private String importDocuments(FileDTO fileDTO, String batchRef) {
+	@Transactional(propagation = Propagation.MANDATORY)
+	public String importDocuments(FileDTO fileDTO, String batchRef) {
 
 		StrBuilder errors = new StrBuilder();
 		List<LegalEntityDocumentCSVRow> documents = new ArrayList<>();
