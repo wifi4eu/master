@@ -6,8 +6,8 @@ DB_PORT=$2
 DB_NAME=$3
 
 # Get credentials
-DB_USER=${$4%:*}
-DB_PASS=${$4#*:}
+DB_USER=${4%:*}
+DB_PASS=${4#*:}
 
 # Get query parameters
 P_CALL_ID=$5
@@ -16,6 +16,7 @@ P_END_DATE=$7
 
 # Validate parameter's type
 re='^[0-9]+$'
+echo P_CALL_ID;
 if ! [[ $P_CALL_ID =~ $re ]] ; then
    echo "error: Call_Id is not a number" >&2; exit 1
 fi
