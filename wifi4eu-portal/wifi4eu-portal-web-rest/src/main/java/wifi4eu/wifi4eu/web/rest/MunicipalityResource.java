@@ -19,6 +19,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.utils.MunicipalityValidator;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.service.location.LauService;
@@ -61,6 +62,12 @@ public class MunicipalityResource {
 
     @Autowired
     RegistrationUsersRepository registrationUsersRepository;
+
+    @Autowired
+    LauService lauService;
+
+    @Autowired
+    NutsService nutsService;
 
     Logger _log = LogManager.getLogger(MunicipalityResource.class);
 
@@ -142,6 +149,7 @@ public class MunicipalityResource {
             }
             permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityDTO.getId());
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Municipality details updated successfully");
+            MunicipalityValidator.validateMunicipality(municipalityDTO, lauService.getLauById(municipalityDTO.getLauId()), nutsService.getNutsByLevel(0));
             return new ResponseDTO(true, municipalityService.updateMunicipalityDetails(municipalityDTO), null);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to update the details of this municipality", ade.getMessage());

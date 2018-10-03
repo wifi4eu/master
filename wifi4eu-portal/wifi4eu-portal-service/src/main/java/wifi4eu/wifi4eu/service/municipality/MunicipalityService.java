@@ -83,12 +83,6 @@ public class MunicipalityService {
     @Autowired
     CallRepository callRepository;
 
-    @Autowired
-    LauService lauService;
-
-    @Autowired
-    NutsService nutsService;
-
     public List<MunicipalityDTO> getAllMunicipalities() {
         return municipalityMapper.toDTOList(Lists.newArrayList(municipalityRepository.findAll()));
     }
@@ -146,7 +140,6 @@ public class MunicipalityService {
 
     @Transactional
     public MunicipalityDTO updateMunicipalityDetails(MunicipalityDTO municipalityDTO) throws Exception {
-        MunicipalityValidator.validateMunicipality(municipalityDTO, lauService.getLauById(municipalityDTO.getLauId()), nutsService.getNutsByLevel(0));
         MunicipalityDTO municipalitySave = municipalityService.getMunicipalityById(municipalityDTO.getId());
 
         municipalitySave.setAddress(municipalityDTO.getAddress());

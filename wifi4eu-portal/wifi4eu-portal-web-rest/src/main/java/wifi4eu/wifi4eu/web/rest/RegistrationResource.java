@@ -465,6 +465,12 @@ public class RegistrationResource {
 				throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
 			}
 			permissionChecker.check(userConnected, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
+
+			//We validate that the association name is valid
+			if(Validator.isNull(registrationDTO.getAssociationName()) || Validator.isEmpty(registrationDTO.getAssociationName())){
+				throw new Exception("Association Name is not valid");
+			}
+
 			List<RegistrationDTO> registrations = registrationService
 					.updateAssociationName(registrationDTO.getAssociationName(), userConnected.getId());
 			_log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: "

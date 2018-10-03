@@ -15,6 +15,7 @@ import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.utils.MayorValidator;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
@@ -63,6 +64,9 @@ public class MayorResource {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             permissionChecker.check(userDTO, RightConstants.MAYORS_TABLE + mayorDTO.getId());
+
+            /*Validate Mayor */
+            MayorValidator.validateMayor(mayorDTO);
 
             return new ResponseDTO(true, mayorService.updateMayor(mayorDetails, mayorDTO.getName(), mayorDTO.getSurname(), mayorDTO.getEmail()), null);
         } catch (AccessDeniedException ade) {

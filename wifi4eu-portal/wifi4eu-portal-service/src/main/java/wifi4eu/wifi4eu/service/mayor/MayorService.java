@@ -72,9 +72,6 @@ public class MayorService {
         mayorDetails.setSurname(surname);
         mayorDetails.setEmail(email);
 
-        /*Validate Mayor */
-        MayorValidator.validateMayor(mayorDetails);
-
         _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Mayor updated");
         return mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDetails)));
     }

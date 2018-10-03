@@ -19,16 +19,11 @@ public class BeneficiaryValidator {
             }
         }
         for (MayorDTO mayorDTO : beneficiaryDTO.getMayors()) {
-            if (mayorDTO.getEmail() != null && mayorDTO.getName() != null && mayorDTO.getSurname() != null
-                    && mayorDTO.getEmail().trim().isEmpty() || mayorDTO.getName().trim().isEmpty() || mayorDTO.getSurname().trim().isEmpty()) {
-                throw new Exception("Some beneficiary field is empty!");
-            }
+            MayorValidator.validateMayor(mayorDTO);
         }
+
         for (MunicipalityDTO municipalityDTO : beneficiaryDTO.getMunicipalities()) {
-            if (municipalityDTO.getAddress() != null && municipalityDTO.getAddressNum() != null && municipalityDTO.getName() != null && municipalityDTO.getCountry() != null && municipalityDTO.getPostalCode() != null
-                    && municipalityDTO.getAddress().trim().isEmpty() || municipalityDTO.getAddressNum().trim().isEmpty() || municipalityDTO.getName().trim().isEmpty() || municipalityDTO.getCountry().trim().isEmpty() || municipalityDTO.getPostalCode().trim().isEmpty()) {
-                throw new Exception("Some municipality field is empty!");
-            }
+            MunicipalityValidator
         }
 
         if (user.getAddress() != null && user.getAddressNum() != null && user.getName() != null && user.getEmail() != null && user.getSurname() != null && user.getPostalCode() != null && user.getCity() != null && user.getCountry() != null
