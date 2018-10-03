@@ -1,14 +1,9 @@
 package wifi4eu.wifi4eu.web.cnect.rest;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,9 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentAuxiliarDTO;
 import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentDTO;
@@ -41,13 +33,18 @@ import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.voucher.VoucherService;
 import wifi4eu.wifi4eu.web.util.authorisation.DashboardUsersOnly;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+
 @CrossOrigin(origins = "*")
 @Controller
 @Api(value = "/voucher", description = "Application object REST API services")
 @RequestMapping("voucher")
 @DashboardUsersOnly
 public class VoucherResource {
-    private static final Logger _log = LogManager.getLogger(VoucherResource.class);
+    private static final Logger _log = LoggerFactory.getLogger(VoucherResource.class);
 
     @Autowired
     private VoucherService voucherService;
@@ -202,7 +199,7 @@ public class VoucherResource {
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Creating voucher assignment");
         try {
             ResponseDTO response = voucherService.simulateVoucherFast(callId);
-            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Success on voucher simulation");
+            _log.debug("[{}] - ECAS Username: {} - Success on voucher simulation", RequestIpRetriever.getIp(request), userConnected.getEcasUsername());
             return response;
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Voucher simulation cannot be executed", e);

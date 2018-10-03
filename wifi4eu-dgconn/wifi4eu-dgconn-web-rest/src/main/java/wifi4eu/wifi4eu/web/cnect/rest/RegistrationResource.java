@@ -1,16 +1,9 @@
 package wifi4eu.wifi4eu.web.cnect.rest;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
@@ -24,9 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import wifi4eu.wifi4eu.common.dto.model.LegalFileCorrectionReasonDTO;
 import wifi4eu.wifi4eu.common.dto.model.LegalFileDTO;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
@@ -49,6 +39,13 @@ import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserService;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -80,7 +77,7 @@ public class RegistrationResource {
 	@Autowired
 	private LegalFilesMapper legalFilesMapper;
 
-	private static final Logger _log = LogManager.getLogger(RegistrationResource.class);
+	private static final Logger _log = LoggerFactory.getLogger(RegistrationResource.class);
 
 	/*
 	 * @ApiOperation(value = "Get all the registrations")
@@ -141,8 +138,7 @@ public class RegistrationResource {
 			}
 			// RegistrationValidator.validate(registrationDTO);
 			RegistrationDTO resRegistration = registrationService.invalidateRegistration(registrationDTO.getId());
-			_log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: "
-					+ userConnected.getEcasUsername() + "- Registration invalidated successfully");
+			_log.debug("[{}] - ECAS Username: {} - Registration invalidated successfully", RequestIpRetriever.getIp(request), userConnected.getEcasUsername());
 			return new ResponseDTO(true, resRegistration, null);
 		} catch (AccessDeniedException ade) {
 			_log.error("ECAS Username: " + userConnected.getEcasUsername()
@@ -435,8 +431,9 @@ public class RegistrationResource {
 			return new ResponseDTO(false, null,
 					new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
 		}
-		_log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: "
-				+ userConnected.getEcasUsername() + "- Legal files retrieved successfully, id: " + fileId);
+		if (_log.isDebugEnabled()) {
+			_log.debug("[{}] - ECAS Username: {} - Legal files retrieved successfully, id: {}", new Object[]{RequestIpRetriever.getIp(request), userConnected.getEcasUsername(), fileId});
+		}
 		return new ResponseDTO(true, null, null);
 	}
 
@@ -461,8 +458,7 @@ public class RegistrationResource {
 			if (!permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId)) {
 				throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
 			}
-			_log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: "
-					+ userConnected.getEcasUsername() + "- Legal files retrieved successfully");
+			_log.debug("[{}] - ECAS Username: {} - Legal files retrieved successfully", RequestIpRetriever.getIp(request), userConnected.getEcasUsername());
 			return registrationService.getLegalFilesByRegistrationId(registrationId);
 		} catch (AccessDeniedException ade) {
 			_log.error("ECAS Username: " + userConnected.getEcasUsername()
@@ -492,8 +488,7 @@ public class RegistrationResource {
 			}
 			registrationService.clearCorrectionReason(legalFileDTO, userConnected);
 			LegalFileCorrectionReasonDTO resLegalFile = registrationService.saveLegalFile(legalFileDTO);
-			_log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: "
-					+ userConnected.getEcasUsername() + "- Legal files saved successfully");
+			_log.debug("[{}] - ECAS Username: {} - Legal files saved successfully", RequestIpRetriever.getIp(request), userConnected.getEcasUsername());
 			return new ResponseDTO(true, resLegalFile, null);
 		} catch (AccessDeniedException ade) {
 			_log.error("ECAS Username: " + userConnected.getEcasUsername()
@@ -583,8 +578,7 @@ public class RegistrationResource {
 			if (!permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId)) {
 				throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
 			}
-			_log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: "
-					+ userConnected.getEcasUsername() + "- Legal files retrieved successfully");
+			_log.debug("[{}] - ECAS Username: {} - Legal files retrieved successfully", RequestIpRetriever.getIp(request), userConnected.getEcasUsername());
 
 			List<Integer> typesWithCorrectionDisabledList = registrationService
 					.findTypeFilesWaitingUploadByRegistration(registrationId);
