@@ -22,9 +22,8 @@ import java.util.List;
 public class BudgetaryCommitmentCSVFileParser extends AbstractCSVFileParser {
 
 	@Override
-	protected Boolean validateColumns(CSVParser csvParser) {
-
-		return super.validateColumns(csvParser,
+	protected void validateColumns(CSVParser csvParser) {
+		super.validateColumns(csvParser,
 					BudgetaryCommitmentCSVColumn.MUNICIPALITY_PORTAL_ID,
 					BudgetaryCommitmentCSVColumn.ABAC_GLOBAL_COMMITMENT_LEVEL1_POSITION_KEY,
 					BudgetaryCommitmentCSVColumn.ABAC_COMMITMENT_LEVEL2_POSITION,

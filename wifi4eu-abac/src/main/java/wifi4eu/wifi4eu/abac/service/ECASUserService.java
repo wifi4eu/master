@@ -29,7 +29,7 @@ public class ECASUserService {
 		UserDetailsVO result=null;
 		try {
 			DetailedUser currentEcasUser = SubjectUtil.getCurrentEcasUser();
-			result=new UserDetailsVO(currentEcasUser.getUid(), currentEcasUser.getFirstName(), currentEcasUser.getLastName());
+			result=new UserDetailsVO(currentEcasUser.getUid(), currentEcasUser.getFirstName(), currentEcasUser.getLastName(), currentEcasUser.getEmail());
 		} catch (SubjectNotFoundException e) {
 			log.error("ERROR while trying to retrieve the current user", e);
 		}

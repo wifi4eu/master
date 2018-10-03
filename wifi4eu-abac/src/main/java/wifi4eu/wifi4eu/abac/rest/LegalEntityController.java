@@ -53,6 +53,7 @@ public class LegalEntityController {
 	@PreAuthorize("hasRole('ROLE_INEA_OFFICER')")
 	@RequestMapping(value = "import", method = RequestMethod.POST, produces = "application/json")
 	public ResponseVO importLegalEntity(@RequestParam("file") MultipartFile file) {
+		log.info("Started importing legal entities");
 		ResponseVO result = new ResponseVO();
 
 		//generate a unique batch file ID
@@ -61,17 +62,13 @@ public class LegalEntityController {
 		String errors = new String();
 		try {
 			importDataService.importLegalEntities(file.getOriginalFilename(), file.getBytes(), batchRef);
-			result.success("The file was successfully.");
+			result.success("The file was successfully imported.");
 		} catch (Exception e) {
 			errors = e.getMessage();
 			log.error("The file was not imported. BatchREF: {}", batchRef);
 			result.error("The file has invalid data.", batchRef);
 		} finally {
-			//log the imported file
-			ImportLog importLog = importLogService.logImport(file.getOriginalFilename(), batchRef, errors);
-
-			//create user notification
-			notificationService.createValidationProcessPendingNotification(batchRef, NotificationType.LEF_CREATION);
+			importLogService.logImport(file.getOriginalFilename(), batchRef, errors);
 		}
 		return result;
 	}

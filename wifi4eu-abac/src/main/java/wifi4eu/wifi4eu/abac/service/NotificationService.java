@@ -68,14 +68,12 @@ public class NotificationService {
     @Autowired
     private VelocityEngine velocityEngine;
 
-    @Transactional
-    public void createValidationProcessPendingNotification(String batchRef, NotificationType notificationType){
+    public void createValidationProcessPendingNotification(String batchRef, NotificationType notificationType, String recipient){
         Notification notification = new Notification();
         notification.setBatchRef(batchRef);
         notification.setNotificationStatus(NotificationStatus.PENDING);
         notification.setNotificationType(notificationType);
-        notification.setSendTo(defaultRecipients);
-
+        notification.setSendTo(recipient);
         notificationRepository.save(notification);
     }
 
@@ -88,13 +86,13 @@ public class NotificationService {
 			Boolean batchIsFinished = Boolean.FALSE;
 			switch (notification.getNotificationType()) {
 				case LEF_CREATION:
-					batchIsFinished = notifyLegalEntityProcessFinished(notification.getBatchRef());
+					batchIsFinished = notifyLegalEntityProcessFinished(notification.getBatchRef(), notification.getSendTo());
 					break;
 				case BC_CREATION:
-					batchIsFinished = notifyBudgetaryCommitmentProcessFinished(notification.getBatchRef());
+					batchIsFinished = notifyBudgetaryCommitmentProcessFinished(notification.getBatchRef(), notification.getSendTo());
 					break;
 				case LC_CREATION:
-					batchIsFinished = notifyLegalCommitmentProcessFinished(notification.getBatchRef());
+					batchIsFinished = notifyLegalCommitmentProcessFinished(notification.getBatchRef(), notification.getSendTo());
 					break;
 			}
 			if(batchIsFinished) {
@@ -105,7 +103,7 @@ public class NotificationService {
 		}
 	}
 
-	private Boolean notifyLegalEntityProcessFinished(String batchRef){
+	private Boolean notifyLegalEntityProcessFinished(String batchRef, String recipient){
     	Boolean batchIsFinished = legalEntityService.isBatchProcessed(batchRef);
 		if(batchIsFinished){
 			List<LegalEntity> legalEntities = legalEntityService.getAllByBatchRef(batchRef);
@@ -118,14 +116,14 @@ public class NotificationService {
 			if (legalEntitiesCount > 0) {
 				String subject = String.format(LEF_FINISHED_BATCH_EMAIL_SUBJECT, legalEntitiesCount, batchRef);
 				String message = buildNotificationFinishedMessage(BC_MAIL_TEMPLATE, batchRef, legalEntitiesCount, legalEntitiesValidCount, legalEntitiesRejectedCount, legalEntitiesErrorCount);
-				sendEmailNotification(defaultRecipients, subject, message);
+				sendEmailNotification(recipient, subject, message);
 				log.info(subject);
 			}
 		}
 		return batchIsFinished;
     }
 
-	private Boolean notifyBudgetaryCommitmentProcessFinished(String batchRef){
+	private Boolean notifyBudgetaryCommitmentProcessFinished(String batchRef, String recipient){
 		Boolean batchIsFinished = budgetaryCommitmentService.isBatchProcessed(batchRef);
 		if(batchIsFinished) {
 			List<BudgetaryCommitment> budgetaryCommitments = budgetaryCommitmentService.getAllByBatchRef(batchRef);
@@ -138,14 +136,14 @@ public class NotificationService {
 			if (entitiesCount > 0) {
 				String subject = String.format(BC_FINISHED_BATCH_EMAIL_SUBJECT, entitiesCount, batchRef);
 				String message = buildNotificationFinishedMessage(BC_MAIL_TEMPLATE, batchRef, entitiesCount, entitiesValidCount, entitiesRejectedCount, entitiesErrorCount);
-				sendEmailNotification(defaultRecipients, subject, message);
+				sendEmailNotification(recipient, subject, message);
 				log.info(subject);
 			}
         }
 		return batchIsFinished;
     }
 
-    private Boolean notifyLegalCommitmentProcessFinished(String batchRef){
+    private Boolean notifyLegalCommitmentProcessFinished(String batchRef, String recipient){
 		Boolean batchIsFinished = legalCommitmentService.isBatchProcessed(batchRef);
 		if(batchIsFinished) {
 			List<LegalCommitment> legalCommitments = legalCommitmentService.getAllByBatchRef(batchRef);
@@ -158,7 +156,7 @@ public class NotificationService {
 			if (entitiesCount > 0) {
 				String subject = String.format(LC_FINISHED_BATCH_EMAIL_SUBJECT, entitiesCount, batchRef);
 				String message = buildNotificationFinishedMessage(LC_MAIL_TEMPLATE, batchRef, entitiesCount, entitiesValidCount, entitiesRejectedCount, entitiesErrorCount);
-				sendEmailNotification(defaultRecipients, subject, message);
+				sendEmailNotification(recipient, subject, message);
 				log.info(subject);
 			}
 		}
@@ -180,7 +178,7 @@ public class NotificationService {
         return stringWriter.toString();
     }
 
-    private void sendEmailNotification(String recipients, String subject, String body){
+    private void sendEmailNotification(String recipient, String subject, String body){
         Properties props = new Properties();
         Session session = Session.getDefaultInstance(props, null);
 
@@ -188,8 +186,9 @@ public class NotificationService {
             MimeMessage  msg = new MimeMessage(session);
             msg.setFrom(new InternetAddress(defaultSender));
 
-            for(String recipient: recipients.split(",")) {
-                msg.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
+			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
+            for(String defaultRecipient: defaultRecipients.split(",")) {
+                msg.addRecipient(Message.RecipientType.CC, new InternetAddress(defaultRecipient));
             }
             msg.setSubject(subject);
             msg.setText(body,"utf-8", "html");

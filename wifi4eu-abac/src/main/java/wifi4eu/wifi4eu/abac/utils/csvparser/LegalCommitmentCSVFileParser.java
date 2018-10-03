@@ -20,7 +20,7 @@ import java.util.List;
 public class LegalCommitmentCSVFileParser extends AbstractCSVFileParser{
 
 	@Override
-	protected Boolean validateColumns(CSVParser csvParser) throws RuntimeException {
+	protected void validateColumns(CSVParser csvParser) throws RuntimeException {
 		throw new NotImplementedException();
 	}
 

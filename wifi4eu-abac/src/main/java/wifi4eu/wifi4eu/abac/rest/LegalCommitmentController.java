@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import wifi4eu.wifi4eu.abac.data.dto.FileDTO;
 import wifi4eu.wifi4eu.abac.data.entity.ImportLog;
+import wifi4eu.wifi4eu.abac.data.enums.NotificationType;
 import wifi4eu.wifi4eu.abac.rest.vo.ResponseVO;
-import wifi4eu.wifi4eu.abac.service.ExportDataService;
-import wifi4eu.wifi4eu.abac.service.ImportDataService;
-import wifi4eu.wifi4eu.abac.service.LegalCommitmentService;
+import wifi4eu.wifi4eu.abac.service.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "legalCommitment")
@@ -31,29 +31,34 @@ public class LegalCommitmentController {
 
 	@Autowired
 	private ImportDataService importDataService;
-
 	@Autowired
 	private ExportDataService exportDataService;
-
 	@Autowired
 	private LegalCommitmentService legalCommitmentService;
+	@Autowired
+	private NotificationService notificationService;
+	@Autowired
+	private ImportLogService importLogService;
 
 	@PreAuthorize ("hasRole('ROLE_INEA_OFFICER')")
 	@RequestMapping(value = "import", method = RequestMethod.POST, produces = "application/json")
 	public ResponseVO importLegalCommitment(@RequestParam("file") MultipartFile file) {
-		log.info("importLegalCommitment");
+		log.info("Started importing legal commitments");
 		ResponseVO result = new ResponseVO();
+
+		//generate a unique batch file ID
+		String batchRef = UUID.randomUUID().toString();
+
+		String errors = new String();
 		try {
-			ImportLog importLog = importDataService.importLegalCommitments(file.getOriginalFilename(), file.getBytes());
-			if (!StringUtils.isEmpty(importLog.getErrors().trim())) {
-				log.error("The file was not imported. BatchREF: {}", importLog.getBatchRef());
-				result.error("The file has invalid data.", importLog.getBatchRef());
-			} else {
-				result.success("The file was successfully.");
-			}
-		}catch(Exception e) {
-			log.error(e.getMessage());
-			result.error(e.getMessage());
+			importDataService.importLegalCommitments(file.getOriginalFilename(), file.getBytes(), batchRef);
+			result.success("The file was successfully imported.");
+		} catch (Exception e) {
+			errors = e.getMessage();
+			log.error("The file was not imported. BatchREF: {}", batchRef);
+			result.error("The file has invalid data.", batchRef);
+		} finally {
+			importLogService.logImport(file.getOriginalFilename(), batchRef, errors);
 		}
 		return result;
 	}

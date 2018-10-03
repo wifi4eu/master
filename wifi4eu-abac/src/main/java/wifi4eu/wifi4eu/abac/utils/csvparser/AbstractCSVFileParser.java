@@ -36,14 +36,14 @@ public abstract class AbstractCSVFileParser {
 			return mapRowsToEntities(csvParser);
 
 		} catch (IOException exception) {
-			exception.printStackTrace();
-			return null;
+			log.error(exception.getMessage());
+			throw new RuntimeException(exception);
 		}
 	}
 
-	protected abstract Boolean validateColumns(CSVParser csvParser) throws RuntimeException;
+	protected abstract void validateColumns(CSVParser csvParser) throws RuntimeException;
 
-	protected Boolean validateColumns(CSVParser csvParser, Enum ...mandatoryColumns) throws RuntimeException {
+	protected void validateColumns(CSVParser csvParser, Enum ...mandatoryColumns) throws RuntimeException {
 
 		StringBuilder columnsNotFound = new StringBuilder();
 		Boolean isValid = Boolean.TRUE;
@@ -65,11 +65,10 @@ public abstract class AbstractCSVFileParser {
 		}
 
 		if (!isValid) {
-			log.error("Invalid file format. Missing columns {}", columnsNotFound);
-			throw new RuntimeException(String.format("Invalid file format. Missing columns %s", columnsNotFound));
+			String error = String.format("Invalid file format. Missing columns %s", columnsNotFound);
+			log.error(error);
+			throw new RuntimeException(error);
 		}
-
-		return isValid;
 	}
 
 	protected abstract List<?> mapRowsToEntities(CSVParser csvParser);

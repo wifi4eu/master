@@ -22,19 +22,19 @@ import java.util.List;
 public class LegalEntityCSVFileParser extends AbstractCSVFileParser {
 
 	@Override
-	protected Boolean validateColumns(CSVParser csvParser) {
-		return super.validateColumns(csvParser,
-				LegalEntityCSVColumn.MUNICIPALITY_PORTAL_ID,
-				LegalEntityCSVColumn.MUNICIPALITY_NAME,
-				LegalEntityCSVColumn.MUNICIPALITY_ABAC_LATIN_NAME,
-				LegalEntityCSVColumn.MUNICIPALITY_ADDRESS,
-				LegalEntityCSVColumn.MUNICIPALITY_POSTAL_CODE,
-				LegalEntityCSVColumn.MUNICIPALITY_CITY,
-				LegalEntityCSVColumn.MUNICIPALITY_COUNTRY_CODE,
-				LegalEntityCSVColumn.MUNICIPALITY_LANGUAGE_CODE,
-				LegalEntityCSVColumn.MUNICIPALITY_REGISTRATION_NUMBER,
-				LegalEntityCSVColumn.MUNICIPALITY_CALL_NUMBER,
-				LegalEntityCSVColumn.MUNICIPALITY_ABAC_REFERENCE);
+	protected void validateColumns(CSVParser csvParser) {
+		super.validateColumns(csvParser,
+			LegalEntityCSVColumn.MUNICIPALITY_PORTAL_ID,
+			LegalEntityCSVColumn.MUNICIPALITY_NAME,
+			LegalEntityCSVColumn.MUNICIPALITY_ABAC_LATIN_NAME,
+			LegalEntityCSVColumn.MUNICIPALITY_ADDRESS,
+			LegalEntityCSVColumn.MUNICIPALITY_POSTAL_CODE,
+			LegalEntityCSVColumn.MUNICIPALITY_CITY,
+			LegalEntityCSVColumn.MUNICIPALITY_COUNTRY_CODE,
+			LegalEntityCSVColumn.MUNICIPALITY_LANGUAGE_CODE,
+			LegalEntityCSVColumn.MUNICIPALITY_REGISTRATION_NUMBER,
+			LegalEntityCSVColumn.MUNICIPALITY_CALL_NUMBER,
+			LegalEntityCSVColumn.MUNICIPALITY_ABAC_REFERENCE);
 	}
 
 	@Override

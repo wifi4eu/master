@@ -95,10 +95,6 @@ public class DocumentService {
     	return documentRepository.findByTypeAndWfStatus(grantAgreement, waitingCountersignature);
 	}
 
-	public Document getDocumentsByLegalEntityIdAndType(Long legalEntityId, DocumentType documentType) {
-    	return documentRepository.findByLegalEntityIdAndType(legalEntityId, documentType);
-	}
-
 	public List<Document> getDocumentsByStatus(DocumentWorkflowStatus workflowStatus, Pageable pageable) {
 		return documentRepository.findByWfStatusOrderByDateCreated(workflowStatus, pageable);
 	}

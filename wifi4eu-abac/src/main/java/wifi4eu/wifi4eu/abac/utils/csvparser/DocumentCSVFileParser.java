@@ -24,16 +24,16 @@ import java.util.List;
 public class DocumentCSVFileParser extends AbstractCSVFileParser {
 
 	@Override
-	protected Boolean validateColumns(CSVParser csvParser) {
-		return super.validateColumns(csvParser,
-				LegalEntityDocumentCSVColumn.MUNICIPALITY_PORTAL_ID,
-				LegalEntityDocumentCSVColumn.DOCUMENT_PORTAL_ID,
-				LegalEntityDocumentCSVColumn.DOCUMENT_NAME,
-				LegalEntityDocumentCSVColumn.DOCUMENT_FILENAME,
-				LegalEntityDocumentCSVColumn.DOCUMENT_MIMETYPE,
-				LegalEntityDocumentCSVColumn.DOCUMENT_DATE,
-				LegalEntityDocumentCSVColumn.DOCUMENT_TYPE,
-				LegalEntityDocumentCSVColumn.ARES_REFERENCE);
+	protected void validateColumns(CSVParser csvParser) {
+		super.validateColumns(csvParser,
+			LegalEntityDocumentCSVColumn.MUNICIPALITY_PORTAL_ID,
+			LegalEntityDocumentCSVColumn.DOCUMENT_PORTAL_ID,
+			LegalEntityDocumentCSVColumn.DOCUMENT_NAME,
+			LegalEntityDocumentCSVColumn.DOCUMENT_FILENAME,
+			LegalEntityDocumentCSVColumn.DOCUMENT_MIMETYPE,
+			LegalEntityDocumentCSVColumn.DOCUMENT_DATE,
+			LegalEntityDocumentCSVColumn.DOCUMENT_TYPE,
+			LegalEntityDocumentCSVColumn.ARES_REFERENCE);
 	}
 
 	@Override

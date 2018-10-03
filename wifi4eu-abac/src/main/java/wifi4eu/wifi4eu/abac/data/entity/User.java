@@ -31,9 +31,6 @@ public class User {
     @Column(name = "LAST_NAME")
     private String lastName;
 
-    @Column(name = "EMAIL")
-    private String email;
-
     @Column(name = "ENABLED")
     @Type(type="yes_no")
     private boolean enabled;
@@ -81,14 +78,6 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public boolean isEnabled() {

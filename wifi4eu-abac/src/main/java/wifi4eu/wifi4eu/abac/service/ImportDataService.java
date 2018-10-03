@@ -57,10 +57,6 @@ public class ImportDataService {
 	@Autowired
 	ECASUserService ecasUserService;
 
-	@Autowired
-	public ImportLogService importLogService;
-
-
 	static final String LEGAL_ENTITY_INFORMATION_CSV_FILENAME = "portal_exportBeneficiaryInformation.csv";
 	static final String LEGAL_ENTITY_DOCUMENTS_CSV_FILENAME = "portal_exportBeneficiaryDocuments.csv";
 
@@ -72,32 +68,20 @@ public class ImportDataService {
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void importLegalEntities(String filename, byte[] file, String batchRef) {
 
-		String errors = importDataViaZipFile(file, batchRef);
-
-		if (errors != null && !errors.trim().isEmpty()) {
-			throw new RuntimeException(errors);
-		}
+		importDataViaZipFile(file, batchRef);
+		notificationService.createValidationProcessPendingNotification(batchRef, NotificationType.LEF_CREATION, ecasUserService.getCurrentUserDetails().getEmail());
 	}
 
-	public ImportLog importBudgetaryCommitments(String filename, byte[] file) {
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void importBudgetaryCommitments(String filename, byte[] file, String batchRef) {
 
 		FileDTO fileDTO = new FileDTO();
 		fileDTO.setContent(file);
 		fileDTO.setSize(new Long(file.length));
 		fileDTO.setFileName(filename);
 
-		//generate a unique batch file ID
-		String batchRef = UUID.randomUUID().toString();
-
 		StrBuilder errors = new StrBuilder();
-		List<BudgetaryCommitmentCSVRow> budgetaryCommitmentCSVRows = new ArrayList<>();
-		try {
-			budgetaryCommitmentCSVRows = (List<BudgetaryCommitmentCSVRow>) budgetaryCommitmentCSVFileParser.parseFile(fileDTO);
-		} catch(Exception e) {
-			String error = String.format("BC: Parsing error. Please check your file. %s", e.getMessage());
-			errors.appendln(error);
-			log.error(error);
-		}
+		List<BudgetaryCommitmentCSVRow> budgetaryCommitmentCSVRows = (List<BudgetaryCommitmentCSVRow>) budgetaryCommitmentCSVFileParser.parseFile(fileDTO);
 
 		for (BudgetaryCommitmentCSVRow budgetaryCommitmentCSVRow : budgetaryCommitmentCSVRows) {
 
@@ -108,9 +92,7 @@ public class ImportDataService {
 					log.info("importing BC {} for mid {}", budgetaryCommitmentCSVRow.getAbacGlobalCommitmentLevel1PositionKey(), budgetaryCommitmentCSVRow.getMunicipalityPortalId());
 
 					budgetaryCommitmentPosition = budgetaryCommitmentService.mapBudgetaryCommitmentCSVToEntity(budgetaryCommitmentCSVRow);
-
 					budgetaryCommitmentPosition.getBudgetaryCommitment().setBatchRef(batchRef);
-
 					budgetaryCommitmentService.saveBCPosition(budgetaryCommitmentPosition);
 				} else {
 					String warn = String.format("Municipality ID %s: Commitment Level 2 Position %s already exists",
@@ -126,37 +108,21 @@ public class ImportDataService {
 			}
 		}
 
-		//log the imported file
-		ImportLog importLog = importLogService.logImport(filename, batchRef, errors.toString());
-
-		//create user notification
-		notificationService.createValidationProcessPendingNotification(batchRef, NotificationType.BC_CREATION);
-
-		return importLog;
+		if (errors != null && !errors.trim().isEmpty()) {
+			throw new RuntimeException(errors.toString().trim());
+		}
+		notificationService.createValidationProcessPendingNotification(batchRef, NotificationType.BC_CREATION, ecasUserService.getCurrentUserDetails().getEmail());
 	}
 
-	/**
-	 * Legal Commitments will be treated as a regular upload of documents where the docType is GRANT_AGREEMENT
-	 * @param file
-	 */
-	public ImportLog importLegalCommitments(String filename, byte[] file) {
+	//Legal Commitments will be treated as a regular upload of documents where the docType is GRANT_AGREEMENT
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void importLegalCommitments(String filename, byte[] file, String batchRef) {
 
-		//generate a unique batch file ID
-		String batchRef = UUID.randomUUID().toString();
-
-		String errors = importDataViaZipFile(file, batchRef);
-
-		//log the imported file
-		ImportLog importLog = importLogService.logImport(filename, batchRef, errors);
-
-		//create user notification
-		notificationService.createValidationProcessPendingNotification(batchRef, NotificationType.LC_CREATION);
-
-		return importLog;
+		importDataViaZipFile(file, batchRef);
+		notificationService.createValidationProcessPendingNotification(batchRef, NotificationType.LC_CREATION, ecasUserService.getCurrentUserDetails().getEmail());
 	}
 
-	@Transactional(propagation = Propagation.MANDATORY)
-	public String importDataViaZipFile(byte[] file, String batchRef) {
+	private void importDataViaZipFile(byte[] file, String batchRef) {
 
 		StrBuilder errors = new StrBuilder();
 
@@ -188,21 +154,15 @@ public class ImportDataService {
 			errors.append(importDocuments(documentsCSVFile, batchRef));
 		}
 
-		return errors.toString();
+		if (errors != null && !errors.trim().isEmpty()) {
+			throw new RuntimeException(errors.toString().trim());
+		}
 	}
 
-	@Transactional(propagation = Propagation.MANDATORY)
-	public String processLegalEntityInformationFile(FileDTO fileDTO, String batchRef) {
+	private String processLegalEntityInformationFile(FileDTO fileDTO, String batchRef) {
 
 		StrBuilder errors = new StrBuilder();
-		List<LegalEntityInformationCSVRow> legalEntities = new ArrayList<>();
-		try {
-			legalEntities = (List<LegalEntityInformationCSVRow>) legalEntityCSVFileParser.parseFile(fileDTO);
-		} catch(Exception e) {
-			String error = String.format("LEF: Parsing error. Please check your file. %s", e.getMessage());
-			errors.appendln(error);
-			log.error(error);
-		}
+		List<LegalEntityInformationCSVRow> legalEntities = (List<LegalEntityInformationCSVRow>) legalEntityCSVFileParser.parseFile(fileDTO);
 
 		for (LegalEntityInformationCSVRow legalEntityInformationCSVRow : legalEntities) {
 
@@ -249,18 +209,10 @@ public class ImportDataService {
 		documentsToBeImported.put(fileDTO.getFileName(), fileDTO);
 	}
 
-	@Transactional(propagation = Propagation.MANDATORY)
-	public String importDocuments(FileDTO fileDTO, String batchRef) {
+	private String importDocuments(FileDTO fileDTO, String batchRef) {
 
 		StrBuilder errors = new StrBuilder();
-		List<LegalEntityDocumentCSVRow> documents = new ArrayList<>();
-		try {
-			documents = (List<LegalEntityDocumentCSVRow>) documentCSVFileParser.parseFile(fileDTO);
-		} catch(Exception e) {
-			String error = String.format("Documents: Parsing error. Please check your file. %s", e.getMessage());
-			errors.appendln(error);
-			log.error(error);
-		}
+		List<LegalEntityDocumentCSVRow> documents = (List<LegalEntityDocumentCSVRow>) documentCSVFileParser.parseFile(fileDTO);
 
 		for (LegalEntityDocumentCSVRow documentCSVRow : documents) {
 
