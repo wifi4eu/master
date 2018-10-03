@@ -14,6 +14,8 @@ public interface BudgetaryCommitmentPositionRepository extends CrudRepository<Bu
 	BudgetaryCommitmentPosition findByBudgetaryCommitmentLegalEntityMidAndCommitmentLevel2Position(Long municipalityPortalId, Integer abacCommitmentLevel2Position);
 
 
-	@Query(value = "FROM BudgetaryCommitmentPosition bcp WHERE bcp.budgetaryCommitment.wfStatus in ('ABAC_VALID', 'ABAC_ERROR' ,'ABAC_REJECTED') order by bcp.budgetaryCommitment.dateExported desc")
+	@Query(value = "FROM BudgetaryCommitmentPosition bcp " +
+			"WHERE bcp.budgetaryCommitment.wfStatus in ('ABAC_VALID', 'ABAC_ERROR' ,'ABAC_REJECTED') " +
+			"order by bcp.budgetaryCommitment.dateExported desc, bcp.budgetaryCommitment.batchRef desc, bcp.budgetaryCommitment.legalEntity.mid asc")
 	List<BudgetaryCommitmentPosition> findBudgetaryCommitmentsProcessedInABAC();
 }
