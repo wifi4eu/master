@@ -14,18 +14,22 @@ import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
 import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
-import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.mapper.municipality.MunicipalityCorrespondenceMapper;
 import wifi4eu.wifi4eu.mapper.municipality.MunicipalityMapper;
+import wifi4eu.wifi4eu.mapper.registration.legal_files.LegalFilesMapper;
 import wifi4eu.wifi4eu.repository.call.CallRepository;
 import wifi4eu.wifi4eu.repository.invitationContacts.InvitationContactRepository;
 import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
+import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
+import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.warning.RegistrationWarningService;
@@ -79,6 +83,21 @@ public class MunicipalityService {
 
     @Autowired
     CallRepository callRepository;
+
+    @Autowired
+    LegalFilesRepository legalFilesRepository;
+
+    @Autowired
+    LegalFilesMapper legalFilesMapper;
+
+    @Autowired
+    LegalFilesService legalFilesService;
+
+    @Autowired
+    LegalFileCorrectionReasonRepository legalFileCorrectionReasonRepository;
+
+    @Autowired
+    private AzureBlobConnector azureBlobConnector;
 
     public List<MunicipalityDTO> getAllMunicipalities() {
         return municipalityMapper.toDTOList(Lists.newArrayList(municipalityRepository.findAll()));
@@ -199,6 +218,16 @@ public class MunicipalityService {
                     applicationService.deleteApplication(application.getId(), request);
                     _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Application from this municipality removed");
                 }
+
+                legalFileCorrectionReasonRepository.deleteLegalFileCorrectionByRegistrationId(registration.getId());
+
+                List<LegalFileDTO> legalFileDTOList = legalFilesMapper.toDTOList(legalFilesRepository.findByRegistration(registration.getId()));
+                for (LegalFileDTO legalFileDTO: legalFileDTOList){
+                    azureBlobConnector.deleteLegalFile(legalFilesService.getAzureName(legalFileDTO));
+                    legalFilesRepository.delete(legalFilesMapper.toEntity(legalFileDTO));
+                }
+
+                registrationService.deleteRegistration(registration.getId());
             } else {
                 _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - Application from this municipality not found");
             }
