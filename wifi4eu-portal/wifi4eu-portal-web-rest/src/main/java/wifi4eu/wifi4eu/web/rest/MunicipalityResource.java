@@ -62,13 +62,7 @@ public class MunicipalityResource {
 
     @Autowired
     RegistrationUsersRepository registrationUsersRepository;
-
-    @Autowired
-    LauService lauService;
-
-    @Autowired
-    NutsService nutsService;
-
+    
     Logger _log = LogManager.getLogger(MunicipalityResource.class);
 
     @ApiOperation(value = "Get municipality by specific id")
@@ -149,7 +143,7 @@ public class MunicipalityResource {
             }
             permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityDTO.getId());
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Municipality details updated successfully");
-            MunicipalityValidator.validateMunicipality(municipalityDTO, lauService.getLauById(municipalityDTO.getLauId()), nutsService.getNutsByLevel(0));
+            MunicipalityValidator.validateNotEmptyValuesMunicipality(municipalityDTO);
             return new ResponseDTO(true, municipalityService.updateMunicipalityDetails(municipalityDTO), null);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to update the details of this municipality", ade.getMessage());
