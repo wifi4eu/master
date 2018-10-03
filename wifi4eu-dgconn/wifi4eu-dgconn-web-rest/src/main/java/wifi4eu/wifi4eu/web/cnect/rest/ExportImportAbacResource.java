@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ServerErrorResponseDTO;
 import wifi4eu.wifi4eu.service.exportImport.ExportImportAbacService;
+import wifi4eu.wifi4eu.web.util.authorisation.DashboardUsersOnly;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -32,9 +33,10 @@ import java.io.IOException;
 @Controller
 @Api(value = "/exportImport", description = "Export and import registration data")
 @RequestMapping("exportImport")
+@DashboardUsersOnly
 public class ExportImportAbacResource {
 
-    private final Logger logger = LoggerFactory.getLogger(ExportImportAbacResource.class);
+    private static final Logger logger = LoggerFactory.getLogger(ExportImportAbacResource.class);
 
     private static final String APPLICATION_JSON = "application/JSON";
     private static final String APPLICATION_ZIP = "application/zip";
