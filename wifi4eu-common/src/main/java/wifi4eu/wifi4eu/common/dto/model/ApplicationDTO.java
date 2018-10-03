@@ -1,5 +1,7 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
+import wifi4eu.wifi4eu.common.helper.Validator;
+
 import java.util.Date;
 
 public class ApplicationDTO {
@@ -193,7 +195,7 @@ public class ApplicationDTO {
     }
 
     public Boolean getPreSelectedFlag() {
-        return preSelectedFlag;
+        return Validator.isNotNull(preSelectedFlag) ? preSelectedFlag : Boolean.FALSE;
     }
 
     public void setPreSelectedFlag(Boolean preSelectedFlag) {
@@ -201,7 +203,7 @@ public class ApplicationDTO {
     }
 
     public Boolean getRejected() {
-        return rejected;
+        return Validator.isNotNull(rejected) ? rejected : Boolean.FALSE;
     }
 
     public void setRejected(Boolean rejected) {

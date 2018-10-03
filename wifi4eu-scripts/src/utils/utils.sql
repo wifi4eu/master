@@ -63,6 +63,18 @@ inner join laus l ON m.lau = l.id
 WHERE m.name is not null
 ORDER BY m.country;
 
+--====================================== read with MILISECONDS ==============================================================
+select m.country, m.name as municipality, l.name1 as lau_name,
+   dateadd(HOUR, 2, dateadd(ms,convert(bigint, a.date)%1000,dateadd(s, convert(bigint, a.date)/1000 , convert(datetime, '1-1-1970 00:00:00:000')))) as apply_date,
+   CASE a._status WHEN 0 THEN 'Applied' WHEN 1 THEN 'Invalid' WHEN 2 THEN 'Valid' WHEN 3 THEN 'Pending followup' END AS status,
+   r.id as reg_id, m.id as mun_id, a.id as application_id
+from applications a
+inner join registrations r ON a.registration = r.id
+inner join municipalities m ON r.municipality = m.id
+inner join laus l ON m.lau = l.id
+WHERE m.name is not null
+ORDER BY m.country;
+
 
 
 -- DELETE AND CREATE NEW APPLICATIONS

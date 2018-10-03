@@ -8,6 +8,7 @@ import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentDTO;
 import wifi4eu.wifi4eu.common.dto.model.VoucherSimulationDTO;
 import wifi4eu.wifi4eu.common.enums.SelectionStatus;
 import wifi4eu.wifi4eu.common.enums.VoucherAssignmentStatus;
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
 import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentRepository;
 
@@ -26,7 +27,7 @@ public class VoucherSimulationExportGenerator<T> {
     private ArrayList<String> displayedFieldNames;
     private T parent;
 
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss:SSS");
 
     public VoucherSimulationExportGenerator(List<T> data, T parent, Class dataClass) {
         this.data = data;
@@ -63,7 +64,7 @@ public class VoucherSimulationExportGenerator<T> {
 
                         String value;
 
-                        if(!applicationDTO.getPreSelectedFlag()){
+                        if(Validator.isNotNull(applicationDTO) && !applicationDTO.getPreSelectedFlag()){
                             value = "NEW";
                         }else{
                             value = "-";
