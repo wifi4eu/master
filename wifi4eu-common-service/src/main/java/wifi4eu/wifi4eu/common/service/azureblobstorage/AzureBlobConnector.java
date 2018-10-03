@@ -1,22 +1,5 @@
 package wifi4eu.wifi4eu.common.service.azureblobstorage;
 
-import java.io.*;
-import java.net.URISyntaxException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
-
-import javax.annotation.PostConstruct;
-
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.codec.net.URLCodec;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.stereotype.Component;
-
 import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.StorageException;
@@ -25,7 +8,7 @@ import com.microsoft.azure.storage.blob.BlobRequestOptions;
 import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,47 +68,6 @@ public class AzureBlobConnector {
 
         return container;
     }
-
-	public String uploadByteArray(final String containerName, final String fileName, final byte[] data){
-		String fileUri = null;
-
-		String encodedFileName = null;
-		try {
-			encodedFileName = URLEncoder.encode(fileName, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			LOGGER.error("Error", e);
-		}
-
-		if (encodedFileName != null) {
-
-			// Validating the paramenters
-			this.checkContainerName(containerName);
-			this.checkFileName(encodedFileName);
-
-			CloudBlobContainer container = this.getContainerReference(containerName);
-
-			if (container != null) {
-				//Getting a blob reference
-				CloudBlockBlob blob = null;
-				try {
-					blob = container.getBlockBlobReference(encodedFileName);
-				} catch (URISyntaxException | StorageException e) {
-					LOGGER.error("Error", e);
-				}
-
-				if (blob != null) {
-					try {
-						blob.uploadFromByteArray(data,0, data.length);
-						fileUri = blob.getUri().toString();
-					} catch (StorageException | IOException e) {
-						LOGGER.error("Error", e);
-					}
-				}
-			}
-		}
-
-		return fileUri;
-	}
 
 	public String uploadText(final String containerName, final String fileName, final String content) {
 		// Returning value
@@ -255,26 +197,7 @@ public class AzureBlobConnector {
         return fileUri;
     }
 	
-	public boolean downloadAsString(final String containerName, final String fileName, final String absoluteDestinationPath) throws Exception {
-		boolean result = false;
-		
-		// Validating the paramenters
-		this.checkContainerName(containerName);
-		this.checkFileName(fileName);
-				
-		CloudBlobContainer container = this.getContainerReference(containerName);
-
-        if (container == null) {
-            CloudBlockBlob blob = container.getBlockBlobReference(fileName);
-
-            blob.downloadToFile(absoluteDestinationPath);
-            result = true;
-        }
-
-        return result;
-    }
-
-    public byte[] downloadAsBytes(final String containerName, final String fileName) {
+	public byte[] downloadAsBytes(final String containerName, final String fileName) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         // Validating the paramenters
