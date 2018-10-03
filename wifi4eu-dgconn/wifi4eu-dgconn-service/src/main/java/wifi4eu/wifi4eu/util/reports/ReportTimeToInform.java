@@ -34,15 +34,13 @@ public class ReportTimeToInform {
 
     static String[] fields = {"Number of days between the closure of the call until button Send notifications to all applicants is pressed", "Number of applicants"};
     static String[] totalValues = {"daysNumber", "applicants"};
-    List<Integer> averageNumbers = null;
-    List<Integer> weightedValues = null;
 
     public void generate(HSSFWorkbook workbook) {
-        if (Validator.isNotNull(callRepository.findAllCallsClosed())) {
+        if (Validator.isNotNull(callRepository.findAllCallsClosedNotified())) {
             HSSFSheet sheet = workbook.createSheet("State of play Report");
             int numColumn = 0;
-            Integer callsClosedNum = callRepository.countCallsClosed();
-            List<CallDTO> calls = callMapper.toDTOList(callRepository.findAllCallsClosed());
+            Integer callsClosedNum = callRepository.countCallsClosedNotified();
+            List<CallDTO> calls = callMapper.toDTOList(callRepository.findAllCallsClosedNotified());
             HSSFRow firstRow = sheet.createRow((short) numColumn);
             firstRow.createCell(0).setCellValue("");
             for (CallDTO call : calls) {
@@ -58,8 +56,8 @@ public class ReportTimeToInform {
                 row.createCell(0).setCellValue(fields[i - 1]);
             }
             generateValuesByCall(sheet, firstRow, 1);
-            generateAverage(sheet, callsClosedNum +1);
-            generateWeightedAverage(sheet, callsClosedNum +2);
+            generateAverage(sheet, callsClosedNum + 1);
+            /*generateWeightedAverage(sheet, callsClosedNum + 2);*/
             ReportingUtils.autoSizeColumns(workbook);
         } else {
             // send email notifying that no open call is available?
@@ -67,18 +65,18 @@ public class ReportTimeToInform {
         }
     }
 
-    private void generateValuesByCall(HSSFSheet sheet, HSSFRow row, Integer numColumn){
-        List<CallDTO> calls = callMapper.toDTOList(callRepository.findAllCallsClosed());
+    private void generateValuesByCall(HSSFSheet sheet, HSSFRow row, Integer numColumn) {
+        List<CallDTO> calls = callMapper.toDTOList(callRepository.findAllCallsClosedNotified());
         HSSFRow initialRow = row;
         int[] passedCalls = new int[calls.size()];
         int a = 0;
-        for(CallDTO call: calls){
-            if(!Utils.contains(passedCalls, call.getId())){
+        for (CallDTO call : calls) {
+            if (!Utils.contains(passedCalls, call.getId())) {
                 row.createCell(numColumn).setCellValue(call.getEvent());
                 Map<String, Object> allValues = getAllValues(call.getId());
-                String[] callValues ={"daysNumber", "applicants"};
+                String[] callValues = {"daysNumber", "applicants"};
                 int takeNumber = 0;
-                for(int i = 1; i <= totalValues.length; i++){
+                for (int i = 1; i <= totalValues.length; i++) {
                     row = sheet.getRow(i);
                     String valueSet = "" + allValues.get(callValues[takeNumber]);
                     row.createCell(numColumn).setCellValue(valueSet);
@@ -92,9 +90,16 @@ public class ReportTimeToInform {
         }
     }
 
-
-    private void generateAverage(HSSFSheet sheet, Integer numColumn) {
-        
+    private void generateAverage(HSSFSheet sheet, Integer column) {
+        Integer average = 0;
+        HSSFRow row = sheet.getRow(1);
+        List<CallDTO> calls = callMapper.toDTOList(callRepository.findAllCallsClosedNotified());
+        for (CallDTO call : calls) {
+            average += applicationRepository.findDaysBetweenCloseAndNotified(call.getId());
+        }
+        average = average / calls.size();
+        if (Validator.isNull(average)) average = 0;
+        row.createCell(column).setCellValue(average);
     }
 
     private void generateWeightedAverage(HSSFSheet sheet, Integer numColumn) {
@@ -113,16 +118,12 @@ public class ReportTimeToInform {
 
     @Transactional
     private Integer getDaysNumberByCall(Integer callId) {
-        Integer res = applicationRepository.findDaysBetweenCloseAndNotified(callId);
-        averageNumbers.add(res);
-        return res;
+        return applicationRepository.findDaysBetweenCloseAndNotified(callId);
     }
 
     @Transactional
     private Integer getApplicantsByCall(Integer callId) {
-        Integer res = Integer.valueOf(applicationRepository.countApplicationsForCallId(callId).intValue());
-        weightedValues.add(res);
-        return res;
+        return Integer.valueOf(applicationRepository.countApplicationsForCallId(callId).intValue());
     }
 
 
