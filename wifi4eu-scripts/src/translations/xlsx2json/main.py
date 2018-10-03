@@ -61,6 +61,7 @@ def mails():
         data = {"TMFversion": version}
         for j, label in enumerate(labels):
             translation = translates[j]
+            translation = translation.replace('\n', '<br />')
             if label and len(translation) > 0:
                 data[label] = translation
 
