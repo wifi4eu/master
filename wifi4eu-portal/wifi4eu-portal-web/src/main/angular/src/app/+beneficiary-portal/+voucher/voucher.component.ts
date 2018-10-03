@@ -137,7 +137,7 @@ export class VoucherComponent {
         this.endDate = endDateCall.format("DD/MM/YYYY");
         this.endHour = endDateCall.format("HH:mm");
         
-        this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id, this.currentCall.id)
+        this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id, this.currentCall.id, new Date().getTime())
             .finally(() => this.allRequestCompleted = true)
             .subscribe(
                 (applyVoucher: ApplyVoucherBase[]) => {
