@@ -12,7 +12,7 @@
   "home.part2.text1": "Następne zaproszenie do składania wniosków zostanie ogłoszone w dniu {{date}} r. o godz. {{hour}} (czas letni środkowoeuropejski). ",
   "home.part2.subtitle4": "Wnioski mogą składać:",
   "home.part2.list1": "- gminy",
-  "home.part2.subtitle5": "Zobacz #listę kwalifikujących się podmiotów# w Twoim kraju.",
+  "home.part2.subtitle5": "Zobacz <a href=\"https://ec.europa.eu/digital-single-market/news-redirect/624101\"  target=\"_blank\">listę kwalifikujących się podmiotów</a> w Twoim kraju.",
   "home.part2.list2": "- stowarzyszenia utworzone przez gminy i działające w imieniu swoich członków.",
   "home.part2.subtitle6": "Bon WiFi4EU pokryje koszty sprzętu i instalacji hotspotów Wi-Fi. Gminy, które otrzymają bon, powinny ponieść koszty podłączenia do internetu (abonamentu) oraz konserwacji sprzętu, aby zapewnić bezpłatne i wysokiej jakości połączenia Wi-Fi przez okres co najmniej trzech lat.",
   "home.part2.subtitle2": "Czego można oczekiwać?",
@@ -143,7 +143,7 @@
   "suppRegistration.eu.requirements": "Oświadczam, że zapoznałem(-am) się z następującymi warunkami inicjatywy WiFi4EU oraz że je akceptuję:",
   "suppRegistration.eu.requirementsTitle": "1. Instalacja punktów dostępu do Wi-Fi powielających w tej samej przestrzeni publicznej istniejące bezpłatne prywatne lub publiczne oferty o podobnych cechach, w tym jakościowych, nie kwalifikuje się do otrzymania finansowania. Takiego powielania można uniknąć przez zagwarantowanie, że punkty dostępu będą obejmowały swoim zasięgiem przede wszystkim przestrzeń publiczną i nie będą pokrywały się z istniejącymi prywatnymi lub publicznymi ofertami o podobnych cechach.",
   "suppRegistration.eu.requirements2": "2. Bony WiFi4EU są dostępne na pokrycie kosztów zakupu i instalacji punktu bezprzewodowego dostępu do internetu w celu utworzenia lokalnej sieci Wi-Fi. Koszty operacyjne (w tym abonamentu za podłączenie do internetu) nie kwalifikują się do finansowania.",
-  "suppRegistration.eu.requirements3": "3. Jeżeli moja firma zostanie wybrana przez gminę otrzymującą bon, sprzęt oraz instalacja zapewnione w ramach inicjatywy WiFi4EU będą zgodne ze specyfikacjami technicznymi określonymi w #zaproszeniu do składania wniosków#.",
+  "suppRegistration.eu.requirements3": "3. Jeżeli moja firma zostanie wybrana przez gminę otrzymującą bon, sprzęt oraz instalacja zapewnione w ramach inicjatywy WiFi4EU będą zgodne ze specyfikacjami technicznymi określonymi w zaproszeniu do składania wniosków.",
   "suppRegistration.submit.application": "Niniejszym potwierdzam, że informacje podane w tym portalu i dotyczące inicjatywy WiFi4EU są prawdziwe, kompletne i dokładne. Niniejszym potwierdzam, że Komisja Europejska lub Agencja Wykonawcza ds. Innowacyjności i Sieci (INEA) może zweryfikować informacje tu podane, korzystając ze źródła dostępnego na mocy prawa.",
   "shared.submitregistration.failure.title": "Podczas rejestracji wystąpił błąd.",
   "shared.submitregistration.failure.text.part1": "Prosimy spróbować ponownie później lub skonsultować się z działem pomocy technicznej.",
@@ -180,7 +180,7 @@
   "itemMenu.myAccount": "Moja(-e) rejestracja(-e)",
   "benefPortal.profile.editRegistrationText": "Możesz przeglądać i modyfikować dane dotyczące Twojej rejestracji do chwili ogłoszenia zaproszenia. Kliknij poniżej, aby otworzyć stronę z informacjami podanymi przez siebie podczas rejestracji.",
   "benefPortal.beneficiary.editApplication": "Zobacz/edytuj dane dotyczące Twojej rejestracji",
-  "benefPortal.beneficiary.goDiscussionText": "Ta zarejestrowana przez Ciebie gmina została również zarejestrowana w portalu WiFi4EU przez inną osobę. Zmień swoje dane lub #przejdź do forum dyskusyjnego#, aby skontaktować się z tą osobą w celu wyjaśnienia tej kwestii",
+  "benefPortal.beneficiary.goDiscussionText": "Ta zarejestrowana przez Ciebie gmina została również zarejestrowana w portalu WiFi4EU przez inną osobę. Zmień swoje dane lub przejdź do forum dyskusyjnego, aby skontaktować się z tą osobą w celu wyjaśnienia tej kwestii",
   "itemMenu.appPortal": "Mój wniosek",
   "submitregistration.success.text.part1": "Potwierdź swoją rejestrację",
   "discussionForum.beneficiary.goDiscussion": "Przejdź do forum dyskusyjnego",
@@ -495,7 +495,7 @@
   "benefPortal.myVoucher.datatable.grantAgreement": "Umowa o udzielenie dotacji podpisana dnia {{date}} r.",
   "shared.statusDocsUploaded": "Potwierdzamy, że otrzymaliśmy Twoje dokumenty.",
   "benefPortal.selectSupplier.details.title": "Wybierz firmę instalującą Wi-Fi",
-  "benefPortal.selectSupplier.feedback.selected": "Firmę instalującą Wi-Fi wybrano dnia {{date}} r. #Zobacz szczegóły#",
+  "benefPortal.selectSupplier.feedback.selected": "Firmę instalującą Wi-Fi wybrano dnia {{date}} r. Zobacz szczegóły",
   "benefPortal.myVoucher.datatable.confirmInstallation": "Potwierdź instalację sieci",
   "shared.supportingDocuments.info": "Poniżej prosimy załadować dokumenty potwierdzające. Prosimy sprawdzić, czy załadowane pliki są w odpowiednim formacie (.pdf, .png lub .jpg).",
   "shared.supportingDocuments.info2": "Pamiętaj, że nie będziesz mógł ubiegać się o bon w ramach programu dopóty, dopóki nie przedstawisz WSZYSTKICH obowiązkowych dokumentów potwierdzających. Załączone dokumenty MUSZĄ być kompletne i czytelne. W przeciwnym razie Twój wniosek może zostać zdyskwalifikowany do celów tego zaproszenia do składania wniosków.",
@@ -954,5 +954,6 @@
   "discussionForum.discussionForum.discussion.growl": "Komisja nie świadczy usług mediacji.",
   "dgConn.voucherAssignment.password": "Password",
   "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct",
-  "dgconn.voucherAssignment.runningFreze": "Freezing..."
+  "dgconn.voucherAssignment.runningFreze": "Freezing...",
+  "dgconn.voucherAssignment.runningPreSelectionList": "Creating Pre-selection List…"
 }

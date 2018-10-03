@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.codec.net.URLCodec;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -174,35 +175,35 @@ public class AzureBlobConnector {
 	}
 
 	public byte[] downloadAsBytes(final String containerName, final String fileName){
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-		// Validating the paramenters
-		this.checkContainerName(containerName);
-		this.checkFileName(fileName);
+        // Validating the paramenters
+        this.checkContainerName(containerName);
+        this.checkFileName(fileName);
 
-		CloudBlobContainer container = this.getContainerReference(containerName);
-		CloudBlockBlob blob = null;
-		try {
-			blob = container.getBlockBlobReference(fileName);
-		} catch (URISyntaxException | StorageException e) {
-			LOGGER.error("Error", e);
-		}
+        CloudBlobContainer container = this.getContainerReference(containerName);
+        CloudBlockBlob blob = null;
+        try {
+            blob = container.getBlockBlobReference(fileName);
+        } catch (URISyntaxException | StorageException e) {
+            LOGGER.error("Error", e);
+        }
 
-		if (blob != null) {
-			LOGGER.info("Downloading from containerName[{}], fileName[{}]", containerName, fileName);
+        if (blob != null) {
+            LOGGER.info("Downloading from containerName[{}], fileName[{}]", containerName, fileName);
 
-			try {
-				blob.download(outputStream);
-				outputStream.close();
-				LOGGER.info("Content downloaded. Content.length [{}]", outputStream == null ? "NULL" : String.valueOf(outputStream.size()));
-			} catch (StorageException | IOException e) {
-				LOGGER.error("Error", e);
-			}
-		}
+            try {
+                blob.download(outputStream);
+                outputStream.close();
+                LOGGER.info("Content downloaded. Content.length [{}]", outputStream == null ? "NULL" : String.valueOf(outputStream.size()));
+            } catch (StorageException | IOException e) {
+                LOGGER.error("Error", e);
+            }
+        }
 
-		return outputStream.toByteArray();
-	}
-
+        return outputStream.toByteArray();
+    }
+	
 	public String downloadText(final String containerName, final String fileName) {
 		String content = null;
 
@@ -299,7 +300,7 @@ public class AzureBlobConnector {
 
 		try {
 			LOGGER.info("Downloading container [{}] fileName[{}]", GRANT_AGREEMENT_CONTAINER_NAME, fileNameDownload);
-			content = downloadAsBytes(GRANT_AGREEMENT_CONTAINER_NAME, fileNameDownload);
+            content = downloadAsBytes(GRANT_AGREEMENT_CONTAINER_NAME, fileNameDownload);
 		} catch (Exception e) {
 			LOGGER.error("ERROR", e);
 		}

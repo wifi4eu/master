@@ -324,6 +324,16 @@
   <h1 class="Modalh1Confirmation">{{ 'dgconn.voucherAssignment.runningSimulation' | translate }}</h1>
 </p-dialog>
 
+<p-dialog [(visible)]="displayConfirmingDataFreeze" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
+  [closable]="false" [closeOnEscape]="false">
+  <p class="ModalLoaderDots">
+    <span>.</span>
+    <span>.</span>
+    <span>.</span>
+  </p>
+  <h1 class="Modalh1Confirmation">{{ 'dgconn.voucherAssignment.runningFreze' | translate }}</h1>
+</p-dialog>
+
 <p-dialog [(visible)]="downloadingExcel" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="false"
   [closeOnEscape]="false">
   <p class="ModalLoaderDots">

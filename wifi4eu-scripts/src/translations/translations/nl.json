@@ -12,7 +12,7 @@
   "home.part2.text1": "U kunt een aanvraag indienen vanaf {{date}} om {{hour}} (Midden-Europese Zomertijd). ",
   "home.part2.subtitle4": "Aanvragen kunnen worden ingediend door:",
   "home.part2.list1": "- gemeenten",
-  "home.part2.subtitle5": "Zie de #lijst van entiteiten# in uw land die in aanmerking komen.",
+  "home.part2.subtitle5": "Zie de <a href=\"https://ec.europa.eu/digital-single-market/news-redirect/624101\"  target=\"_blank\">lijst van entiteiten</a> in uw land die in aanmerking komen.",
   "home.part2.list2": "– verenigingen van gemeenten namens hun leden",
   "home.part2.subtitle6": "De WiFi4EU-voucher dekt de apparatuur- en installatiekosten van wifi-hotspots. Gemeenten die een voucher krijgen, moeten zelf minstens drie jaar lang het internetabonnement en het onderhoud betalen van de apparatuur die nodig is om gratis en snelle wifi-hotspots te kunnen bieden.",
   "home.part2.subtitle2": "Wat kunt u verwachten?",
@@ -143,7 +143,7 @@
   "suppRegistration.eu.requirements": "Ik verklaar mij akkoord met de voorwaarden van het WiFi4EU-initiatief, namelijk:",
   "suppRegistration.eu.requirementsTitle": "1. De installatie van wifinetwerken die overlappen met een bestaand gratis particulier of publiek aanbod met soortgelijke kenmerken (waaronder de kwaliteit van de dienst) in dezelfde openbare ruimte komt niet voor financiering in aanmerking. Dergelijke overlapping kan worden voorkomen door ervoor te zorgen dat het bereik van de toegangspunten zodanig is dat primair openbare ruimten worden bestreken en dat er geen overlapping is met het bereik van een particulier of openbaar aanbod met soortgelijke kenmerken.",
   "suppRegistration.eu.requirements2": "2. De WiFi4EU-voucher dekt alleen de kosten van aanschaf en installatie van draadloze internettoegangspunten om een lokaal wifi-netwerk op te zetten. Operationele kosten (inclusief eventuele abonnementskosten voor de internetaansluiting) komen niet voor financiering in aanmerking.",
-  "suppRegistration.eu.requirements3": "3. Als mijn bedrijf in het kader van het WiFi4EU-initiatief wordt geselecteerd door een gemeente die een voucher krijgt, dienen de geleverde apparatuur en de installatie te voldoen aan de technische specificaties die zijn beschreven in de #oproep#.",
+  "suppRegistration.eu.requirements3": "3. Als mijn bedrijf in het kader van het WiFi4EU-initiatief wordt geselecteerd door een gemeente die een voucher krijgt, dienen de geleverde apparatuur en de installatie te voldoen aan de technische specificaties die zijn beschreven in de oproep.",
   "suppRegistration.submit.application": "Ik bevestig dat de informatie op dit portaal in verband met het WiFi4EU-initiatief verstrekte gegevens correct, volledig en nauwkeurig zijn. Ik ga ermee akkoord dat de Europese Commissie of het Uitvoerend Agentschap innovatie en netwerken (INEA) de hier verstrekte gegevens kan controleren met gebruikmaking van alle wettelijk toegankelijke bronnen.",
   "shared.submitregistration.failure.title": "Er is iets misgegaan met de inschrijving.",
   "shared.submitregistration.failure.text.part1": "Probeer het opnieuw, of neem contact op met de helpdesk.",
@@ -180,7 +180,7 @@
   "itemMenu.myAccount": "Mijn inschrijving(en)",
   "benefPortal.profile.editRegistrationText": "U kunt uw inschrijving nog tot de start van de aanvraagronde bekijken en wijzigen. Klik hieronder om uw inschrijving te openen.",
   "benefPortal.beneficiary.editApplication": "Inschrijving bekijken/bewerken",
-  "benefPortal.beneficiary.goDiscussionText": "De door u ingeschreven gemeente is ook door iemand anders ingeschreven op het WiFi4EU-portaal. Verander uw gegevens of #ga naar het overlegforum# om de zaak met die ander te bepreken.",
+  "benefPortal.beneficiary.goDiscussionText": "De door u ingeschreven gemeente is ook door iemand anders ingeschreven op het WiFi4EU-portaal. Verander uw gegevens of ga naar het overlegforum om de zaak met die ander te bepreken.",
   "itemMenu.appPortal": "Mijn inschrijving",
   "submitregistration.success.text.part1": "Valideer uw inschrijving",
   "discussionForum.beneficiary.goDiscussion": "Naar het overlegforum",
@@ -495,7 +495,7 @@
   "benefPortal.myVoucher.datatable.grantAgreement": "Subsidieovereenkomst ondertekend op {{date}}. ",
   "shared.statusDocsUploaded": "We hebben uw documenten ontvangen.",
   "benefPortal.selectSupplier.details.title": "Wifi-installateur kiezen",
-  "benefPortal.selectSupplier.feedback.selected": "Wifi-installateur gekozen op {{date}}. #Zie details#",
+  "benefPortal.selectSupplier.feedback.selected": "Wifi-installateur gekozen op {{date}}. Zie details",
   "benefPortal.myVoucher.datatable.confirmInstallation": "Installatie bevestigen",
   "shared.supportingDocuments.info": "Upload de volgende bewijsstukken in een van de toegestane formaten (.pdf, .png, or .jpg).",
   "shared.supportingDocuments.info2": "Let op: U kunt pas meedingen naar een voucher als u ALLE vereiste bewijsstukken heeft verstrekt! Zorg dat alle documenten die u uploadt, leesbaar en compleet zijn. Anders is uw aanvraag ongeldig.",
@@ -954,5 +954,6 @@
   "discussionForum.discussionForum.discussion.growl": "De Commissie beschikt niet over een bemiddelingsdienst.",
   "dgConn.voucherAssignment.password": "Password",
   "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct",
-  "dgconn.voucherAssignment.runningFreze": "Freezing..."
+  "dgconn.voucherAssignment.runningFreze": "Freezing...",
+  "dgconn.voucherAssignment.runningPreSelectionList": "Creating Pre-selection List…"
 }

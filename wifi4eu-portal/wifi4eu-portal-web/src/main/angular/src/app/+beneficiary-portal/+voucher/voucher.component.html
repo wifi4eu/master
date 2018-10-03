@@ -33,7 +33,7 @@
     </div>
     <div class="ui-g-12 ui-md-8 offset-md-2">
         <div class="marginTop registrationPanel">
-            <p-dataTable [value]="applyVouchersData" [expandableRows]="true" [expandedRows]="applyVouchersData" [class.table-disabled]="!allRequestCompleted">
+            <p-dataTable [value]="applyVouchersData" [expandableRows]="voucherCompetitionState != null && voucherCompetitionState != 0" [expandedRows]="applyVouchersData" [class.table-disabled]="!allRequestCompleted">
                 <p-column field="municipality" [sortable]="allRequestCompleted ? true : false" styleClass="label whiteTableBackground">
                     <ng-template pTemplate="header">
                         <span *ngIf="!allRequestCompleted">

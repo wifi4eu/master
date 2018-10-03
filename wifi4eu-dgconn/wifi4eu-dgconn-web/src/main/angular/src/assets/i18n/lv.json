@@ -12,7 +12,7 @@
   "home.part2.text1": "Nākamais konkurss (uzaicinājums iesniegt pieteikumus) tiks izsludināts {{date}} plkst. {{hour}} (Centrāleiropas vasaras laiks). ",
   "home.part2.subtitle4": "Tajā var pieteikties:",
   "home.part2.list1": "- pašvaldības,",
-  "home.part2.subtitle5": "Skatiet #pieteikšanās kritērijiem atbilstošu juridisko personu sarakstu# jūsu valstī.",
+  "home.part2.subtitle5": "Skatiet <a href=\"https://ec.europa.eu/digital-single-market/news-redirect/624101\"  target=\"_blank\">pieteikšanās kritērijiem atbilstošu juridisko personu sarakstu</a> jūsu valstī.",
   "home.part2.list2": "- pašvaldību apvienības, kuras rīkojas savu biedru vārdā.",
   "home.part2.subtitle6": "WiFi4EU vaučers segs izmaksas saistībā ar bezvadu interneta pieslēguma punktu tehnisko aprīkojumu un uzstādīšanu. Pašvaldībām, kuras saņem vaučeru, ir jāmaksā par pieslēgumu (interneta abonementu) un aprīkojuma uzturēšanu, lai vismaz 3 gadus nodrošinātu augstas kvalitātes bezmaksas bezvadu interneta pieejamību.",
   "home.part2.subtitle2": "Ko varat sagaidīt?",
@@ -143,7 +143,7 @@
   "suppRegistration.eu.requirements": "Apliecinu, ka esmu izlasījis šādus WiFi4EU iniciatīvas nosacījumus un tiem piekrītu:",
   "suppRegistration.eu.requirementsTitle": "1. Tādu bezvadu interneta piekļuves punktu uzstādīšanai, kas dublējas ar esošiem līdzīga rakstura, tostarp pakalpojuma kvalitātes ziņā, bezmaksas privātiem vai publiskiem piedāvājumiem tajā pašā sabiedriskajā telpā, nevar saņemt WiFi4EU finansējumu. No šādas dublēšanās var izvairīties, nodrošinot, ka piekļuves punktu darbības rādiuss tiek plānots tā, lai tas  aptvertu galvenokārt publiskas vietas un nepārklātos ar esošiem līdzīga rakstura privātiem vai publiskiem piedāvājumiem.",
   "suppRegistration.eu.requirements2": "2. WiFi4EU vaučers ir paredzēts bezvadu interneta piekļuves punktu iegādes un uzstādīšanas izmaksu segšanai, lai izveidotu lokālu bezvadu interneta tīklu. Finansējums netiek piešķirts darbības izmaksu (arī pieslēguma jeb interneta abonementa) segšanai.",
-  "suppRegistration.eu.requirements3": "3. Ja kāda pašvaldība, kura ir saņēmusi vaučeru, izvēlas manu uzņēmumu, aprīkojums un uzstādīšanas pakalpojumi, kuri tiks sniegti WiFi4EU iniciatīvas ietvaros, atbildīs tehniskajām specifikācijām, kas ir izklāstītas #uzaicinājuma tekstā#.",
+  "suppRegistration.eu.requirements3": "3. Ja kāda pašvaldība, kura ir saņēmusi vaučeru, izvēlas manu uzņēmumu, aprīkojums un uzstādīšanas pakalpojumi, kuri tiks sniegti WiFi4EU iniciatīvas ietvaros, atbildīs tehniskajām specifikācijām, kas ir izklāstītas uzaicinājuma tekstā.",
   "suppRegistration.submit.application": "Ar šo apliecinu, ka informācija, kuru esmu sniedzis šajā portālā un saistībā ar iniciatīvu WiFi4EU, ir patiesa, pilnīga un pareiza. Apzinos, ka Eiropas Komisija vai Inovācijas un tīklu izpildaģentūra (INEA) var pārbaudīt šeit sniegto informāciju, izmantojot avotus, kas pieejami saskaņā ar likumu.",
   "shared.submitregistration.failure.title": "Reģistrēties neizdevās, jo radusies kāda problēma.",
   "shared.submitregistration.failure.text.part1": "Lūdzu, mēģiniet vēlāk vai sazinieties ar palīdzības dienestu.",
@@ -180,7 +180,7 @@
   "itemMenu.myAccount": "Mana(s) reģistrācija(s)",
   "benefPortal.profile.editRegistrationText": "Varat savu reģistrāciju aplūkot un labot pirms uzaicinājuma izsludināšanas. Noklikšķiniet zemāk, lai atvērtu savu reģistrāciju.",
   "benefPortal.beneficiary.editApplication": "Skatīt/labot reģistrāciju",
-  "benefPortal.beneficiary.goDiscussionText": "Jūsu reģistrēto pašvaldību WiFi4EU portālā ir reģistrējusi arī cita persona. Mainiet savus datus vai #ejiet uz diskusiju# forumu , lai ar šo personu noskaidrotu šo jautājumu.",
+  "benefPortal.beneficiary.goDiscussionText": "Jūsu reģistrēto pašvaldību WiFi4EU portālā ir reģistrējusi arī cita persona. Mainiet savus datus vai ejiet uz diskusiju forumu , lai ar šo personu noskaidrotu šo jautājumu.",
   "itemMenu.appPortal": "Mans pieteikums",
   "submitregistration.success.text.part1": "Validējiet savu reģistrāciju",
   "discussionForum.beneficiary.goDiscussion": "Doties uz diskusiju",
@@ -495,7 +495,7 @@
   "benefPortal.myVoucher.datatable.grantAgreement": "Dotācijas nolīgums parakstīts {{date}}. ",
   "shared.statusDocsUploaded": "Mēs apstiprinām, ka Jūsu dokumenti ir saņemti.   ",
   "benefPortal.selectSupplier.details.title": "Atlasiet Wi-Fi uzstādīšanas uzņēmumu",
-  "benefPortal.selectSupplier.feedback.selected": "Wi-Fi uzstādīšanas uzņēmums ir atlasīts {{date}}. #See details#",
+  "benefPortal.selectSupplier.feedback.selected": "Wi-Fi uzstādīšanas uzņēmums ir atlasīts {{date}}. See details",
   "benefPortal.myVoucher.datatable.confirmInstallation": "Tīkla uzstādīšanas apstiprināšana",
   "shared.supportingDocuments.info": "Augšupielādējiet apliecinošos dokumentus zemāk un gādājiet, lai faili būtu piemērotā formātā (.pdf, .png, vai .jpg).",
   "shared.supportingDocuments.info2": "Ņemiet vērā, ka jūs nevarēsiet pieteikties vaučera saņemšanai, kamēr nebūs iesniegti VISI obligātie apliecinošie dokumenti. Jūsu augšupielādētajiem dokumentiem ir JĀBŪT pilnīgiem un salasāmiem, citādi jūsu pieteikumu šim uzaicinājumam var atzīt par nederīgu.",
@@ -954,5 +954,6 @@
   "discussionForum.discussionForum.discussion.growl": "Komisija nesniedz starpniecības pakalpojumus.",
   "dgConn.voucherAssignment.password": "Password",
   "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct",
-  "dgconn.voucherAssignment.runningFreze": "Freezing..."
+  "dgconn.voucherAssignment.runningFreze": "Freezing...",
+  "dgconn.voucherAssignment.runningPreSelectionList": "Creating Pre-selection List…"
 }

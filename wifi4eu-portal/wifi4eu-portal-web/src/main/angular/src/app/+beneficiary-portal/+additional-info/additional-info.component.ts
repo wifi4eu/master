@@ -13,6 +13,8 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { MayorApi } from "../../shared/swagger/api/MayorApi";
 import { MayorDTOBase } from "../../shared/swagger/model/MayorDTO";
 import { LegalFileDTOBase, LegalFilesViewDTOBase } from "../../shared/swagger";
+import { Location } from "@angular/common";
+import { NgForm } from "@angular/forms";
 
 
 @Component({
@@ -34,21 +36,23 @@ export class AdditionalInfoComponent {
     private reader: FileReader = new FileReader();
     private filesUploaded: boolean = false;
     private isMayor: boolean = false;
+    @ViewChild('legalForm') fileForm: NgForm;
     @ViewChild('document1') private document1: any;
     @ViewChild('document2') private document2: any;
     @ViewChild('document3') private document3: any;
     @ViewChild('document4') private document4: any;
     private displayConfirmingData: boolean = false;
-    private displayConfirmClose: boolean = false;
     private displayConfirmDelete: boolean = false;
     private removingFile: number;
     private changedDocs: number;
+    dirty: boolean = false;
 
     private fileURL: string = '/wifi4eu/api/registration/getDocument/';
 
-    constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private localStorageService: LocalStorageService, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private sharedService: SharedService, private router: Router) {
+    constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private localStorageService: LocalStorageService, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private sharedService: SharedService, private router: Router, private location: Location ) {
         let storedUser = this.localStorageService.get('user');
         this.changedDocs = 0;
+
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
             let municipalityId;
@@ -116,7 +120,6 @@ export class AdditionalInfoComponent {
                         }
                     }
                 );
-
             }
 
         } else {
@@ -146,6 +149,9 @@ export class AdditionalInfoComponent {
             } else {
                 this.filesUploaded = false;
             }
+        }
+        if (this.legalFilesToUpload.length <= 0 || this.changedDocs <= 0) {
+            this.dirty = false;
         }
     }
 
@@ -217,15 +223,19 @@ export class AdditionalInfoComponent {
                                 switch (type) {
                                     case 1:
                                         this.documentFilesType1.push(file);
+                                        this.dirty = true;
                                         break;
                                     case 2:
                                         this.documentFilesType2.push(file);
+                                        this.dirty = true;
                                         break;
                                     case 3:
                                         this.documentFilesType3.push(file);
+                                        this.dirty = true;
                                         break;
                                     case 4:
                                         this.documentFilesType4.push(file);
+                                        this.dirty = true;
                                         break;
                                     default:
                                         break;
@@ -334,17 +344,20 @@ export class AdditionalInfoComponent {
         }
     }
 
-    confirmClose() {
-        this.displayConfirmClose = true;
-    }
-
     cancelBack() {
-        this.displayConfirmClose = false;
         this.displayConfirmDelete = false;
         this.removingFile = null;
     }
 
-    goBack(){
-        window.history.back();
+    goBack() {
+        if (this.legalFilesToUpload.length > 0 || this.changedDocs > 0) {
+            this.dirty = true;
+            this.displayConfirmDelete = false;
+            this.location.back();
+        } else {
+            this.displayConfirmDelete = false;
+            this.location.back();
+        }
     }
+
 }

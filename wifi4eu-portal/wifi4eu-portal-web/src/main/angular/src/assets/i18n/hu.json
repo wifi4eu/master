@@ -12,7 +12,7 @@
   "home.part2.text1": "A soron következő pályázati felhívás közzétételének időpontja: {{date}}, {{hour}} (Közép-európai nyári időszámítás) ",
   "home.part2.subtitle4": "A pályázati felhívásra jelentkezhetnek:",
   "home.part2.list1": "- települések,",
-  "home.part2.subtitle5": "Az Ön országában működő #jogosult szervezetek listája# itt található.",
+  "home.part2.subtitle5": "Az Ön országában működő <a href=\"https://ec.europa.eu/digital-single-market/news-redirect/624101\" target=\"_blank\">jogosult szervezetek listája</a> itt található.",
   "home.part2.list2": "— települések által létrehozott társulások, melyek a tagjaik nevében járnak el",
   "home.part2.subtitle6": "A WiFi4EU-utalvány fedezi a berendezések és a hotspotok telepítésének költségeit. Az utalványban részesülő önkormányzatoknak vállalniuk kell, hogy az adott közterületen ingyenes és jó minőségű wifi-kapcsolat biztosítása céljából legalább 3 évig fizetik az internet-hozzáférés díját (internet-előfizetés), valamint a berendezések rendeltetésszerű üzemét biztosító karbantartás költségeit.",
   "home.part2.subtitle2": "Mire számíthatnak a pályázók?",
@@ -143,7 +143,7 @@
   "suppRegistration.eu.requirements": "Megerősítem, hogy elolvastam és elfogadom a WiFi4EU kezdeményezésre vonatkozó alábbi feltételeket:",
   "suppRegistration.eu.requirementsTitle": "1. Az ugyanazon közösségi térben minőségükben is hasonló jellemzőkkel rendelkező, már létező ingyenes magán- vagy állami ajánlatokat pusztán megkettőző wifi-hozzáférési pontok telepítése nem részesülhet támogatásban. Az ilyen megkettőzés elkerülhető azzal, ha biztosított, hogy a hozzáférési pontok körét úgy tervezik meg, hogy az elsődlegesen közösségi tereket foglaljon magában, és ne legyen átfedés a hasonló jellemzőkkel rendelkező, magán- vagy közszférabeli szervezet által kínált hozzáférési pontok körével.",
   "suppRegistration.eu.requirements2": "2. A WiFi4EU-utalvány fedezi wifi-hozzáférési pontok és vezeték nélküli helyi hálózat létesítéséhez szükséges berendezések beszerzését és telepítését. A kezdeményezés keretében rendelkezésre bocsátott pénzforrások nem vehetők igénybe az üzemeltetési költségek fedezésére (ideértve az internet-előfizetés költségeit is).",
-  "suppRegistration.eu.requirements3": "3. Ha egy település, mely utalványt kap, az én vállalkozásommal kíván szerződni, a cégem által a WiFi4EU kezdeményezés keretében rendelkezésre bocsátott berendezés és annak telepítése meg fog felelni a #pályázati felhívásban# rögzített műszaki leírásnak.",
+  "suppRegistration.eu.requirements3": "3. Ha egy település, mely utalványt kap, az én vállalkozásommal kíván szerződni, a cégem által a WiFi4EU kezdeményezés keretében rendelkezésre bocsátott berendezés és annak telepítése meg fog felelni a pályázati felhívásban rögzített műszaki leírásnak.",
   "suppRegistration.submit.application": "Kijelentem, hogy a WiFi4EU kezdeményezéssel kapcsolatban itt megadott információk helytállók, hiánytalanok és pontosak. Tudomásul veszem, hogy az Európai Bizottság, illetve az Innovációs és Hálózati Projektek Végrehajtó Ügynökség (INEA) a jogszerűen hozzáférhető források alapján ellenőrizheti az itt megadott információkat.",
   "shared.submitregistration.failure.title": "Probléma történt a regisztráció során.",
   "shared.submitregistration.failure.text.part1": "Kérjük, próbálkozzon újra vagy lépjen kapcsolatba az ügyfélszolgálattal.",
@@ -180,7 +180,7 @@
   "itemMenu.myAccount": "Regisztráció(i)m",
   "benefPortal.profile.editRegistrationText": "Ön a pályázati felhívás közzétételéig meg tudja tekinteni és szerkeszteni tudja a regisztrációkor megadott adatokat. Kattintson a lenti gombra a regisztrációs adatok megjelenítéséhez, illetve szerkesztéséhez",
   "benefPortal.beneficiary.editApplication": "Regisztráció megtekintése/szerkesztése",
-  "benefPortal.beneficiary.goDiscussionText": "Az Ön által a WiFi4EU portálján regisztrált települést valaki más szintén regisztrálta. Kérjük, módosítsa a beírt adatokat vagy a #vitafórumon# tisztázza az ügyet a másik felhasználóval.",
+  "benefPortal.beneficiary.goDiscussionText": "Az Ön által a WiFi4EU portálján regisztrált települést valaki más szintén regisztrálta. Kérjük, módosítsa a beírt adatokat vagy a vitafórumon tisztázza az ügyet a másik felhasználóval.",
   "itemMenu.appPortal": "Jelentkezésem",
   "submitregistration.success.text.part1": "Kérjük, érvényesítse a regisztrációt:",
   "discussionForum.beneficiary.goDiscussion": "Tovább a vitafórumra",
@@ -496,7 +496,7 @@
   "benefPortal.myVoucher.datatable.grantAgreement": "Támogatási megállapodás aláírva: {{date}}. ",
   "shared.statusDocsUploaded": "Igazoljuk , hogy a benyújtott pályázati  dokumentumokat megkaptuk. ",
   "benefPortal.selectSupplier.details.title": "Wifi-telepítő vállalkozás kiválasztása",
-  "benefPortal.selectSupplier.feedback.selected": "Wifi-telepítő vállalkozás kiválasztva: {{date}}. #Részletes adatok megjelenítése#",
+  "benefPortal.selectSupplier.feedback.selected": "Wifi-telepítő vállalkozás kiválasztva: {{date}}. Részletes adatok megjelenítése",
   "benefPortal.myVoucher.datatable.confirmInstallation": "Hálózat telepítésének megerősítése",
   "shared.supportingDocuments.info": "Töltse fel az alábbiakban kért igazoló dokumentumokat, ügyelve a megfelelő fájlformátumra (.pdf, .png, vagy .jpg)",
   "shared.supportingDocuments.info2": "Figyelem: csak akkor fog tudni utalványra pályázni, ha kivétel nélkül az ÖSSZES előírt igazoló dokumentumot benyújtotta. Az Ön pályázata csak akkor érvényes, ha a feltöltött dokumentumok hiánytalanok és olvashatók.",
@@ -955,5 +955,6 @@
   "discussionForum.discussionForum.discussion.growl": "A Bizottság nem nyújt közvetítői szolgáltatást.",
   "dgConn.voucherAssignment.password": "Password",
   "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct",
-  "dgconn.voucherAssignment.runningFreze": "Freezing..."
+  "dgconn.voucherAssignment.runningFreze": "Freezing...",
+  "dgconn.voucherAssignment.runningPreSelectionList": "Creating Pre-selection List…"
 }

@@ -12,6 +12,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import com.itextpdf.text.pdf.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +20,7 @@ import org.springframework.stereotype.Service;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.ColumnText;
-import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfStamper;
-import com.itextpdf.text.pdf.PdfWriter;
 
 import wifi4eu.wifi4eu.common.dto.model.ApplicationAuthorizedPersonDTO;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
@@ -36,6 +30,8 @@ import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.helper.Validator;
+import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
 import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobStorage;
 import wifi4eu.wifi4eu.mapper.grantAgreement.GrantAgreementMapper;
 import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
@@ -44,12 +40,20 @@ import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.location.LauService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.ParametrizedDocConverter;
 
 @Service
 public class GrantAgreementService {
     Logger _log = LogManager.getLogger(GrantAgreementService.class);
+
+    private final static String FILE_TEMPLATE_GRANT_AGREEMENT_PREFIX = "grant_agreement_0918_";
+
+    private final static String FILE_TEMPLATE_GRANT_AGREEMENT_EXTENSION = ".pdf";
+
+    @Autowired
+    AzureBlobConnector azureBlobConnector;
 
     @Autowired
     ApplicationService applicationService;
@@ -78,7 +82,10 @@ public class GrantAgreementService {
     @Autowired
     ApplicationAuthorizedPersonService applicationAuthorizedPersonService;
 
-    final static HashMap<String, String> languagesMap = new HashMap<>();
+    @Autowired
+    PermissionChecker permissionChecker;
+
+    static final HashMap<String, String> languagesMap = new HashMap<>();
 
     @PostConstruct
     public void initIt() throws Exception {
@@ -89,9 +96,9 @@ public class GrantAgreementService {
         languagesMap.put("et", "eesti keel");
         languagesMap.put("el", "ελληνικά");
         languagesMap.put("en", "English");
-        languagesMap.put("es","español");
+        languagesMap.put("es",  "español");
         languagesMap.put("fr", "français");
-        languagesMap.put("ga","Gaeilge");
+        languagesMap.put("ga",  "Gaeilge");
         languagesMap.put("it", "italiano");
         languagesMap.put("lv", "latviešu valoda");
         languagesMap.put("lt",  "lietuvių kalba");
@@ -123,9 +130,11 @@ public class GrantAgreementService {
             grantAgreementDTO.setDocumentLanguage(inputGrantAgreement.getDocumentLanguage());
             return grantAgreementMapper.toDTO(agreementRepository.save(grantAgreementMapper.toEntity(grantAgreementDTO)));
         } else {
-        	if (inputGrantAgreement.getId() != 0) {
-        		_log.warn("Call to a create method with id set, the value has been removed ({})", inputGrantAgreement.getId());
-        		inputGrantAgreement.setId(0);	
+        	if (Validator.isNotNull(inputGrantAgreement.getId())) {
+        	    if(inputGrantAgreement.getId() != 0){
+                    _log.warn("Call to a create method with id set, the value has been removed ({})", inputGrantAgreement.getId());
+                    inputGrantAgreement.setId(0);
+                }
         	}        	
             return grantAgreementMapper.toDTO(agreementRepository.save(grantAgreementMapper.toEntity(inputGrantAgreement)));
         }
@@ -143,20 +152,24 @@ public class GrantAgreementService {
         return createGrantAgreement(inputGrandAgreement);
     }
 
-    public ByteArrayOutputStream fillGrantAgreementDocument(GrantAgreementDTO grantAgreement, Map<String, String> mapProperties) throws Exception {
-        byte[] fileData = azureBlobStorage.getFileFromContainer("docs", "grant_agreement_template_" + grantAgreement.getDocumentLanguage() + ".docx");
+    private byte[] getGrantAgreementTemplate(String language) throws IOException {
+    	StringBuilder fileName = new StringBuilder();
+    	fileName.append(FILE_TEMPLATE_GRANT_AGREEMENT_PREFIX).append(language).append(FILE_TEMPLATE_GRANT_AGREEMENT_EXTENSION);
+
+    	// Template files are stored in Azure: wifi4eustoredocuments - Storage Explorer
+        return azureBlobStorage.getFileFromContainer("docs", fileName.toString());
+    }
+
+    public ByteArrayOutputStream fillGrantAgreementDocument(GrantAgreementDTO grantAgreement, Map<String, String> mapProperties) throws IOException {
+    	// Get template in the correspondent language
+        byte[] fileData = getGrantAgreementTemplate(grantAgreement.getDocumentLanguage().toLowerCase());
+        // Replace placeholders in the template for the user's values
         return ParametrizedDocConverter.convert(fileData, mapProperties);
     }
 
     public ByteArrayOutputStream generateGrantAgreementDocument(GrantAgreementDTO grantAgreement) throws Exception {
 
         UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-
-        ApplicationAuthorizedPersonDTO applicationAuthorizedPerson = applicationAuthorizedPersonService.findByApplicationAndAuthorisedPerson(grantAgreement.getApplicationId(), userDTO.getId());
-
-        if(applicationAuthorizedPerson == null){
-            throw new AccessDeniedException("This user doesn't have permissions to sign the grant agreement");
-        }
 
         ApplicationDTO applicationDTO = applicationService.getApplicationById(grantAgreement.getApplicationId());
         RegistrationDTO registrationDTO = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
@@ -176,24 +189,27 @@ public class GrantAgreementService {
         String year = df.format(cal.getTime());
 
         Map<String,String> replacementsMap = new HashMap<String,String>();
-        replacementsMap.put("[<call number>", String.valueOf(applicationDTO.getCallId()));
-        replacementsMap.put("<year>]", year);
-        replacementsMap.put("[<unique identifying number>]", formattedRegistrationID.concat("-").concat(formattedUserID));
-        replacementsMap.put("[function, forename and surname]", "Head of Department C, Andreas Boschen");
-        replacementsMap.put("[function-2, forename and surname]", userDTO.getName().concat(" ").concat(userDTO.getSurname()));
-        replacementsMap.put("[full official name]", lauDTO.getName1());
-        replacementsMap.put("[official address in full]", municipalityDTO.getAddress().concat(", ").concat(municipalityDTO.getAddressNum()));
-        replacementsMap.put("[insert name of the municipality]", lauDTO.getName2());
-        replacementsMap.put("[insert number of the action in bold]", "INEA/CEF/WiFi4EU/" + String.valueOf(applicationDTO.getCallId()).concat(year) + "/" +  formattedRegistrationID.concat("-").concat(formattedUserID));
-        if(grantAgreement.getDocumentLanguage().equalsIgnoreCase("en")){
-            replacementsMap.put("[or in English]", "");
-        }
-        replacementsMap.put("[language]", languagesMap.get(grantAgreement.getDocumentLanguage()));
-        replacementsMap.put("[function/forename/surname]", userDTO.getName().concat(" ").concat(userDTO.getSurname()));
-        replacementsMap.put("INEA/CEF/ICT/", "INEA/CEF/WiFi4EU/");
-        replacementsMap.put("[<M or A><year>]", String.valueOf(applicationDTO.getCallId()).concat(year));
-        replacementsMap.put("[xxxx]", formattedRegistrationID.concat("-").concat(formattedUserID));
-        replacementsMap.put("[e-signature]", "");
+        String header = String.valueOf(applicationDTO.getCallId());
+        header = header.concat(year);
+        header = header.concat("/");
+        header = header.concat(formattedRegistrationID.concat("-").concat(formattedUserID));
+
+        String lauNationalName = lauDTO.getNationalName();
+        String lauDisplayName = lauDTO.getDisplayName();
+        String fullAddress = municipalityDTO.getAddress().concat(", ").concat(municipalityDTO.getAddressNum());
+
+        replacementsMap.put("header", header);
+        replacementsMap.put("field1", header);
+        replacementsMap.put("field-forename-1", userDTO.getName().concat(" ").concat(userDTO.getSurname()));
+        replacementsMap.put("field-name-commission", "Head of Department C, Andreas Boschen");
+        replacementsMap.put("field-2", lauNationalName + "\n"+ fullAddress);
+        replacementsMap.put("field-language", languagesMap.get(grantAgreement.getDocumentLanguage()));
+        replacementsMap.put("field-beneficiary-name", userDTO.getName().concat(" ").concat(userDTO.getSurname()));
+        replacementsMap.put("field-signature", "SIGNATURE HERE");
+        replacementsMap.put("field-agency-name", "user of agency");
+        replacementsMap.put("field-signature-agency", "SIGNATURE HERE");
+        replacementsMap.put("field-action", header);
+        replacementsMap.put("field-municipality", lauDisplayName);
         return fillGrantAgreementDocument(grantAgreement, replacementsMap);
     }
 
@@ -204,23 +220,13 @@ public class GrantAgreementService {
         try {
             pdfReader = new PdfReader(generateGrantAgreementDocument(grantAgreement).toByteArray());
             pdfStamper = new PdfStamper(pdfReader, outputStream);
+            AcroFields fields = pdfStamper.getAcroFields();
+            pdfStamper.setFormFlattening(true);
 
-            int pages = pdfReader.getNumberOfPages();
-
-            for (int i = 1; i <= pages; i++) {
-                //Contain the pdf data.
-                if (i == 7) {
-                    PdfContentByte pageContentByte =
-                            pdfStamper.getOverContent(i);
-
-                    BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA_BOLD, "Cp1252", BaseFont.EMBEDDED);
-                    Font f = new Font(bf, 8);
-                    ColumnText ct = new ColumnText(pageContentByte);
-                    ct.setSimpleColumn(74, 0, pdfReader.getPageSize(i).getWidth() / 2, 400f);
-                    ct.addElement(new Paragraph(signString, f));
-                    ct.go();
-                }
-            }
+            final BaseFont font = BaseFont.createFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.EMBEDDED);
+            fields.setField("field-signature", signString);
+            fields.setFieldProperty("field-signature", "textfont", font, null);
+            fields.setFieldProperty("field-signature", "textsize", new Float(9), null);
 
             return outputStream;
         } catch (Exception e) {
@@ -254,6 +260,16 @@ public class GrantAgreementService {
             e.printStackTrace();
         }
         return outputStream;
+    }
+
+    public byte[] downloadGrantAgreementSigned(Integer applicationId, GrantAgreementDTO grantAgreementDTO) {
+        byte[] fileBytes = null;
+        try {
+            fileBytes = azureBlobConnector.downloadGrantAgreementSigned(grantAgreementDTO.getDocumentLocation());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fileBytes;
     }
 
 }
