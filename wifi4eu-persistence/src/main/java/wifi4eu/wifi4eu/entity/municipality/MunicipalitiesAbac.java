@@ -35,10 +35,13 @@ public class MunicipalitiesAbac {
     @Column(name = "numberOfRegistrations")
     private String numberOfRegistrations;
 
+    @Column(name = "issue")
+    private String issue;
+
     public MunicipalitiesAbac() {
     }
 
-    public MunicipalitiesAbac(Integer id, String abacReference, String abacStandarName, String countryName, Integer countryRank, Integer euRank, Integer municipality, String municipalityName, String numberOfRegistrations) {
+    public MunicipalitiesAbac(Integer id, String abacReference, String abacStandarName, String countryName, Integer countryRank, Integer euRank, Integer municipality, String municipalityName, String numberOfRegistrations, String issue) {
         this.id = id;
         this.abacReference = abacReference;
         this.abacStandarName = abacStandarName;
@@ -48,6 +51,7 @@ public class MunicipalitiesAbac {
         this.municipality = municipality;
         this.municipalityName = municipalityName;
         this.numberOfRegistrations = numberOfRegistrations;
+        this.issue = issue;
     }
 
     public Integer getId() {
@@ -120,5 +124,13 @@ public class MunicipalitiesAbac {
 
     public void setNumberOfRegistrations(String numberOfRegistrations) {
         this.numberOfRegistrations = numberOfRegistrations;
+    }
+
+    public String getIssue() {
+        return issue;
+    }
+
+    public void setIssue(String issue) {
+        this.issue = issue;
     }
 }

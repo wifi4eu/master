@@ -13,11 +13,12 @@ public class MunicipalitiesAbacDTO implements Serializable {
     private Integer municipality;
     private String municipalityName;
     private String numberOfRegistrations;
+    private String issue;
 
     public MunicipalitiesAbacDTO() {
     }
 
-    public MunicipalitiesAbacDTO(Integer id, String abacReference, String abacStandarName, String countryName, Integer countryRank, Integer euRank, Integer municipality, String municipalityName, String numberOfRegistrations) {
+    public MunicipalitiesAbacDTO(Integer id, String abacReference, String abacStandarName, String countryName, Integer countryRank, Integer euRank, Integer municipality, String municipalityName, String numberOfRegistrations, String issue) {
         this.id = id;
         this.abacReference = abacReference;
         this.abacStandarName = abacStandarName;
@@ -27,6 +28,7 @@ public class MunicipalitiesAbacDTO implements Serializable {
         this.municipality = municipality;
         this.municipalityName = municipalityName;
         this.numberOfRegistrations = numberOfRegistrations;
+        this.issue = issue;
     }
 
     public Integer getId() {
@@ -99,5 +101,13 @@ public class MunicipalitiesAbacDTO implements Serializable {
 
     public void setNumberOfRegistrations(String numberOfRegistrations) {
         this.numberOfRegistrations = numberOfRegistrations;
+    }
+
+    public String getIssue() {
+        return issue;
+    }
+
+    public void setIssue(String issue) {
+        this.issue = issue;
     }
 }
