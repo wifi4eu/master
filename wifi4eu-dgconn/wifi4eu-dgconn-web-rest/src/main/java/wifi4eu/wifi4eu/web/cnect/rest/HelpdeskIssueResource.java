@@ -2,13 +2,19 @@ package wifi4eu.wifi4eu.web.cnect.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO;
 import wifi4eu.wifi4eu.common.dto.model.NutsDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
@@ -20,6 +26,7 @@ import wifi4eu.wifi4eu.common.utils.HelpdeskIssueValidator;
 import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
 import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.user.UserService;
+import wifi4eu.wifi4eu.web.util.authorisation.DashboardUsersOnly;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -39,48 +46,31 @@ public class HelpdeskIssueResource {
     private UserService userService;
 
     @Autowired
-    NutsService nutsService;
+    private NutsService nutsService;
 
-    Logger _log = LogManager.getLogger(HelpdeskIssueResource.class);
+    private static final Logger _log = LoggerFactory.getLogger(HelpdeskIssueResource.class);
 
     @ApiOperation(value = "Get all the helpdesk issues")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<HelpdeskIssueDTO> allHelpdeskIssues(HttpServletResponse response) throws IOException {
+    @DashboardUsersOnly
+    public List<HelpdeskIssueDTO> allHelpdeskIssues() {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting all the helpdesk issues");
-        try {
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 5) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-        } catch (AccessDeniedException ade) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve the helpdesk issues", ade.getMessage());
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Helpdesk issues cannot been retrieved", e);
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        }
+
         return helpdeskService.getAllHelpdeskIssues();
     }
 
     @ApiOperation(value = "Get helpdesk issue by specific id")
     @RequestMapping(value = "/{issueId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public HelpdeskIssueDTO getHelpdeskIssueById(@PathVariable("issueId") final Integer issueId, HttpServletResponse response) throws IOException {
+    @DashboardUsersOnly
+    public HelpdeskIssueDTO getHelpdeskIssueById(@PathVariable("issueId") final Integer issueId) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting helpdesk issue by id " + issueId);
-        try {
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 5) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-        } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Helpdesk issue cannot been retrieved", e);
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        }
+
         return helpdeskService.getHelpdeskIssueById(issueId);
     }
 

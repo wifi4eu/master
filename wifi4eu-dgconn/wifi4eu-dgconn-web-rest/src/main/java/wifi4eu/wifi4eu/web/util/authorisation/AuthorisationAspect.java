@@ -31,7 +31,8 @@ public class AuthorisationAspect {
     @Autowired
     private UserService userService;
 
-    @Around(value = "execution(* wifi4eu.wifi4eu.web.cnect.rest.ExportImportAbacResource.*(..))")
+    @Around(value = "execution(* wifi4eu.wifi4eu.web.cnect.rest.*.*(..)) " +
+            "&& (@target(wifi4eu.wifi4eu.web.util.authorisation.DashboardUsersOnly) || @annotation(wifi4eu.wifi4eu.web.util.authorisation.DashboardUsersOnly))")
     public Object before(ProceedingJoinPoint joinPoint) throws Throwable {
         return proceed(joinPoint);
     }

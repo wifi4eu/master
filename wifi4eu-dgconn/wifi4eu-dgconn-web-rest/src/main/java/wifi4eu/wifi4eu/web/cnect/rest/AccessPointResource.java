@@ -18,7 +18,7 @@ import java.util.Map;
 public class AccessPointResource {
 
     @Autowired
-    AccessPointService accessPointService;
+    private AccessPointService accessPointService;
 
     @ApiOperation(value = "Get all Access Points per installation site ID")
     @RequestMapping(value = "/list", method = RequestMethod.POST, produces = "application/json")
@@ -26,7 +26,6 @@ public class AccessPointResource {
     public ResponseDTO getAccessPointPerInstallationSite(@RequestBody final Map<String, Object> map) {
         return accessPointService.findAccessPointsPerInstallationSite(map);
     }
-
 
     @ApiOperation(value = "Get Access point by ID")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET, produces = "application/json")

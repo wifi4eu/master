@@ -80,7 +80,7 @@ public class RegistrationResource {
 	@Autowired
 	private LegalFilesMapper legalFilesMapper;
 
-	Logger _log = LogManager.getLogger(RegistrationResource.class);
+	private static final Logger _log = LogManager.getLogger(RegistrationResource.class);
 
 	/*
 	 * @ApiOperation(value = "Get all the registrations")

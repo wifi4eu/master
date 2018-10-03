@@ -2,13 +2,17 @@ package wifi4eu.wifi4eu.web.cnect.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import wifi4eu.wifi4eu.common.dto.model.ThreadDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
@@ -40,7 +44,7 @@ public class ThreadResource {
     @Autowired
     private PermissionChecker permissionChecker;
 
-    Logger _log = LogManager.getLogger(ThreadResource.class);
+    private static final Logger _log = LoggerFactory.getLogger(ThreadResource.class);
 
     @ApiOperation(value = "Get thread by specific id")
     @RequestMapping(value = "/{threadId}", method = RequestMethod.GET, produces = "application/json")
