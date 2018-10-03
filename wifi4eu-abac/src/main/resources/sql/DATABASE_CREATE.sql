@@ -55,41 +55,49 @@ where request.request_type = 'LEGAL_COMMITMENT'
 --  DDL for View WIF_ABAC_LEF_STATUS_VIEW
 --------------------------------------------------------
 
-  CREATE OR REPLACE FORCE VIEW "WIFI4EU_ABAC"."WIF_ABAC_LEF_STATUS_VIEW" ("LOC_OBJ_FOREIGN_ID", "STATUS", "LE_KEY", "ERROR_MSG", "REJECTION_MSG") AS
-  select LOC_OBJ_FOREIGN_ID, status, le_key,
-listagg(error_msg, chr(10)) within group(order by error_log_id) as ERROR_MSG,
-listagg(REJECTION_MSG, chr(10)) within group(order by error_log_id) as REJECTION_MSG
-from (
-select distinct
-le.LOC_OBJ_FOREIGN_ID,
+  CREATE OR REPLACE FORCE VIEW "WIFI4EU_ABAC"."WIF_ABAC_LEF_STATUS_VIEW" ("STATUS", "REQ_LOCAL_KEY", "REQ_LE_ID", "REQ_SUBMIT_DATE", "VLOC_ENTITY_PROCESSED", "OBJ_REF_STATUS", "OBJ_REF_WORKFLOW_STATUS", "VLOC_LINK_STATUS", "VLOC_FEL_ID", "VLOC_LINK_REJECTION_REASON", "ERRORS") AS
+  select distinct
 case
 
-  when le.PROCESSED = 'OK' and lekey.head_loc_obj_foreign_id is not null
-  then 'ABAC_VALID'
+  when VLOC_ENTITY_PROCESSED is null
+  then 'READY_FOR_ABAC'
 
-   when lelinks.PROCESSED is not null and lelinks.OBJ_STATUS_CD = 'REJECTED'
-  then 'ABAC_REJECTED'
-
-  when le.PROCESSED = 'N'
+  when VLOC_ENTITY_PROCESSED = 'N'
   then 'WAITING_FOR_ABAC'
 
-  when le.PROCESSED in ('OK','OK_W') and lekey.head_loc_obj_foreign_id is null
+  when VLOC_ENTITY_PROCESSED = 'NOK'
+  then 'ABAC_ERROR'
+
+  when VLOC_LINK_STATUS = 'REJECTED'
+  then 'ABAC_REJECTED'
+
+  when VLOC_ENTITY_PROCESSED in ('OK','OK_W') and OBJ_REF_WORKFLOW_STATUS = 'PEND'
   then 'WAITING_APPROVAL'
 
-  when le.PROCESSED = 'NOK'
-  then 'ABAC_ERROR'
+  when VLOC_ENTITY_PROCESSED in ('OK','OK_W') and VLOC_LINK_STATUS = 'VALID' and VLOC_FEL_ID is not null
+  then 'ABAC_VALID'
+
   else 'UNMAPPED_STATUS'
 end  as status,
-lekey.head_loc_obj_foreign_id as LE_KEY,
-err.msg_txt as ERROR_MSG,
-err.error_log_id,
-lelinks.REJECTION_REASON as REJECTION_MSG
-FROM V_LOC_THP_LEGAL_ENTITIES@ABAC_SHARED le
-LEFT JOIN V_O_LOG_ERRORS@ABAC_SHARED err ON err.batch_id = le.run_id and err.loc_sys_cd = le.loc_sys_cd and err.msg_tp_cd <> 'I'
-LEFT JOIN V_O_THP_COMMON_LOCAL_LINKS@ABAC_SHARED lekey ON lekey.loc_obj_foreign_id = le.loc_obj_foreign_id
-LEFT JOIN V_LOC_THP_COMMON_LOCAL_LINKS@ABAC_SHARED lelinks ON lelinks.loc_obj_foreign_id = le.loc_obj_foreign_id
-where le.LOC_OBJ_FOREIGN_ID like 'WIF%')
-group by LOC_OBJ_FOREIGN_ID, status, le_key;
+abac_data."REQ_LOCAL_KEY",abac_data."REQ_LE_ID",abac_data."REQ_SUBMIT_DATE",abac_data."VLOC_ENTITY_PROCESSED",abac_data."OBJ_REF_STATUS",abac_data."OBJ_REF_WORKFLOW_STATUS",abac_data."VLOC_LINK_STATUS",abac_data."VLOC_FEL_ID",abac_data."VLOC_LINK_REJECTION_REASON",abac_data."ERRORS"
+from (
+select req.l_loc_obj_fk as REQ_LOCAL_KEY,
+req.le_id as REQ_LE_ID,
+req.submit_date as REQ_SUBMIT_DATE,
+vloc_entities.processed as VLOC_ENTITY_PROCESSED,
+obj_refs.OBJ_STATUS_CD OBJ_REF_STATUS,
+obj_refs.wkflw_stat_cd OBJ_REF_WORKFLOW_STATUS,
+vloc_local_lnks.OBJ_STATUS_CD VLOC_LINK_STATUS,
+vloc_local_lnks.head_loc_obj_foreign_id as VLOC_FEL_ID,
+vloc_local_lnks.REJECTION_REASON VLOC_LINK_REJECTION_REASON,
+(select listagg(msg_txt, chr(10)) within group(order by error_log_id) as ERROR_MSG from V_O_LOG_ERRORS@ABAC_SHARED err where err.batch_id = vloc_entities.run_id and err.loc_sys_cd = vloc_entities.loc_sys_cd and err.msg_tp_cd <> 'I') ERRORS
+from wif_abac_request_process req
+left join V_LOC_THP_LEGAL_ENTITIES@ABAC_SHARED vloc_entities on vloc_entities.loc_obj_foreign_id = req.l_loc_obj_fk
+left join V_LOC_THP_COMMON_LOCAL_LINKS@ABAC_SHARED vloc_local_lnks on vloc_entities.loc_obj_foreign_id = vloc_local_lnks.loc_obj_foreign_id
+left join v_o_gen_object_references@ABAC_SHARED obj_refs on vloc_entities.loc_obj_foreign_id = obj_refs.loc_obj_foreign_id or obj_refs.loc_obj_foreign_id = vloc_local_lnks.loc_obj_foreign_id
+where vloc_entities.loc_sys_cd = 'WIF' and vloc_entities.trans_action_cd = 'CREATE'
+and req.request_type = 'LEGAL_ENTITY'
+order by req.id desc) abac_data;
 --------------------------------------------------------
 --  DDL for DB Link ABAC.CC.CEC.EU.INT
 --------------------------------------------------------
@@ -156,7 +164,6 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
   CREATE TABLE "WIFI4EU_ABAC"."WIF_AUTH_USERS"
    (	"ID" NUMBER(18,0),
 	"USERNAME" VARCHAR2(50 BYTE),
-	"EMAIL" VARCHAR2(100 BYTE),
 	"FIRST_NAME" VARCHAR2(100 BYTE),
 	"LAST_NAME" VARCHAR2(100 BYTE),
 	"ENABLED" VARCHAR2(1 BYTE) DEFAULT 'Y',
@@ -493,7 +500,7 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 --  DDL for Sequence SEQ_ABAC_RUN_ID
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_ABAC_RUN_ID"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 440280 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_ABAC_RUN_ID"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 440320 CACHE 20 NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence SEQ_BANK_ACCOUNT
 --------------------------------------------------------
@@ -503,37 +510,37 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 --  DDL for Sequence SEQ_BC_LEVEL2_POSITION
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_BC_LEVEL2_POSITION"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 241 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_BC_LEVEL2_POSITION"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 261 CACHE 20 NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence SEQ_BUDGETARY_COMMITMENT
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_BUDGETARY_COMMITMENT"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 261 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_BUDGETARY_COMMITMENT"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 281 CACHE 20 NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence SEQ_DOCUMENT
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_DOCUMENT"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1141 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_DOCUMENT"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1181 CACHE 20 NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence SEQ_IMPORT_LOG
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_IMPORT_LOG"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 301 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_IMPORT_LOG"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 361 CACHE 20 NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence SEQ_LEGAL_COMMITMENT
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_LEGAL_COMMITMENT"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 141 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_LEGAL_COMMITMENT"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 161 CACHE 20 NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence SEQ_LEGAL_ENTITY
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_LEGAL_ENTITY"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1096 NOCACHE  NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_LEGAL_ENTITY"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1181 NOCACHE  NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence SEQ_NOTIFICATION
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_NOTIFICATION"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 361 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_NOTIFICATION"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 401 CACHE 20 NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence SEQ_WIF_ABAC_STATUS
 --------------------------------------------------------
@@ -1040,7 +1047,7 @@ BEGIN
       Insert into V_LOC_GEN_DOCS_REFERENCES@ABAC_SHARED
          (RUN_ID, ROW_ID, LOC_SYS_CD, DESTINATION, TRANS_AREA_CD, TRANS_TP_CD, TRANS_ACTION_CD, TABLE_ALIAS, LOC_OBJ_FOREIGN_ID, PROCESSED, DOC_REFERENCE, DOC_DESCRIPTION)
       Values
-         (l_run_id, 60, l_loc_sys_cd, l_destination, 'COM', 'COM', 'CREATE', 'DOCUMENT REFERENCE', l_loc_obj_foreign_id, 'N', legalCommitment.cs_ga_ares_ref, 'COUNTER SIGNED GRANT AGREEMENT');
+         (l_run_id, 60, l_loc_sys_cd, l_destination, 'LCM', 'LCH', 'CREATE', 'DOCUMENT REFERENCE', l_loc_obj_foreign_id, 'N', legalCommitment.cs_ga_ares_ref, 'COUNTER SIGNED GRANT AGREEMENT');
 
       -- STEP 8 - Call the stored procedure to process the data
       pck_abac_batchint_client.p_submit_batch@ABAC_SHARED(l_run_id, l_loc_sys_cd, 'BATCH_QUE1', l_que_id);
@@ -1242,6 +1249,9 @@ set define off;
   STATUS_READY_TO_BE_COUNTERSGD   varchar2(30) := 'READY_TO_BE_COUNTERSIGNED';
 BEGIN
 
+  -- Logon into ABAC: activate security
+  Insert into V_ABAC_BATCHINT_LOGIN@ABAC_SHARED  Values ('X');
+
   for request in (
                   select bc.legal_entity_id as le_id, bc.id as bc_id, l_loc_obj_fk, bc.WF_STATUS as bc_status, status_vw.status as abac_status, status_vw.ERROR_MSG
                   from wif_budgetary_commitment bc
@@ -1308,6 +1318,9 @@ set define off;
   status_abac_valid varchar2(30) := 'ABAC_VALID';
 BEGIN
 
+  -- Logon into ABAC: activate security
+  Insert into V_ABAC_BATCHINT_LOGIN@ABAC_SHARED  Values ('X');
+
   for request in (
                   select lc.id as lc_id, l_loc_obj_fk, lc.WF_STATUS as lc_status, status_vw.status as abac_status, status_vw.ERROR_MSG
                   from wif_legal_commitment lc
@@ -1353,29 +1366,34 @@ set define off;
   req_type varchar2(20) := 'LEGAL_ENTITY';
 BEGIN
 
+  -- Logon into ABAC: activate security
+  Insert into V_ABAC_BATCHINT_LOGIN@ABAC_SHARED  Values ('X');
+
   for request in (
-                  select le_id, l_loc_obj_fk, le.WF_STATUS as legal_entity_status, status_vw.status as abac_status, status_vw.LE_KEY, status_vw.ERROR_MSG, status_vw.REJECTION_MSG
-                  from wif_abac_request_process req
-                  inner join wif_legal_entity le on req.le_id = le.id
-                  left join wif_abac_lef_status_view status_vw on req.l_loc_obj_fk = loc_obj_foreign_id
-                  where req.request_type = req_type
-                  and req.submit_date = (select max(all_requests.submit_date)
+                  select status_vw.req_local_key,
+                  status_vw.status as ABAC_STATUS,
+                  le.id as LE_ID, le.wf_status as LEGAL_ENTITY_STATUS,
+                  status_vw.VLOC_FEL_ID as FEL_ID, status_vw.ERRORS,
+                  status_vw.VLOC_LINK_REJECTION_REASON as REJECTION_MSG
+                  from wif_abac_lef_status_view status_vw
+                  inner join wif_legal_entity le on status_vw.req_le_id = le.id
+                  where status_vw.req_submit_date = (select max(all_requests.submit_date)
                                                       from wif_abac_request_process all_requests
                                                       where all_requests.le_id = le.id
                                                       and all_requests.request_type = req_type)
-                  order by le_id, l_loc_obj_fk)
+                  order by status_vw.req_le_id, req_local_key)
   loop
 
-      --There's a bug under investigation in ABAC. Meanwhile, avoid updating anything to UNMAPPED_STATUS
-      if (request.abac_status = 'UNMAPPED_STATUS') then continue; end if;
+    --There's a bug under investigation in ABAC. Meanwhile, avoid updating anything to UNMAPPED_STATUS
+    if (request.ABAC_STATUS = 'UNMAPPED_STATUS') then continue; end if;
 
-      if (request.legal_entity_status <> request.abac_status) then
-        update wif_legal_entity set WF_STATUS = request.abac_status, abac_fel_id = request.LE_KEY
-        where wif_legal_entity.id = request.le_id;
+    if (request.legal_entity_status <> request.abac_status) then
+      update wif_legal_entity set WF_STATUS = request.abac_status, abac_fel_id = request.FEL_ID
+      where wif_legal_entity.id = request.le_id;
 
-        update WIF_ABAC_REQUEST_PROCESS set ERROR_MSG=request.ERROR_MSG, REJECTION_MSG=request.REJECTION_MSG where l_loc_obj_fk=request.l_loc_obj_fk;
+      update WIF_ABAC_REQUEST_PROCESS set ERROR_MSG=request.ERRORS, REJECTION_MSG=request.REJECTION_MSG where l_loc_obj_fk=request.req_local_key;
 
-      end if;
+    end if;
   END LOOP;
   commit;
 END UPDATE_LEF_STATUS_FROM_ABAC;
@@ -1533,7 +1551,6 @@ END UPDATE_LEF_STATUS_FROM_ABAC;
   ALTER TABLE "WIFI4EU_ABAC"."WIF_AUTH_USERS" MODIFY ("ENABLED" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_AUTH_USERS" MODIFY ("LAST_NAME" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_AUTH_USERS" MODIFY ("FIRST_NAME" NOT NULL ENABLE);
-  ALTER TABLE "WIFI4EU_ABAC"."WIF_AUTH_USERS" MODIFY ("EMAIL" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_AUTH_USERS" MODIFY ("USERNAME" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_AUTH_USERS" MODIFY ("ID" NOT NULL ENABLE);
 --------------------------------------------------------
