@@ -10,7 +10,8 @@ public enum BudgetaryCommitmentCSVColumn {
 	ABAC_MESSAGE("abac_message"),
 	ABAC_COMMITMENT_LEVEL2_KEY("abac_commitmentLevel2Key"),
 	DATE_EXPORTED("bc_lastDateExported"),
-	USER_EXPORTED("bc_lastUserExported");
+	USER_EXPORTED("bc_lastUserExported"),
+	BATCH_REFERENCE("bc_importBatchReference");
 
 	private String value;
 

@@ -1,6 +1,5 @@
 package wifi4eu.wifi4eu.abac.service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,6 +96,6 @@ public class BudgetaryCommitmentService {
 	}
 
 	public List<BudgetaryCommitmentPosition> findAllBudgetaryCommitmentPositionsForExport() {
-		return (List<BudgetaryCommitmentPosition>) budgetaryCommitmentyPositionRepository.findAllByOrderByBudgetaryCommitmentDateExportedDesc();
+		return (List<BudgetaryCommitmentPosition>) budgetaryCommitmentyPositionRepository.findBudgetaryCommitmentsProcessedInABAC();
 	}
 }

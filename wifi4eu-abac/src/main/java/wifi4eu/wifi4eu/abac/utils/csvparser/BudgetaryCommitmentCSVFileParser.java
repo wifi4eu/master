@@ -67,7 +67,8 @@ public class BudgetaryCommitmentCSVFileParser extends AbstractCSVFileParser {
 							BudgetaryCommitmentCSVColumn.ABAC_MESSAGE.toString(),
 							BudgetaryCommitmentCSVColumn.ABAC_COMMITMENT_LEVEL2_KEY.toString(),
 							BudgetaryCommitmentCSVColumn.DATE_EXPORTED.toString(),
-							BudgetaryCommitmentCSVColumn.USER_EXPORTED.toString()
+							BudgetaryCommitmentCSVColumn.USER_EXPORTED.toString(),
+							BudgetaryCommitmentCSVColumn.BATCH_REFERENCE.toString()
 					));
 
 			for (BudgetaryCommitmentPosition budgetaryCommitmentPosition : budgetaryCommitments) {
@@ -80,7 +81,8 @@ public class BudgetaryCommitmentCSVFileParser extends AbstractCSVFileParser {
 						budgetaryCommitmentPosition.getBudgetaryCommitment().getAbacErrorMessage(),
 						budgetaryCommitmentPosition.getBudgetaryCommitment().getCommitmentLevel2Key(),
 						DateTimeUtils.format(budgetaryCommitmentPosition.getBudgetaryCommitment().getDateExported(), PORTAL_CSV_DATETIME_FORMAT),
-						budgetaryCommitmentPosition.getBudgetaryCommitment().getUserExported()
+						budgetaryCommitmentPosition.getBudgetaryCommitment().getUserExported(),
+						budgetaryCommitmentPosition.getBudgetaryCommitment().getBatchRef()
 				);
 			}
 

@@ -9,7 +9,8 @@ public enum LegalCommitmentCSVColumn {
 	ABAC_MESSAGE("abac_message"),
 	ABAC_KEY("abac_key"),
 	DATE_EXPORTED("lc_lastDateExported"),
-	USER_EXPORTED("lc_lastUserExported");
+	USER_EXPORTED("lc_lastUserExported"),
+	BATCH_REFERENCE("lc_importBatchReference");
 	
 	private String value;
 

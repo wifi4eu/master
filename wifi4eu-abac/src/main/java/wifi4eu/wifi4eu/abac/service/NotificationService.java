@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitment;
 import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
@@ -115,7 +115,7 @@ public class NotificationService {
 
 			if (legalEntitiesCount > 0) {
 				String subject = String.format(LEF_FINISHED_BATCH_EMAIL_SUBJECT, legalEntitiesCount, batchRef);
-				String message = buildNotificationFinishedMessage(BC_MAIL_TEMPLATE, batchRef, legalEntitiesCount, legalEntitiesValidCount, legalEntitiesRejectedCount, legalEntitiesErrorCount);
+				String message = buildNotificationFinishedMessage(LEF_MAIL_TEMPLATE, batchRef, legalEntitiesCount, legalEntitiesValidCount, legalEntitiesRejectedCount, legalEntitiesErrorCount);
 				sendEmailNotification(recipient, subject, message);
 				log.info(subject);
 			}
@@ -186,10 +186,18 @@ public class NotificationService {
             MimeMessage  msg = new MimeMessage(session);
             msg.setFrom(new InternetAddress(defaultSender));
 
-			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
+			if (StringUtils.isEmpty(recipient)) {
+				recipient = defaultRecipients;
+			}
+
+            for(String recipientSplited: recipient.split(",")) {
+				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(recipientSplited));
+			}
+
             for(String defaultRecipient: defaultRecipients.split(",")) {
                 msg.addRecipient(Message.RecipientType.CC, new InternetAddress(defaultRecipient));
             }
+
             msg.setSubject(subject);
             msg.setText(body,"utf-8", "html");
             Transport.send(msg);

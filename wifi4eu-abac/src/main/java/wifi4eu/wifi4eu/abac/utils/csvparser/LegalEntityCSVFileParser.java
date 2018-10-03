@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityInformationCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
+import wifi4eu.wifi4eu.abac.data.enums.LegalCommitmentCSVColumn;
 import wifi4eu.wifi4eu.abac.data.enums.LegalEntityCSVColumn;
 import wifi4eu.wifi4eu.abac.utils.DateTimeUtils;
 
@@ -93,7 +94,8 @@ public class LegalEntityCSVFileParser extends AbstractCSVFileParser {
 							LegalEntityCSVColumn.MUNICIPALITY_ABAC_STATUS.toString(),
 							LegalEntityCSVColumn.MUNICIPALITY_ABAC_MESSAGE.toString(),
 							LegalEntityCSVColumn.MUNICIPALITY_DATE_EXPORTED.toString(),
-							LegalEntityCSVColumn.MUNICIPALITY_USER_EXPORTED.toString()
+							LegalEntityCSVColumn.MUNICIPALITY_USER_EXPORTED.toString(),
+							LegalEntityCSVColumn.MUNICIPALITY_BATCH_REFERENCE.toString()
 					));
 
 			for (LegalEntity legalEntity : legalEntities) {
@@ -112,7 +114,8 @@ public class LegalEntityCSVFileParser extends AbstractCSVFileParser {
 						legalEntity.getWfStatus(),
 						legalEntity.getRejectionReason() != null ? legalEntity.getRejectionReason() : legalEntity.getAbacErrorMessage(),
 						DateTimeUtils.format(legalEntity.getDateExported(), PORTAL_CSV_DATETIME_FORMAT),
-						legalEntity.getUserExported()
+						legalEntity.getUserExported(),
+						legalEntity.getBatchRef()
 					);
 			}
 
