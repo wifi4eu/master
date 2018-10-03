@@ -6,6 +6,7 @@ public class BankAccountDTO {
     private int supplierId;
 
     private String accountName;
+    private String iban;
 
     private String bankName;
     private String bankStreet;
@@ -27,6 +28,14 @@ public class BankAccountDTO {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getIban() {
+        return iban;
+    }
+
+    public void setIban(String iban) {
+        this.iban = iban;
     }
 
     public int getSupplierId() {

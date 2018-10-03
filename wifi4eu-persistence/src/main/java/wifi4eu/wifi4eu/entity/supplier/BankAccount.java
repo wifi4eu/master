@@ -11,6 +11,9 @@ public class BankAccount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "iban")
+    private String iban;
+
     @Column(name = "supplier_id")
     private Integer supplierId;
 
@@ -53,6 +56,14 @@ public class BankAccount {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getIban() {
+        return iban;
+    }
+
+    public void setIban(String iban) {
+        this.iban = iban;
     }
 
     public Integer getSupplierId() {
