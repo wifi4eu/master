@@ -37,7 +37,7 @@ public class Municipality {
     @JoinColumn(name = "lau", updatable = false)
     private Lau lau;
 
-    @OneToMany(mappedBy = "municipality")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "municipality")
     private List<Registration> registrations;
 
     @OneToMany(mappedBy = "municipality")

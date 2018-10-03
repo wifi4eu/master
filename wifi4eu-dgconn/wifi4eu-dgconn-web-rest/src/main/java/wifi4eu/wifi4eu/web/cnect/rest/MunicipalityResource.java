@@ -94,6 +94,13 @@ public class MunicipalityResource {
     }
 
     @ApiOperation(value = "Get municipality by specific id")
+    @RequestMapping(value = "/test/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public MunicipalityDTO testQueryLazyLoad(@PathVariable("municipalityId") final Integer municipalityId) throws IOException {
+        return municipalityService.getMunicipalityById(municipalityId);
+    }
+
+    @ApiOperation(value = "Get municipality by specific id")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType =
                     "string", paramType = "header")
