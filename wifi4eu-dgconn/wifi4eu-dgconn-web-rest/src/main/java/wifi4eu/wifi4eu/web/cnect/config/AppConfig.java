@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.web.cnect.rest;
+package wifi4eu.wifi4eu.web.cnect.config;
 
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;

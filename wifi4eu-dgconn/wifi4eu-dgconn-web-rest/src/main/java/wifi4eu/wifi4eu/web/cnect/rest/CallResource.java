@@ -2,8 +2,6 @@ package wifi4eu.wifi4eu.web.cnect.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +17,6 @@ import java.util.List;
 public class CallResource {
     @Autowired
     private CallService callService;
-
-    Logger _log = LogManager.getLogger(CallResource.class);
 
     @ApiOperation(value = "Get all the calls")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
