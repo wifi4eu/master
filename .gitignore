@@ -40,6 +40,5 @@ bin
 **/.settings/
 **/.settings/**
 **/.classpath
-/LocalDevelopment/sql/
 /LocalDevelopment/tomcat/logs/
 /LocalDevelopment/tomcat/webapps/
