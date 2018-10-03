@@ -282,7 +282,7 @@ public class ScheduledTasks {
             rd.close();
             return response.toString();
         } catch (Exception e) {
-            _log.error(e.getMessage());
+            _log.error(e.getMessage(), e);
             return null;
         } finally {
             if (connection != null) {

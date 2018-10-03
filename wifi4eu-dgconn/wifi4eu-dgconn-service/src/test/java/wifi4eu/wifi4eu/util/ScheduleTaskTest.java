@@ -3,12 +3,9 @@ package wifi4eu.wifi4eu.util;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import org.junit.Before;
@@ -17,28 +14,14 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.verification.VerificationMode;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-
-import com.google.common.collect.Lists;
-
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskTicketDTO;
-import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskIssueMapper;
 import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
 import wifi4eu.wifi4eu.util.ScheduledTasks;
-
-//@RunWith(MockitoJUnitRunner.class)
-//@ContextConfiguration(classes = { ScheduledTasks.class, HelpdeskService.class, HelpdeskIssueMapper.class })
-//@WebAppConfiguration
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(value={ScheduledTasks.class, HelpdeskService.class, DataOutputStream.class})
@@ -131,4 +114,29 @@ public class ScheduleTaskTest {
         ScheduledTasks.executePost("https://webtools.ec.europa.eu/form-tools/process.php", helpdeskTicketDTO.toString());
         Mockito.verify(dataOutputStreamMock, Mockito.times(1)).writeBytes(Mockito.anyString());
 	}
+
+	/**
+	 * A code to test if the Serco System was creating the tickets on its system.
+	 * @throws Exception
+	 */
+	//@Test
+	public void executePost() throws Exception {
+        String prodUrl = "https://webtools.ec.europa.eu/form-tools/process.php";
+        String testUrl = "https://webgate.acceptance.ec.europa.eu/fpfis/webtools/form-tools/process.php";
+
+        HelpdeskTicketDTO helpdeskTicketDTO = new HelpdeskTicketDTO();
+		helpdeskTicketDTO.setForm_tools_form_id("1047");
+		helpdeskTicketDTO.setEmailAdress("tester@test.com");
+		helpdeskTicketDTO.setEmailAdressconf(helpdeskTicketDTO.getEmailAdress());
+		helpdeskTicketDTO.setUuid("wifi4eu_" + "5036");
+		helpdeskTicketDTO.setFirstname("TESTER FIRST NAME");
+		helpdeskTicketDTO.setLastname("TESTER SUR NAME");
+		helpdeskTicketDTO.setTxtsubjext("TEST TOPIC / SUBJECT");
+		helpdeskTicketDTO.setQuestion("TEST SUMMARY / QUESTION");
+
+        String response = ScheduledTasks.executePost(testUrl, helpdeskTicketDTO.toString());
+        System.out.println(response);
+	}
+
+
 }

@@ -182,7 +182,7 @@ public class ScheduledTasks {
 
                     if (result != null && result.contains("Thankyou.js")) {
                         helpdeskIssue.setTicket(true);
-                        helpdeskService.createHelpdeskIssue(helpdeskIssue);
+                        helpdeskService.createOrUpdateHelpdeskIssue(helpdeskIssue);
                     } else {
                         _log.error("The result do not contain the proper text");
                     }
