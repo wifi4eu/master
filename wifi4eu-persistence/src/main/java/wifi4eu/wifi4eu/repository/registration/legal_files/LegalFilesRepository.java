@@ -62,4 +62,10 @@ public interface LegalFilesRepository extends CrudRepository<LegalFile, Integer>
 			"where l.country_code = ?#{[0]} and r.legal_file1_mime = ?#{[1]})")
 	List<LegalFile> getAllFilesForCountryTop30RegistrationsF1F3(String countryCode, String fileType);*/
 
+    @Query(value = "SELECT COUNT(id) from legal_files where new = 2 and type = ?#{[0]} and registration = ?#{[1]}", nativeQuery = true)
+    Integer checkIfNewFile(Integer type, Integer registrationId);
+
+    @Query(value = "SELECT id, data, type, registration, id_user, file_size, file_mime, file_name, upload_time, status, new, azure_uri from legal_files where new = 2 and type = ?#{[0]} and registration = ?#{[1]}", nativeQuery = true)
+    List<LegalFile> findAllTheNewFiles(Integer type, Integer registrationId);
+
 }

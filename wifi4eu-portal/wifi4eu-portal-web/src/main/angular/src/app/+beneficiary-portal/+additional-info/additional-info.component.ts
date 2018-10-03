@@ -65,28 +65,28 @@ export class AdditionalInfoComponent {
                             (registration: RegistrationDTOBase) => {
                                 this.registration = registration;
                                 this.filesUploaded = this.registration.allFilesFlag == 1 ? true : false;
-                                this.registrationApi.getHistoryForType(this.registration.id, 1).subscribe(
+                                this.registrationApi.getHistoryForType(this.registration.id, 1, new Date().getTime()).subscribe(
                                     (response: ResponseDTOBase) => {
                                         this.documentFilesType1 = response.data;
                                     }, error => {
 
                                     }
                                 );
-                                this.registrationApi.getHistoryForType(this.registration.id, 2).subscribe(
+                                this.registrationApi.getHistoryForType(this.registration.id, 2, new Date().getTime()).subscribe(
                                     (response: ResponseDTOBase) => {
                                         this.documentFilesType2 = response.data;
                                     }, error => {
 
                                     }
                                 );
-                                this.registrationApi.getHistoryForType(this.registration.id, 3).subscribe(
+                                this.registrationApi.getHistoryForType(this.registration.id, 3, new Date().getTime()).subscribe(
                                     (response: ResponseDTOBase) => {
                                         this.documentFilesType3 = response.data;
                                     }, error => {
 
                                     }
                                 );
-                                this.registrationApi.getHistoryForType(this.registration.id, 4).subscribe(
+                                this.registrationApi.getHistoryForType(this.registration.id, 4, new Date().getTime()).subscribe(
                                     (response: ResponseDTOBase) => {
                                         this.documentFilesType4 = response.data;
                                     }, error => {
@@ -216,6 +216,8 @@ export class AdditionalInfoComponent {
                                 file.fileName = event.target.files[0].name;
                                 file.fileSize = event.target.files[0].size;
                                 file.registration = this.registration.id;
+                                file.status = 0;
+                                file.isNew = 2;
                                 this.legalFilesToUpload.push(file);
                                 this.checkDocuments();
                                 switch (type) {
@@ -245,11 +247,11 @@ export class AdditionalInfoComponent {
                     );
                 }).catch(() => {
                     this.sharedService.growlTranslation('Please, select a valid file.', 'shared.incorrectFormat', 'warn');
-                    this.filesUploaded = false;
+                    this.checkDocuments();
                 });
             } else {
                 this.sharedService.growlTranslation('Please, select a valid file.', 'shared.incorrectFormat', 'warn');
-                this.filesUploaded = false;
+                this.checkDocuments();
             }
         } else {
             this.cleanFile(type);

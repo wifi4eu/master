@@ -104,14 +104,19 @@ public class EcasSignatureResource {
     @ApiOperation(value = "Handle callback signature grant agreement")
     @RequestMapping(value = "/handleSignature/{documentId}", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public GrantAgreementDTO handleSignature(HttpServletRequest request, @PathVariable(value = "documentId") String hdsDocumentId, HttpServletResponse response) throws IOException {
+    public GrantAgreementDTO handleSignature(HttpServletRequest request, @PathVariable(value = "documentId") String grantAgreementId, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         String signatureId = request.getParameter("signatureId");
 
         try {
+            GrantAgreementDTO grantAgreement = grantAgreementService.getGrantAgreementById(Integer.parseInt(grantAgreementId));
 
-            GrantAgreementDTO grantAgreementDTO = ecasSignatureUtil.writeSignature(signatureId, request, hdsDocumentId);
+            if(!permissionChecker.checkIfAuthorizedGrantAgreement(grantAgreement.getApplicationId())){
+                throw new AccessDeniedException("The user is not authorized to sign grant agreement");
+            }
+
+            GrantAgreementDTO grantAgreementDTO = ecasSignatureUtil.writeSignature(signatureId, request, grantAgreementId, grantAgreement);
             _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Grant agreement signed successfully");
             String url = userService.getServerSchemes().concat("://").concat(userService.getServerAddress()).concat("/wifi4eu/#/beneficiary-portal/my-voucher/grant-agreement");
             response.sendRedirect(url);

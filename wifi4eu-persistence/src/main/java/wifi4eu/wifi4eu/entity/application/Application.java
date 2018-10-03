@@ -91,6 +91,9 @@ public class Application {
     @Column(name = "sent_email")
     private boolean sentEmail;
 
+    @Column(name = "sent_email_date")
+    private Date sentEmailDate;
+
     @ManyToOne
     @JoinColumn(name = "registration")
     private Registration registration;
@@ -289,6 +292,14 @@ public class Application {
         this.sentEmail = sentEmail;
     }
 
+    public Date getSentEmailDate() {
+        return sentEmailDate;
+    }
+
+    public void setSentEmailDate(Date sentEmailDate) {
+        this.sentEmailDate = sentEmailDate;
+    }
+
     public Registration getRegistration() {
         return registration;
     }
@@ -312,12 +323,4 @@ public class Application {
     public void setGrantAgreements(List<GrantAgreement> grantAgreements) {
         this.grantAgreements = grantAgreements;
     }
-
-//    public Date getSentEmailDate() {
-//        return sentEmailDate;
-//    }
-//
-//    public void setSentEmailDate(Date sentEmailDate) {
-//        this.sentEmailDate = sentEmailDate;
-//    }
 }

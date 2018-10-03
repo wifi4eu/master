@@ -59,7 +59,7 @@ public class GrantAgreementResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
 
         try {
-            if (userConnected == null || userConnected.getType() == 1) {
+            if(!permissionChecker.checkIfAuthorizedGrantAgreement(inputGrantAgreement.getApplicationId())){
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
@@ -100,9 +100,7 @@ public class GrantAgreementResource {
     @RequestMapping(value = "/createGrantAgreement", method = RequestMethod.POST)
     @ResponseBody
     public GrantAgreementDTO createGrantAgreement(@RequestBody GrantAgreementDTO inputGrantAgreement) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        if (userConnected == null || userConnected.getType() == 1 || userConnected.getType() == 5) {
+        if(!permissionChecker.checkIfAuthorizedGrantAgreement(inputGrantAgreement.getApplicationId())){
             throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
         }
         return grantAgreementService.createGrantAgreement(inputGrantAgreement);
@@ -113,11 +111,7 @@ public class GrantAgreementResource {
     @RequestMapping(value = "/getGrantAgreementByApplicationId/{applicationId}", method = RequestMethod.GET)
     @ResponseBody
     public GrantAgreementDTO getGrantAgreementByApplicationId(@PathVariable("applicationId") Integer applicationId) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        if (userConnected == null || userConnected.getType() == 1 || userConnected.getType() == 5) {
-            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-        }
+
         if(!permissionChecker.checkIfAuthorizedGrantAgreement(applicationId)){
             throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
         }
@@ -134,12 +128,7 @@ public class GrantAgreementResource {
     @RequestMapping(value = "/exportExcelBeneficiary/{applicationId}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<byte[]> downloadGrantAgreementPdf(@PathVariable("applicationId") Integer applicationId) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO currentUserDTO = userService.getUserByUserContext(userContext);
 
-        if (currentUserDTO == null || currentUserDTO.getType() == 1 || currentUserDTO.getType() == 5) {
-            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-        }
         if(!permissionChecker.checkIfAuthorizedGrantAgreement(applicationId)){
             throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
         }
