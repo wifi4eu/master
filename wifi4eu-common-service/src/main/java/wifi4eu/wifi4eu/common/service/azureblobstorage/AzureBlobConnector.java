@@ -175,7 +175,6 @@ public class AzureBlobConnector {
 	}
 
 	public byte[] downloadAsBytes(final String containerName, final String fileName){
-<<<<<<< HEAD
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         // Validating the paramenters
@@ -205,37 +204,6 @@ public class AzureBlobConnector {
         return outputStream.toByteArray();
     }
 	
-=======
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-		// Validating the paramenters
-		this.checkContainerName(containerName);
-		this.checkFileName(fileName);
-
-		CloudBlobContainer container = this.getContainerReference(containerName);
-		CloudBlockBlob blob = null;
-		try {
-			blob = container.getBlockBlobReference(fileName);
-		} catch (URISyntaxException | StorageException e) {
-			LOGGER.error("Error", e);
-		}
-
-		if (blob != null) {
-			LOGGER.info("Downloading from containerName[{}], fileName[{}]", containerName, fileName);
-
-			try {
-				blob.download(outputStream);
-				outputStream.close();
-				LOGGER.info("Content downloaded. Content.length [{}]", outputStream == null ? "NULL" : String.valueOf(outputStream.size()));
-			} catch (StorageException | IOException e) {
-				LOGGER.error("Error", e);
-			}
-		}
-
-		return outputStream.toByteArray();
-	}
-
->>>>>>> release-line2
 	public String downloadText(final String containerName, final String fileName) {
 		String content = null;
 
@@ -332,11 +300,7 @@ public class AzureBlobConnector {
 
 		try {
 			LOGGER.info("Downloading container [{}] fileName[{}]", GRANT_AGREEMENT_CONTAINER_NAME, fileNameDownload);
-<<<<<<< HEAD
             content = downloadAsBytes(GRANT_AGREEMENT_CONTAINER_NAME, fileNameDownload);
-=======
-			content = downloadAsBytes(GRANT_AGREEMENT_CONTAINER_NAME, fileNameDownload);
->>>>>>> release-line2
 		} catch (Exception e) {
 			LOGGER.error("ERROR", e);
 		}
