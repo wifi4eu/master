@@ -662,7 +662,12 @@ public class RegistrationService {
         return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryForType(registrationId, userId, type));
     }
 
-    public List<RegistrationDTO> updateAssociationName(String associationName, Integer userId) {
+    public List<RegistrationDTO> updateAssociationName(String associationName, Integer userId) throws Exception {
+        //We validate that the association name is valid
+        if(Validator.isNull(associationName) || Validator.isEmpty(associationName)){
+            throw new Exception("Association Name is not valid");
+        }
+
         List<RegistrationDTO> originalRegistrations = getRegistrationsByUserId(userId);
         List<RegistrationDTO> newRegistrations = new ArrayList<>();
         for (RegistrationDTO reg : originalRegistrations) {

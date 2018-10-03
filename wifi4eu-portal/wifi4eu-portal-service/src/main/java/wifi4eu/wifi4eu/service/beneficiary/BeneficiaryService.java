@@ -36,6 +36,7 @@ import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.service.mail.MailService;
+import wifi4eu.wifi4eu.common.utils.MayorValidator;
 import wifi4eu.wifi4eu.common.utils.MunicipalityValidator;
 import wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryListItem;
 import wifi4eu.wifi4eu.entity.invitationContacts.InvitationContact;
@@ -144,6 +145,11 @@ public class BeneficiaryService {
                     nutsService.getNutsByLevel(0));
         }
 
+        /*Validate Mayor */
+        for(MayorDTO mayor :  beneficiaryDTO.getMayors()){
+            MayorValidator.validateMayor(mayor);
+        }
+
         /* Get user from ECAS */
         UserDTO user = new UserDTO();
         UserContext userContext = UserHolder.getUser();
@@ -212,6 +218,11 @@ public class BeneficiaryService {
                 }
 
             }
+        }
+
+        /*Validate Mayor */
+        for(MayorDTO mayor :  beneficiaryDTO.getMayors()){
+            MayorValidator.validateMayor(mayor);
         }
 
         /* create municipalities and check duplicates */

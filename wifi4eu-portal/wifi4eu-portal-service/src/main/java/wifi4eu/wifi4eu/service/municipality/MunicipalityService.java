@@ -14,6 +14,7 @@ import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.utils.MunicipalityValidator;
 import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.mapper.municipality.MunicipalityCorrespondenceMapper;
@@ -24,6 +25,8 @@ import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
+import wifi4eu.wifi4eu.service.location.LauService;
+import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
@@ -80,6 +83,12 @@ public class MunicipalityService {
     @Autowired
     CallRepository callRepository;
 
+    @Autowired
+    LauService lauService;
+
+    @Autowired
+    NutsService nutsService;
+
     public List<MunicipalityDTO> getAllMunicipalities() {
         return municipalityMapper.toDTOList(Lists.newArrayList(municipalityRepository.findAll()));
     }
@@ -98,7 +107,7 @@ public class MunicipalityService {
     public ResponseDTO getUsersMunicipalityById(Integer municipalityId) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving users from municipality with id " +municipalityId);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving users from municipality with id " + municipalityId);
         ResponseDTO response = new ResponseDTO();
         MunicipalityDTO municipality = getMunicipalityById(municipalityId);
         if (checkPermissions(municipalityId)) {
@@ -136,7 +145,8 @@ public class MunicipalityService {
     }
 
     @Transactional
-    public MunicipalityDTO updateMunicipalityDetails(MunicipalityDTO municipalityDTO) {
+    public MunicipalityDTO updateMunicipalityDetails(MunicipalityDTO municipalityDTO) throws Exception {
+        MunicipalityValidator.validateMunicipality(municipalityDTO, lauService.getLauById(municipalityDTO.getLauId()), nutsService.getNutsByLevel(0));
         MunicipalityDTO municipalitySave = municipalityService.getMunicipalityById(municipalityDTO.getId());
 
         municipalitySave.setAddress(municipalityDTO.getAddress());
@@ -147,13 +157,13 @@ public class MunicipalityService {
     }
 
     @Transactional
-    public long countMunicipalitiesByUserId(long idUser){
+    public long countMunicipalitiesByUserId(long idUser) {
         return municipalityRepository.countMunicipalitiesByUserId(idUser);
     }
 
     @Transactional
-    public boolean deleteMunicipalityById(int id){
-        if (municipalityRepository.findOne(id) != null){
+    public boolean deleteMunicipalityById(int id) {
+        if (municipalityRepository.findOne(id) != null) {
             municipalityRepository.delete(id);
             return true;
         }
@@ -161,16 +171,16 @@ public class MunicipalityService {
     }
 
     @Transactional
-    public boolean isMunicipalityEditable(int municipalityId){
+    public boolean isMunicipalityEditable(int municipalityId) {
         Integer firstQuery = municipalityRepository.checkMunicipalityEditPermission(municipalityId);
-        if (firstQuery > 0){
+        if (firstQuery > 0) {
             return true;
         }
         return false;
     }
 
     @Transactional
-    public void deleteInvitationsByRegistrationId(Integer registrationId){
+    public void deleteInvitationsByRegistrationId(Integer registrationId) {
         invitationContactRepository.delete(invitationContactRepository.findByIdRegistration(registrationId));
     }
 
@@ -192,7 +202,7 @@ public class MunicipalityService {
                 deleteInvitationsByRegistrationId(registration.getId());
                 registrationUsersRepository.delete(registrationUsersRepository.findByRegistrationId(registration.getId()));
                 List<RegistrationWarningDTO> registrationWarningDTOs = registrationWarningService.getWarningsByRegistrationId(registration.getId());
-                if(registrationWarningDTOs.size() > 0){
+                if (registrationWarningDTOs.size() > 0) {
                     registrationWarningService.deleteWarningFromRegistration(registrationWarningDTOs);
                 }
                 for (ApplicationDTO application : applicationService.getApplicationsByRegistrationId(registration.getId())) {
@@ -220,10 +230,11 @@ public class MunicipalityService {
         List<RegistrationDTO> registrations = registrationService.getRegistrationsByUserId(userId);
         for (RegistrationDTO registration : registrations) {
             MunicipalityDTO mun = getMunicipalityById(registration.getMunicipalityId());
-            if(mun != null) {
+            if (mun != null) {
                 municipalities.add(mun);
             }
-            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Municipality with id " + registration.getMunicipalityId() + " added to the list");
+            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Municipality with id " + registration.getMunicipalityId() + " " +
+                    "added to the list");
         }
         return municipalities;
     }
