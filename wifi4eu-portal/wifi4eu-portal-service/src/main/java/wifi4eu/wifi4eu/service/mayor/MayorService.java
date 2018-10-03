@@ -66,14 +66,14 @@ public class MayorService {
 
     @Transactional
     public MayorDTO updateMayor(MayorDTO mayorDetails, String name, String surname, String email) throws Exception{
-        /*Validate Mayor */
-        MayorValidator.validateMayor(mayorDetails);
-
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         mayorDetails.setName(name);
         mayorDetails.setSurname(surname);
         mayorDetails.setEmail(email);
+
+        /*Validate Mayor */
+        MayorValidator.validateMayor(mayorDetails);
 
         _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Mayor updated");
         return mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDetails)));
