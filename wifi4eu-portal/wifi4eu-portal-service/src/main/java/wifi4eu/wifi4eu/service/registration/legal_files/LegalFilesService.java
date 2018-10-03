@@ -2,8 +2,9 @@ package wifi4eu.wifi4eu.service.registration.legal_files;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.stereotype.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import wifi4eu.wifi4eu.common.dto.model.LegalFileDTO;
 import wifi4eu.wifi4eu.common.enums.FileTypes;
 import wifi4eu.wifi4eu.entity.registration.LegalFile;
 import wifi4eu.wifi4eu.mapper.registration.legal_files.LegalFilesMapper;
@@ -99,6 +100,11 @@ public class LegalFilesService {
             }
         }
         return null;
+    }
+
+    public String getAzureName(LegalFileDTO legalFileDTO){
+        int startNamePosition = legalFileDTO.getAzureUri().lastIndexOf("/");
+        return legalFileDTO.getAzureUri().substring(startNamePosition + 1,legalFileDTO.getAzureUri().length());
     }
 
 }

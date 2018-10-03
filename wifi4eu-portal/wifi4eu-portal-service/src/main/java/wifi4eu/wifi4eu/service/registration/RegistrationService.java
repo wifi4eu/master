@@ -473,6 +473,9 @@ public class RegistrationService {
         }
     }
 
+    public void deleteRegistration(int registrationId) {
+        registrationRepository.delete(registrationId);
+    }
 
     public RegistrationDTO invalidateRegistration(int registrationId) {
         RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationId));

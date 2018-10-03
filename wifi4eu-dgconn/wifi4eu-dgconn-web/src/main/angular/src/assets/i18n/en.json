@@ -1030,5 +1030,7 @@
   "dgConn.voucherAssignment.password": "Password",
   "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct",
   "dgconn.voucherAssignment.runningFreze": "Freezing...",
-  "dgconn.voucherAssignment.runningPreSelectionList": "Creating Pre-selection List…"
+  "dgconn.voucherAssignment.runningPreSelectionList": "Creating Pre-selection List…",
+  "dgConn.applicantDetails.rejectApplication.rerunVoucherSimulation": "You need to re-run the voucher simulation process after rejecting a municipality.",
+  "dgConn.applicantDetails.selectingApplication.rerunVoucherSimulation": "You need to re-run the voucher simulation process after selecting a municipality."
 }
