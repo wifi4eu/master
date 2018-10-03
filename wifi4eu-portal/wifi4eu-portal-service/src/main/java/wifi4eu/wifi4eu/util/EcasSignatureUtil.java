@@ -181,7 +181,7 @@ public class EcasSignatureUtil {
 
             byte[] data = outputStream.toByteArray();
 
-            String downloadURL = azureBlobConnector.uploadByteArray("grant-agreement", "grant_agreement_" + grantAgreement.getApplicationId() + "_signed.pdf", data);
+            String downloadURL = azureBlobConnector.uploadByteArray("wifi4eu", "grant_agreement_" + grantAgreement.getApplicationId() + "_signed.pdf", data);
 
             grantAgreement.setDocumentLocation(downloadURL);
             grantAgreement.setDateSignature(new Date());
