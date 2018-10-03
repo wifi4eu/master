@@ -23,7 +23,7 @@ public class BeneficiaryValidator {
         }
 
         for (MunicipalityDTO municipalityDTO : beneficiaryDTO.getMunicipalities()) {
-            MunicipalityValidator
+            MunicipalityValidator.validateNotEmptyValuesMunicipality(municipalityDTO);
         }
 
         if (user.getAddress() != null && user.getAddressNum() != null && user.getName() != null && user.getEmail() != null && user.getSurname() != null && user.getPostalCode() != null && user.getCity() != null && user.getCountry() != null

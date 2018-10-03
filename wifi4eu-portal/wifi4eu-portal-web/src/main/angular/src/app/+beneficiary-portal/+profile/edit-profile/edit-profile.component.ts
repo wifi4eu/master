@@ -480,6 +480,9 @@ export class BeneficiaryEditProfileComponent {
                                     this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
                                     this.submittingData = false;
                                 }
+                            }, error => {
+                                this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
+                                 this.submittingData = false;
                             }
                         );
                     } else {

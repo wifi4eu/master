@@ -11,7 +11,6 @@ import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.common.utils.MayorValidator;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.mapper.mayor.MayorMapper;
 import wifi4eu.wifi4eu.repository.mayor.MayorRepository;
@@ -65,7 +64,7 @@ public class MayorService {
     }
 
     @Transactional
-    public MayorDTO updateMayor(MayorDTO mayorDetails, String name, String surname, String email) throws Exception{
+    public MayorDTO updateMayor(MayorDTO mayorDetails, String name, String surname, String email) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         mayorDetails.setName(name);

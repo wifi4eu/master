@@ -9,7 +9,7 @@ import java.util.List;
 
 public class MunicipalityValidator {
 
-    public static void validateMunicipality(MunicipalityDTO municipalityDTO, LauDTO lau, List<NutsDTO> nutsList) throws Exception {
+    public static void validateNotEmptyValuesMunicipality(MunicipalityDTO municipalityDTO)throws Exception {
         //we validate that the municipality has no null values
         if (Validator.isNull(municipalityDTO.getAddressNum()) || Validator.isNull(municipalityDTO.getAddress()) || Validator.isNull(municipalityDTO
                 .getPostalCode()) || Validator.isNull(municipalityDTO.getName()) || Validator.isNull(municipalityDTO.getCountry()) || Validator.isNull(municipalityDTO.getLauId()) ||
@@ -17,7 +17,9 @@ public class MunicipalityValidator {
                 .getPostalCode()) || Validator.isEmpty(municipalityDTO.getName()) || Validator.isEmpty(municipalityDTO.getCountry())){
             throw new Exception("Incorrect municipality data");
         }
+    }
 
+    public static void validateLauMunicipality(MunicipalityDTO municipalityDTO, LauDTO lau, List<NutsDTO> nutsList) throws Exception {
         if (lau.getId() != municipalityDTO.getLauId()) {
             throw new Exception("Incorrect lau id");
         }

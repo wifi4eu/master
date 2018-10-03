@@ -126,7 +126,7 @@ public class BeneficiaryService {
     public List<RegistrationDTO> submitBeneficiaryRegistration(BeneficiaryDTO beneficiaryDTO, String ip, HttpServletRequest request) throws Exception {
         /* Validate municipalities */
         for (MunicipalityDTO municipalityDTO : beneficiaryDTO.getMunicipalities()) {
-            MunicipalityValidator.validateMunicipality(municipalityDTO, lauService.getLauById(municipalityDTO.getLauId()),
+            MunicipalityValidator.validateLauMunicipality(municipalityDTO, lauService.getLauById(municipalityDTO.getLauId()),
                     nutsService.getNutsByLevel(0));
         }
 

@@ -139,6 +139,12 @@ public class BeneficiaryService {
 
     @Transactional
     public List<RegistrationDTO> submitBeneficiaryRegistration(BeneficiaryDTO beneficiaryDTO, String ip, HttpServletRequest request) throws Exception {
+        /* Validate municipalities */
+        for (MunicipalityDTO municipalityDTO : beneficiaryDTO.getMunicipalities()) {
+            MunicipalityValidator.validateLauMunicipality(municipalityDTO, lauService.getLauById(municipalityDTO.getLauId()),
+                    nutsService.getNutsByLevel(0));
+        }
+
         /* Get user from ECAS */
         UserDTO user = new UserDTO();
         UserContext userContext = UserHolder.getUser();
@@ -196,7 +202,7 @@ public class BeneficiaryService {
 
         /* Validate municipalities */
         for (MunicipalityDTO municipalityDTO : beneficiaryDTO.getMunicipalities()) {
-            MunicipalityValidator.validateMunicipality(municipalityDTO, lauService.getLauById(municipalityDTO.getLauId()),
+            MunicipalityValidator.validateLauMunicipality(municipalityDTO, lauService.getLauById(municipalityDTO.getLauId()),
                     nutsService.getNutsByLevel(0));
 
             List<RegistrationDTO> registrationDTOList = registrationService.getRegistrationsByUserId(userConnected.getId());
@@ -207,11 +213,6 @@ public class BeneficiaryService {
                 }
 
             }
-        }
-
-        /*Validate Mayor */
-        for(MayorDTO mayor :  beneficiaryDTO.getMayors()){
-            MayorValidator.validateMayor(mayor);
         }
 
         /* create municipalities and check duplicates */

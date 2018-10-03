@@ -22,7 +22,6 @@ import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.entity.registration.LegalFile;
-import wifi4eu.wifi4eu.entity.registration.LegalFileCorrectionReason;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.supplier.Supplier;
@@ -662,7 +661,7 @@ public class RegistrationService {
         return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryForType(registrationId, userId, type));
     }
 
-    public List<RegistrationDTO> updateAssociationName(String associationName, Integer userId) throws Exception {
+    public List<RegistrationDTO> updateAssociationName(String associationName, Integer userId) {
         List<RegistrationDTO> originalRegistrations = getRegistrationsByUserId(userId);
         List<RegistrationDTO> newRegistrations = new ArrayList<>();
         for (RegistrationDTO reg : originalRegistrations) {

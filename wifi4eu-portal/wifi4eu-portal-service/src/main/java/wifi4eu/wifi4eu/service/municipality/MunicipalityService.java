@@ -14,9 +14,7 @@ import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.common.utils.MunicipalityValidator;
 import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
-import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.mapper.municipality.MunicipalityCorrespondenceMapper;
 import wifi4eu.wifi4eu.mapper.municipality.MunicipalityMapper;
 import wifi4eu.wifi4eu.repository.call.CallRepository;
@@ -25,8 +23,6 @@ import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
-import wifi4eu.wifi4eu.service.location.LauService;
-import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
@@ -139,7 +135,7 @@ public class MunicipalityService {
     }
 
     @Transactional
-    public MunicipalityDTO updateMunicipalityDetails(MunicipalityDTO municipalityDTO) throws Exception {
+    public MunicipalityDTO updateMunicipalityDetails(MunicipalityDTO municipalityDTO) {
         MunicipalityDTO municipalitySave = municipalityService.getMunicipalityById(municipalityDTO.getId());
 
         municipalitySave.setAddress(municipalityDTO.getAddress());
