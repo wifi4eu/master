@@ -105,14 +105,14 @@ export class ListSuppliersComponent implements OnInit {
   loadPage() {
     if(this.country && this.region){
       if(this.region.id != 0){
-        this.supplierApi.getSuppliersRegisteredByRegion(this.region.id, this.page, this.itemsPerPage).subscribe((response: ResponseDTO) => {
+        this.supplierApi.getSuppliersRegisteredByRegion(this.region.id, this.page, this.itemsPerPage, new Date().getTime()).subscribe((response: ResponseDTO) => {
           this.suppliers = response.data['suppliers'];
           this.dateCached = response.data['dateCached'];
           this.regionNameSearched = this.region.label;
           this.fillPaginator(response);
         }); 
       }else{
-        this.supplierApi.getSuppliersRegisteredByCountry(this.country.countryCode, this.page, this.itemsPerPage).subscribe((response: ResponseDTO) => {
+        this.supplierApi.getSuppliersRegisteredByCountry(this.country.countryCode, this.page, this.itemsPerPage, new Date().getTime()).subscribe((response: ResponseDTO) => {
           this.suppliers = response.data['suppliers'];
           this.dateCached = response.data['dateCached'];
           this.regionNameSearched = this.country.label;        

@@ -127,12 +127,11 @@ public class SupplierResource {
             if (!access) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }*/
-            if(Validator.isNotNull(supplier)) {
+            if (Validator.isNotNull(supplier)) {
                 if (supplierDTO.getId() != supplier.getId()) {
                     throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
                 }
-            }
-            else{
+            } else {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             List<UserDTO> resSupplier = supplierService.updateContactDetails(supplierDTO);
@@ -304,7 +303,7 @@ public class SupplierResource {
     @RequestMapping(value = "/all/region/{regionId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseDTO getSuppliersRegisteredByRegion(@PathVariable("regionId") int regionId,
-                                                      @RequestParam("page") int page, @RequestParam("size") int size) {
+                                                      @RequestParam("page") int page, @RequestParam("size") int size, @RequestParam("date") final Long timestamp) {
         if (page < 0) {
             page = 0;
         }
@@ -326,7 +325,7 @@ public class SupplierResource {
     @RequestMapping(value = "/all/country/{countryCode}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ResponseDTO getSuppliersRegisteredByCountry(@PathVariable("countryCode") String countryCode,
-                                                       @RequestParam("page") int page, @RequestParam("size") int size) {
+                                                       @RequestParam("page") int page, @RequestParam("size") int size, @RequestParam("date") final Long timestamp) {
         if (page < 0) {
             page = 0;
         }
@@ -386,7 +385,7 @@ public class SupplierResource {
     }
 
     //ADD CONTACT
-//    @ApiOperation(value = "Deactivate supplier contact")
+//    @ApiOperation(value = "Deactivate supplier contact")a
 //    @RequestMapping(value = "/deactivateContact/{supplierId}/{userId}", method = RequestMethod.GET, produces = "application/json")
 //    @ResponseStatus(HttpStatus.CREATED)
 //    @ResponseBody
@@ -418,7 +417,7 @@ public class SupplierResource {
                 return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
             }
 
-            return new ResponseDTO(true, supplierService.deactivateSupplierContact(supplierId,userIdToDeactivate, userConnected.getEcasUsername()), null);
+            return new ResponseDTO(true, supplierService.deactivateSupplierContact(supplierId, userIdToDeactivate, userConnected.getEcasUsername()), null);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to deactivate this supplier contact", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
@@ -438,7 +437,7 @@ public class SupplierResource {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         try {
-            if (Validator.isNull(userConnected) || userConnected.getType() != 1){
+            if (Validator.isNull(userConnected) || userConnected.getType() != 1) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             return supplierService.invitateContactSupplier(userConnected, supplierId, newContactEmail.trim());
