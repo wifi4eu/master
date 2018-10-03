@@ -22,9 +22,7 @@ public class BeneficiaryValidator {
             MayorValidator.validateMayor(mayorDTO);
         }
 
-        for (MunicipalityDTO municipalityDTO : beneficiaryDTO.getMunicipalities()) {
-            MunicipalityValidator.validateNotEmptyValuesMunicipality(municipalityDTO);
-        }
+        MunicipalityValidator.validateArrayMunicipalitiesNotEmptyValues(beneficiaryDTO.getMunicipalities());
 
         if (user.getAddress() != null && user.getAddressNum() != null && user.getName() != null && user.getEmail() != null && user.getSurname() != null && user.getPostalCode() != null && user.getCity() != null && user.getCountry() != null
                 && user.getAddress().trim().isEmpty() || user.getAddressNum().trim().isEmpty() || user.getName().trim().isEmpty() || user.getEmail().trim().isEmpty() || user.getSurname().trim().isEmpty() || user.getPostalCode().trim().isEmpty()

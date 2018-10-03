@@ -62,7 +62,7 @@ public class MunicipalityResource {
 
     @Autowired
     RegistrationUsersRepository registrationUsersRepository;
-    
+
     Logger _log = LogManager.getLogger(MunicipalityResource.class);
 
     @ApiOperation(value = "Get municipality by specific id")

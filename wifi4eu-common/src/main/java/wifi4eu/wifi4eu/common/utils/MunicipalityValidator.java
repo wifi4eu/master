@@ -9,6 +9,12 @@ import java.util.List;
 
 public class MunicipalityValidator {
 
+    public static void validateArrayMunicipalitiesNotEmptyValues(List<MunicipalityDTO> municipalities) throws Exception{
+        for (MunicipalityDTO municipalityDTO : municipalities) {
+            validateNotEmptyValuesMunicipality(municipalityDTO);
+        }
+    }
+
     public static void validateNotEmptyValuesMunicipality(MunicipalityDTO municipalityDTO)throws Exception {
         //we validate that the municipality has no null values
         if (Validator.isNull(municipalityDTO.getAddressNum()) || Validator.isNull(municipalityDTO.getAddress()) || Validator.isNull(municipalityDTO
