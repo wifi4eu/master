@@ -22,6 +22,7 @@ import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.BeneficiaryValidator;
+import wifi4eu.wifi4eu.common.utils.MayorValidator;
 import wifi4eu.wifi4eu.common.utils.MunicipalityValidator;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
@@ -112,6 +113,7 @@ public class BeneficiaryResource {
             }
 
             MunicipalityValidator.validateArrayMunicipalitiesNotEmptyValues(beneficiaryDTO.getMunicipalities());
+            MayorValidator.validateArrayMayors(beneficiaryDTO.getMayors());
             // review submitBeneficiaryRegistration method. It sends mail and it shouldn't when it's new municipality from organisation
             List<RegistrationDTO> resRegistrations = beneficiaryService.submitNewMunicipalities(beneficiaryDTO, ip, request);
             _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Beneficiary submitted successfully");

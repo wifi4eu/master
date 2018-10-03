@@ -18,9 +18,8 @@ public class BeneficiaryValidator {
                 throw new Exception("Association name field is empty!");
             }
         }
-        for (MayorDTO mayorDTO : beneficiaryDTO.getMayors()) {
-            MayorValidator.validateMayor(mayorDTO);
-        }
+
+        MayorValidator.validateArrayMayors(beneficiaryDTO.getMayors());
 
         MunicipalityValidator.validateArrayMunicipalitiesNotEmptyValues(beneficiaryDTO.getMunicipalities());
 

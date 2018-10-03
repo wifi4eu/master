@@ -25,4 +25,10 @@ public class MayorValidator {
             throw new Exception("Incorrect mayor data");
         }
     }
+
+    public static void validateArrayMayors(List<MayorDTO> mayors) throws Exception {
+        for (MayorDTO mayor : mayors) {
+            validateMayor(mayor);
+        }
+    }
 }
