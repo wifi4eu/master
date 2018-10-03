@@ -42,7 +42,7 @@ public class AuthorisationAspect {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         if (Validator.isNull(userConnected) || userConnected.getType() != 5) {
-            logger.error("No permissions for " + userConnected.getEcasUsername());
+            logger.error("No permissions for {}", userConnected != null ? userConnected.getEcasUsername() : "[unknown]");
 
             HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
             response.sendError(HttpStatus.NOT_FOUND.value());
