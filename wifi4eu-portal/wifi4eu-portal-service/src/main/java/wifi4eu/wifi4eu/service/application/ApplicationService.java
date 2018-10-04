@@ -264,14 +264,6 @@ public class ApplicationService {
         return applicationMapper.toDTO(applicationRepository.findVoucherApplicationByCallIdAndRegistrationId(callId, registrationId));
     }
 
-    public ApplicationDTO getApplicationByCallIdAndMunicipalityId(int callId, int municipalityId) {
-        if (municipalityId != 0 && callId != 0) {
-            int registrationId = registrationRepository.findByMunicipalityId(municipalityId).getId();
-            return applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
-        }
-        return null;
-    }
-
     public List<ApplicationDTO> getApplicationsByRegistrationId(int registrationId) {
         return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByRegistrationId(registrationId)));
     }

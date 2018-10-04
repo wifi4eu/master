@@ -76,14 +76,16 @@ public class MunicipalityResource {
     @ApiOperation(value = "Get municipality by specific id")
     @RequestMapping(value = "/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public MunicipalityDTO getMunicipalityById(@PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse response, HttpServletRequest request) throws IOException {
+    public MunicipalityDTO getMunicipalityById(@PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting municipality by id " + municipalityId);
         try {
-            RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipalityId);
-            if (userConnected.getType() != 5 && registrationUsersRepository.findByUserIdAndRegistrationId(userConnected.getId(), registrationDTO.getId()) == null) {
-                permissionChecker.check(userConnected, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+            if (userConnected.getType() != 5) {
+                Integer registrationId = registrationService.getRegistrationIdByMunicipalityId(municipalityId);
+                if (registrationUsersRepository.findByUserIdAndRegistrationId(userConnected.getId(), registrationId) == null) {
+                    permissionChecker.check(userConnected, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+                }
             }
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The municipality cannot been retrieved", e);
@@ -177,8 +179,8 @@ public class MunicipalityResource {
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating municipality details");
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipalityDTO.getId());
-            if (registrationUsersRepository.findByUserIdAndRegistrationId(userDTO.getId(), registrationDTO.getId()) == null) {
+            Integer registrationId = registrationService.getRegistrationIdByMunicipalityId(municipalityDTO.getId());
+            if (registrationUsersRepository.findByUserIdAndRegistrationId(userDTO.getId(), registrationId) == null) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityDTO.getId());

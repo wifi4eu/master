@@ -119,8 +119,8 @@ public class MayorResource {
         try {
             MayorDTO mayorDetails = mayorService.getMayorById(mayorDTO.getId());
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(mayorDetails.getMunicipalityId());
-            if (registrationUsersRepository.findByUserIdAndRegistrationId(userDTO.getId(), registrationDTO.getId()) == null) {
+            Integer registrationId = registrationService.getRegistrationIdByMunicipalityId(mayorDetails.getMunicipalityId());
+            if (registrationUsersRepository.findByUserIdAndRegistrationId(userDTO.getId(), registrationId) == null) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             permissionChecker.check(userDTO, RightConstants.MAYORS_TABLE + mayorDTO.getId());

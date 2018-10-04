@@ -64,10 +64,6 @@ public class MunicipalityService {
     @Autowired
     PermissionChecker permissionChecker;
 
-    public List<MunicipalityDTO> getAllMunicipalities() {
-        return municipalityMapper.toDTOList(Lists.newArrayList(municipalityRepository.findAll()));
-    }
-
     public MunicipalityDTO getMunicipalityById(int municipalityId) {
         Municipality municipality = municipalityRepository.findOne(municipalityId);
         return municipalityMapper.toDTO(municipality);
