@@ -160,7 +160,7 @@ public class ScheduledTasks {
     }
 
     //-- DGCONN-NOT-NECESSARY @Scheduled(cron = "0 0 9,17 * * MON-FRI")
-    @Scheduled(cron = "0 0 9,17 * * MON-FRI")
+    @Scheduled(cron = "0 0 9,13,17 * * MON-FRI")
     public void scheduleHelpdeskIssues() {
         _log.debug("Starting helpdesk issues scheduled");
         List<HelpdeskIssueDTO> helpdeskIssueDTOS = helpdeskService.getAllHelpdeskIssueNoSubmited();
