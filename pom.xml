@@ -208,7 +208,7 @@
         <serco.helpdesk.endpoint.pro>https://webtools.ec.europa.eu/form-tools/process.php</serco.helpdesk.endpoint.pro>        
         <serco.helpdesk.formid>1047</serco.helpdesk.formid>
         <serco.helpdesk.formid.acc>1047</serco.helpdesk.formid.acc>        
-        <serco.helpdesk.formid.pro>1047</serco.helpdesk.formid.pro>        
+        <serco.helpdesk.formid.pro>1434</serco.helpdesk.formid.pro>        
 
         <!-- RabbitMQ - TODO not in use -->
         <rabbitmq.host>localhost</rabbitmq.host>
@@ -241,7 +241,7 @@
                 <module>wifi4eu-portal</module>
                 <module>wifi4eu-public-portal</module>
                 <module>wifi4eu-dgconn</module>
-                <module>wifi4eu-supplier</module>
+                <!--<module>wifi4eu-supplier</module>-->
                 <module>wifi4eu-procedures</module>
                 <!--<module>wifi4eu-financial</module>-->
             </modules>
