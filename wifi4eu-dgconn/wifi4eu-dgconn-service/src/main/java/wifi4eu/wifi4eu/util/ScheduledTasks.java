@@ -166,9 +166,9 @@ public class ScheduledTasks {
     public void scheduleHelpdeskIssues() {
         _log.debug("Running DGConn Scheduled Task - HelpDeskIssues");
 
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Starting helpdesk issues scheduled");
+//        UserContext userContext = UserHolder.getUser();
+//        UserDTO userConnected = userService.getUserByUserContext(userContext);
+//        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Starting helpdesk issues scheduled");
         List<HelpdeskIssueDTO> helpdeskIssueDTOS = helpdeskService.getAllHelpdeskIssueNoSubmited();
         _log.info("helpdeskIssueDTOS.size() [{}]", helpdeskIssueDTOS == null ? "NULL" : helpdeskIssueDTOS.size());
 
@@ -203,13 +203,13 @@ public class ScheduledTasks {
 
         					_log.info("Helpdesk issue updated");
         				} else {
-        					_log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The result do not contain the proper text");
+        					_log.info("The result do not contain the proper text");
         				}
         			} else {
-        				_log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot retrieve the user for this helpdesk issue");
+        				_log.info("Cannot retrieve the user for this helpdesk issue");
         			}
         		} catch (Exception e) {
-        			_log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot process this helpdesk issue", e);
+        			_log.error("Cannot process this helpdesk issue", e);
         		}
         	}
         }
