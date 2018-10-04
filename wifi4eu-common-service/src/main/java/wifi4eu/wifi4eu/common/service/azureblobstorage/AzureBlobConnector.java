@@ -14,6 +14,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Component;
+import com.microsoft.azure.storage.blob.ListBlobItem;
+
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.service.encryption.EncrypterService;
 
 import javax.annotation.PostConstruct;
@@ -107,7 +110,7 @@ public class AzureBlobConnector {
 				}
 			}
 		}
-		
+
 		return fileUri;
 	}
 
@@ -194,39 +197,39 @@ public class AzureBlobConnector {
             LOGGER.error("Error uploading to a cloud", e);
         }
 
-        return fileUri;
-    }
-	
+		return fileUri;
+	}
+
 	public byte[] downloadAsBytes(final String containerName, final String fileName) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-        // Validating the paramenters
-        this.checkContainerName(containerName);
-        this.checkFileName(fileName);
+		// Validating the paramenters
+		this.checkContainerName(containerName);
+		this.checkFileName(fileName);
 
-        CloudBlobContainer container = this.getContainerReference(containerName);
-        CloudBlockBlob blob = null;
-        try {
-            blob = container.getBlockBlobReference(fileName);
-        } catch (URISyntaxException | StorageException e) {
-            LOGGER.error("Error", e);
-        }
+		CloudBlobContainer container = this.getContainerReference(containerName);
+		CloudBlockBlob blob = null;
+		try {
+			blob = container.getBlockBlobReference(fileName);
+		} catch (URISyntaxException | StorageException e) {
+			LOGGER.error("Error", e);
+		}
 
-        if (blob != null) {
-            LOGGER.info("Downloading from containerName[{}], fileName[{}]", containerName, fileName);
+		if (blob != null) {
+			LOGGER.info("Downloading from containerName[{}], fileName[{}]", containerName, fileName);
 
-            try {
-                blob.download(outputStream);
-                outputStream.close();
-                LOGGER.info("Content downloaded. Content.length [{}]", outputStream == null ? "NULL" : String.valueOf(outputStream.size()));
-            } catch (StorageException | IOException e) {
-                LOGGER.error("Error", e);
-            }
-        }
+			try {
+				blob.download(outputStream);
+				outputStream.close();
+				LOGGER.info("Content downloaded. Content.length [{}]", outputStream == null ? "NULL" : String.valueOf(outputStream.size()));
+			} catch (StorageException | IOException e) {
+				LOGGER.error("Error", e);
+			}
+		}
 
-        return outputStream.toByteArray();
-    }
-	
+		return outputStream.toByteArray();
+	}
+
 	public String downloadText(final String containerName, final String fileName) {
 		String content = null;
 
@@ -353,6 +356,21 @@ public class AzureBlobConnector {
         return content;
     }
 
+    public byte[] downloadGrantAgreementCounterSigned(final String data) {
+        String fileNameDownload = data.substring(data.lastIndexOf('/') + 1);
+        AzureBlobConnector azureBlobConnector = new AzureBlobConnector();
+        byte[] content = null;
+
+        try {
+            LOGGER.info("Downloading container [{}] fileName[{}]", DEFAULT_CONTAINER_NAME, fileNameDownload);
+            content = downloadAsBytes(DEFAULT_CONTAINER_NAME, fileNameDownload);
+        } catch (Exception e) {
+            LOGGER.error("ERROR", e);
+        }
+
+        return content;
+    }
+
 	public String downloadLegalFile(final String data) {
 	    String fileNameDownload = data.substring(data.lastIndexOf('/') + 1);
 	    AzureBlobConnector azureBlobConnector = new AzureBlobConnector();
@@ -387,7 +405,7 @@ public class AzureBlobConnector {
     public String uploadLegalFile(final String fileName, final InputStream fileContent, final long length) {
         return upload(DEFAULT_CONTAINER_NAME, fileName, fileContent, length);
     }
-	
+
 	public boolean deleteLegalFile(final String fileName) {
         return delete(DEFAULT_CONTAINER_NAME, fileName);
 	}
@@ -424,5 +442,5 @@ public class AzureBlobConnector {
     public boolean deleteExportExcel(String fileName){
         return delete(EXCEL_EXPORT_CONTAINER_NAME, fileName);
     }
-	
+
 }

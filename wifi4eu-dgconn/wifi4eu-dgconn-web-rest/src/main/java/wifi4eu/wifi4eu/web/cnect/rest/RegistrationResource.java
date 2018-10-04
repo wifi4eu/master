@@ -82,22 +82,6 @@ public class RegistrationResource {
 
 	private static final Logger _log = LogManager.getLogger(RegistrationResource.class);
 
-	/*
-	 * @ApiOperation(value = "Get all the registrations")
-	 * 
-	 * @RequestMapping(method = RequestMethod.GET, produces = "application/json")
-	 * 
-	 * @ResponseBody public List<RegistrationDTO>
-	 * allRegistrations(HttpServletResponse response) throws IOException {
-	 * _log.info("allRegistrations"); try { if
-	 * (userService.getUserByUserContext(UserHolder.getUser()).getType() != 5) {
-	 * throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase()); } }
-	 * catch (AccessDeniedException ade) {
-	 * response.sendError(HttpStatus.NOT_FOUND.value()); } catch (Exception e) {
-	 * response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value()); } return
-	 * registrationService.getAllRegistrations(); }
-	 */
-
 	@ApiOperation(value = "Get registration by specific id")
 	@RequestMapping(value = "/{registrationId}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
@@ -351,8 +335,7 @@ public class RegistrationResource {
 		UserThreadsDTO userThreadDTO = userThreadsService.getUserThreadsById(userThreadId);
 		RegistrationDTO registration = registrationService.getRegistrationByUserThreadId(userThreadDTO.getThreadId(),
 				userThreadDTO.getUserId());
-		UserDTO user = userConnected;
-		if (userThreadsService.getByUserIdAndThreadId(user.getId(), userThreadDTO.getThreadId()) != null) {
+		if (userThreadsService.getByUserIdAndThreadId(userConnected.getId(), userThreadDTO.getThreadId()) != null) {
 			registration.setIpRegistration(null);
 			registration.setMailCounter(0);
 			registration.setRole(null);

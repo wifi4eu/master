@@ -16,6 +16,7 @@ import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
 import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
+import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.mapper.municipality.MunicipalityCorrespondenceMapper;
 import wifi4eu.wifi4eu.mapper.municipality.MunicipalityMapper;
 import wifi4eu.wifi4eu.mapper.registration.legal_files.LegalFilesMapper;
@@ -104,7 +105,8 @@ public class MunicipalityService {
     }
 
     public MunicipalityDTO getMunicipalityById(int municipalityId) {
-        return municipalityMapper.toDTO(municipalityRepository.findOne(municipalityId));
+        Municipality municipality = municipalityRepository.findOne(municipalityId);
+        return municipalityMapper.toDTO(municipality);
     }
 
     /**
@@ -239,7 +241,8 @@ public class MunicipalityService {
     }
 
     public List<MunicipalityDTO> getMunicipalitiesByLauId(int lauId) {
-        return municipalityMapper.toDTOList(Lists.newArrayList(municipalityRepository.findByLauId(lauId)));
+        List<Municipality> municipalities = municipalityRepository.findByLauId(lauId);
+        return municipalityMapper.toDTOList(municipalities);
     }
 
     public List<MunicipalityDTO> getMunicipalitiesByUserId(int userId) {
