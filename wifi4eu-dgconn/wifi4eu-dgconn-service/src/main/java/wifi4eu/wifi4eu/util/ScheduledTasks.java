@@ -162,6 +162,7 @@ public class ScheduledTasks {
     }
 
     //-- DGCONN-NOT-NECESSARY @Scheduled(cron = "0 0 9,17 * * MON-FRI")
+    @Scheduled(cron = "0 0 9,13,14,15,16,17 * * MON-FRI")
     public void scheduleHelpdeskIssues() {
         _log.debug("Running Scheduled Task - HelpDeskIssues");
 
@@ -169,9 +170,9 @@ public class ScheduledTasks {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Starting helpdesk issues scheduled");
         List<HelpdeskIssueDTO> helpdeskIssueDTOS = helpdeskService.getAllHelpdeskIssueNoSubmited();
+        _log.info("helpdeskIssueDTOS.size() [{}]", helpdeskIssueDTOS == null ? "NULL" : helpdeskIssueDTOS.size());
 
         if (helpdeskIssueDTOS != null) {
-        	_log.info("helpdeskIssueDTOS.size() [{}]", helpdeskIssueDTOS.size());
 
         	for (HelpdeskIssueDTO helpdeskIssue : helpdeskIssueDTOS) {
         		_log.info("Processing ticket id[{}]", helpdeskIssue.getId());
@@ -183,6 +184,7 @@ public class ScheduledTasks {
         			helpdeskTicketDTO.setEmailAdressconf(helpdeskTicketDTO.getEmailAdress());
         			helpdeskTicketDTO.setUuid("wifi4eu_" + helpdeskIssue.getId());
         			UserDTO userDTO = userService.getUserByEcasEmail(helpdeskIssue.getFromEmail());
+    				_log.info("userDTO id[{}]", userDTO == null ? "NULL" : userDTO.getId());
 
         			if (userDTO != null) {
         				helpdeskTicketDTO.setFirstname(userDTO.getName());
