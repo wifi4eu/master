@@ -156,7 +156,8 @@ public class MunicipalityService {
     }
 
     public List<MunicipalityDTO> getMunicipalitiesByLauId(int lauId) {
-        return municipalityMapper.toDTOList(Lists.newArrayList(municipalityRepository.findByLauId(lauId)));
+        List<Municipality> municipalities = municipalityRepository.findByLauId(lauId);
+        return municipalityMapper.toDTOList(municipalities);
     }
 
     public List<MunicipalityDTO> getMunicipalitiesByUserId(int userId) {

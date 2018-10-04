@@ -81,10 +81,9 @@ public class MunicipalityResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting municipality by id " + municipalityId);
         try {
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipalityId);
-            if (userDTO.getType() != 5 && registrationUsersRepository.findByUserIdAndRegistrationId(userDTO.getId(), registrationDTO.getId()) == null) {
-                permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+            if (userConnected.getType() != 5 && registrationUsersRepository.findByUserIdAndRegistrationId(userConnected.getId(), registrationDTO.getId()) == null) {
+                permissionChecker.check(userConnected, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
             }
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The municipality cannot been retrieved", e);
@@ -142,16 +141,16 @@ public class MunicipalityResource {
     @ApiOperation(value = "Get municipality by specific id for thread")
     @RequestMapping(value = "/thread/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public MunicipalityDTO getMunicipalityThreadById(@PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse response) throws IOException {
+    public MunicipalityDTO getMunicipalityThreadById(@PathVariable("municipalityId") final Integer municipalityId) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving municipality by id " + municipalityId + " for thread");
         MunicipalityDTO municipality = municipalityService.getMunicipalityById(municipalityId);
-        List<UserThreadsDTO> userThreadsDTOList = userThreadsService.getUserThreadsByUserId(userConnected.getId());
         if (userConnected.getType() == 5) {
             municipality.setRegistrations(null);
             return municipality;
         } else {
+            List<UserThreadsDTO> userThreadsDTOList = userThreadsService.getUserThreadsByUserId(userConnected.getId());
             for (UserThreadsDTO userThread : userThreadsDTOList) {
                 ThreadDTO threadDTO = threadService.getThreadById(userThread.getThreadId());
                 if (threadDTO.getTitle().equals(municipality.getName())) {

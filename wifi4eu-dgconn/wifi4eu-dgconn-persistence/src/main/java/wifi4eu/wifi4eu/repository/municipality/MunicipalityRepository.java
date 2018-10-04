@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface MunicipalityRepository extends JpaRepository<Municipality, Integer> {
-    Iterable<Municipality> findByLauId(Integer lauId);
+
+    List<Municipality> findByLauId(Integer lauId);
+
     @Query(value = "SELECT COUNT(id),lau FROM municipalities GROUP BY lau", nativeQuery = true)
     Iterable<Object> findMunicipalitiesCountGroupedByLauId();
 
