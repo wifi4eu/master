@@ -197,7 +197,7 @@ public class AzureBlobConnector {
             LOGGER.error("Error uploading to a cloud", e);
         }
 
-		return result;
+		return fileUri;
 	}
 
 	public byte[] downloadAsBytes(final String containerName, final String fileName) {
