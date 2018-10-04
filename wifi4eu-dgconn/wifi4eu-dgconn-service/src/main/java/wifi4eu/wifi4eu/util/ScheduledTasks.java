@@ -162,7 +162,7 @@ public class ScheduledTasks {
     }
 
     //-- DGCONN-NOT-NECESSARY @Scheduled(cron = "0 0 9,17 * * MON-FRI")
-    @Scheduled(cron = "0 0 9,13,14,15,16,17 * * MON-FRI")
+    @Scheduled(cron = "0 0 9,10,11,12,13,14,15,16,17,18 * * MON-FRI")
     public void scheduleHelpdeskIssues() {
         _log.debug("Running Scheduled Task - HelpDeskIssues");
 
