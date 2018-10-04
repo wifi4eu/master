@@ -164,35 +164,47 @@ public class ScheduledTasks {
     public void scheduleHelpdeskIssues() {
         _log.debug("Starting helpdesk issues scheduled");
         List<HelpdeskIssueDTO> helpdeskIssueDTOS = helpdeskService.getAllHelpdeskIssueNoSubmited();
-        for (HelpdeskIssueDTO helpdeskIssue : helpdeskIssueDTOS) {
 
-            try {
-                HelpdeskTicketDTO helpdeskTicketDTO = new HelpdeskTicketDTO();
-    			helpdeskTicketDTO.setForm_tools_form_id(this.helpdeskFormId);
-                helpdeskTicketDTO.setEmailAdress(helpdeskIssue.getFromEmail());
-                helpdeskTicketDTO.setEmailAdressconf(helpdeskTicketDTO.getEmailAdress());
-                helpdeskTicketDTO.setUuid("wifi4eu_" + helpdeskIssue.getId());
-                UserDTO userDTO = userService.getUserByEcasEmail(helpdeskIssue.getFromEmail());
+        if (helpdeskIssueDTOS != null) {
+        	_log.info("helpdeskIssueDTOS.size() [{}]", helpdeskIssueDTOS.size());
 
-                if (userDTO != null) {
-                    helpdeskTicketDTO.setFirstname(userDTO.getName());
-                    helpdeskTicketDTO.setLastname(userDTO.getSurname());
-                    helpdeskTicketDTO.setTxtsubjext(helpdeskIssue.getTopic());
-                    helpdeskTicketDTO.setQuestion(helpdeskIssue.getSummary());
-                    String result = executePost(this.sercoHelpdeskEndpoint, helpdeskTicketDTO.toString());
+        	for (HelpdeskIssueDTO helpdeskIssue : helpdeskIssueDTOS) {
+        		_log.info("Processing ticket id[{}]", helpdeskIssue.getId());
 
-                    if (result != null && result.contains("Thankyou.js")) {
-                        helpdeskIssue.setTicket(true);
-                        helpdeskService.createOrUpdateHelpdeskIssue(helpdeskIssue);
-                    } else {
-                        _log.error("The result do not contain the proper text");
-                    }
-                } else {
-                    _log.error("Cannot retrieve the user for this helpdesk issue");
-                }
-            } catch (Exception e) {
-                _log.error("Cannot process this helpdesk issue", e);
-            }
+        		try {
+        			HelpdeskTicketDTO helpdeskTicketDTO = new HelpdeskTicketDTO();
+        			helpdeskTicketDTO.setForm_tools_form_id(this.helpdeskFormId);
+        			helpdeskTicketDTO.setEmailAdress(helpdeskIssue.getFromEmail());
+        			helpdeskTicketDTO.setEmailAdressconf(helpdeskTicketDTO.getEmailAdress());
+        			helpdeskTicketDTO.setUuid("wifi4eu_" + helpdeskIssue.getId());
+        			UserDTO userDTO = userService.getUserByEcasEmail(helpdeskIssue.getFromEmail());
+
+        			if (userDTO != null) {
+        				helpdeskTicketDTO.setFirstname(userDTO.getName());
+        				helpdeskTicketDTO.setLastname(userDTO.getSurname());
+        				helpdeskTicketDTO.setTxtsubjext(helpdeskIssue.getTopic());
+        				helpdeskTicketDTO.setQuestion(helpdeskIssue.getSummary());
+        				String result = executePost(this.sercoHelpdeskEndpoint, helpdeskTicketDTO.toString());
+
+        				_log.info("Result posting to queue [{}]", result);
+
+        				if (result != null && result.contains("Thankyou.js")) {
+        					_log.info("Updating Helpdesk issue");
+
+        					helpdeskIssue.setTicket(true);
+        					helpdeskService.createOrUpdateHelpdeskIssue(helpdeskIssue);
+
+        					_log.info("Helpdesk issue updated");
+        				} else {
+        					_log.error("The result do not contain the proper text");
+        				}
+        			} else {
+        				_log.error("Cannot retrieve the user for this helpdesk issue");
+        			}
+        		} catch (Exception e) {
+        			_log.error("Cannot process this helpdesk issue", e);
+        		}
+        	}
         }
     }
 
