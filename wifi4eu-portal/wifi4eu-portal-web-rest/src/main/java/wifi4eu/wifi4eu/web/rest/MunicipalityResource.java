@@ -203,6 +203,7 @@ public class MunicipalityResource {
         } catch (AccessDeniedException ade) {
             _log.error("User ECAS name: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve these municipalities", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
         }
         return municipalityService.getMunicipalitiesByLauId(lauId);
     }

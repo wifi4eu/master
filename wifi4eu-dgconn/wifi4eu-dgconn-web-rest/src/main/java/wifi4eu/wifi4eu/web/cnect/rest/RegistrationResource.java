@@ -335,8 +335,7 @@ public class RegistrationResource {
 		UserThreadsDTO userThreadDTO = userThreadsService.getUserThreadsById(userThreadId);
 		RegistrationDTO registration = registrationService.getRegistrationByUserThreadId(userThreadDTO.getThreadId(),
 				userThreadDTO.getUserId());
-		UserDTO user = userConnected;
-		if (userThreadsService.getByUserIdAndThreadId(user.getId(), userThreadDTO.getThreadId()) != null) {
+		if (userThreadsService.getByUserIdAndThreadId(userConnected.getId(), userThreadDTO.getThreadId()) != null) {
 			registration.setIpRegistration(null);
 			registration.setMailCounter(0);
 			registration.setRole(null);
