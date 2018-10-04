@@ -1,5 +1,7 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -83,6 +85,7 @@ public class MunicipalityDTO implements Serializable {
         this.lauId = lauId;
     }
 
+    @JsonIgnore
     public List<RegistrationDTO> getRegistrations() {
         return registrations;
     }
