@@ -80,7 +80,6 @@
                                 <img alt="" class="municipality-icon" src="assets/images/account-balance-material-icons-regular.png">
                             </div>
                             <div  class="align-self-center" style="line-height: 24px;">
-                                <!-- <a (click)="goToDocuments(i)">{{municipality.name}}</a> -->
                                 <span>{{ municipality.name }}</span> 
                             </div>
                         </div>
@@ -89,15 +88,18 @@
 
                 <p-column field="" header="{{ 'benefPortal.myVoucher.datatable.action1' | translate }}" styleClass="text-center">
                    <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
-                        <div class="beneficiarRegistrationCheck" *ngIf="!hasSigned[i]">
+                        <div class="beneficiarRegistrationCheck" *ngIf="!hasSigned[i] || !hasSigned[i].dateSignature">
                             <button class="btn btn-primary text-adjust" (click)="agreementDetails(i)" >{{ 'benefPortal.myVoucher.datatable.signGrantAgreement' | translate}}</button>
                         </div>
                         <div class="beneficiarRegistrationCheck left" *ngIf="hasSigned[i]">
-                            <span>
-                                {{ 'benefPortal.myVoucher.signedByApplicant' | translate:{date: hasSigned[i]?.formattedDateSignature } }}
+                            <span *ngIf="hasSigned[i].dateSignature != null && hasSigned[i].dateCounterSignature == null">
+                              {{ 'benefPortal.myVoucher.signedByApplicant' | translate:{date: hasSigned[i]?.formattedDateSignature } }}
+                            </span>
+                            <span *ngIf="hasSigned[i].dateCounterSignature != null">
+                              {{ 'benefPortal.myVoucher.signedfinal'  | translate }} {{ hasSigned[i].formattedDateCounterSignature }}
+                              <a class="color-primary" href="javascript: void(0);" (click)="requestCounterSignedDocument(i)">{{ 'shared.link.seeDetails' | translate }}</a>
                             </span>
                         </div>
-                
                     </template> 
                 </p-column>
                 
@@ -112,13 +114,12 @@
                                 <span>{{ 'benefPortal.selectSupplier.feedback.selected' | translate }} {{ applications[i].selectSupplierDate | date:'dd-MM-yyyy' }}.</span>
                                 <span><a (click)="supplierDetails(i)" class="municipality-name">{{ 'shared.link.seeDetails' | translate }}</a></span>
                             </div> -->
-                            <div *ngIf="!applications[i].supplierId && !hasSigned[i]" class="align-self-center">
-                                <button class="btn btn-primary text-adjust" id="voucherButton" (click)="selectWifiInstallation(i)" [disabled]="true">
+                            <div class="align-self-center"> <!-- *ngIf="!applications[i].supplierId" -->
+                                <button *ngIf="!hasSigned[i] || !hasSigned[i].dateSignature || (hasSigned[i] != null && hasSigned[i].dateCounterSignature != null)" 
+                                    class="btn btn-primary text-adjust" id="voucherButton" (click)="selectWifiInstallation(i)" [disabled]="hasSigned[i] == null || !hasSigned[i].dateSignature || applications[i].supplierId != null">
                                     {{ 'benefPortal.selectSupplier.details.title' | translate }}
                                 </button>
-                            </div>
-                            <div *ngIf="hasSigned[i]" class="left">
-                                <span>
+                                <span *ngIf="hasSigned[i] != null && hasSigned[i].dateSignature != null && hasSigned[i].dateCounterSignature == null">
                                     {{ 'benefPortal.myVoucher.waitingCommission' | translate }}
                                 </span>
                             </div>
@@ -137,9 +138,7 @@
                 </p-column>
 
             </p-dataTable>
-
-            <!--{{ applications[0].is_submission }}-->
-            <!--{{ applications[1].is_submission }}-->
+            
         </div>
     </div>
 </div>
