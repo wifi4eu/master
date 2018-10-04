@@ -13,7 +13,11 @@ export class ReportingComponent implements OnInit {
 
   private reports: string[] = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eight', 'ninth', 'tenth', 'eleventh'];
   private calls: CallDTOBase[] = [];
+  private callsNotified: CallDTOBase[] = [];
+  private callsPreSelected: CallDTOBase[] = [];
   private call: CallDTOBase;
+  private callNotified: CallDTOBase;
+  private callPreSelected: CallDTOBase;
 
   constructor(
     private reportingApi: ReportingApi,
@@ -22,8 +26,20 @@ export class ReportingComponent implements OnInit {
   ) {
     this.callApi.allCallsClosed().subscribe(callList => {
       this.calls = callList;
+      
+      
     }, (error: Error) => {
-
+      
+    });
+    this.callApi.allCallsClosedNotified().subscribe(callList => {
+      this.callsNotified = callList;
+    }, (error: Error) => {
+      
+    });
+    this.callApi.allCallsClosedPreSelected().subscribe(callList => {
+      this.callsPreSelected = callList;
+    }, (error: Error) => {
+      
     });
   }
 
@@ -38,11 +54,11 @@ export class ReportingComponent implements OnInit {
         break;
 
       case "second":
-        this.secondReport(this.call.id);
+        this.secondReport(this.callPreSelected.id);
         break;
 
       case "third":
-        this.thirdReport(this.call.id);
+        this.thirdReport(this.callNotified.id);
         break;
 
       case "fourth":
@@ -118,17 +134,13 @@ export class ReportingComponent implements OnInit {
   }
 
 
-  private selectCallClosed(event: any){
+  private selectCallClosed(event: any) {
     console.log(event);
   }
-
 
   private isCallSelector(report: string) {
     let result: boolean;
     switch (report) {
-      case "second":
-      case "third":
-      case "fourth":
       case "fifth":
       case "seventh":
       case "tenth":

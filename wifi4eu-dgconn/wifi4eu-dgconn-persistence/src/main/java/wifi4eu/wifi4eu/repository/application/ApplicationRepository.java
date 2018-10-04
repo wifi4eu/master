@@ -71,6 +71,9 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
     @Query(value = "SELECT count(a.id) FROM applications a WHERE a.call_id = ?1", nativeQuery = true)
     Long countApplicationsForCallId(int idCall);
 
+    @Query(value = "SELECT count(*) FROM applications a INNER JOIN calls c ON c.id = a.call_id INNER JOIN voucher_assignments va ON va.call = c.id WHERE c.end_date < cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000 AND va.status = 3", nativeQuery = true)
+    double countApplicationsNotified();
+
     @Query(value = "SELECT count(r.id) FROM registrations r " +
             // "INNER JOIN users u ON r._user = u.id " +
             "INNER JOIN registration_users ru ON ru.registration = r.id " +
@@ -296,32 +299,29 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
             "WHERE vs.selection_status != 1 AND a.call_id = ?#{[0]} AND n.level = 0 AND n.id = ?#{[1]})", nativeQuery = true)
     Integer countUnsuccessfulApplicantsByCall(Integer callId, Integer idNut);
 
-    @Query(value = "SELECT COUNT(*) FROM applications a " +
+    @Query(value = "SELECT SUM(s) FROM (SELECT COUNT(*) AS s FROM applications a " +
             "INNER JOIN registrations r ON r.id = a.registration " +
             "INNER JOIN municipalities m ON m.id = r.municipality " +
-            "WHERE a.call_id = ?#{[0]} GROUP BY m.name HAVING COUNT(*) > 1", nativeQuery = true)
+            "WHERE a.call_id = ?#{[0]} GROUP BY m.name HAVING COUNT(*) > 1)c", nativeQuery = true)
     Integer countApplicationDuplicatesByCall(Integer callId);
 
-    @Query(value = "  SELECT COUNT(*) FROM applications a " +
+    @Query(value = "  SELECT SUM(s) FROM (SELECT COUNT(*) AS s FROM applications a " +
             "INNER JOIN registrations r ON r.id = a.registration " +
             "INNER JOIN municipalities m ON m.id = r.municipality " +
             "INNER JOIN laus l ON l.id = m.lau " +
             "INNER JOIN nuts n ON l.country_code = n.country_code " +
-            "WHERE a.call_id = ?#{[0]} AND n.level = 0 AND n.id = ?#{[1]} GROUP BY m.name HAVING COUNT(*) > 1", nativeQuery = true)
+            "WHERE a.call_id = ?#{[0]} AND n.level = 0 AND n.id = ?#{[1]} GROUP BY m.name HAVING COUNT(*) > 1)c", nativeQuery = true)
     Integer countApplicationDuplicatesByCall(Integer callId, Integer idNut);
 
-    @Query(value = "SELECT COUNT(*) FROM applications a " +
+    @Query(value = "SELECT SUM(s) FROM (SELECT COUNT(*) AS s FROM applications a " +
             "INNER JOIN registrations r ON r.id = a.registration " +
             "INNER JOIN municipalities m ON m.id = r.municipality " +
-            "WHERE a.call_id = ?#{[0]} AND a._status = 1 GROUP BY m.name HAVING COUNT(*) > 1", nativeQuery = true)
+            "WHERE a.call_id = ?#{[0]} AND a._status = 1 GROUP BY m.name HAVING COUNT(*) > 1)c", nativeQuery = true)
     Integer countApplicationDuplicatesInvalidatedByCall(Integer callId);
 
-    @Query(value = "SELECT COUNT(*) FROM applications a " +
+    @Query(value = "SELECT SUM(s) FROM (SELECT COUNT(*) AS s FROM applications a " +
             "INNER JOIN registrations r ON r.id = a.registration " +
-            "INNER JOIN municipalities m ON m.id = r.municipality " +
-            "INNER JOIN laus l ON l.id = m.lau " +
-            "INNER JOIN nuts n ON l.country_code = n.country_code " +
-            "WHERE a.call_id = ?#{[0]} AND a._status = 1 AND n.level = 0 AND n.id = ?#{[1]} GROUP BY m.name HAVING COUNT(*) > 1", nativeQuery = true)
+            "INNER JOIN municipalities m ON m.id = r.municipality WHERE a.call_id = 1 GROUP BY m.name HAVING COUNT(*) > 1)c", nativeQuery = true)
     Integer countApplicationDuplicatesInvalidatedByCall(Integer callId, Integer idNut);
 
     @Query(value = "SELECT COUNT(*) FROM applications a " +
@@ -353,7 +353,7 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
     Integer countApplicationsInvalidatedByReasonAndCall(Integer callId, Integer idNut, Integer reason);
 
     @Query(value = "SELECT ((((SELECT va.notified_date FROM voucher_assignments va " +
-            "INNER JOIN calls c ON c.id = va.call))-(SELECT c.end_date FROM calls c WHERE c.id = ?#{[0]}))/86400000)", nativeQuery = true)
-    Integer findDaysBetweenCloseAndNotified(Integer idCall);
+            "INNER JOIN calls c ON c.id = va.call WHERE c.id = ?#{[0]} AND va.status = 3))-(SELECT c.end_date FROM calls c WHERE c.id = ?#{[0]}))/86400000)", nativeQuery = true)
+    double findDaysBetweenCloseAndNotified(Integer idCall);
 
 }

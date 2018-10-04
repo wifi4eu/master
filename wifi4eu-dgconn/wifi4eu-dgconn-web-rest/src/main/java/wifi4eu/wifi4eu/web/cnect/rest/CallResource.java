@@ -50,6 +50,20 @@ public class CallResource {
         return callService.getAllCallsClosed();
     }
 
+    @ApiOperation(value = "Get all the calls closed notified")
+    @RequestMapping(value="/callsClosedNotified", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<CallDTO> allCallsClosedNotified() {
+        return callService.getAllCallsClosedNotified();
+    }
+
+    @ApiOperation(value = "Get all the calls closed pre selected")
+    @RequestMapping(value="/callsClosedPreSelected", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<CallDTO> allCallsClosedPreSelected() {
+        return callService.getAllCallsClosedPreSelected();
+    }
+
 //    @ApiOperation(value = "Create call")
 //    @RequestMapping(method = RequestMethod.POST)
 //    @ResponseStatus(HttpStatus.CREATED)

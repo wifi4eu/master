@@ -1,5 +1,7 @@
 package wifi4eu.wifi4eu.util.reports;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -15,6 +17,7 @@ import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.call.CallRepository;
 import wifi4eu.wifi4eu.util.reporting.ReportingUtils;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,11 +60,11 @@ public class ReportTimeToInform {
             }
             generateValuesByCall(sheet, firstRow, 1);
             generateAverage(sheet, callsClosedNum + 1);
-            /*generateWeightedAverage(sheet, callsClosedNum + 2);*/
+            generateWeightedAverage(sheet, callsClosedNum + 2);
             ReportingUtils.autoSizeColumns(workbook);
         } else {
             // send email notifying that no open call is available?
-            System.out.println("No calls found");
+            System.out.println("No calls notified found");
         }
     }
 
@@ -91,7 +94,7 @@ public class ReportTimeToInform {
     }
 
     private void generateAverage(HSSFSheet sheet, Integer column) {
-        Integer average = 0;
+        double average = 0;
         HSSFRow row = sheet.getRow(1);
         List<CallDTO> calls = callMapper.toDTOList(callRepository.findAllCallsClosedNotified());
         for (CallDTO call : calls) {
@@ -99,17 +102,30 @@ public class ReportTimeToInform {
         }
         average = average / calls.size();
         if (Validator.isNull(average)) average = 0;
-        row.createCell(column).setCellValue(average);
+        String valueSet = "" + average;
+        row.createCell(column).setCellValue(valueSet);
+        row.createCell(column +1).setCellValue("-");
     }
 
-    private void generateWeightedAverage(HSSFSheet sheet, Integer numColumn) {
-
+    private void generateWeightedAverage(HSSFSheet sheet, Integer column) {
+        double weightedAverage = 0;
+        double totalNotified = applicationRepository.countApplicationsNotified();
+        HSSFRow row = sheet.getRow(2);
+        List<CallDTO> calls = callMapper.toDTOList(callRepository.findAllCallsClosedNotified());
+        for (CallDTO call : calls) {
+            weightedAverage += applicationRepository.countApplicationsForCallId(call.getId())/totalNotified;
+        }
+        weightedAverage = weightedAverage / calls.size();
+        if (Validator.isNull(weightedAverage)) weightedAverage = 0;
+        String valueSet = "" + weightedAverage;
+        row.createCell(column).setCellValue(valueSet);
+        row.createCell(column -1).setCellValue("-");
     }
 
     @Transactional
     private Map<String, Object> getAllValues(Integer callId) {
         Map<String, Object> mapResult = new HashMap<>();
-        Integer daysNumber = getDaysNumberByCall(callId);
+        double daysNumber = getDaysNumberByCall(callId);
         Integer applicants = getApplicantsByCall(callId);
         mapResult.put("daysNumber", daysNumber);
         mapResult.put("applicants", applicants);
@@ -117,13 +133,13 @@ public class ReportTimeToInform {
     }
 
     @Transactional
-    private Integer getDaysNumberByCall(Integer callId) {
+    private double getDaysNumberByCall(Integer callId) {
         return applicationRepository.findDaysBetweenCloseAndNotified(callId);
     }
 
     @Transactional
     private Integer getApplicantsByCall(Integer callId) {
-        return Integer.valueOf(applicationRepository.countApplicationsForCallId(callId).intValue());
+        return applicationRepository.countApplicationsForCallId(callId).intValue();
     }
 
 

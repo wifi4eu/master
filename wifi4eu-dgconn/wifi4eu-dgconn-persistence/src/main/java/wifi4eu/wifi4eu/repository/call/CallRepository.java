@@ -23,9 +23,12 @@ public interface CallRepository extends CrudRepository<Call,Integer> {
     @Query(value = "SELECT * FROM calls WHERE end_date < cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000", nativeQuery = true)
     List<Call> findAllCallsClosed();
 
-    @Query(value = "SELECT c.* FROM calls c INNER JOIN voucher_assignments va ON va.call = c.id WHERE end_date < cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000 AND va.status = 3", nativeQuery = true)
+    @Query(value = "SELECT c.* FROM calls c INNER JOIN voucher_assignments va ON va.call = c.id WHERE end_date < cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000 AND va.status = 2", nativeQuery = true)
+    List<Call> findAllCallsClosedPreSelected();
+
+    @Query(value = "SELECT c.* FROM calls c INNER JOIN voucher_assignments va ON va.call = c.id WHERE end_date < cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000 AND va.status = 3 AND va.notified_date IS NOT NULL", nativeQuery = true)
     List<Call> findAllCallsClosedNotified();
 
-    @Query(value = "SELECT COUNT(*) FROM calls c INNER JOIN voucher_assignments va ON va.call = c.id WHERE end_date < cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000 AND va.status = 3", nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM calls c INNER JOIN voucher_assignments va ON va.call = c.id WHERE end_date < cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000 AND va.status = 3 AND va.notified_date IS NOT NULL", nativeQuery = true)
     Integer countCallsClosedNotified();
 }

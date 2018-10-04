@@ -57,7 +57,6 @@ public class ReportingSystemManager {
         return urlDownload;
     }
 
-
     public String generateReportingExcel(String currentQuery, Integer callId){
         logger.debug("Generate reporting excel with arraybytes");
         String filename = azureBlobStorageUtils.generateNameFile(currentQuery);

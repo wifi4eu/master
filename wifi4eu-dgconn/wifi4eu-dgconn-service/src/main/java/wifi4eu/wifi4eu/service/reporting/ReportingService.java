@@ -97,7 +97,7 @@ public class ReportingService {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         ResponseDTO response = new ResponseDTO();
-        if (Validator.isNotNull(callRepository.getIdCurrentCall())) {
+        if (Validator.isNotNull(callRepository.findAllCallsClosedNotified())) {
             (new Thread(new ExcelReportsRunnable(Constant.REPORTING_TIME_TO_INFORM, userConnected.getName(), userConnected.getEcasEmail(), userConnected.getLang()))).start();
 
             response.setSuccess(true);
