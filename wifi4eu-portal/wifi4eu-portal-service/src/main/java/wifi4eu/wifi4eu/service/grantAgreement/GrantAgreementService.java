@@ -262,12 +262,22 @@ public class GrantAgreementService {
         return outputStream;
     }
 
-    public byte[] downloadGrantAgreementSigned(Integer applicationId, GrantAgreementDTO grantAgreementDTO) {
+    public byte[] downloadGrantAgreementSigned(GrantAgreementDTO grantAgreementDTO) {
         byte[] fileBytes = null;
         try {
             fileBytes = azureBlobConnector.downloadGrantAgreementSigned(grantAgreementDTO.getDocumentLocation());
         } catch (Exception e) {
-            e.printStackTrace();
+            _log.error("Error downloading grant agreement file", e.getMessage());
+        }
+        return fileBytes;
+    }
+
+    public byte[] downloadGrantAgreementCounterSigned(GrantAgreementDTO grantAgreementDTO){
+        byte[] fileBytes = null;
+        try{
+            fileBytes = azureBlobConnector.downloadGrantAgreementCounterSigned(grantAgreementDTO.getDocumentLocationCounterSigned());
+        }catch (Exception e) {
+            _log.error("Error downloading grant agreement file", e.getMessage());
         }
         return fileBytes;
     }
