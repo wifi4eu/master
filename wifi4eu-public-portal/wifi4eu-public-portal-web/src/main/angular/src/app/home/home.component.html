@@ -75,10 +75,19 @@
                 <li><span>{{ 'home.part3.list1' | translate}}</span></li>
                 <li><span>{{ 'home.part3.list2' | translate}}</span></li>
             </ul>
-            <div *ngIf="showTimer">
-                <p class="apply-text">{{ 'home.part3.text3' | translate }}</p>
+            <!-- No calls -->
+            <div *ngIf="callState==0">
+                <p class="apply-text">{{ 'shared.announce.noCallPlanned' | translate}}</p>
+                <!--<p class="apply-text">{{ 'home.part3.text3' | translate }}</p>
+                <h2 class="apply">{{ 'home.part2.text1' | translate}}</h2>
                 <timer-component class="timelineBenefLanding" (timerEvent)="hideTimer()"
                                  [expirationTimestamp]="currentCall.startDate"></timer-component>
+                                 -->
+            </div>
+            <!-- call planned or open -->
+            <div *ngIf="callState>=1">
+                <p class="apply-text" [innerHTML]="'home.part2.text1' |
+                    translate:{date:dateNumber,hour:hourNumber}"></p>
             </div>
         </div>
         <div class="col-xl-6">

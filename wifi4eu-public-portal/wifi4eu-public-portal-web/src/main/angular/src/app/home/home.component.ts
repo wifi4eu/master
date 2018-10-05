@@ -53,7 +53,7 @@ export class HomeComponent {
                 this.currentCall = call;
                 if (this.currentCall) {
                     this.callState = this.currentCall.voucherCompetitionState;
-                    if (this.callState == 1) {
+                    if (this.callState >= 1) {
                         let date = moment(this.currentCall.startDate).tz(AppConstants.timezone);
                         this.dateNumber = date.format("DD/MM/YYYY");
                         this.hourNumber = date.format("HH:mm");
