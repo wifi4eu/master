@@ -442,7 +442,7 @@ export class BeneficiaryEditProfileComponent {
     }
 
     private editProfile() {
-        if(!this.municipalitiesSelected || !this.emailsMatch || /* !this.municipalityForm.form.valid || */ !this.buttonEnabled){
+        if(!this.municipalitiesSelected || !this.emailsMatch || !this.buttonEnabled){
             return;
         }
         this.submittingData = true;
