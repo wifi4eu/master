@@ -6,6 +6,7 @@ import wifi4eu.wifi4eu.common.helper.Validator;
 
 public class UserValidator {
 
+    //supplier
     public static void validateUser(UserDTO userDTO) throws Exception {
         if (userDTO == null) {
             throw new Exception("Empty user");
@@ -44,7 +45,9 @@ public class UserValidator {
 
     public static void validateBeneficiarySubmit(UserDTO userDTO) throws Exception {
         validateBeneficiary(userDTO);
-        if (Validator.isNull(userDTO.getEmail()) || userDTO.getEmail().length() > 255 || !userDTO.getEmail().matches(Constant.EMAIL_PATTERN)) {
+        if (Validator.isNull(userDTO.getEmail()) || userDTO.getEmail().length() > 255 || !userDTO.getEmail().matches(Constant.EMAIL_PATTERN) ||
+                Validator.isNull(userDTO.getEcasEmail()) || userDTO.getEcasEmail().length() > 255 || !userDTO.getEcasEmail().matches(Constant
+                .EMAIL_PATTERN)) {
             throw new Exception("Incorrect data in user fields!");
         }
     }

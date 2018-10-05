@@ -159,6 +159,7 @@ public class BeneficiaryService {
             user.setAddressNum(beneficiaryDTO.getUser().getAddressNum());
             user.setPostalCode(beneficiaryDTO.getUser().getPostalCode());
             user.setEmail(beneficiaryDTO.getUser().getEmail());
+            user.setEcasEmail(beneficiaryDTO.getUser().getEcasEmail());
             user.setCity(beneficiaryDTO.getUser().getCity());
             user.setCountry(beneficiaryDTO.getUser().getCountry());
             user.setType(3);
