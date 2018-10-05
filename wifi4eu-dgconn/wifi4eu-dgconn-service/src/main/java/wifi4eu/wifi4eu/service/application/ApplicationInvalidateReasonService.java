@@ -18,8 +18,6 @@ import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.entity.application.ApplicationInvalidateReason;
 import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
-import wifi4eu.wifi4eu.entity.registration.LegalFileCorrectionReason;
-import wifi4eu.wifi4eu.entity.voucher.SimpleMunicipality;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
 import wifi4eu.wifi4eu.mapper.application.ApplicantAuthorizedPersonMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationInvalidateReasonMapper;
@@ -44,6 +42,9 @@ import java.util.*;
 public class ApplicationInvalidateReasonService {
 
     private static final Logger _log = LogManager.getLogger(ApplicationInvalidateReasonService.class);
+
+    //requirement: after a request for correction is sent, cannot validate or invalidate for 2 days
+    private static final Integer UPLOAD_DOCUMENT_CORRECTION_DEADLINE = 2;
 
     @Autowired
     ApplicationInvalidateReasonRepository applicationInvalidateReasonRepository;
@@ -269,7 +270,7 @@ public class ApplicationInvalidateReasonService {
         if (logEmail != null) {
             Calendar deadline = Calendar.getInstance();
             deadline.setTime(new Date(logEmail.getSentDate()));
-            deadline.add(Calendar.DATE, 7);
+            deadline.add(Calendar.DATE, UPLOAD_DOCUMENT_CORRECTION_DEADLINE);
             Date currentTime = Calendar.getInstance().getTime();
             // Have more than 7 days overcome since the last request
             if (currentTime.before(deadline.getTime())) {
