@@ -6,6 +6,7 @@ import { SupplierProfileComponent } from "./profile/profile.component";
 import { SupplierEditProfileComponent } from "./profile/edit/edit-profile.component";
 import { AdditionalInfoComponent } from "./+additional-info/additional-info.component";
 import {DiscussionComponent} from "./+discussion/discussion.component";
+import { SupplierMyInstallationComponent } from './supplier-my-installation/supplier-my-installation.component';
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -31,6 +32,9 @@ import {DiscussionComponent} from "./+discussion/discussion.component";
         }, {
             path: 'additional-info',
             component: AdditionalInfoComponent
+        }, {
+            path: 'my-installation',
+            component: SupplierMyInstallationComponent,
         }
     ])],
     exports: [RouterModule]

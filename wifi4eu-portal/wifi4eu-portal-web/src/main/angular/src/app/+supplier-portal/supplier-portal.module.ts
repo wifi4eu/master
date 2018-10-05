@@ -8,6 +8,7 @@ import {SupplierEditProfileComponent} from "./profile/edit/edit-profile.componen
 import {SupplierPortalRoutingModule} from "./supplier-portal-routing.module";
 import {AdditionalInfoComponent} from "./+additional-info/additional-info.component";
 import {DiscussionComponent} from "./+discussion/discussion.component";
+import { SupplierMyInstallationComponent } from "./supplier-my-installation/supplier-my-installation.component";
 
 @NgModule({
     imports: [
@@ -20,7 +21,8 @@ import {DiscussionComponent} from "./+discussion/discussion.component";
         SupplierProfileComponent,
         SupplierEditProfileComponent,
         AdditionalInfoComponent,
-        DiscussionComponent
+        DiscussionComponent,
+        SupplierMyInstallationComponent
     ],
     bootstrap: [SupplierPortalComponent]
 })

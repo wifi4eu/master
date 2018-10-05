@@ -1030,5 +1030,8 @@
   "dgConn.voucherAssignment.password": "Password",
   "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct",
   "dgconn.voucherAssignment.runningFreze": "Freezing...",
-  "dgconn.voucherAssignment.runningPreSelectionList": "Creating Pre-selection List…"
+  "dgconn.voucherAssignment.runningPreSelectionList": "Creating Pre-selection List…",
+  "itemMenu.myInstallation": "My installation",
+  "supplier.myInstallation.title": "Request for installation by Municipalities",
+  "supplier.myInstallation.subTitle": "As a Wi-Fi installation company, youc an enconde your bank account(s) at any time. Once you're selected by the municipality then you can select a bank account and afterwards complete the installation report."
 }

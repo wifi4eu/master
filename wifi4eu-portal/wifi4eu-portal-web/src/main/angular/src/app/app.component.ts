@@ -142,6 +142,15 @@ export class AppComponent {
                 }
             }
         );
+        this.translateService.get('itemMenu.myInstallation').subscribe(
+            (translatedString: string) => {
+                this.menuTranslations.set('itemMenu.myInstallation', translatedString);
+                translatedItems++;
+                if (translatedItems == 10) {
+                    this.stringsTranslated.next();
+                }
+            }
+        );
         this.translateService.get('itemMenu.dissForum').subscribe(
             (translatedString: string) => {
                 this.menuTranslations.set('itemMenu.dissForum', translatedString);
@@ -222,6 +231,10 @@ export class AppComponent {
                 new UxLayoutLink({
                     label: this.menuTranslations.get('itemMenu.myAccount'),
                     url: '/supplier-portal/profile'
+                }), 
+                new UxLayoutLink({
+                    label: this.menuTranslations.get('itemMenu.myInstallation'),
+                    url: '/supplier-portal/my-installation'
                 }),
                 new UxLayoutLink({
                     label: this.menuTranslations.get('itemMenu.listSuppliers'),
