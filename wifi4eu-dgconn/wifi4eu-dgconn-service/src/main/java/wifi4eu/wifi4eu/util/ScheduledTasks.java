@@ -164,11 +164,10 @@ public class ScheduledTasks {
     //-- DGCONN-NOT-NECESSARY @Scheduled(cron = "0 0 9,17 * * MON-FRI")
     @Scheduled(cron = "0 0 9,10,11,12,13,14,15,16,17,18 * * MON-FRI")
     public void scheduleHelpdeskIssues() {
+    	final String confirmationMessage = "Thank you for your message.";
+    	
         _log.debug("Running DGConn Scheduled Task - HelpDeskIssues");
 
-//        UserContext userContext = UserHolder.getUser();
-//        UserDTO userConnected = userService.getUserByUserContext(userContext);
-//        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Starting helpdesk issues scheduled");
         List<HelpdeskIssueDTO> helpdeskIssueDTOS = helpdeskService.getAllHelpdeskIssueNoSubmited();
         _log.info("helpdeskIssueDTOS.size() [{}]", helpdeskIssueDTOS == null ? "NULL" : helpdeskIssueDTOS.size());
 
@@ -195,7 +194,7 @@ public class ScheduledTasks {
 
         				_log.info("Result posting to queue [{}]", result);
 
-        				if (result != null && result.contains("Thankyou.js")) {
+        				if (result != null && result.contains(confirmationMessage)) {
         					_log.info("Updating Helpdesk issue");
 
         					helpdeskIssue.setTicket(true);
