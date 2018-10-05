@@ -45,6 +45,7 @@ import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.security.TokenGenerator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.service.mail.MailService;
+import wifi4eu.wifi4eu.common.utils.UserValidator;
 import wifi4eu.wifi4eu.entity.invitationContacts.InvitationContact;
 import wifi4eu.wifi4eu.entity.mayor.Mayor;
 import wifi4eu.wifi4eu.common.utils.Utils;
@@ -435,7 +436,7 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseDTO updateUserDetails(UserDTO userConnected, List<UserContactDetails> users) {
+    public ResponseDTO updateUserDetails(UserDTO userConnected, List<UserContactDetails> users) throws Exception {
         //verifying data
         List<UserDTO> usersToSave = new ArrayList<UserDTO>();
         for (UserContactDetails userDetails : users) {
@@ -447,13 +448,8 @@ public class UserService {
             user.setPostalCode(userDetails.getPostalCode());
             user.setCity(userDetails.getCity());
             user.setCountry(userDetails.getCountry());
-            if (Validator.isNull(userDetails) || !checkFieldsContactDetails(user, userDetails.getType())) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The user details cannot been updated");
-                return new ResponseDTO(false, null, new ErrorDTO(org.springframework.http.HttpStatus.BAD_REQUEST.value(), org.springframework.http
-                        .HttpStatus.BAD_REQUEST.getReasonPhrase()));
-            } else {
-                usersToSave.add(user);
-            }
+            UserValidator.validateBeneficiary(user);
+            usersToSave.add(user);
         }
 
         for (UserDTO user : usersToSave) {

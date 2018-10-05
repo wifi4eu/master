@@ -104,7 +104,7 @@ public class UserResource {
                 if (user.getId() != userConnected.getId()) {
                     throw new AccessDeniedException("");
                 }
-
+                return userService.updateUserDetails(userConnected, usersList);
             } catch (AccessDeniedException ade) {
                 _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permission to update user details", ade.getMessage
                         ());
@@ -115,7 +115,6 @@ public class UserResource {
                 response.sendError(HttpStatus.BAD_REQUEST.value());
                 return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
             }
-            return userService.updateUserDetails(userConnected, usersList);
         }
         return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
     }
