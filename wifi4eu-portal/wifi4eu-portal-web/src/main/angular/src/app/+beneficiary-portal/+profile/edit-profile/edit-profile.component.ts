@@ -96,7 +96,7 @@ export class BeneficiaryEditProfileComponent {
     private organizationId: number = 0;
     private isOrganisation: boolean = false;
     private currentCall: CallDTOBase;
-    private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])$");
+    private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
     private newUserEmail: string = '';
     private registrationIndex: number = null;
     private registration: RegistrationDTOBase;
@@ -442,7 +442,7 @@ export class BeneficiaryEditProfileComponent {
     }
 
     private editProfile() {
-        if(!this.municipalitiesSelected || !this.emailsMatch || !this.municipalityForm.form.valid || !this.buttonEnabled){
+        if(!this.municipalitiesSelected || !this.emailsMatch || /* !this.municipalityForm.form.valid || */ !this.buttonEnabled){
             return;
         }
         this.submittingData = true;
@@ -665,7 +665,7 @@ export class BeneficiaryEditProfileComponent {
             && municipality.address.trim() != "" && municipality.addressNum.trim() != "" && municipality.postalCode.trim() != "";
         let isMayorValid = mayor.name != null && mayor.surname != null && mayor.email != null
             && mayor.name.trim() != "" && mayor.surname.trim() != "" && mayor.email.trim() != "";
-        if (!isMunicipalityValid || !isMayorValid) {
+        if (!isMunicipalityValid || !isMayorValid || !mayor.email.match(this.emailPattern)) {
             return true;
         }
         return false;
