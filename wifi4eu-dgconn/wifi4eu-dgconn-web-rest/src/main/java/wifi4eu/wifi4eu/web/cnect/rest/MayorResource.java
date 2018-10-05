@@ -52,62 +52,6 @@ public class MayorResource {
 
     private static final Logger _log = LoggerFactory.getLogger(MayorResource.class);
 
-    /*
-    @ApiOperation(value = "Get all the mayors")
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public List<MayorDTO> allMayors(HttpServletResponse response) throws IOException {
-        _log.info("allMayors");
-        try{
-            if(userService.getUserByUserContext(UserHolder.getUser()).getType() != 5){
-                throw new AccessDeniedException("");
-            }
-            else{
-                return mayorService.getAllMayors();
-            }
-        } catch (Exception e){
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        }
-        return null;
-    }
-    */
-
-    /*
-    @ApiOperation(value = "Get mayor by specific id")
-    @RequestMapping(value = "/{mayorId}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public MayorDTO getMayorById(@PathVariable("mayorId") final Integer mayorId, HttpServletResponse response) throws IOException {
-        _log.info("getMayorById: " + mayorId);
-        try {
-            permissionChecker.check(RightConstants.MAYORS_TABLE+mayorId);
-        } catch (Exception e){
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        }
-        return mayorService.getMayorById(mayorId);
-    }
-    */
-
-    /* @ApiOperation(value = "Create mayor")
-    @RequestMapping(method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseDTO createMayor(@RequestBody final MayorDTO mayorDTO,
-                                   HttpServletResponse response) throws IOException {
-      try {
-        return new ResponseDTO(true, mayorService.createMayor(mayorDTO), null);
-      } catch (AccessDeniedException ade) {
-        if (_log.isErrorEnabled()) {
-            _log.error("Error with permission on 'createMayor' operation.", ade);
-        }
-        response.sendError(HttpStatus.NOT_FOUND.value());
-      } catch (Exception e) {
-        if (_log.isErrorEnabled()) {
-            _log.error("Error on 'createMayor' operation.", e);
-        }
-        response.sendError(HttpStatus.NOT_FOUND.value());
-      }
-      return new ResponseDTO(false, null, null);
-    } */
-
     @ApiOperation(value = "Update mayor details")
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
@@ -136,28 +80,6 @@ public class MayorResource {
         return new ResponseDTO(false, null, null);
     }
 
-    /* @ApiOperation(value = "Delete mayor by specific id")
-    @RequestMapping(method = RequestMethod.DELETE)
-    @ResponseBody
-    public ResponseDTO deleteMayor(@RequestBody final Integer mayorId, HttpServletResponse response) throws IOException {
-        try {
-            _log.info("deleteMayor: " + mayorId);
-            permissionChecker.check(RightConstants.MAYORS_TABLE+mayorId);
-            MayorDTO resMayor = mayorService.deleteMayor(mayorId);
-            return new ResponseDTO(true, resMayor, null);
-        }
-        catch (AccessDeniedException ade){
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        }
-        catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'deleteMayor' operation.", e);
-            }
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        }
-        return new ResponseDTO(false, null, null);
-    } */
-
     @ApiOperation(value = "Get mayor by specific municipality id")
     @RequestMapping(value = "/municipalityId/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -166,8 +88,7 @@ public class MayorResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting mayor by municipality id " + municipalityId);
         try {
-            UserDTO user = userService.getUserByUserContext(UserHolder.getUser());
-            if (user.getType() != 5) {
+            if (userConnected.getType() != 5) {
                 if (!permissionChecker.checkIfDashboardUser()) {
                     permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
                 }
@@ -175,9 +96,11 @@ public class MayorResource {
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve the mayor from this municipality", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The mayor from this municipality cannot been retrieved", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
+            return null;
         }
         return mayorService.getMayorByMunicipalityId(municipalityId);
     }

@@ -81,6 +81,7 @@ public class MunicipalityResource {
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The municipality cannot been retrieved", e);
             response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
         }
         return municipalityService.getMunicipalityById(municipalityId);
     }

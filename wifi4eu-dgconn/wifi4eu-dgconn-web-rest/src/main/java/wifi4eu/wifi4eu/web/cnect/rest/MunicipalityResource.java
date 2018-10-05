@@ -90,6 +90,7 @@ public class MunicipalityResource {
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The municipality cannot been retrieved", e);
             response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
         }
         return municipalityService.getMunicipalityById(municipalityId);
     }
@@ -105,40 +106,6 @@ public class MunicipalityResource {
     public ResponseDTO getUsersMunicipalityById(@PathVariable("municipalityId") final Integer municipalityId) {
         return municipalityService.getUsersMunicipalityById(municipalityId);
     }
-
-    /*
-    @ApiOperation(value = "Create municipality")
-    @RequestMapping(method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public ResponseDTO createMunicipality(@RequestBody final MunicipalityDTO municipalityDTO,
-                                          HttpServletResponse response) throws IOException {
-        try {
-            _log.info("createMunicipality");
-
-            //check permission
-            int municipalityId = municipalityDTO.getId();
-            permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
-
-            MunicipalityValidator.validateMunicipality(municipalityDTO, lauService.getLauById(municipalityDTO.getLauId()),
-                    nutsService.getNutsByLevel(0));
-
-            MunicipalityDTO resMunicipality = municipalityService.createMunicipality(municipalityDTO);
-            return new ResponseDTO(true, resMunicipality, null);
-        } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error with permission on 'createMunicipality' operation.", ade);
-            }
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'createMunicipality' operation.", e);
-            }
-            response.sendError(HttpStatus.BAD_REQUEST.value());
-        }
-        return new ResponseDTO(true, null, null);
-    }
-    */
 
     @ApiOperation(value = "Get municipality by specific id for thread")
     @RequestMapping(value = "/thread/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
@@ -197,28 +164,6 @@ public class MunicipalityResource {
         }
     }
 
-    /* @ApiOperation(value = "Delete municipality by specific id")
-    @RequestMapping(method = RequestMethod.DELETE)
-    @ResponseBody
-    public ResponseDTO deleteMunicipality(@RequestBody final Integer municipalityId, HttpServletResponse response) throws IOException {
-        try {
-            _log.info("deleteMunicipality: " + municipalityId);
-
-            //check permisssion
-            permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
-            MunicipalityDTO resMunicipality = municipalityService.deleteMunicipality(municipalityId);
-            return new ResponseDTO(true, resMunicipality, null);
-        } catch (AccessDeniedException ade) {
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'deleteMunicipality' operation.", e);
-            }
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        }
-        return new ResponseDTO(true, null, null);
-    } */
-
     @ApiOperation(value = "Get municipalities by specific lau id")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType = "string", paramType = "header")
@@ -233,32 +178,6 @@ public class MunicipalityResource {
 
         return municipalityService.getMunicipalitiesByLauId(lauId);
     }
-
-    /*
-    @ApiOperation(value = "Get municipalities by specific user id")
-    @RequestMapping(value = "/userId/{userId}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public List<MunicipalityDTO> getMunicipalitiesByUserId(@PathVariable("userId") final Integer userId,
-                                                           HttpServletResponse response) throws IOException {
-        try {
-            permissionChecker.check(RightConstants.USER_TABLE + userId);
-        } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error with permission on 'getMunicipalitiesByUserId' operation.", ade);
-            }
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            throw new AccessDeniedException("");
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'getMunicipalitiesByUserId' operation.", e);
-            }
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            throw new AccessDeniedException("");
-        }
-
-        return municipalityService.getMunicipalitiesByUserId(userId);
-    }
-    */
 
     @ApiOperation(value = "Get all correspondence for a municipality")
     @RequestMapping(value = "/correspondence/{municipalityId}", method = RequestMethod.GET, produces = "application/json")

@@ -97,11 +97,13 @@ public class RegistrationResource {
 			_log.error("ECAS Username: " + userConnected.getEcasUsername()
 					+ "- You have no permissions to retrieve this registration", ade.getMessage());
 			response.sendError(HttpStatus.NOT_FOUND.value());
+			return null;
 		} catch (Exception e) {
 			_log.error(
 					"ECAS Username: " + userConnected.getEcasUsername() + "- This registration cannot been retrieved",
 					e);
 			response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			return null;
 		}
 		return registrationService.getRegistrationById(registrationId);
 	}
