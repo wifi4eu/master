@@ -19,6 +19,9 @@ public class BankAccountDTO {
     private String accountHolderCity;
     private String accountHolderCountry;
 
+    private Integer status;
+    private String rejectionCause;
+
     public BankAccountDTO() {
     }
 
@@ -124,5 +127,21 @@ public class BankAccountDTO {
 
     public void setAccountHolderCountry(String accountHolderCountry) {
         this.accountHolderCountry = accountHolderCountry;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getRejectionCause() {
+        return rejectionCause;
+    }
+
+    public void setRejectionCause(String rejectionCause) {
+        this.rejectionCause = rejectionCause;
     }
 }

@@ -44,8 +44,14 @@ public class BankAccount {
     @Column(name = "account_holder_city")
     private String accountHolderCity;
 
-    @Column(name = "account_holder_Country")
+    @Column(name = "account_holder_country")
     private String accountHolderCountry;
+
+    @Column(name = "status")
+    private Integer status;
+
+    @Column(name = "rejection_cause")
+    private String rejectionCause;
 
     public BankAccount() {
     }
@@ -152,5 +158,21 @@ public class BankAccount {
 
     public void setAccountHolderCountry(String accountHolderCountry) {
         this.accountHolderCountry = accountHolderCountry;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getRejectionCause() {
+        return rejectionCause;
+    }
+
+    public void setRejectionCause(String rejectionCause) {
+        this.rejectionCause = rejectionCause;
     }
 }
