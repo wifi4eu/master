@@ -138,7 +138,7 @@ public class GrantAgreementResource {
             }
 
             GrantAgreementDTO grantAgreementDTO = grantAgreementService.getGrantAgreementByApplicationId(applicationId);
-            if(Validator.isNotNull(grantAgreementDTO.getDocumentLocation())){
+            if(Validator.isNull(grantAgreementDTO.getDocumentLocation())){
                 throw new AppException("");
             }
             byte[] file = grantAgreementService.downloadGrantAgreementSigned(grantAgreementDTO);

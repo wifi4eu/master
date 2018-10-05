@@ -327,6 +327,7 @@ export class AdditionalInfoComponent {
             this.registrationApi.uploadRegistrationDocuments(this.registration.id, sendObject).subscribe(
                 (response: ResponseDTOBase) => {
                     if (response.success) {
+                        this.dirty = false;
                         this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
                         this.registration = response.data;
                         this.router.navigateByUrl('/beneficiary-portal/voucher');
