@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskTicketDTO;
 import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
@@ -30,7 +32,9 @@ public class ScheduleTaskTest {
 	
 	private final String CYRILLIC_ALPHABET = "А а,Б б,В в,Г г,Д д,Е е,Ж ж,З з,И и,Й й,К к,Л л,М м,Н н,О о,П п,Р р,С с,Т т,У у,Ф ф,Х х,Ц ц,Ч ч,Ш ш,Щ щ,Ь ь";
 
-	private final String GERMAN_ALPHABET = "Ä ä, Ö ö, Ü ü, ẞ ß";
+	private final String GERMAN_ALPHABET = "Ä ä, Ö ö, Ü ü, ẞ ß ";
+	private final String SPANISH_ALPHABET = "á é í ó ú ¿ ¡ ü ñ ";
+	private final String PORTUGUESE_ALPHABET = "à, À, á, Á, ã, Ã, ç, Ç, é, É, ê, Ê, Í, í, ó, Ó, ú, Ú, ü, Ü ";
 	
 	private final String GREEK_ALPHABET = "Α α,Β β,Γ γ,Δ δ,Ε ε,Ζ ζ,Η η,Θ θ,Ι ι,Κ κ,Λ λ,Μ μ,Ν ν,Ξ ξ,Ο ο,Π π,Ρ ρ,Σ σ/ς,Τ τ,Υ υ,Φ φ,Χ χ,Ψ ψ,Ω ω";
 	
@@ -78,7 +82,7 @@ public class ScheduleTaskTest {
 	 * Testing if all messages read from database are being marked as sent
 	 * @throws Exception
 	 */
-	@Test
+//	@Test
 	public void scheduleHelpdeskIssues_test() throws Exception {
 		HelpdeskIssueDTO helpdeskIssueDTO1 = new HelpdeskIssueDTO();
 		helpdeskIssueDTO1.setId(1);
@@ -119,20 +123,23 @@ public class ScheduleTaskTest {
 	 * A code to test if the Serco System was creating the tickets on its system.
 	 * @throws Exception
 	 */
-	//@Test
+//	@Test
 	public void executePost() throws Exception {
         String prodUrl = "https://webtools.ec.europa.eu/form-tools/process.php";
         String testUrl = "https://webgate.acceptance.ec.europa.eu/fpfis/webtools/form-tools/process.php";
 
         HelpdeskTicketDTO helpdeskTicketDTO = new HelpdeskTicketDTO();
 		helpdeskTicketDTO.setForm_tools_form_id("1047");
-		helpdeskTicketDTO.setEmailAdress("tester@test.com");
+		helpdeskTicketDTO.setEmailAdress("fkaswine@everis.com");
 		helpdeskTicketDTO.setEmailAdressconf(helpdeskTicketDTO.getEmailAdress());
-		helpdeskTicketDTO.setUuid("wifi4eu_" + "5036");
+		helpdeskTicketDTO.setUuid("wifi4eu_368");
 		helpdeskTicketDTO.setFirstname("TESTER FIRST NAME");
 		helpdeskTicketDTO.setLastname("TESTER SUR NAME");
-		helpdeskTicketDTO.setTxtsubjext("TEST TOPIC / SUBJECT");
-		helpdeskTicketDTO.setQuestion("TEST SUMMARY / QUESTION");
+		helpdeskTicketDTO.setTxtsubjext("TEST TOPIC / SUBJECT (GERMAN/SPANISH/PORTUGUESE)");
+
+        String encodedQuestion = URLEncoder.encode(this.GERMAN_ALPHABET + "|" + this.SPANISH_ALPHABET + "|" + this.PORTUGUESE_ALPHABET, "UTF-8");
+
+		helpdeskTicketDTO.setQuestion(encodedQuestion);
 
         String response = ScheduledTasks.executePost(testUrl, helpdeskTicketDTO.toString());
         System.out.println(response);

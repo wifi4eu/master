@@ -4,8 +4,10 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -186,10 +188,16 @@ public class ScheduledTasks {
     				_log.info("userDTO id[{}]", userDTO == null ? "NULL" : userDTO.getId());
 
         			if (userDTO != null) {
-        				helpdeskTicketDTO.setFirstname(userDTO.getName());
-        				helpdeskTicketDTO.setLastname(userDTO.getSurname());
-        				helpdeskTicketDTO.setTxtsubjext(helpdeskIssue.getTopic());
-        				helpdeskTicketDTO.setQuestion(helpdeskIssue.getSummary());
+        				String escapedFirstName = URLEncoder.encode(userDTO.getName(), "UTF-8");
+        				String escapedLastName = URLEncoder.encode(userDTO.getSurname(), "UTF-8");
+        				String escapedTopic = URLEncoder.encode(helpdeskIssue.getTopic(), "UTF-8");
+        				String escapedQuestion = URLEncoder.encode(helpdeskIssue.getSummary(), "UTF-8");
+        				
+        				helpdeskTicketDTO.setFirstname(escapedFirstName);
+        				helpdeskTicketDTO.setLastname(escapedLastName);
+        				helpdeskTicketDTO.setTxtsubjext(escapedTopic);
+        				helpdeskTicketDTO.setQuestion(escapedQuestion);
+        				
         				String result = executePost(sercoHelpdeskEndpoint, helpdeskTicketDTO.toString());
 
         				_log.info("Result posting to queue [{}]", result);
@@ -247,6 +255,7 @@ public class ScheduledTasks {
         HttpURLConnection connection = null;
         
         _log.info("targetUrl [{}] urlParameters.length[{}], urlParameters[{}]", targetURL, (urlParameters == null ? "NULL" : urlParameters.length()), (urlParameters.length() <= 100 ? urlParameters : urlParameters.substring(0, 100)));
+//        _log.info("targetUrl [{}] urlParameters.length[{}], urlParameters[{}]", targetURL, (urlParameters == null ? "NULL" : urlParameters.length()), urlParameters);
         
         try {
             URL url = new URL(targetURL);
