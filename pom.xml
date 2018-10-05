@@ -729,6 +729,11 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.acc}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.acc}</azure.blob.legal.files.key>
+                <cns.notification.service.url>${cns.notification.service.url.pro}</cns.notification.service.url>
+                <cns.user.preferences.service.url>${cns.user.preferences.service.url.pro}
+                </cns.user.preferences.service.url>
+                <cns.client.system.key>${cns.client.system.key.pro}</cns.client.system.key>
+                <cns.client.system.password>${cns.client.system.password.pro}</cns.client.system.password>                
             </properties>
         </profile>
         <profile>
