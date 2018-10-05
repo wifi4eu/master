@@ -15,8 +15,8 @@ import java.util.List;
 public interface MunicipalityMapper {
 
     @Mappings({
-            @Mapping(source = "entity.lau.id", target = "lauId"),
-            @Mapping(ignore = true, target = "registrations")
+            @Mapping(source = "entity.lau.id", target = "lauId")
+            // @Mapping(ignore = true, target = "registrations")
     })
     MunicipalityDTO toDTO(Municipality entity);
 
