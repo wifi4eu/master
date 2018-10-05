@@ -8,4 +8,6 @@ import java.util.List;
 public interface BankAccountRepository extends CrudRepository<BankAccount,Integer> {
 
     List<BankAccount> findBySupplierId(int supplierId);
+
+    BankAccount findByIdAndSupplierId(int id, int supplierId);
 }
