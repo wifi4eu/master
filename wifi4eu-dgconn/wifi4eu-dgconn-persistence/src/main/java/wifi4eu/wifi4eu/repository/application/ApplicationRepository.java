@@ -1,25 +1,24 @@
 package wifi4eu.wifi4eu.repository.application;
 
 
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.entity.application.Application;
 
-import java.util.Date;
 import java.util.List;
 
 public interface ApplicationRepository extends CrudRepository<Application,Integer> {
     Iterable<Application> findBySupplierId(Integer supplierId);
     Application findByCallIdAndRegistrationId(Integer callId, Integer registrationId);
     Iterable<Application> findByRegistrationId(Integer registrationId);
+
     Application findByRegistrationIdAndCallId(Integer registrationId, Integer callId);
 
     Iterable<Application> findByCallId(Integer callId);
     Iterable<Application> findByCallIdOrderByIdAsc(Integer callId);
     List<Application> findByCallIdOrderByDateAsc(Integer callId);
     List<Application> findByCallIdAndStatus(Integer callId, Integer status);
+    List<Application> findByRegistrationIdIn(List<Integer> ids);
 
     @Query(value = "SELECT ap.* FROM applications ap INNER JOIN registrations r ON ap.registration = r.id WHERE r._status != 1 AND ap.call_id = ?1", nativeQuery = true)
 //    AND r.allFilesFlag = 1

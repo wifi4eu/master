@@ -46,7 +46,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
+        
         <!-- DEPENDENCIES VERSIONS -->
 
         <jdk.version>1.7</jdk.version>
@@ -76,6 +76,8 @@
         <spring.version>4.3.5.RELEASE</spring.version>
         <spring.security.version>3.2.9.RELEASE</spring.security.version>
         <spring.data.jpa.version>1.10.4.RELEASE</spring.data.jpa.version>
+        <spring.dbunit.version>1.2.0</spring.dbunit.version>
+        <dbunit.version>2.5.1</dbunit.version>
         <jackson.version>2.9.5</jackson.version>
         <ecas.client.version>4.22.0</ecas.client.version>
         <swagger.version>1.5.10</swagger.version>
@@ -118,7 +120,7 @@
         <server.test.address>wifi4eu.everisdigitalchannels.com</server.test.address>
         <server.test.port>8080</server.test.port>
         <mail.serv.enable>false</mail.serv.enable>
-
+        
         <!-- DEV environments -->
         <server.azure.dev.address>wifi4eu-dev.everincloud.com</server.azure.dev.address>
         <server.azure.devb.address>wifi4eu-devb.everincloud.com</server.azure.devb.address>
@@ -219,6 +221,7 @@
         <azure.blob.legal.files.key>
             NvSiZXysA6btQMSI0YtPkChT8wVYV4av2Fx26/TOWm7pTmiIoHlAKK+6MPCkMu8sWvWTHbTObll0uFRddKfL3WWe4n3R9KL835U2kiYfs5TF/ZfeN4w3QFkFNShjTnkFNCGsWDt+JDFAlDWyntnf3eQTReecJNTJBbjzor4LSCEjw8Y6jH+lNsGeexUeTosIUf2jCtCG8VRAuGd35VpWsb3SLezfANrjyKh58v1uCzxg+Bs5fqoBGAvhMZfbmfa9Kzhmk3w8D7mhRpi9v4R7kw==
         </azure.blob.legal.files.key>
+        <azure.blob.legal.files.key.local>GPZGrFGRciB0lpirhg62QFSiZOaqLmOi0srtT4Hit96QYNxiF1ikwAkqfPXQLOhRiuB5NLOVdX4EugpchsimwAhEUs0kIZpdtxD9xTn3JdrTKNh37+CVgkNP7M0qFIH0zGGGiy2tSgAqyd0SMpJqrwFJ4Yxhxw37YkIHRnOH0wkdCkBj2BJwkETstQXRv24uspy7MVMF6KnXflPG08fZNYYxhlu6J+Jk2cqPAVw2q8cewowokCOZnT1nkFl4revvxAYcdrRKZ8dvnsQ7HRSIOuUHhlHX9J5GotGWUOPJMg4=</azure.blob.legal.files.key.local>
         <azure.blob.legal.files.key.dev>
             NvSiZXysA6btQMSI0YtPkChT8wVYV4av2Fx26/TOWm7pTmiIoHlAKK+6MPCkMu8sWvWTHbTObll0uFRddKfL3WWe4n3R9KL835U2kiYfs5TF/ZfeN4w3QFkFNShjTnkFNCGsWDt+JDFAlDWyntnf3eQTReecJNTJBbjzor4LSCEjw8Y6jH+lNsGeexUeTosIUf2jCtCG8VRAuGd35VpWsb3SLezfANrjyKh58v1uCzxg+Bs5fqoBGAvhMZfbmfa9Kzhmk3w8D7mhRpi9v4R7kw==
         </azure.blob.legal.files.key.dev>
@@ -240,6 +243,8 @@
         <!-- Redis -->
         <redis.enabled>false</redis.enabled>
         <redis.sentinel.uris>10.0.2.31,10.0.2.32,10.0.2.33</redis.sentinel.uris>
+
+        <war.plugin.version>3.2.2</war.plugin.version>
 
     </properties>
 
@@ -270,7 +275,7 @@
             </modules>
         </profile>
 
-        <!-- APP PROFILES -->
+		<!-- APP PROFILES -->
 
         <profile>
             <id>wifi4eu-portal</id>
@@ -284,7 +289,7 @@
             </modules>
         </profile>
 
-        <profile>
+		<profile>
             <id>wifi4eu-public-portal</id>
             <modules>
                 <!-- Common modules -->
@@ -296,7 +301,7 @@
             </modules>
         </profile>
 
-        <profile>
+		<profile>
             <id>wifi4eu-dgconn</id>
             <modules>
                 <!-- Common modules -->
@@ -308,7 +313,7 @@
             </modules>
         </profile>
 
-        <profile>
+		<profile>
             <id>wifi4eu-supplier</id>
             <modules>
                 <!-- Common modules -->
@@ -320,7 +325,7 @@
             </modules>
         </profile>
 
-        <profile>
+		<profile>
             <id>wifi4eu-financial</id>
             <modules>
                 <!-- Common modules -->
@@ -333,6 +338,15 @@
         </profile>
 
         <!-- ENVIRONMENT PROFILES -->
+        <profile>
+            <id>VAGRANT</id>
+            <properties>
+                <ng.env>test</ng.env>
+                <server.address>172.30.10.10:8080</server.address>
+                <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.local}</azure.blob.legal.files.key>
+            </properties>
+        </profile>
         <profile>
             <id>TEST</id>
             <properties>
@@ -350,7 +364,7 @@
                 <mail.serv.location>https://wifi4eu.everisdigitalchannels.com:8080/wifi4eu/#/</mail.serv.location>
                 <mail.serv.enable>true</mail.serv.enable>
                 <mail.serv.using.smtp>true</mail.serv.using.smtp>
-                <mail.serv.using.cns>false</mail.serv.using.cns>
+                <mail.serv.using.cns>false</mail.serv.using.cns>                
                 <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
@@ -434,7 +448,7 @@
                 <redis.sentinel.uris>10.0.2.31,10.0.2.32,10.0.2.33</redis.sentinel.uris>
                 -->
                 <mail.serv.using.smtp>false</mail.serv.using.smtp>
-                <mail.serv.using.cns>true</mail.serv.using.cns>
+                <mail.serv.using.cns>true</mail.serv.using.cns>                
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
             </properties>
@@ -484,7 +498,7 @@
         <profile>
             <id>AZUREDEV-PG</id>
             <properties>
-                <ng.env>dev</ng.env>
+                <ng.env>dev-pg</ng.env>
                 <schemes>https</schemes>
                 <server.address>${server.azure.devpg.address}</server.address>
                 <server.dgconn.address>${server.azure.devpg.dgconn.address}</server.dgconn.address>
@@ -513,10 +527,8 @@
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
                 <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
-                <!--
                 <redis.enabled>true</redis.enabled>
-                <redis.sentinel.uris>10.0.2.31,10.0.2.32,10.0.2.33</redis.sentinel.uris>
-                -->
+                <redis.sentinel.uris>127.0.0.1,127.0.0.1,127.0.0.1</redis.sentinel.uris>
                 <mail.serv.using.smtp>false</mail.serv.using.smtp>
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
@@ -887,13 +899,6 @@
             </dependency>
 
             <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-                <scope>test</scope>
-            </dependency>
-
-            <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>servlet-api</artifactId>
                 <version>${servlet-api.version}</version>
@@ -1058,6 +1063,13 @@
                 <version>${spring.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>net.sourceforge.jtds</groupId>
+                <artifactId>jtds</artifactId>
+                <version>1.3.1</version>
+                <scope>test</scope>
+            </dependency>
+
             <!--
                         <dependency>
                             <groupId>eu.europa.ec.digit.iam.ecas.client</groupId>
@@ -1110,6 +1122,32 @@
                 <version>${commons-codec.version}</version>
             </dependency>
 
+            <!-- Testing -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>${spring.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.dbunit</groupId>
+                <artifactId>dbunit</artifactId>
+                <version>${dbunit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.github.springtestdbunit</groupId>
+                <artifactId>spring-test-dbunit</artifactId>
+                <version>${spring.dbunit.version}</version>
+                <scope>test</scope>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -1125,7 +1163,7 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j-impl</artifactId>
         </dependency>
-
+        
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-jcl</artifactId>

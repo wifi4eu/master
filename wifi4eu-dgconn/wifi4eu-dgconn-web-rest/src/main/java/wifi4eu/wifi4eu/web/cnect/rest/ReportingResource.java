@@ -18,7 +18,7 @@ import wifi4eu.wifi4eu.service.reporting.ReportingService;
 public class ReportingResource {
 
     @Autowired
-    ReportingService reportingService;
+    private ReportingService reportingService;
 
     @ApiOperation(value = "Call Open")
     @RequestMapping(value  = "/call-open", method = RequestMethod.GET, produces = "application/json")
