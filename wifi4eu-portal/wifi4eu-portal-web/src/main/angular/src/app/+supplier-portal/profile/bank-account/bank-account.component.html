@@ -1,0 +1,110 @@
+<div class="container">
+    <div class="ui-g-12" style="padding-bottom: 0;">
+        <div class="ui-g-8 ui-lg-8 ui-md-12 ui-sm-12" style="margin-top: 1em;">
+            <p class="beneficiaryTitle">
+                <span>{{ 'suppPortal.bankAccount.title' | translate }}</span>
+            </p>
+            <div class="ui-g-10">
+                <p>{{ 'suppPortal.bankAccount.label' | translate }}</p>
+            </div>
+        </div>
+    </div>
+
+
+    <div *ngFor="let  bankAccountDTO of bankAccountDTOList; let i = index">
+
+        <div class="ui-g-12" style="padding-top: 0;">
+            <div class="ui-g-8 ui-lg-8 ui-md-12 ui-sm-12" style="margin-top: 1em;">
+                <p class="beneficiaryMayor">{{ 'suppRegistration.bankAccount.accountDetails' | translate }}</p>
+                <div class="ui-g-12 whitePanel">
+                    <div class="ui-g-12">
+                        <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.accountName' | translate }}</span>
+                        <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.accountName }} </b> </span>
+                    </div>
+                    <div class="ui-g-12">
+                        <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.iban' | translate }}</span>
+                        <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.iban }} </b> </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br/><br/>
+
+        <p class="beneficiaryMayor">{{ 'suppRegistration.bankAccount.bankDetails' | translate }}</p>
+        <div>
+            <div class="clearfix"></div>
+            <!--ADD CONTACT-->
+            <!--<p class><b>{{ 'suppRegistration.contact.person' | translate }} {{i+1}}</b></p>-->
+            <div class="ui-g-12 whitePanel">
+                <div class="ui-g-12">
+                    <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.bankName' | translate }}</span>
+                    <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.bankName }} </b> </span>
+                </div>
+                <div class="ui-g-12">
+                    <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.bankStreet' | translate }}</span>
+                    <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.bankStreet }} </b> </span>
+                </div>
+                <div class="ui-g-12">
+                    <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.bankNumber' | translate }}</span>
+                    <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.bankNumber }} </b></span>
+                </div>
+                <div class="ui-g-12">
+                    <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.bankCity' | translate }}</span>
+                    <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.bankCity }} </b>
+                    </span>
+                </div>
+                <div class="ui-g-12">
+                    <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.bankCountry' | translate }}</span>
+                    <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.bankCountry }} </b> </span>
+                </div>
+            </div>
+        </div>
+
+        <br/><br/>
+
+        <p class="beneficiaryMayor">{{ 'suppRegistration.bankAccount.accountHolderDetails' | translate }}</p>
+        <div>
+            <div class="clearfix"></div>
+            <!--ADD CONTACT-->
+            <!--<p class><b>{{ 'suppRegistration.contact.person' | translate }} {{i+1}}</b></p>-->
+            <div class="ui-g-12 whitePanel">
+                <div class="ui-g-12">
+                    <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.accountHolderStreet' | translate }}</span>
+                    <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.accountHolderStreet }} </b> </span>
+                </div>
+                <div class="ui-g-12">
+                    <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.accountHolderNumber' | translate }}</span>
+                    <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.accountHolderNumber }} </b> </span>
+                </div>
+                <div class="ui-g-12">
+                    <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.accountHolderCity' | translate }}</span>
+                    <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.accountHolderCity }} </b></span>
+                </div>
+                <div class="ui-g-12">
+                    <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.accountHolderCountry' | translate }}</span>
+                    <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.accountHolderCountry }} </b>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <br/><br/>
+
+        <div class="ui-g-12" style="padding-top: 0;">
+            <div class="ui-g-8 ui-lg-8 ui-md-12 ui-sm-12" style="margin-top: 1em;">
+                <p class="beneficiaryMayor">{{ 'suppRegistration.bankAccount.supportingDocuments' | translate }}</p>
+                <div class="ui-g-12 whitePanel">
+                    <div class="ui-g-12">
+                        <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.document' | translate }}</span>
+                        <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.accountName }} </b> </span>
+                    </div>
+                    <div class="ui-g-12">
+                        <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.document' | translate }}</span>
+                        <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.iban }} </b> </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
