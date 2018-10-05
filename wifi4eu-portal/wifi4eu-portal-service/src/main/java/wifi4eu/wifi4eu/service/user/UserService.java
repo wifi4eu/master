@@ -622,9 +622,6 @@ public class UserService {
         }
     }
 
-    public boolean isLocalHost() {
-        return baseUrl.contains(UserConstants.LOCAL);
-    }
 
     public String getLogoutEnviroment() {
         UserContext userContext = UserHolder.getUser();

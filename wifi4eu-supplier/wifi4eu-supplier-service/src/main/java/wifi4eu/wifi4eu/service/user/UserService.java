@@ -124,9 +124,6 @@ public class UserService {
         return this.lang;
     }
 
-    public boolean isLocalHost() {
-        return baseUrl.contains(UserConstants.LOCAL);
-    }
 
     public Locale initLocale() {
         Locale locale;

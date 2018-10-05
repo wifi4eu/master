@@ -56,31 +56,29 @@ public class ThreadMessageService {
     UserRepository userRepository;
 
     public ThreadMessageDTO createThreadMessage(ThreadMessageDTO threadMessageDTO) {
-    	if (threadMessageDTO.getId() != 0) {
-    		_log.warn("Call to a create method with id set, the value has been removed ({})", threadMessageDTO.getId());
-    		threadMessageDTO.setId(0);	
-    	}
+        if (threadMessageDTO.getId() != 0) {
+            _log.warn("Call to a create method with id set, the value has been removed ({})", threadMessageDTO.getId());
+            threadMessageDTO.setId(0);
+        }
         ThreadMessageDTO threadMessage = threadMessageMapper.toDTO(threadMessageRepository.save(threadMessageMapper.toEntity(threadMessageDTO)));
         ThreadDTO thread = threadService.getThreadById(threadMessage.getThreadId());
         if (thread.getType() == 1) {
             List<MunicipalityDTO> municipalities = municipalityService.getMunicipalitiesByLauId(Integer.valueOf(thread.getReason()));
             if (municipalities.size() <= 10) {
-                if (!userService.isLocalHost()) {
-                    for (MunicipalityDTO municipality : municipalities) {
-                        UserDTO user = userMapper.toDTO(userRepository.findMainUserFromRegistration(municipality.getRegistrations().get(0).getId()));
-                        if (user != null) {
-                            Locale locale = new Locale(UserConstants.DEFAULT_LANG);
-                            if (user.getLang() != null) {
-                                locale = new Locale(user.getLang());
-                            }
-
-                            MailData mailData = MailHelper.buildMailNewThreadMessage(
-                            		user.getEcasEmail(), MailService.FROM_ADDRESS, 
-                            		municipality.getId(), "createThreadMessage", locale);
-                        	mailService.sendMail(mailData, false);
+                for (MunicipalityDTO municipality : municipalities) {
+                    UserDTO user = userMapper.toDTO(userRepository.findMainUserFromRegistration(municipality.getRegistrations().get(0).getId()));
+                    if (user != null) {
+                        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+                        if (user.getLang() != null) {
+                            locale = new Locale(user.getLang());
                         }
+
+                        MailData mailData = MailHelper.buildMailNewThreadMessage(user.getEcasEmail(), MailService.FROM_ADDRESS, municipality.getId
+                                (), "createThreadMessage", locale);
+                        mailService.sendMail(mailData, false);
                     }
                 }
+
             }
         }
         return threadMessage;

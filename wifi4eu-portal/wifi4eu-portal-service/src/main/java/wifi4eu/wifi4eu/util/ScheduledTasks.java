@@ -198,18 +198,17 @@ public class ScheduledTasks {
                     UserDTO user = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
 
                     if (user != null && user.getEcasEmail() != null) {
-                        if (!userService.isLocalHost()) {
-                            Locale locale = new Locale(UserConstants.DEFAULT_LANG);
-                            if (user.getLang() != null) {
-                                locale = new Locale(user.getLang());
-                            }
-                            
-                            String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/voucher";
-                            MailData mailData = MailHelper.buildMailRequestSupportingDocumentsForRegistration(
-                            		user.getEcasEmail(), MailService.FROM_ADDRESS, additionalInfoUrl, 
-                            		registrationDTO.getMunicipalityId(), "sendDocRequest", locale);
-                        	mailService.sendMail(mailData, false);
+
+                        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+                        if (user.getLang() != null) {
+                            locale = new Locale(user.getLang());
                         }
+
+                        String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/voucher";
+                        MailData mailData = MailHelper.buildMailRequestSupportingDocumentsForRegistration(user.getEcasEmail(), MailService
+                                .FROM_ADDRESS, additionalInfoUrl, registrationDTO.getMunicipalityId(), "sendDocRequest", locale);
+                        mailService.sendMail(mailData, false);
+
                         int mailCounter = registrationDTO.getMailCounter() - 1;
                         registrationDTO.setMailCounter(mailCounter);
                         registrationService.createRegistration(registrationDTO);
@@ -233,8 +232,8 @@ public class ScheduledTasks {
             ObjectMapper mapper = new ObjectMapper();
             QueueApplicationElement qae = mapper.readValue(body, QueueApplicationElement.class);
 
-            ApplicationDTO applicationDTO = applicationService.registerApplication(qae.getCallId(), qae.getUserId(), qae.getRegistrationId(), qae.getMunicipalityId(),
-                    qae.getFileUploadTimestamp(), qae.getQueueTimestamp(), request);
+            ApplicationDTO applicationDTO = applicationService.registerApplication(qae.getCallId(), qae.getUserId(), qae.getRegistrationId(), qae
+                    .getMunicipalityId(), qae.getFileUploadTimestamp(), qae.getQueueTimestamp(), request);
 
             long deliveryTag = 0;
 
@@ -255,12 +254,10 @@ public class ScheduledTasks {
             URL url = new URL(targetURL);
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type",
-                    "application/x-www-form-urlencoded");
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
             connection.setRequestProperty("Connection", "keep-alive");
-            connection.setRequestProperty("Content-Length",
-                    Integer.toString(urlParameters.getBytes().length));
+            connection.setRequestProperty("Content-Length", Integer.toString(urlParameters.getBytes().length));
             connection.setRequestProperty("Content-Language", "en-US,en;q=0.9,es-ES;q=0.8,es;q=0.7");
             connection.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
             connection.setRequestProperty("Referer", "https://forms.communi-k.eu/livewebtools/WebForms/Standard/Standard.php?en");
@@ -270,8 +267,7 @@ public class ScheduledTasks {
             connection.setUseCaches(false);
             connection.setDoOutput(true);
 
-            DataOutputStream wr = new DataOutputStream(
-                    connection.getOutputStream());
+            DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
             wr.writeBytes(urlParameters);
             wr.close();
 
@@ -300,7 +296,8 @@ public class ScheduledTasks {
         List<RegistrationUsers> registrationUsers = Lists.newArrayList(registrationUsersRepository.findAll());
         for (int i = 0; registrationUsers.size() > i; i++) {
             RegistrationUsers registrationUser = registrationUsersRepository.findOne(i);
-            if (registrationUser.getUserId() == null && (registrationUser.getCreationDate().toInstant().plus(24, ChronoUnit.HOURS).compareTo(new Date().toInstant()) == -1)) {
+            if (registrationUser.getUserId() == null && (registrationUser.getCreationDate().toInstant().plus(24, ChronoUnit.HOURS).compareTo(new
+                    Date().toInstant()) == -1)) {
                 registrationUsersRepository.delete(registrationUsers);
             }
         }

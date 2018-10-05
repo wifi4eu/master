@@ -34,9 +34,6 @@ public class UserService {
     @Value("${ecas.location}")
     private String ecasUrl;
 
-    public boolean isLocalHost() {
-        return baseUrl.contains(UserConstants.LOCAL);
-    }
 
     @Transactional
     public UserDTO getUserByUserContext(UserContext userContext) {

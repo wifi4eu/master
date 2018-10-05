@@ -7,7 +7,6 @@ public class UserConstants {
     public final static int TIMEFRAME_ACTIVATE_ACCOUNT_HOURS = 2;
     public final static String RESET_PASS_URL = "forgot;token=";
     public final static String ACTIVATE_ACCOUNT_URL = "activation;token=";
-    public final static String LOCAL = "localhost";
     public final static String DEFAULT_LANG = "en";
 
     public final static String MOCKED_USER_NAME = "Mr. Tester";

@@ -866,10 +866,10 @@ public class VoucherService {
 //            subject = MessageFormat.format(subject, successfulApplicant.getCallId());
             subject = MessageFormat.format(subject, callDTO.getEvent());
             msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
-            // TODO: Change it to work with CNS
-            if (!userService.isLocalHost()) {
+            // TODO: Change it to work with CNS and remove the local host if
+            //if (!userService.isLocalHost()) {
                 //mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-            }
+            //}
         }
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sended to " + successfulApplicants.size() + " successful applicants");
 
@@ -885,10 +885,10 @@ public class VoucherService {
             String additionalInfoUrl = userService.getBaseUrl();
             subject = MessageFormat.format(subject, callDTO.getEvent());
             msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
-            // TODO: Change it to work with CNS
-            if (!userService.isLocalHost()) {
+            // TODO: Change it to work with CNS and remove the local host if
+            //if (!userService.isLocalHost()) {
                 // mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-            }
+            //}
         }
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sended to " + reserveApplicants.size() + " reserve applicants");
 
@@ -911,10 +911,10 @@ public class VoucherService {
 
             msgBody = MessageFormat.format(msgBody, option);
             subject = MessageFormat.format(subject, callDTO.getEvent());
-            // TODO: Change it to work with CNS
-            if (!userService.isLocalHost()) {
+            // TODO: Change it to work with CNS and remove the local host if
+            //if (!userService.isLocalHost()) {
                 // mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-            }
+            //}
         }
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sended to " + unsuccessfulApplicants.size() + " unsuccessful applicants");
 
