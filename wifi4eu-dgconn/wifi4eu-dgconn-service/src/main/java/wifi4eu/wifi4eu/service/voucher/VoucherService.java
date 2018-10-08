@@ -269,7 +269,7 @@ public class VoucherService {
         return voucherSimulationRepository.checkIfSimulationIsValid(voucherAssignmentId) == 0;
     }
 
-    @Transactional
+    // @Transactional
     public ResponseDTO saveFreezeListSimulation(String freezePsswd, int voucherAssignmentId, int callId) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
@@ -301,7 +301,7 @@ public class VoucherService {
 
     }
 
-    @Transactional
+    // @Transactional
     public ResponseDTO savePreListSimulation(String savePrelistPsswd, int voucherAssignmentId, int callId) {
         CallDTO callDTO = callService.getCallById(callId);
 
@@ -373,7 +373,7 @@ public class VoucherService {
         return false;
     }
 
-    @Transactional
+    // @Transactional
     public ResponseDTO simulateVoucherFast(int callId) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
@@ -386,7 +386,7 @@ public class VoucherService {
             adminActions.setStartDate(new Date());
             adminActions.setRunning(true);
             adminActions.setUser(userMapper.toEntity(userConnected));
-            adminActions = adminActionsRepository.save(adminActions);
+            adminActionsRepository.save(adminActions);
         } else {
             if (adminActions.isRunning()) {
                 throw new AppException("Voucher Simulation is running...");
@@ -395,7 +395,7 @@ public class VoucherService {
             adminActions.setRunning(true);
             adminActions.setEndDate(null);
             adminActions.setUser(userMapper.toEntity(userConnected));
-            adminActions = adminActionsRepository.save(adminActions);
+            adminActionsRepository.save(adminActions);
         }
 
         // Let the task executor manage the execution of the new thread to send the mails
