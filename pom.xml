@@ -808,7 +808,7 @@
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
                 <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
                 <redis.enabled>true</redis.enabled>
-                <redis.sentinel.uris>10.0.2.56,10.0.2.54,10.0.2.55</redis.sentinel.uris>
+                <redis.sentinel.uris>10.0.2.70,10.0.2.71,10.0.2.72</redis.sentinel.uris>
                 <mail.serv.using.smtp>false</mail.serv.using.smtp>
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.pro}</azure.blob.storage.key>
