@@ -58,6 +58,19 @@
           </option>
         </select>
       </div>
+      <div class="form-group col-md-3" *ngIf="report == 'fifth'">
+        <label for="selectCall">{{ 'reports.call.label' | translate }}</label>
+        <select class="form-control"  id="selectCall" [(ngModel)]="callNotified" (ngModelChange) ="selectCallClosed($event)">
+          <option *ngFor="let callNotified of callsNotified" [ngValue]="callNotified" [disabled]="callsNotified.length < 1">
+            <span *ngIf="callsNotified != null">
+              {{callNotified.event}}
+            </span>
+            <span *ngIf="callsNotified == null">
+              {{'reports.select.placeholder' | translate}}
+            </span>
+          </option>
+        </select>
+      </div>
       <div class="form-group col-md-3" *ngIf="report == 'seventh'">
         <label for="selectCall">{{'reports.numberOfMonths.label' | translate}}</label>
         <select class="form-control"  id="selectCall">

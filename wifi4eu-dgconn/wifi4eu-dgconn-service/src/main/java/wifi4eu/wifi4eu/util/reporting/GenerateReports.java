@@ -28,6 +28,10 @@ public class GenerateReports {
                 reportingUtils.generateTimeToInformReporting(workbook);
                 break;
 
+            case Constant.REPORTING_TIME_TO_GRANT:
+                reportingUtils.generateTimeToGrantReporting(workbook);
+                break;
+
             case Constant.REPORTING_TYPES_INSTALLATION_REPORT:
                 reportingUtils.generateTypesInstallationReport(workbook);
                 break;
@@ -58,6 +62,10 @@ public class GenerateReports {
 
             case Constant.REPORTING_NOTIFICATIONS_SENT_OUT:
                 reportingUtils.generateNotificationsSentOutReporting(workbook, callId);
+                break;
+
+            case Constant.REPORTING_AGREEMENT_PREPARATION:
+                reportingUtils.generateAgreementPreparationReporting(workbook, callId);
                 break;
 
             default:

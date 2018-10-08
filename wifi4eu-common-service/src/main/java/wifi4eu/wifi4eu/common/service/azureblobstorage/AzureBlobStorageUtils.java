@@ -87,6 +87,14 @@ public class AzureBlobStorageUtils {
                 filename = millis+"_Time-To-Inform.xls";
                 break;
 
+            case Constant.REPORTING_AGREEMENT_PREPARATION:
+                filename = millis+"_Agreement-Preparation.xls";
+                break;
+
+            case Constant.REPORTING_TIME_TO_GRANT:
+                filename = millis+"_Time-To-Inform.xls";
+                break;
+
             case Constant.REPORTING_TYPES_INSTALLATION_REPORT:
                 filename = millis+"_Types-InstallationReport.xls";
                 break;

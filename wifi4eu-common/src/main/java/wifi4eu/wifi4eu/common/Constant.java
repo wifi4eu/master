@@ -38,6 +38,8 @@ public abstract class Constant {
 	public static final String REPORTING_PRE_SELECTION = "pre_selection";
 	public static final String REPORTING_NOTIFICATIONS_SENT_OUT = "notifications_sent_out";
 	public static final String REPORTING_TIME_TO_INFORM = "time_to_inform";
+	public static final String REPORTING_AGREEMENT_PREPARATION = "agreement_preparation";
+	public static final String REPORTING_TIME_TO_GRANT = "time_to_grant";
 	public static final String REPORTING_TYPES_INSTALLATION_REPORT = "types_IR";
 	public final static String REPORTING_DEFAULT_LANG = "en";
 }

@@ -24,7 +24,7 @@ public class ReportingResource {
         return reportingService.generateCallOpenReport();
     }
 
-    @ApiOperation(value = "Pre Selection Lisr")
+    @ApiOperation(value = "Pre Selection List")
     @RequestMapping(value  = "/pre-selection/{callId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ResponseDTO generatePreSelectionReport(@PathVariable ("callId") Integer callId){
@@ -43,6 +43,20 @@ public class ReportingResource {
     @ResponseBody
     public ResponseDTO generateTimeToInformReport(){
         return reportingService.generateTimeToInformReport();
+    }
+
+    @ApiOperation(value = "Grant agreement preparation")
+    @RequestMapping(value  = "/grant-agreement-preparation/{callId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO generateAgreementPreparationReport(@PathVariable ("callId") Integer callId){
+        return reportingService.generateAgreementPreparationReport(callId);
+    }
+
+    @ApiOperation(value = "KPI - Time to Grant")
+    @RequestMapping(value  = "/time-to-grant", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO generateTimeToGrantReport(){
+        return reportingService.generateTimeToGrantReport();
     }
 
     @ApiOperation(value = "Types IR")

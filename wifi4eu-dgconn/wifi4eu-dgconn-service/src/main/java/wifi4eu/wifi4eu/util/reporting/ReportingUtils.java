@@ -23,10 +23,16 @@ public class ReportingUtils {
     ReportPreSelection reportPreSelection;
 
     @Autowired
+    ReportAgreementPreparation reportAgreementPreparation;
+
+    @Autowired
     ReportNotificationsSentOut reportNotificationsSentOut;
 
     @Autowired
     ReportTimeToInform reportTimeToInform;
+
+    @Autowired
+    ReportTimeToGrant reportTimeToGrant;
 
     public void generateTypesInstallationReport(HSSFWorkbook workbook) {
         reportTypesInstallation.generate(workbook);
@@ -44,8 +50,16 @@ public class ReportingUtils {
         reportNotificationsSentOut.generate(workbook, callId);
     }
 
+    public void generateAgreementPreparationReporting(HSSFWorkbook workbook, Integer callId) {
+        reportAgreementPreparation.generate(workbook, callId);
+    }
+
     public void generateTimeToInformReporting(HSSFWorkbook workbook) {
         reportTimeToInform.generate(workbook);
+    }
+
+    public void generateTimeToGrantReporting(HSSFWorkbook workbook) {
+        reportTimeToGrant.generate(workbook);
     }
 
     public static void autoSizeColumns(HSSFWorkbook workbook) {

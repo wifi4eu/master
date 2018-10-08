@@ -65,6 +65,14 @@ export class ReportingComponent implements OnInit {
         this.fourthReport();
         break;
 
+      case "fifth":
+        this.fifthReport(this.callNotified.id);
+        break;
+
+      case "sixth":
+        this.sixthReport();
+        break;
+
       /*
       case "eight":
         this.eightReport();
@@ -121,6 +129,30 @@ export class ReportingComponent implements OnInit {
     });
   }
 
+  private fifthReport(callId) {
+    this.reportingApi.generateAgreementPreparationReport(callId).subscribe(data => {
+      if (data['success'] && data['data']) {
+        this.sharedService.growlTranslation('Request sent successfully', data['data'], 'success');
+      } else {
+        this.sharedService.growlTranslation('An error ocurred while generating the report', data['data'], 'error');
+      }
+    }, (error: Error) => {
+      this.sharedService.growlTranslation('An error occurred while generating the report', 'reports.generate.error', 'error');
+    });
+  }
+
+  private sixthReport() {
+    this.reportingApi.generateTimeToGrantReport().subscribe(data => {
+      if (data['success'] && data['data']) {
+        this.sharedService.growlTranslation('Request sent successfully', data['data'], 'success');
+      } else {
+        this.sharedService.growlTranslation('An error ocurred while generating the report', data['data'], 'error');
+      }
+    }, (error: Error) => {
+      this.sharedService.growlTranslation('An error occurred while generating the report', 'reports.generate.error', 'error');
+    });
+  }
+
   private eightReport() {
     this.reportingApi.generateTypesInstallationReport().subscribe(data => {
       if (data['success'] && data['data']) {
@@ -141,7 +173,6 @@ export class ReportingComponent implements OnInit {
   private isCallSelector(report: string) {
     let result: boolean;
     switch (report) {
-      case "fifth":
       case "seventh":
       case "tenth":
         result = true
