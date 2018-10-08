@@ -1,6 +1,5 @@
 package wifi4eu.wifi4eu.service.exportImport;
 
-import com.google.common.collect.Lists;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -23,12 +22,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import wifi4eu.wifi4eu.common.dto.model.ExportImportRegistrationDataDTO;
-import wifi4eu.wifi4eu.common.dto.model.LauDTO;
-import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
-import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
 import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.entity.exportImport.AbacStatus;
@@ -43,9 +36,7 @@ import wifi4eu.wifi4eu.entity.mayor.Mayor;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.representation.Representation;
-import wifi4eu.wifi4eu.mapper.exportImport.ExportImportRegistrationDataMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
-import wifi4eu.wifi4eu.repository.exportImport.BeneficiaryInformationRepository;
 import wifi4eu.wifi4eu.repository.exportImport.BudgetaryCommitmentRepository;
 import wifi4eu.wifi4eu.repository.exportImport.ExportImportRegistrationDataRepository;
 import wifi4eu.wifi4eu.repository.exportImport.GlobalCommitmentRepository;
@@ -53,12 +44,6 @@ import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
 import wifi4eu.wifi4eu.repository.mayor.MayorRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.repository.representation.RepresentationRepository;
-import wifi4eu.wifi4eu.service.exportImport.file.CreateFile;
-import wifi4eu.wifi4eu.service.location.LauService;
-import wifi4eu.wifi4eu.service.mayor.MayorService;
-import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
-import wifi4eu.wifi4eu.service.registration.RegistrationService;
-import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.DateUtils;
 import wifi4eu.wifi4eu.util.ExportFileUtils;
 import wifi4eu.wifi4eu.util.ZipFileReader;
@@ -67,7 +52,6 @@ import wifi4eu.wifi4eu.util.parsing.LegalCommitmentCSVColumn;
 import wifi4eu.wifi4eu.util.parsing.LegalCommitmentDocumentCSVColumn;
 import wifi4eu.wifi4eu.util.parsing.LegalEntityCSVColumn;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -90,9 +74,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * @author jlopezri
- */
 @Service
 @Transactional
 public class ExportImportAbacServiceImpl implements ExportImportAbacService {
@@ -104,28 +85,10 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
     private static final String THE_RECORD_WAS_SKIPPED_AS_ITS_STATUS_IS_NOT_VALID = "The record was skipped as its status is not valid";
 
     @Autowired
-    private ExportImportRegistrationDataMapper exportImportRegistrationDataMapper;
-
-    @Autowired
     private ExportImportRegistrationDataRepository exportImportRegistrationDataRepository;
 
     @Autowired
-    private BeneficiaryInformationRepository beneficiaryInformationRepository;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private LauService lauService;
-
-    @Autowired
-    private MunicipalityService municipalityService;
-
-    @Autowired
     private MunicipalityRepository municipalityRepository;
-
-    @Autowired
-    private MayorService mayorService;
 
     @Autowired
     private MayorRepository mayorRepository;
@@ -134,16 +97,10 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
     private RepresentationRepository representationRepository;
 
     @Autowired
-    private RegistrationService registrationService;
-
-    @Autowired
     private ExportFileUtils exportFileUtilities;
 
     @Autowired
     private DateUtils dateUtilities;
-
-    @Autowired
-    private HttpServletRequest httpServletRequest;
 
     @Autowired
     private AzureBlobConnector azureBlobConnector;
@@ -246,11 +203,11 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
              OutputStreamWriter documentsOutputStreamWriter = new OutputStreamWriter(documentsOutputStream, StandardCharsets.UTF_8);
              CSVPrinter documentsPrinter = new CSVPrinter(documentsOutputStreamWriter, exportFileUtilities.getMunicipalitiesDocCsvHeaders())) {
 
-            List<BeneficiaryInformation> beneficiariesInformation = beneficiaryInformationRepository.getBeneficiariesInformationSignedAndNotCounterSigned();
+            List<BeneficiaryInformation> beneficiariesInformation = municipalityRepository.findBeneficiaryInformation();
 
             if (CollectionUtils.isNotEmpty(beneficiariesInformation)) {
-                Set<String> loadedMunicipalities = new HashSet<>();
-                Set<String> documentGeneratedMunicipalities = new HashSet<>();
+                Set<Integer> loadedMunicipalities = new HashSet<>();
+                Set<Integer> documentGeneratedMunicipalities = new HashSet<>();
 
                 beneficiariesInformation.forEach(beneficiaryInformation -> {
                     processBeneficiaryInformation(beneficiaryInformation, loadedMunicipalities, entitiesPrinter);
@@ -271,7 +228,7 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
         return exportFileUtilities.generateZipFileStream(exportFiles);
     }
 
-    private void processBeneficiaryInformation(BeneficiaryInformation beneficiaryInformation, Set<String> loadedMunicipalities, CSVPrinter csvPrinter) {
+    private void processBeneficiaryInformation(BeneficiaryInformation beneficiaryInformation, Set<Integer> loadedMunicipalities, CSVPrinter csvPrinter) {
 
         // needed because BeneficiaryInformation is not an entity but a cartesian product of municipalities x legal files, and we don't want to export a municipality more than once
         if (loadedMunicipalities.contains(beneficiaryInformation.getMun_id())) {
@@ -281,14 +238,13 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
         }
 
         // Address include the address street and number, and must be between quotes to escape the comma ","
-        beneficiaryInformation.setMun_address(ExportFileUtils.QUOTE + beneficiaryInformation.getMun_address() + ExportFileUtils.QUOTE);
 
         try {
             csvPrinter.printRecord(
                     defaultEmpty(beneficiaryInformation.getMun_id()),
                     defaultEmpty(beneficiaryInformation.getMun_name()),
                     defaultEmpty(beneficiaryInformation.getMun_abacName()),
-                    defaultEmpty(beneficiaryInformation.getMun_address()),
+                    defaultEmpty(ExportFileUtils.QUOTE + beneficiaryInformation.getFullAddress() + ExportFileUtils.QUOTE),
                     defaultEmpty(beneficiaryInformation.getMun_postalCode()),
                     defaultEmpty(beneficiaryInformation.getMun_city()),
                     defaultEmpty(beneficiaryInformation.getMun_countryCodeISO()),
@@ -310,7 +266,7 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
         return StringUtils.defaultString(source);
     }
 
-    private void processDocumentInformation(BeneficiaryInformation beneficiaryInformation, Set<String> documentGeneratedMunicipalities, CSVPrinter csvPrinter, List<ExportFile> exportFiles) {
+    private void processDocumentInformation(BeneficiaryInformation beneficiaryInformation, Set<Integer> documentGeneratedMunicipalities, CSVPrinter csvPrinter, List<ExportFile> exportFiles) {
 
         // needed because BeneficiaryInformation is not an entity but a cartesian product of municipalities x legal files, and we don't want to export a municipality more than once
         if (documentGeneratedMunicipalities.contains(beneficiaryInformation.getMun_id())) {
@@ -393,13 +349,13 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
             municipalityParagraphText.append("Municipality id: ").append(beneficiaryInformation.getMun_id()).append("\n");
             municipalityParagraphText.append("Municipality name: ").append(beneficiaryInformation.getMun_name()).append("\n");
             municipalityParagraphText.append("Municipality ABAC name: ").append(beneficiaryInformation.getMun_abacName()).append("\n");
-            municipalityParagraphText.append("Municipality adress: ").append(beneficiaryInformation.getMun_address()).append("\n");
+            municipalityParagraphText.append("Municipality adress: ").append(beneficiaryInformation.getFullAddress()).append("\n");
             municipalityParagraphText.append("Municipality postal code: ").append(beneficiaryInformation.getMun_postalCode()).append("\n");
             municipalityParagraphText.append("Municipality country code: ").append(beneficiaryInformation.getMun_countryCodeISO()).append("\n");
 
             document.add(new Paragraph(new Chunk(municipalityParagraphText.toString(), paragraphFont)));
 
-            Mayor mayor = mayorRepository.findByMunicipalityId(Integer.parseInt(beneficiaryInformation.getMun_id()));
+            Mayor mayor = mayorRepository.findByMunicipalityId(beneficiaryInformation.getMun_id());
             if (mayor != null) {
 
                 document.add(new Paragraph(new Chunk("Mayor information", chapterFont)));
@@ -413,7 +369,7 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
                 document.add(new Paragraph(new Chunk(mayorParagraphText.toString(), paragraphFont)));
             }
 
-            Iterable<Representation> representations = representationRepository.findByMunicipalityId(Integer.parseInt(beneficiaryInformation.getMun_id()));
+            Iterable<Representation> representations = representationRepository.findByMunicipalityId(beneficiaryInformation.getMun_id());
             if (representations.iterator().hasNext()) {
 
                 document.add(new Paragraph(new Chunk("Representations information", chapterFont)));
@@ -439,52 +395,6 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
             _log.error("unable to create beneficiary pdf", e);
         }
         return os;
-    }
-
-    @Override
-    @Deprecated
-    public void exportRegistrationData() throws Exception {
-        _log.debug("exportRegistrationData");
-
-        List<ExportImportRegistrationDataDTO> exportImportRegistrationDataList = exportImportRegistrationDataMapper
-                .toDTOList(Lists.newArrayList(exportImportRegistrationDataRepository.findExportImportRD()));
-        String[] header = {"EU Rank", "Country Rank", "Country Name", "Municipality name", "Issue",
-                "Number of registrations"};
-        String[][] document = new String[exportImportRegistrationDataList.size()][7];
-        Integer[][] countryCount = new Integer[exportImportRegistrationDataList.size()][2];
-        for (int i = 0; i < exportImportRegistrationDataList.size(); i++) {
-            String country = exportImportRegistrationDataList.get(i).getCountryName();
-            String municipailty = exportImportRegistrationDataList.get(i).getMunicipalityName();
-            int countCountry = 0;
-            int countMunicipality = 0;
-            for (int u = 0; u < exportImportRegistrationDataList.size(); u++) {
-                if (country.equals(exportImportRegistrationDataList.get(u).getCountryName())) {
-                    countCountry++;
-                    countryCount[u][0] = countCountry;
-                    countryCount[u][1] = exportImportRegistrationDataList.get(u).getEuRank();
-
-                }
-                if (municipailty.equals(exportImportRegistrationDataList.get(u).getMunicipalityName())) {
-                    countMunicipality++;
-                }
-            }
-            document[i][0] = String.valueOf(exportImportRegistrationDataList.get(i).getEuRank());
-            for (int w = 0; w < countryCount.length; w++) {
-                if (null != countryCount[w][0]) {
-                    if (exportImportRegistrationDataList.get(i).getEuRank() == countryCount[w][1]) {
-                        document[i][1] = String.valueOf(countryCount[w][0]);
-                    }
-                }
-            }
-            document[i][2] = exportImportRegistrationDataList.get(i).getCountryName();
-            document[i][3] = exportImportRegistrationDataList.get(i).getMunicipalityName();
-            Municipality municipality = municipalityRepository
-                    .findOne(exportImportRegistrationDataList.get(i).getMunicipality());
-            document[i][4] = String.valueOf(setIssueToDgconnBeneficiary(municipality.getLau().getId()));
-            document[i][5] = String.valueOf(countMunicipality);
-        }
-        CreateFile cF = new CreateFile(httpServletRequest);
-        cF.createExcelFileRegistrationData(header, document, "ExportRegistrationData.xlsx");
     }
 
     @Override
@@ -927,336 +837,4 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
         return listLegalCommitmentInformation;
     }
 
-    @Deprecated
-    private Integer setIssueToDgconnBeneficiary(Integer lauId) {
-        int issueType = 0;
-        LauDTO lau = lauService.getLauById(lauId);
-        List<MunicipalityDTO> municipalities = municipalityService.getMunicipalitiesByLauId(lauId);
-        for (MunicipalityDTO municipality : municipalities) {
-            MayorDTO mayor = mayorService.getMayorByMunicipalityId(municipality.getId());
-            RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(municipality.getId());
-            if (registration != null && mayor != null) {
-                UserDTO user = userService.getMainUserByIdFromRegistration(registration.getId());
-                if (user != null) {
-                    switch (lau.getCountryCode().toUpperCase()) {
-                        case "AT":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".at")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".at")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".at")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("de"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "BE":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".be")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".be")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".be")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("de") || user.getLang().toLowerCase().equals("nl")
-                                    || user.getLang().toLowerCase().equals("fr"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "BG":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".bg")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".bg")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".bg")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("bg"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "HR":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".hr")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".hr")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".hr")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("hr"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "CY":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".cy")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".cy")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".cy")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("el"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "CZ":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".cz")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".cz")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".cz")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("cs"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "DK":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".dk")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".dk")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".dk")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("da"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "EE":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".ee")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".ee")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".ee")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("et"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "FI":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".fi")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".fi")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".fi")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("fi") || user.getLang().toLowerCase().equals("sv"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "FR":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".fr")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".fr")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".fr")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("fr"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "DE":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".de")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".de")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".de")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("de"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "EL":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".el")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".el")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".el")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("el"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "HU":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".hu")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".hu")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".hu")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("hu"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "IS":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".is")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".is")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".is")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("en"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "IE":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".ie")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".ie")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".ie")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("en") || user.getLang().toLowerCase().equals("ga"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "IT":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".it")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".it")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".it")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("it"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "LV":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".lv")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".lv")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".lv")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("lv"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "LT":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".lt")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".lt")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".lt")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("lt"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "LU":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".lu")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".lu")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".lu")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("fr") || user.getLang().toLowerCase().equals("de"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "MT":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".mt")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".mt")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".mt")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("mt") || user.getLang().toLowerCase().equals("en"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "NL":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".nl")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".nl")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".nl")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("nl"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "NO":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".no")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".no")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".no")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("en"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "PL":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".pl")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".pl")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".pl")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("pl"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "PT":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".pt")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".pt")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".pt")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("pt"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "RO":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".ro")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".ro")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".ro")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("ro"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "SK":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".sk")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".sk")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".sk")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("sk"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "SI":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".si")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".si")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".si")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("sl"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "ES":
-                            if (!(user.getEmail().trim().toLowerCase().endsWith(".es")
-                                    || user.getEmail().trim().toLowerCase().endsWith(".cat")
-                                    || user.getEmail().trim().toLowerCase().endsWith(".gal")
-                                    || user.getEmail().trim().toLowerCase().endsWith(".eus"))
-                                    || !(user.getEcasEmail().trim().toLowerCase().endsWith(".es")
-                                    || user.getEcasEmail().trim().toLowerCase().endsWith(".cat")
-                                    || user.getEcasEmail().trim().toLowerCase().endsWith(".gal")
-                                    || user.getEcasEmail().trim().toLowerCase().endsWith(".eus"))
-                                    || !(mayor.getEmail().trim().toLowerCase().endsWith(".es")
-                                    || mayor.getEmail().trim().toLowerCase().endsWith(".cat")
-                                    || mayor.getEmail().trim().toLowerCase().endsWith(".gal")
-                                    || mayor.getEmail().trim().toLowerCase().endsWith(".eus"))) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("es"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "SE":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".se")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".se")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".se")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("sv"))) {
-                                issueType = 3;
-                            }
-                            break;
-                        case "UK":
-                            if (!user.getEmail().trim().toLowerCase().endsWith(".uk")
-                                    || !user.getEcasEmail().trim().toLowerCase().endsWith(".uk")
-                                    || !mayor.getEmail().trim().toLowerCase().endsWith(".uk")) {
-                                issueType = 1;
-                            }
-                            if (!(user.getLang().toLowerCase().equals("en"))) {
-                                issueType = 3;
-                            }
-                            break;
-                    }
-                } else {
-                    return -1;
-                }
-            } else {
-                return -1;
-            }
-        }
-        return issueType;
-    }
 }

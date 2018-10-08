@@ -4,6 +4,7 @@ import wifi4eu.wifi4eu.entity.exportImport.BudgetaryCommitment;
 import wifi4eu.wifi4eu.entity.exportImport.ExportImportRegistrationData;
 import wifi4eu.wifi4eu.entity.location.Lau;
 import wifi4eu.wifi4eu.entity.registration.Registration;
+import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -45,6 +46,9 @@ public class Municipality {
 
     @OneToMany(mappedBy = "municipality", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ExportImportRegistrationData> municipalitiesAbac;
+
+    @OneToMany(mappedBy = "municipality")
+    private List<VoucherSimulation> voucherSimulations;
 
 
     public Municipality() {
@@ -145,5 +149,16 @@ public class Municipality {
 
     public void setMunicipalitiesAbac(List<ExportImportRegistrationData> municipalitiesAbac) {
         this.municipalitiesAbac = municipalitiesAbac;
+    }
+
+    public List<VoucherSimulation> getVoucherSimulations() {
+        if (voucherSimulations == null) {
+            voucherSimulations = new ArrayList<>(0);
+        }
+        return voucherSimulations;
+    }
+
+    public void setVoucherSimulations(List<VoucherSimulation> voucherSimulations) {
+        this.voucherSimulations = voucherSimulations;
     }
 }

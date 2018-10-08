@@ -6,16 +6,15 @@ import java.util.Date;
 
 public class BeneficiaryInformation {
 
-    // TODO: replace with Long
-    private Integer id;
-
-    private String mun_id;
+    private Integer mun_id;
 
     private String mun_name;
 
     private String mun_abacName;
 
     private String mun_address;
+
+    private String mun_address_num;
 
     private String mun_postalCode;
 
@@ -25,13 +24,13 @@ public class BeneficiaryInformation {
 
     private String mun_languageCodeISO;
 
-    private Long mun_registrationNumber;
+    private Integer mun_registrationNumber;
 
     private String mun_abacReference;
 
     private Integer mun_callNumber;
 
-    private Long doc_portalId;
+    private Integer doc_portalId;
 
     private String doc_name;
 
@@ -49,12 +48,18 @@ public class BeneficiaryInformation {
 
     private String azureUri;
 
-    public BeneficiaryInformation(Integer id, String mun_id, String mun_name, String mun_abacName, String mun_address, String mun_postalCode, String mun_city, String mun_countryCodeISO, String mun_languageCodeISO, Long mun_registrationNumber, String mun_abacReference, Integer mun_callNumber, Long doc_portalId, String doc_name, String doc_fileName, String doc_mimeType, Date doc_date, Integer doc_type, String doc_location, String aresReference, String azureUri) {
-        this.id = id;
+    public BeneficiaryInformation() {
+    }
+
+    public BeneficiaryInformation(Integer mun_id, String mun_name, String mun_address, String mun_address_num, String mun_postalCode, String mun_city,
+                                  String mun_countryCodeISO, Integer mun_registrationNumber, Integer doc_portalId, String doc_name, String doc_fileName, String doc_mimeType,
+                                  Long doc_date, Integer doc_type, String azureUri, String mun_abacReference, String mun_abacName, Integer mun_callNumber,
+                                  String mun_languageCodeISO) {
         this.mun_id = mun_id;
         this.mun_name = mun_name;
         this.mun_abacName = mun_abacName;
         this.mun_address = mun_address;
+        this.mun_address_num = mun_address_num;
         this.mun_postalCode = mun_postalCode;
         this.mun_city = mun_city;
         this.mun_countryCodeISO = mun_countryCodeISO;
@@ -66,18 +71,20 @@ public class BeneficiaryInformation {
         this.doc_name = doc_name;
         this.doc_fileName = doc_fileName;
         this.doc_mimeType = doc_mimeType;
-        this.doc_date = doc_date;
+        this.doc_date = doc_date != null ? new Date(doc_date) : null;
         this.doc_type = doc_type;
-        this.doc_location = doc_location;
-        this.aresReference = aresReference;
         this.azureUri = azureUri;
+
+        // TODO: missing
+        this.doc_location = null;
+        this.aresReference = null;
     }
 
-    public String getMun_id() {
+    public Integer getMun_id() {
         return mun_id;
     }
 
-    public void setMun_id(String mun_id) {
+    public void setMun_id(Integer mun_id) {
         this.mun_id = mun_id;
     }
 
@@ -205,22 +212,6 @@ public class BeneficiaryInformation {
         this.aresReference = aresReference;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Long getMun_registrationNumber() {
-        return mun_registrationNumber;
-    }
-
-    public void setMun_registrationNumber(Long mun_registrationNumber) {
-        this.mun_registrationNumber = mun_registrationNumber;
-    }
-
     public Integer getMun_callNumber() {
         return mun_callNumber;
     }
@@ -229,11 +220,19 @@ public class BeneficiaryInformation {
         this.mun_callNumber = mun_callNumber;
     }
 
-    public Long getDoc_portalId() {
+    public Integer getMun_registrationNumber() {
+        return mun_registrationNumber;
+    }
+
+    public void setMun_registrationNumber(Integer mun_registrationNumber) {
+        this.mun_registrationNumber = mun_registrationNumber;
+    }
+
+    public Integer getDoc_portalId() {
         return doc_portalId;
     }
 
-    public void setDoc_portalId(Long doc_portalId) {
+    public void setDoc_portalId(Integer doc_portalId) {
         this.doc_portalId = doc_portalId;
     }
 
@@ -243,5 +242,17 @@ public class BeneficiaryInformation {
 
     public void setAzureUri(String azureUri) {
         this.azureUri = azureUri;
+    }
+
+    public String getMun_address_num() {
+        return mun_address_num;
+    }
+
+    public void setMun_address_num(String mun_address_num) {
+        this.mun_address_num = mun_address_num;
+    }
+
+    public String getFullAddress() {
+        return mun_address + ", " + mun_address_num;
     }
 }
