@@ -29,6 +29,10 @@ elif [ $1 == "devpg" ];
 then
 	echo "devpg"
     source "$mydir"/config-devpg.sh
+elif [ $1 == "devsec" ];
+then
+	echo "devsec"
+    source "$mydir"/config-devsec.sh
 elif [ $1 == "testnf" ];
 then
 	echo "testnf"
