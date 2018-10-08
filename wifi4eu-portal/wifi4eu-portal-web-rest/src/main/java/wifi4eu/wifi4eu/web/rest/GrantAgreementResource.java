@@ -18,6 +18,7 @@ import wifi4eu.wifi4eu.common.dto.model.ApplicationAuthorizedPersonDTO;
 import wifi4eu.wifi4eu.common.dto.model.GrantAgreementDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.service.application.ApplicationAuthorizedPersonService;
@@ -59,7 +60,7 @@ public class GrantAgreementResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
 
         try {
-            if (userConnected == null || userConnected.getType() == 1) {
+            if(!permissionChecker.checkIfAuthorizedGrantAgreement(inputGrantAgreement.getApplicationId())){
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
@@ -89,13 +90,18 @@ public class GrantAgreementResource {
         return permissionChecker.checkIfAuthorizedGrantAgreement(applicationId);
     }
 
+    @ApiOperation(value = "Check if lef import is done")
+    @RequestMapping(value = "/isLefImportDone/{registrationId}", method = RequestMethod.GET)
+    @ResponseBody
+    public Boolean isLefImportDone(@PathVariable("registrationId") Integer registrationId) {
+        return grantAgreementService.checkIsLefImportDone(registrationId);
+    }
+
     @ApiOperation(value = "Create grant agreement")
     @RequestMapping(value = "/createGrantAgreement", method = RequestMethod.POST)
     @ResponseBody
     public GrantAgreementDTO createGrantAgreement(@RequestBody GrantAgreementDTO inputGrantAgreement) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        if (userConnected == null || userConnected.getType() == 1 || userConnected.getType() == 5) {
+        if(!permissionChecker.checkIfAuthorizedGrantAgreement(inputGrantAgreement.getApplicationId())){
             throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
         }
         return grantAgreementService.createGrantAgreement(inputGrantAgreement);
@@ -106,11 +112,7 @@ public class GrantAgreementResource {
     @RequestMapping(value = "/getGrantAgreementByApplicationId/{applicationId}", method = RequestMethod.GET)
     @ResponseBody
     public GrantAgreementDTO getGrantAgreementByApplicationId(@PathVariable("applicationId") Integer applicationId) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        if (userConnected == null || userConnected.getType() == 1 || userConnected.getType() == 5) {
-            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-        }
+
         if(!permissionChecker.checkIfAuthorizedGrantAgreement(applicationId)){
             throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
         }
@@ -123,28 +125,72 @@ public class GrantAgreementResource {
         return grantAgreementDTO;
     }
 
-    @ApiOperation(value = "Get grant agreement pdf signed by grantAgreementId")
-    @RequestMapping(value = "/exportExcelBeneficiary/{applicationId}", method = RequestMethod.GET)
+    @ApiOperation(value = "Get grant agreement pdf signed by application id")
+    @RequestMapping(value = "/signed/{applicationId}/download", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<byte[]> downloadGrantAgreementPdf(@PathVariable("applicationId") Integer applicationId) {
+    public ResponseEntity<byte[]> downloadGrantAgreementPdfSigned(@PathVariable("applicationId") Integer applicationId, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
-        UserDTO currentUserDTO = userService.getUserByUserContext(userContext);
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
 
-        if (currentUserDTO == null || currentUserDTO.getType() == 1 || currentUserDTO.getType() == 5) {
-            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+        try {
+            if (!permissionChecker.checkIfAuthorizedGrantAgreement(applicationId)) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+
+            GrantAgreementDTO grantAgreementDTO = grantAgreementService.getGrantAgreementByApplicationId(applicationId);
+            if(Validator.isNull(grantAgreementDTO.getDocumentLocation())){
+                throw new AppException("");
+            }
+            byte[] file = grantAgreementService.downloadGrantAgreementSigned(grantAgreementDTO);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType("application/pdf"));
+            String filename = "grant_agreement_" + applicationId + "_" + grantAgreementDTO.getDocumentLanguage() + "_signed.pdf";
+            headers.setContentDispositionFormData("filename", filename);
+            return new ResponseEntity<>(file, headers, HttpStatus.OK);
         }
-        if(!permissionChecker.checkIfAuthorizedGrantAgreement(applicationId)){
-            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+        catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to download the counter signed grant agreement", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Error downloading counter signed grant agreement document", e);
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return null;
         }
-
-        GrantAgreementDTO grantAgreementDTO = grantAgreementService.getGrantAgreementByApplicationId(applicationId);
-        byte[] file = grantAgreementService.downloadGrantAgreementSigned(applicationId, grantAgreementDTO);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType("application/pdf"));
-        String filename = "grant_agreement_" + applicationId + "_"+ grantAgreementDTO.getDocumentLanguage() + "_signed.pdf";
-        headers.setContentDispositionFormData("filename", filename);
-        return new ResponseEntity<>(file, headers, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Get grant agreement pdf countersigned by application id")
+    @RequestMapping(value = "/countersigned/{applicationId}/download", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<byte[]> downloadGrantAgreementCounterSigned(@PathVariable("applicationId") Integer applicationId, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        try {
+            if (!permissionChecker.checkIfAuthorizedGrantAgreement(applicationId)) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+
+            GrantAgreementDTO grantAgreementDTO = grantAgreementService.getGrantAgreementByApplicationId(applicationId);
+            if(Validator.isNull(grantAgreementDTO.getDocumentLocationCounterSigned())){
+                throw new AppException("");
+            }
+            byte[] file = grantAgreementService.downloadGrantAgreementCounterSigned(grantAgreementDTO);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType("application/pdf"));
+            String filename = "grant_agreement_" + applicationId + "_" + grantAgreementDTO.getDocumentLanguage() + "_signed.pdf";
+            headers.setContentDispositionFormData("filename", filename);
+            return new ResponseEntity<>(file, headers, HttpStatus.OK);
+        }
+        catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to download the counter signed grant agreement", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Error downloading counter signed grant agreement document", e);
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return null;
+        }
+    }
 }

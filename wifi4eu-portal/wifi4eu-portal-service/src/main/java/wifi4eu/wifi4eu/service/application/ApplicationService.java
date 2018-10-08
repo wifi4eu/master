@@ -22,19 +22,12 @@ import com.google.common.collect.Lists;
 
 import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.mail.MailData;
-import wifi4eu.wifi4eu.common.dto.model.ApplicantListItemDTO;
-import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
-import wifi4eu.wifi4eu.common.dto.model.ApplicationVoucherInfoDTO;
-import wifi4eu.wifi4eu.common.dto.model.CallDTO;
-import wifi4eu.wifi4eu.common.dto.model.CorrectionRequestEmailDTO;
-import wifi4eu.wifi4eu.common.dto.model.LegalFileCorrectionReasonDTO;
-import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
-import wifi4eu.wifi4eu.common.dto.model.PagingSortingDTO;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
-import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentAuxiliarDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
+import wifi4eu.wifi4eu.common.enums.LegalFileStatus;
+import wifi4eu.wifi4eu.common.enums.LegalFileValidationStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.security.UserContext;
@@ -48,6 +41,7 @@ import wifi4eu.wifi4eu.mapper.application.ApplicantListItemMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.application.CorrectionRequestEmailMapper;
 import wifi4eu.wifi4eu.mapper.municipality.MunicipalityMapper;
+import wifi4eu.wifi4eu.mapper.registration.legal_files.LegalFilesMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
@@ -56,6 +50,7 @@ import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
+import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.repository.warning.RegistrationWarningRepository;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
@@ -136,6 +131,12 @@ public class ApplicationService {
 
     @Autowired
     RegistrationRepository registrationRepository;
+
+    @Autowired
+    LegalFilesRepository legalFilesRepository;
+
+    @Autowired
+    LegalFilesMapper legalFilesMapper;
 
     public ApplicationDTO getApplicationById(int applicationId) {
         return applicationMapper.toDTO(applicationRepository.findOne(applicationId));
@@ -261,14 +262,6 @@ public class ApplicationService {
 
     public ApplicationDTO getVoucherApplicationByCallIdAndRegistrationId(int callId, int registrationId) {
         return applicationMapper.toDTO(applicationRepository.findVoucherApplicationByCallIdAndRegistrationId(callId, registrationId));
-    }
-
-    public ApplicationDTO getApplicationByCallIdAndMunicipalityId(int callId, int municipalityId) {
-        if (municipalityId != 0 && callId != 0) {
-            int registrationId = registrationRepository.findByMunicipalityId(municipalityId).getId();
-            return applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
-        }
-        return null;
     }
 
     public List<ApplicationDTO> getApplicationsByRegistrationId(int registrationId) {
@@ -581,6 +574,30 @@ public class ApplicationService {
 
         applicationDTO.setRejected(false);
         return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+    }
+
+
+    @Transactional
+    public ResponseDTO changeStatusRegistrationDocuments(Integer applicationId) {
+        ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findOne(applicationId));
+        List<LegalFileDTO> legalFileDTOS = legalFilesMapper.toDTOList(legalFilesRepository.findByRegistration(applicationDTO.getRegistrationId()));
+        if (!legalFileDTOS.isEmpty()) {
+            for (LegalFileDTO legalFileDTO : legalFileDTOS) {
+                if (legalFileDTO.getIsNew() == LegalFileStatus.RECENT.getValue()) {
+                    legalFileDTO.setIsNew(LegalFileStatus.OLD.getValue());
+                }
+                if (legalFileDTO.getIsNew() == LegalFileStatus.NEW.getValue()) {
+                    if (applicationDTO.getStatus() == ApplicationStatus.KO.getValue()) {
+                        legalFileDTO.setStatus(LegalFileValidationStatus.INVALID.getValue());
+                    } else if (applicationDTO.getStatus() == ApplicationStatus.OK.getValue()) {
+                        legalFileDTO.setStatus(LegalFileValidationStatus.VALID.getValue());
+                    }
+                    legalFileDTO.setIsNew(LegalFileStatus.RECENT.getValue());
+                }
+                legalFilesRepository.save(legalFilesMapper.toEntity(legalFileDTO));
+            }
+        }
+        return new ResponseDTO(true, "success", null);
     }
 
 }

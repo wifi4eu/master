@@ -153,15 +153,9 @@ public class EcasSignatureUtil {
         return buff.toString();
     }
 
-    public GrantAgreementDTO writeSignature(String signatureId, HttpServletRequest request, String grantAgreementID) {
+    public GrantAgreementDTO writeSignature(String signatureId, HttpServletRequest request, String grantAgreementID, GrantAgreementDTO grantAgreement ) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-
-        GrantAgreementDTO grantAgreement = grantAgreementService.getGrantAgreementById(Integer.parseInt(grantAgreementID));
-
-        if(!permissionChecker.checkIfAuthorizedGrantAgreement(grantAgreement.getApplicationId())){
-            throw new AccessDeniedException("The user is not authorized to sign grant agreement");
-        }
 
         try {
             grantAgreement.setSignatureId(signatureId);
@@ -187,7 +181,7 @@ public class EcasSignatureUtil {
 
             byte[] data = outputStream.toByteArray();
 
-            String downloadURL = azureBlobConnector.uploadByteArray("grant-agreement", "grant_agreement_" + grantAgreement.getApplicationId() + "_signed.pdf", data);
+            String downloadURL = azureBlobConnector.uploadByteArray("wifi4eu", "grant_agreement_" + grantAgreement.getApplicationId() + "_signed.pdf", data);
 
             grantAgreement.setDocumentLocation(downloadURL);
             grantAgreement.setDateSignature(new Date());

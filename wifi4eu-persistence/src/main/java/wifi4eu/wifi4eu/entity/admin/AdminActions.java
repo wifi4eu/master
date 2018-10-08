@@ -30,16 +30,20 @@ public class AdminActions {
     @Column(name = "end_date")
     private Date endDate;
 
+    @Column(name = "data")
+    private String data;
+
     public AdminActions() {
     }
 
-    public AdminActions(Integer id, String action, User user, boolean isRunning, Date startDate, Date endDate) {
+    public AdminActions(Integer id, String action, User user, boolean isRunning, Date startDate, Date endDate, String data) {
         this.id = id;
         this.action = action;
         this.user = user;
         this.isRunning = isRunning;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.data = data;
     }
 
     public Integer getId() {
@@ -88,5 +92,13 @@ public class AdminActions {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
     }
 }

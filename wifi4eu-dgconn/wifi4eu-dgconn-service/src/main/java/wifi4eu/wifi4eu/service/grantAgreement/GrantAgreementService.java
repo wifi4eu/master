@@ -8,9 +8,12 @@ import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
 import wifi4eu.wifi4eu.common.dto.model.GrantAgreementDTO;
 import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
+import wifi4eu.wifi4eu.entity.grantAgreement.GrantAgreement;
 import wifi4eu.wifi4eu.mapper.grantAgreement.GrantAgreementMapper;
 import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
+
+import java.util.List;
 
 @Service
 public class GrantAgreementService {
@@ -30,7 +33,12 @@ public class GrantAgreementService {
     ApplicationService applicationService;
 
     public GrantAgreementDTO getGrantAgreementByApplicationId(Integer applicationId) {
-        return grantAgreementMapper.toDTO(agreementRepository.findByApplicationId(applicationId));
+        //TODO fix as the db allows more than on grant agreement
+        List<GrantAgreement> grantAgreementList = agreementRepository.findByApplicationId(applicationId);
+        if (grantAgreementList == null) {
+            return null;
+        }
+        return grantAgreementMapper.toDTO(grantAgreementList.get(0));
     }
 
     public GrantAgreementDTO getGrantAgreementByCallAndRegistrationId(Integer registrationId, Integer callId) {

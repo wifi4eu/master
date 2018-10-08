@@ -1,25 +1,15 @@
 package wifi4eu.wifi4eu.web.cnect.rest;
 
 import io.swagger.annotations.Api;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
-import wifi4eu.wifi4eu.service.timeline.TimelineService;
-import wifi4eu.wifi4eu.service.user.UserService;
 
 @CrossOrigin(origins = "*")
 @Controller
 @Api(value = "/timeline", description = "Timeline object REST API services")
 @RequestMapping("timeline")
 public class TimelineResource {
-    @Autowired
-    private TimelineService timelineService;
-
-    @Autowired
-    private UserService userService;
 
     /*
     @ApiOperation(value = "Get all the timeline entries")

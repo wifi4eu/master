@@ -219,7 +219,7 @@
                       </p-column>
                       <p-column header="{{'dgConn.voucherAssignment.table.action' | translate}}" styleClass="text-center not-hide-overflow">
                         <ng-template let-rowData="rowData" pTemplate="body">
-                          <div style="position:relative; cursor: pointer;" (click)="op.show($event)" *ngIf="!callVoucherAssignment?.hasFreezeListSaved">
+                          <div style="position:relative; cursor: pointer;" (click)="op.show($event)">
                             <p-overlayPanel #op>
                               <div class="row">
                                 <a (click)="goToMunicipality(rowData.lau)">
@@ -231,7 +231,7 @@
                                   </div>
                                 </a>
                               </div>
-                              <div class="row">
+                              <div class="row" *ngIf="!callVoucherAssignment?.hasFreezeListSaved">
                                 <a *ngIf="!rowData.application.rejected" [class.reject-disabled]="!callVoucherAssignment?.hasPreListSaved" (click)="rejectApplication(rowData.application.id)">
                                   <div class="col-sm-2">
                                     <span class="fa fa-ban"></span>
@@ -322,6 +322,16 @@
     <span>.</span>
   </p>
   <h1 class="Modalh1Confirmation">{{ 'dgconn.voucherAssignment.runningSimulation' | translate }}</h1>
+</p-dialog>
+
+<p-dialog [(visible)]="displayConfirmingDataFreeze" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
+  [closable]="false" [closeOnEscape]="false">
+  <p class="ModalLoaderDots">
+    <span>.</span>
+    <span>.</span>
+    <span>.</span>
+  </p>
+  <h1 class="Modalh1Confirmation">{{ 'dgconn.voucherAssignment.runningFreze' | translate }}</h1>
 </p-dialog>
 
 <p-dialog [(visible)]="downloadingExcel" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="false"
@@ -435,7 +445,26 @@
     </div>
   </div>
 </p-dialog>
-
+<p-dialog [(visible)]="displaySimulation" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="!processingRequest" (onAfterHide)="closeModal()">
+        <form (ngSubmit)="closeModal()" #validateConfirmationForm="ngForm">
+            <div class="form-group">
+                <div style="padding: 2em; padding-top: 0em;" class="center">
+                    <p *ngIf="isRejection" [innerHTML]="'dgConn.applicantDetails.rejectApplication.rerunVoucherSimulation' | translate"></p>
+                    <p *ngIf="isSelection" [innerHTML]="'dgConn.applicantDetails.selectingApplication.rerunVoucherSimulation' | translate"></p>
+                
+                  </div>
+                <div style="padding: 2em; padding-top: 0em;">
+                    <div class="row center">
+                        <div class="col-sm-12">
+                            <button type="submit" class="btn btn-primary publish-button">
+                                {{ 'shared.close.label' | translate }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </p-dialog>
 
 <style>
   .duplicate-warn {

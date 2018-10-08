@@ -194,10 +194,10 @@
                                 <span class="ui-g-12">{{ 'registration.nameOrganisation' | translate }}</span>
                             </p>
                             <p class="applicantDetailsNoMargin">
-                                <span *ngIf="registrations[i].associationName.trim().length > 0" class="ui-g-12">
+                                <span *ngIf="registrations[i].associationName!= null && registrations[i].associationName.trim().length > 0" class="ui-g-12">
                                     {{ registrations[i].associationName }}
                                 </span>
-                                <span *ngIf="registrations[i].associationName.trim().length < 1" class="ui-g-12">
+                                <span *ngIf="registrations[i].associationName!= null && registrations[i].associationName.trim().length < 1" class="ui-g-12">
                                     -
                                 </span>
                             </p>
@@ -238,8 +238,8 @@
                                              </p-column>
                                             <p-column [sortable]="false" header="{{ 'dgConn.actions' | translate }}" styleClass="text-center">
                                                 <ng-template let-row="rowData" pTemplate="body">
-                                                    <a class="link-label" href="{{fileURL}}{{registrations[i].id}}/{{row.legalFile}}" target="_blank">
-                                                        <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
+                                                    <a class="link-label" href="{{fileURL}}{{registrations[i].id}}/{{row.legalFile}}" (click)="checkSeen(row.legalFile)" target="_blank">
+                                                        <i class="fa fa-download" aria-hidden="true" ></i> {{ 'shared.download' | translate }}
                                                     </a>
                                                 </ng-template>
                                             </p-column>

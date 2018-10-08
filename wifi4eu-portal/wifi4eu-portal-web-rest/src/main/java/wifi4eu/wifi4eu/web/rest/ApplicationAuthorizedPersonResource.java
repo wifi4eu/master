@@ -14,6 +14,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.service.application.ApplicationAuthorizedPersonService;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 @CrossOrigin(origins = "*")
@@ -26,6 +27,9 @@ public class ApplicationAuthorizedPersonResource {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    PermissionChecker permissionChecker;
 
     @ApiOperation(value = "Authorized")
     @RequestMapping(value = "/Authorized", method = RequestMethod.PUT, produces = "application/json")
@@ -46,13 +50,8 @@ public class ApplicationAuthorizedPersonResource {
     @ApiOperation(value = "Authorized")
     @RequestMapping(value = "/Authorized", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ApplicationAuthorizedPersonDTO findByApplicationAndUserId(@RequestParam("applicationId") final Integer applicationId, @RequestParam("userId") final Integer userId) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        if (userConnected == null || userConnected.getType() == 1) {
-            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-        }
-        return applicationAuthorizedPersonService.findByApplicationAndAuthorisedPerson(applicationId, userId);
+    public ResponseDTO findByApplication(@RequestParam("applicationId") final Integer applicationId) {
+        return new ResponseDTO(true, permissionChecker.checkIfAuthorizedGrantAgreement(applicationId), null);
     }
 
 }

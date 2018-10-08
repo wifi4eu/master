@@ -1,0 +1,12 @@
+<div class="ui-g-6 ui-lg-6 ui-md-12">
+    <div class="panelItem ui-g-12">
+
+        <form [formGroup]="form" (ngSubmit)="importLegalEntityFile()" enctype="multipart/form-data">
+            <div class="form-group">
+                <input type="file" id="importFile" (change)="onFileChange($event)">
+            </div>
+            <button type="submit" class="btn btn-success" [disabled]="!this.form.valid">{{ 'shared.confirm.button' | translate }}</button>
+        </form>
+
+    </div>
+</div>

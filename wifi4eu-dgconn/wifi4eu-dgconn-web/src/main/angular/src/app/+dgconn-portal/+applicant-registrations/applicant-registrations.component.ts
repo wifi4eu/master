@@ -10,7 +10,7 @@ import { CallDTOBase } from "../../shared/swagger/model/CallDTO";
 import { NutsDTOBase } from "../../shared/swagger/model/NutsDTO";
 import { CorrectionRequestEmailDTOBase } from "../../shared/swagger/model/CorrectionRequestEmailDTO";
 import { PagingSortingDTOBase } from "../../shared/swagger/model/PagingSortingDTO";
-import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
+import { ResponseDTOBase, ResponseDTO } from "../../shared/swagger/model/ResponseDTO";
 import * as FileSaver from "file-saver";
 import { Subscription } from "rxjs/Subscription";
 import { DataTable } from "primeng/primeng";
@@ -18,10 +18,15 @@ import { TranslateService } from "ng2-translate/ng2-translate";
 import * as moment from 'moment';
 import 'moment-timezone';
 import{ AppConstants} from '../../shared/constants/AppConstants';
+import { AdminActionsDTO, AdminactionsApi } from "../../shared/swagger";
+import { ReplaySubject } from "rxjs/ReplaySubject";
+import { IntervalObservable } from "rxjs/observable/IntervalObservable";
+import { Observable } from "rxjs/Observable";
+import { Subject } from "rxjs";
 
 @Component({
     templateUrl: 'applicant-registrations.component.html',
-    providers: [ApplicationApi, CallApi, NutsApi],
+    providers: [ApplicationApi, CallApi, NutsApi, AdminactionsApi],
     animations: [
         trigger(
             'enterSpinner', [
@@ -75,8 +80,22 @@ export class DgConnApplicantRegistrationsComponent {
     private sendNotificationsPsswd: string = '';
     private showNotificationModal: boolean = false;
 
-    constructor(private applicationApi: ApplicationApi, private callApi: CallApi, private nutsApi: NutsApi, private activatedRoute: ActivatedRoute, private router: Router, private sharedService: SharedService, private translateService: TranslateService) {
-        this.callApi.allCalls().subscribe(
+    private excelInterval: any;
+    private adminAction: AdminActionsDTO;
+    private subject = new Subject();
+
+    constructor(private adminActionsApi: AdminactionsApi, private applicationApi: ApplicationApi, private callApi: CallApi, private nutsApi: NutsApi, private activatedRoute: ActivatedRoute, private router: Router, private sharedService: SharedService, private translateService: TranslateService) {
+      this.excelInterval = IntervalObservable.create(15000);
+      this.adminActionsApi.getByActionName("export_municipality_applications").subscribe((response: ResponseDTO) => {
+        if (response.success) {
+          this.adminAction = response.data; 
+          if(this.adminAction.running){
+            this.downloadingList = true;
+            this.excelExportInterval();
+          }
+        } 
+      })
+      this.callApi.allCalls().subscribe(
             (calls: CallDTOBase[]) => {
                 if (calls.length > 0) {
                     this.currentCall = calls[0];
@@ -145,6 +164,31 @@ export class DgConnApplicantRegistrationsComponent {
                 this.warning3Message = translatedString;
             }
         );
+    }
+  
+    private exportIsRunning(){
+      this.adminActionsApi.getByActionName("export_municipality_applications").subscribe((response: ResponseDTO) => {
+        if (response.success) {
+          this.adminAction = response.data; 
+          if(!this.adminAction.running){
+            this.subject.next();
+            this.applicationApi.downloadExportExcelApplicantsList().subscribe((response) => {
+              console.log(response);
+              let blob = new Blob([response], {type: 'application/vnd.ms-excel'});
+              FileSaver.saveAs(blob, `applicants.xls`);
+              this.downloadingList = false; 
+            })
+          }          
+        }                      
+      });
+    }
+
+    private excelExportInterval() {
+      this.excelInterval
+          .takeUntil(this.subject)
+          .subscribe(execution => {
+              this.exportIsRunning();              
+          });
     }
 
     private searchApplicants() {
@@ -313,20 +357,17 @@ export class DgConnApplicantRegistrationsComponent {
             if (this.searchingByName) {
                 this.applicationApi.exportExcelDGConnApplicantsListSearchingName(this.currentCall.id, countryCode, this.nameSearched).subscribe(
                     (response) => {
-                        let blob = new Blob([response], {type: 'application/vnd.ms-excel'});
-                        FileSaver.saveAs(blob, 'applicants.xls');
-                        this.downloadingList = false;
+                        this.excelExportInterval();
                     }
                 );
             } else {
                 this.applicationApi.exportExcelDGConnApplicantsList(this.currentCall.id, countryCode).subscribe(
                     (response) => {
-                        let blob = new Blob([response], {type: 'application/vnd.ms-excel'});
-                        FileSaver.saveAs(blob, 'applicants.xls');
-                        this.downloadingList = false;
+                        this.excelExportInterval();
                     }
                 );
             }
+
         }
     }
 

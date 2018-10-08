@@ -1,23 +1,15 @@
 package wifi4eu.wifi4eu.web.cnect.rest;
 
 import io.swagger.annotations.Api;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
-import wifi4eu.wifi4eu.service.representation.RepresentationService;
 
 @CrossOrigin(origins = "*")
 @Controller
 @Api(value = "/representation", description = "Representation object REST API services")
 @RequestMapping("representation")
 public class RepresentationResource {
-    @Autowired
-    private RepresentationService representationService;
-
-    Logger _log = LogManager.getLogger(RepresentationResource.class);
 
     /*
     @ApiOperation(value = "Get all the representations")

@@ -66,23 +66,26 @@ export class VoucherComponent {
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
             this.callCustomApi.getCallForApply().subscribe(
-                (call: CallCustomBase) => {
-                    this.currentCall = call;
-                    if (this.currentCall) {
-                        this.voucherCompetitionState = this.currentCall.voucherCompetitionState;
-                        if (this.voucherCompetitionState == 2) {
-                            this.openedCalls = "greyImage";
+                (responseDTO: ResponseDTOBase) => {
+                    if (responseDTO.success){
+                        this.currentCall = responseDTO.data;
+                        if (this.currentCall) {
+                            this.voucherCompetitionState = this.currentCall.voucherCompetitionState;
+                            if (this.voucherCompetitionState == 2) {
+                                this.openedCalls = "greyImage";
+                            }
+                            this.loadVoucherData();
+                        } else {
+                            this.voucherCompetitionState = 0;
+                            this.loadVoucherDataWithoutCall(-1);
                         }
-                        this.loadVoucherData();
-                        if(this.voucherCompetitionState == 3) {
-                            this.voucherApplied = "greyImage";
-                        }
-                    } else {
+                    }else{
                         this.voucherCompetitionState = 0;
-                        this.loadVoucherDataWithoutCall(-1);
                     }
                 },
                 error => {
+                    console.log("ERROR");
+                    console.log(error);
                     this.voucherCompetitionState = 0;
                 }
             );
@@ -100,7 +103,7 @@ export class VoucherComponent {
 
     private loadVoucherDataWithoutCall(callId) {
         this.allRequestCompleted = false;
-        this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id, callId)
+        this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id, callId, new Date().getTime())
             .finally(() => this.allRequestCompleted = true)
             .subscribe(
                 (applyVoucher: ApplyVoucherBase[]) => {
@@ -108,12 +111,12 @@ export class VoucherComponent {
                     for (let i = 0; i < this.applyVouchersData.length; i++) {
                         if (this.applyVouchersData[i].filesUploaded == 1) {
                             let uploaddate = new Date(this.applyVouchersData[i].uploadTime);
-                            let applydate = new Date(this.applyVouchersData[i].applyTime)
                             this.uploadDateTime[this.applyVouchersData[i].idMunicipality] = ('0' + uploaddate.getUTCDate()).toString().slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
                             this.uploadHourTime[this.applyVouchersData[i].idMunicipality] = ('0' + uploaddate.getHours()).toString().slice(-2) + ":" + ('0' + uploaddate.getMinutes()).slice(-2);
-                            this.applyDateTime[this.applyVouchersData[i].idMunicipality] = ('0' + applydate.getUTCDate()).toString().slice(-2) + "/" + ('0' + (applydate.getMonth() + 1)).slice(-2) + "/" + applydate.getFullYear();
-                            this.applyHourTime[this.applyVouchersData[i].idMunicipality] = ('0' + applydate.getHours()).toString().slice(-2) + ":" + ('0' + applydate.getMinutes()).slice(-2);
                         }
+                        let applydate = new Date(this.applyVouchersData[i].applyTime);
+                        this.applyDateTime[this.applyVouchersData[i].idMunicipality] = ('0' + applydate.getUTCDate()).toString().slice(-2) + "/" + ('0' + (applydate.getMonth() + 1)).slice(-2) + "/" + applydate.getFullYear();
+                        this.applyHourTime[this.applyVouchersData[i].idMunicipality] = ('0' + applydate.getHours()).toString().slice(-2) + ":" + ('0' + applydate.getMinutes()).slice(-2);
                     }
                 },
                 error => {
@@ -134,7 +137,7 @@ export class VoucherComponent {
         this.endDate = endDateCall.format("DD/MM/YYYY");
         this.endHour = endDateCall.format("HH:mm");
         
-        this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id, this.currentCall.id)
+        this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id, this.currentCall.id, new Date().getTime())
             .finally(() => this.allRequestCompleted = true)
             .subscribe(
                 (applyVoucher: ApplyVoucherBase[]) => {

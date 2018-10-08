@@ -35,11 +35,14 @@ import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
 import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobStorage;
 import wifi4eu.wifi4eu.mapper.grantAgreement.GrantAgreementMapper;
 import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
+import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationAuthorizedPersonService;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.location.LauService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.ParametrizedDocConverter;
 
@@ -79,7 +82,13 @@ public class GrantAgreementService {
     LauService lauService;
 
     @Autowired
+    MunicipalityRepository municipalityRepository;
+
+    @Autowired
     ApplicationAuthorizedPersonService applicationAuthorizedPersonService;
+
+    @Autowired
+    RegistrationRepository registrationRepository;
 
     static final HashMap<String, String> languagesMap = new HashMap<>();
 
@@ -166,12 +175,6 @@ public class GrantAgreementService {
     public ByteArrayOutputStream generateGrantAgreementDocument(GrantAgreementDTO grantAgreement) throws Exception {
 
         UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-
-        ApplicationAuthorizedPersonDTO applicationAuthorizedPerson = applicationAuthorizedPersonService.findByApplicationAndAuthorisedPerson(grantAgreement.getApplicationId(), userDTO.getId());
-
-        if(applicationAuthorizedPerson == null){
-            throw new AccessDeniedException("This user doesn't have permissions to sign the grant agreement");
-        }
 
         ApplicationDTO applicationDTO = applicationService.getApplicationById(grantAgreement.getApplicationId());
         RegistrationDTO registrationDTO = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
@@ -264,14 +267,29 @@ public class GrantAgreementService {
         return outputStream;
     }
 
-    public byte[] downloadGrantAgreementSigned(Integer applicationId, GrantAgreementDTO grantAgreementDTO) {
+    public byte[] downloadGrantAgreementSigned(GrantAgreementDTO grantAgreementDTO) {
         byte[] fileBytes = null;
         try {
             fileBytes = azureBlobConnector.downloadGrantAgreementSigned(grantAgreementDTO.getDocumentLocation());
         } catch (Exception e) {
-            e.printStackTrace();
+            _log.error("Error downloading grant agreement file", e.getMessage());
         }
         return fileBytes;
+    }
+
+    public byte[] downloadGrantAgreementCounterSigned(GrantAgreementDTO grantAgreementDTO){
+        byte[] fileBytes = null;
+        try{
+            fileBytes = azureBlobConnector.downloadGrantAgreementCounterSigned(grantAgreementDTO.getDocumentLocationCounterSigned());
+        }catch (Exception e) {
+            _log.error("Error downloading grant agreement file", e.getMessage());
+        }
+        return fileBytes;
+    }
+
+    public boolean checkIsLefImportDone(int municipalityId){
+        // TODO
+        return municipalityRepository.countMunicipalityAbacFromMunicipalityId(registrationRepository.findMunicipalityByRegistrationId(municipalityId)) > 0;
     }
 
 }
