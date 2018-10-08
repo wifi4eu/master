@@ -23,13 +23,13 @@ import java.util.ArrayList;
 public class ReportingService {
 
     @Autowired
-    PermissionChecker permissionChecker;
+   private PermissionChecker permissionChecker;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    CallRepository callRepository;
+    private CallRepository callRepository;
 
     public ResponseDTO generateCallOpenReport(){
         if (!permissionChecker.checkIfDashboardUser()) {
@@ -46,6 +46,66 @@ public class ReportingService {
             response.setSuccess(false);
             response.setData("reports.generate.callOpen.callNotFound");
             response.setError(new ErrorDTO(400,"reports.generate.callOpen.callNotFound"));
+        }
+        return response;
+    }
+
+    public ResponseDTO generatePreSelectionReport(Integer callId){
+        if (!permissionChecker.checkIfDashboardUser()) {
+            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+        }
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        ResponseDTO response = new ResponseDTO();
+        if (Validator.isNotNull(callId)) {
+            (new Thread(new ExcelReportsRunnable(Constant.REPORTING_PRE_SELECTION, userConnected.getName(), userConnected.getEcasEmail(), userConnected.getLang(), callId))).start();
+
+            response.setSuccess(true);
+            response.setData("reports.generate.success");
+        } else {
+            response.setSuccess(false);
+            response.setData("reports.generate.preSelection.callNotFound");
+            response.setError(new ErrorDTO(400,"reports.generate.preSelection.callNotFound"));
+        }
+        return response;
+    }
+
+    public ResponseDTO generateNotificationSentOutReport(Integer callId){
+        if (!permissionChecker.checkIfDashboardUser()) {
+            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+        }
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        ResponseDTO response = new ResponseDTO();
+        if (Validator.isNotNull(callId)) {
+            (new Thread(new ExcelReportsRunnable(Constant.REPORTING_NOTIFICATIONS_SENT_OUT, userConnected.getName(), userConnected.getEcasEmail(), userConnected.getLang(), callId))).start();
+
+            response.setSuccess(true);
+            response.setData("reports.generate.success");
+        } else {
+            response.setSuccess(false);
+            response.setData("reports.generate.NotificationSentOut.callNotFound");
+            response.setError(new ErrorDTO(400,"reports.generate.NotificationSentOut.callNotFound"));
+        }
+        return response;
+    }
+
+    public ResponseDTO generateTimeToInformReport(){
+        if (!permissionChecker.checkIfDashboardUser()) {
+            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+        }
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        ResponseDTO response = new ResponseDTO();
+        if (Validator.isNotNull(callRepository.findAllCallsClosedNotified())) {
+            (new Thread(new ExcelReportsRunnable(Constant.REPORTING_TIME_TO_INFORM, userConnected.getName(), userConnected.getEcasEmail(), userConnected.getLang()))).start();
+
+            response.setSuccess(true);
+            response.setData("reports.generate.success");
+        } else {
+            response.setSuccess(false);
+            response.setData("reports.generate.TimeToInform.callNotFound");
+            response.setError(new ErrorDTO(400,"reports.generate.TimeToInform.callNotFound"));
         }
         return response;
     }

@@ -35,4 +35,13 @@ public interface NutCallCustomRepository extends CrudRepository<NutCallCustom,In
             "WHERE cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000 BETWEEN start_date AND end_date AND n.level = 0", nativeQuery = true)
     ArrayList<NutCallCustom> findNutsAndCallNameByCurrentCall();
 
+    @Query(value = "SELECT DISTINCT n.id, c.event, n.label FROM calls c " +
+            "INNER JOIN applications a ON a.call_id = c.id " +
+            "INNER JOIN registrations r ON a.registration = r.id " +
+            "INNER JOIN municipalities m ON r.municipality = m.id " +
+            "INNER JOIN laus l ON m.lau = l.id " +
+            "INNER JOIN nuts n ON n.country_code = l.country_code " +
+            "WHERE c.id = ?#{[0]} AND n.level = 0", nativeQuery = true)
+    ArrayList<NutCallCustom> findNutsAndCallNameByCall(Integer callId);
+
 }

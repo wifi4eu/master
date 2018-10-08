@@ -4,10 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.service.reporting.ReportingService;
 
@@ -25,6 +22,27 @@ public class ReportingResource {
     @ResponseBody
     public ResponseDTO generateCallOpenReport(){
         return reportingService.generateCallOpenReport();
+    }
+
+    @ApiOperation(value = "Pre Selection Lisr")
+    @RequestMapping(value  = "/pre-selection/{callId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO generatePreSelectionReport(@PathVariable ("callId") Integer callId){
+        return reportingService.generatePreSelectionReport(callId);
+    }
+
+    @ApiOperation(value = "Notifications Sent Out")
+    @RequestMapping(value  = "/notifications-sent-out/{callId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO generateNotificationsSentOutReport(@PathVariable ("callId") Integer callId){
+        return reportingService.generateNotificationSentOutReport(callId);
+    }
+
+    @ApiOperation(value = "KPI - Time to Inform")
+    @RequestMapping(value  = "/time-to-inform", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO generateTimeToInformReport(){
+        return reportingService.generateTimeToInformReport();
     }
 
     @ApiOperation(value = "Types IR")
