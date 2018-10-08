@@ -164,7 +164,7 @@ public class ScheduledTasks {
     }
 
     //-- DGCONN-NOT-NECESSARY @Scheduled(cron = "0 0 9,17 * * MON-FRI")
-    @Scheduled(cron = "0 0 9,10,11,12,13,14,15,16,17,18 * * MON-FRI")
+    @Scheduled(cron = "0 0 9,17 * * MON-FRI")
     public void scheduleHelpdeskIssues() {
     	final String confirmationMessage = "Thank you for your message.";
     	
@@ -184,6 +184,10 @@ public class ScheduledTasks {
         			helpdeskTicketDTO.setEmailAdress(helpdeskIssue.getFromEmail());
         			helpdeskTicketDTO.setEmailAdressconf(helpdeskTicketDTO.getEmailAdress());
         			helpdeskTicketDTO.setUuid("wifi4eu_" + helpdeskIssue.getId());
+        			helpdeskTicketDTO.setLang(helpdeskIssue.getLang());
+        			helpdeskTicketDTO.setPref_lg(helpdeskIssue.getLang());
+        			helpdeskTicketDTO.setPref_lg2(helpdeskIssue.getLang());
+        			
         			UserDTO userDTO = userService.getUserByEcasEmail(helpdeskIssue.getFromEmail());
     				_log.info("userDTO id[{}]", userDTO == null ? "NULL" : userDTO.getId());
 

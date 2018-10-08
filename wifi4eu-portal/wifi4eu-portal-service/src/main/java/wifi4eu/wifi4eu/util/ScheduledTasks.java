@@ -176,6 +176,10 @@ public class ScheduledTasks {
         			helpdeskTicketDTO.setEmailAdress(helpdeskIssue.getFromEmail());
         			helpdeskTicketDTO.setEmailAdressconf(helpdeskTicketDTO.getEmailAdress());
         			helpdeskTicketDTO.setUuid("wifi4eu_" + helpdeskIssue.getId());
+        			helpdeskTicketDTO.setLang(helpdeskIssue.getLang());
+        			helpdeskTicketDTO.setPref_lg(helpdeskIssue.getLang());
+        			helpdeskTicketDTO.setPref_lg2(helpdeskIssue.getLang());
+
         			UserDTO userDTO = userService.getUserByEcasEmail(helpdeskIssue.getFromEmail());
 
         			if (userDTO != null) {

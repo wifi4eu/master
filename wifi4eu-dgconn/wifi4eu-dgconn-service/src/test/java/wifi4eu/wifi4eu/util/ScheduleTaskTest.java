@@ -5,29 +5,24 @@ import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskTicketDTO;
 import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
 import wifi4eu.wifi4eu.util.ScheduledTasks;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(value={ScheduledTasks.class, HelpdeskService.class, DataOutputStream.class})
-@PowerMockIgnore("javax.management.*")
+//@RunWith(PowerMockRunner.class)
+//@PrepareForTest(value={ScheduledTasks.class, HelpdeskService.class, DataOutputStream.class})
+//@PowerMockIgnore("javax.management.*")
 public class ScheduleTaskTest {
 	
 	private final String CYRILLIC_ALPHABET = "А а,Б б,В в,Г г,Д д,Е е,Ж ж,З з,И и,Й й,К к,Л л,М м,Н н,О о,П п,Р р,С с,Т т,У у,Ф ф,Х х,Ц ц,Ч ч,Ш ш,Щ щ,Ь ь";
@@ -44,6 +39,9 @@ public class ScheduleTaskTest {
 	@InjectMocks
 	private ScheduledTasks scheduledTasks;
 	
+	@Autowired
+	private ScheduledTasks scheduledTasksNoMocks;
+	
 	@Before
 	public void setup() throws Exception {
 	}	
@@ -53,7 +51,7 @@ public class ScheduleTaskTest {
 	 * 
 	 * @throws Exception
 	 */
-	@Test
+//	@Test
 	public void executePost_test() throws Exception {
 		DataOutputStream dataOutputStreamMock = PowerMockito.mock(DataOutputStream.class);
 		HttpURLConnection httpURLConnectionMock = PowerMockito.mock(HttpURLConnection.class);
@@ -118,32 +116,5 @@ public class ScheduleTaskTest {
         ScheduledTasks.executePost("https://webtools.ec.europa.eu/form-tools/process.php", helpdeskTicketDTO.toString());
         Mockito.verify(dataOutputStreamMock, Mockito.times(1)).writeBytes(Mockito.anyString());
 	}
-
-	/**
-	 * A code to test if the Serco System was creating the tickets on its system.
-	 * @throws Exception
-	 */
-//	@Test
-	public void executePost() throws Exception {
-        String prodUrl = "https://webtools.ec.europa.eu/form-tools/process.php";
-        String testUrl = "https://webgate.acceptance.ec.europa.eu/fpfis/webtools/form-tools/process.php";
-
-        HelpdeskTicketDTO helpdeskTicketDTO = new HelpdeskTicketDTO();
-		helpdeskTicketDTO.setForm_tools_form_id("1047");
-		helpdeskTicketDTO.setEmailAdress("fkaswine@everis.com");
-		helpdeskTicketDTO.setEmailAdressconf(helpdeskTicketDTO.getEmailAdress());
-		helpdeskTicketDTO.setUuid("wifi4eu_368");
-		helpdeskTicketDTO.setFirstname("TESTER FIRST NAME");
-		helpdeskTicketDTO.setLastname("TESTER SUR NAME");
-		helpdeskTicketDTO.setTxtsubjext("TEST TOPIC / SUBJECT (GERMAN/SPANISH/PORTUGUESE)");
-
-        String encodedQuestion = URLEncoder.encode(this.GERMAN_ALPHABET + "|" + this.SPANISH_ALPHABET + "|" + this.PORTUGUESE_ALPHABET, "UTF-8");
-
-		helpdeskTicketDTO.setQuestion(encodedQuestion);
-
-        String response = ScheduledTasks.executePost(testUrl, helpdeskTicketDTO.toString());
-        System.out.println(response);
-	}
-
 
 }
