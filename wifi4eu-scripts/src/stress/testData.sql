@@ -31,6 +31,7 @@ DELETE FROM municipalities_abac;
 DELETE FROM budgetary_commitment;
 DELETE FROM global_commitment;
 DELETE FROM grant_agreement;
+DELETE FROM calls;
 
 DBCC CHECKIDENT ('municipalities', RESEED, 0);
 DBCC CHECKIDENT ('users', RESEED, 0);
@@ -49,6 +50,18 @@ DECLARE @r_id VARCHAR(255) = ''
 DECLARE @t_id VARCHAR(255) = ''
 DECLARE @f_id1 VARCHAR(255) = ''
 DECLARE @f_id3 VARCHAR(255) = ''
+DECLARE @va_id VARCHAR(255) = ''
+DECLARE @a_id VARCHAR(255) = ''
+DECLARE @c_id VARCHAR(255) = ''
+DECLARE @application_status INT = 1
+DECLARE @application_pre_selected_flag BIT = 1
+
+
+INSERT INTO calls
+    (event, start_date, end_date, voucher_value, reserve, number_vouchers, max_percent_country)
+VALUES
+       ('Call 1', 1538404858000, 1538465400000, 15000, 1, 6, 8)
+SET @c_id = (SELECT TOP 1 id FROM calls ORDER BY ID DESC)
 
 -- Add user
 INSERT INTO users
@@ -106,6 +119,20 @@ INSERT INTO registration_users
     (registration, _user)
 VALUES
     (@r_id, @u_id)
+INSERT INTO applications
+    (call_id, registration, _status, pre_selected_flag, rejected)
+VALUES
+    (@c_id, @r_id, @application_status, @application_pre_selected_flag, 0)
+INSERT INTO voucher_assignments
+    (_user, call, status)
+VALUES
+    (@u_id, @c_id, 3)
+SET @a_id = (SELECT TOP 1 id FROM applications ORDER BY ID DESC)
+SET @va_id = (SELECT TOP 1 id FROM voucher_assignments ORDER BY ID DESC)
+INSERT INTO voucher_simulations
+    (municipality, selection_status, application, voucher_assignment, country_rank, eu_rank)
+VALUES
+    (@m_id, 1, @a_id, @va_id, 1, 1)
 
 
 -- Add user
@@ -164,7 +191,20 @@ INSERT INTO registration_users
     (registration, _user)
 VALUES
     (@r_id, @u_id)
-
+INSERT INTO applications
+    (call_id, registration, _status, pre_selected_flag, rejected)
+VALUES
+    (@c_id, @r_id, @application_status, @application_pre_selected_flag, 0)
+INSERT INTO voucher_assignments
+    (_user, call, status)
+VALUES
+    (@u_id, @c_id, 3)
+SET @a_id = (SELECT TOP 1 id FROM applications ORDER BY ID DESC)
+SET @va_id = (SELECT TOP 1 id FROM voucher_assignments ORDER BY ID DESC)
+INSERT INTO voucher_simulations
+    (municipality, selection_status, application, voucher_assignment, country_rank, eu_rank)
+VALUES
+    (@m_id, 2, @a_id, @va_id, 1, 1)
 
 -- Add user
 INSERT INTO users
@@ -222,7 +262,20 @@ INSERT INTO registration_users
     (registration, _user)
 VALUES
     (@r_id, @u_id)
-
+INSERT INTO applications
+    (call_id, registration, _status, pre_selected_flag, rejected)
+VALUES
+    (@c_id, @r_id, @application_status, @application_pre_selected_flag, 0)
+INSERT INTO voucher_assignments
+    (_user, call, status)
+VALUES
+    (@u_id, @c_id, 3)
+SET @a_id = (SELECT TOP 1 id FROM applications ORDER BY ID DESC)
+SET @va_id = (SELECT TOP 1 id FROM voucher_assignments ORDER BY ID DESC)
+INSERT INTO voucher_simulations
+    (municipality, selection_status, application, voucher_assignment, country_rank, eu_rank)
+VALUES
+    (@m_id, 2, @a_id, @va_id, 1, 1)
 
 
 -- Add user
@@ -281,6 +334,20 @@ INSERT INTO registration_users
     (registration, _user)
 VALUES
     (@r_id, @u_id)
+INSERT INTO applications
+    (call_id, registration, _status, pre_selected_flag, rejected)
+VALUES
+    (@c_id, @r_id, @application_status, @application_pre_selected_flag, 0)
+INSERT INTO voucher_assignments
+    (_user, call, status)
+VALUES
+    (@u_id, @c_id, 3)
+SET @a_id = (SELECT TOP 1 id FROM applications ORDER BY ID DESC)
+SET @va_id = (SELECT TOP 1 id FROM voucher_assignments ORDER BY ID DESC)
+INSERT INTO voucher_simulations
+    (municipality, selection_status, application, voucher_assignment, country_rank, eu_rank)
+VALUES
+    (@m_id, 3, @a_id, @va_id, 1, 1)
 
 
 -- Add user
@@ -339,6 +406,20 @@ INSERT INTO registration_users
     (registration, _user)
 VALUES
     (@r_id, @u_id)
+INSERT INTO applications
+    (call_id, registration, _status, pre_selected_flag, rejected)
+VALUES
+    (@c_id, @r_id, @application_status, @application_pre_selected_flag, 0)
+INSERT INTO voucher_assignments
+    (_user, call, status)
+VALUES
+    (@u_id, @c_id, 3)
+SET @a_id = (SELECT TOP 1 id FROM applications ORDER BY ID DESC)
+SET @va_id = (SELECT TOP 1 id FROM voucher_assignments ORDER BY ID DESC)
+INSERT INTO voucher_simulations
+    (municipality, selection_status, application, voucher_assignment, country_rank, eu_rank)
+VALUES
+    (@m_id, 3, @a_id, @va_id, 1, 1)
 
 
 -- Add user
@@ -397,6 +478,20 @@ INSERT INTO registration_users
     (registration, _user)
 VALUES
     (@r_id, @u_id)
+INSERT INTO applications
+    (call_id, registration, _status, pre_selected_flag, rejected)
+VALUES
+    (@c_id, @r_id, @application_status, @application_pre_selected_flag, 0)
+INSERT INTO voucher_assignments
+    (_user, call, status)
+VALUES
+    (@u_id, @c_id, 3)
+SET @a_id = (SELECT TOP 1 id FROM applications ORDER BY ID DESC)
+SET @va_id = (SELECT TOP 1 id FROM voucher_assignments ORDER BY ID DESC)
+INSERT INTO voucher_simulations
+    (municipality, selection_status, application, voucher_assignment, country_rank, eu_rank)
+VALUES
+    (@m_id, 3, @a_id, @va_id, 1, 1)
 
 
 -- Add user
@@ -455,6 +550,20 @@ INSERT INTO registration_users
     (registration, _user)
 VALUES
     (@r_id, @u_id)
+INSERT INTO applications
+    (call_id, registration, _status, pre_selected_flag, rejected)
+VALUES
+    (@c_id, @r_id, @application_status, @application_pre_selected_flag, 0)
+INSERT INTO voucher_assignments
+    (_user, call, status)
+VALUES
+    (@u_id, @c_id, 3)
+SET @a_id = (SELECT TOP 1 id FROM applications ORDER BY ID DESC)
+SET @va_id = (SELECT TOP 1 id FROM voucher_assignments ORDER BY ID DESC)
+INSERT INTO voucher_simulations
+    (municipality, selection_status, application, voucher_assignment, country_rank, eu_rank)
+VALUES
+    (@m_id, 3, @a_id, @va_id, 1, 1)
 
 
 -- Add user
@@ -513,6 +622,20 @@ INSERT INTO registration_users
     (registration, _user)
 VALUES
     (@r_id, @u_id)
+INSERT INTO applications
+    (call_id, registration, _status, pre_selected_flag, rejected)
+VALUES
+    (@c_id, @r_id, @application_status, @application_pre_selected_flag, 0)
+INSERT INTO voucher_assignments
+    (_user, call, status)
+VALUES
+    (@u_id, @c_id, 3)
+SET @a_id = (SELECT TOP 1 id FROM applications ORDER BY ID DESC)
+SET @va_id = (SELECT TOP 1 id FROM voucher_assignments ORDER BY ID DESC)
+INSERT INTO voucher_simulations
+    (municipality, selection_status, application, voucher_assignment, country_rank, eu_rank)
+VALUES
+    (@m_id, 3, @a_id, @va_id, 1, 1)
 
 
 -- Add user
@@ -571,6 +694,20 @@ INSERT INTO registration_users
     (registration, _user)
 VALUES
     (@r_id, @u_id)
+INSERT INTO applications
+    (call_id, registration, _status, pre_selected_flag, rejected)
+VALUES
+    (@c_id, @r_id, @application_status, @application_pre_selected_flag, 0)
+INSERT INTO voucher_assignments
+    (_user, call, status)
+VALUES
+    (@u_id, @c_id, 3)
+SET @a_id = (SELECT TOP 1 id FROM applications ORDER BY ID DESC)
+SET @va_id = (SELECT TOP 1 id FROM voucher_assignments ORDER BY ID DESC)
+INSERT INTO voucher_simulations
+    (municipality, selection_status, application, voucher_assignment, country_rank, eu_rank)
+VALUES
+    (@m_id, 3, @a_id, @va_id, 1, 1)
 
 
 -- Add user
@@ -629,6 +766,20 @@ INSERT INTO registration_users
     (registration, _user)
 VALUES
     (@r_id, @u_id)
+INSERT INTO applications
+    (call_id, registration, _status, pre_selected_flag, rejected)
+VALUES
+    (@c_id, @r_id, @application_status, @application_pre_selected_flag, 0)
+INSERT INTO voucher_assignments
+    (_user, call, status)
+VALUES
+    (@u_id, @c_id, 3)
+SET @a_id = (SELECT TOP 1 id FROM applications ORDER BY ID DESC)
+SET @va_id = (SELECT TOP 1 id FROM voucher_assignments ORDER BY ID DESC)
+INSERT INTO voucher_simulations
+    (municipality, selection_status, application, voucher_assignment, country_rank, eu_rank)
+VALUES
+    (@m_id, 3, @a_id, @va_id, 1, 1)
 
 
 -- Add user
@@ -687,6 +838,20 @@ INSERT INTO registration_users
     (registration, _user)
 VALUES
     (@r_id, @u_id)
+INSERT INTO applications
+    (call_id, registration, _status, pre_selected_flag, rejected)
+VALUES
+    (@c_id, @r_id, @application_status, @application_pre_selected_flag, 0)
+INSERT INTO voucher_assignments
+    (_user, call, status)
+VALUES
+    (@u_id, @c_id, 3)
+SET @a_id = (SELECT TOP 1 id FROM applications ORDER BY ID DESC)
+SET @va_id = (SELECT TOP 1 id FROM voucher_assignments ORDER BY ID DESC)
+INSERT INTO voucher_simulations
+    (municipality, selection_status, application, voucher_assignment, country_rank, eu_rank)
+VALUES
+    (@m_id, 3, @a_id, @va_id, 1, 1)
 
 
 -- Add user
@@ -745,6 +910,20 @@ INSERT INTO registration_users
     (registration, _user)
 VALUES
     (@r_id, @u_id)
+INSERT INTO applications
+    (call_id, registration, _status, pre_selected_flag, rejected)
+VALUES
+    (@c_id, @r_id, @application_status, @application_pre_selected_flag, 0)
+INSERT INTO voucher_assignments
+    (_user, call, status)
+VALUES
+    (@u_id, @c_id, 3)
+SET @a_id = (SELECT TOP 1 id FROM applications ORDER BY ID DESC)
+SET @va_id = (SELECT TOP 1 id FROM voucher_assignments ORDER BY ID DESC)
+INSERT INTO voucher_simulations
+    (municipality, selection_status, application, voucher_assignment, country_rank, eu_rank)
+VALUES
+    (@m_id, 3, @a_id, @va_id, 1, 1)
 
 
 -- Add user
@@ -803,6 +982,20 @@ INSERT INTO registration_users
     (registration, _user)
 VALUES
     (@r_id, @u_id)
+INSERT INTO applications
+    (call_id, registration, _status, pre_selected_flag, rejected)
+VALUES
+    (@c_id, @r_id, @application_status, @application_pre_selected_flag, 0)
+INSERT INTO voucher_assignments
+    (_user, call, status)
+VALUES
+    (@u_id, @c_id, 3)
+SET @a_id = (SELECT TOP 1 id FROM applications ORDER BY ID DESC)
+SET @va_id = (SELECT TOP 1 id FROM voucher_assignments ORDER BY ID DESC)
+INSERT INTO voucher_simulations
+    (municipality, selection_status, application, voucher_assignment, country_rank, eu_rank)
+VALUES
+    (@m_id, 3, @a_id, @va_id, 1, 1)
 
 
 -- Add user
@@ -861,6 +1054,20 @@ INSERT INTO registration_users
     (registration, _user)
 VALUES
     (@r_id, @u_id)
+INSERT INTO applications
+    (call_id, registration, _status, pre_selected_flag, rejected)
+VALUES
+    (@c_id, @r_id, @application_status, @application_pre_selected_flag, 0)
+INSERT INTO voucher_assignments
+    (_user, call, status)
+VALUES
+    (@u_id, @c_id, 3)
+SET @a_id = (SELECT TOP 1 id FROM applications ORDER BY ID DESC)
+SET @va_id = (SELECT TOP 1 id FROM voucher_assignments ORDER BY ID DESC)
+INSERT INTO voucher_simulations
+    (municipality, selection_status, application, voucher_assignment, country_rank, eu_rank)
+VALUES
+    (@m_id, 3, @a_id, @va_id, 1, 1)
 
 
 -- Add user
@@ -919,6 +1126,20 @@ INSERT INTO registration_users
     (registration, _user)
 VALUES
     (@r_id, @u_id)
+INSERT INTO applications
+    (call_id, registration, _status, pre_selected_flag, rejected)
+VALUES
+    (@c_id, @r_id, @application_status, @application_pre_selected_flag, 0)
+INSERT INTO voucher_assignments
+    (_user, call, status)
+VALUES
+    (@u_id, @c_id, 3)
+SET @a_id = (SELECT TOP 1 id FROM applications ORDER BY ID DESC)
+SET @va_id = (SELECT TOP 1 id FROM voucher_assignments ORDER BY ID DESC)
+INSERT INTO voucher_simulations
+    (municipality, selection_status, application, voucher_assignment, country_rank, eu_rank)
+VALUES
+    (@m_id, 3, @a_id, @va_id, 1, 1)
 
 
 
@@ -926,9 +1147,9 @@ VALUES
 INSERT INTO global_commitment
     (id, ammount, call, globalCommitment, priority)
 VALUES
-       (1, 300000, 1, 'SI2.773329.1.B2018', 1)
+       (1, 300000, @c_id, 'SI2.773329.1.B2018', 1)
 
 INSERT INTO global_commitment
     (id, ammount, call, globalCommitment, priority)
 VALUES
-       (2, 300000, 1, 'SI2.773329.2.B2018', 2)
+       (2, 300000, @c_id, 'SI2.773329.2.B2018', 2)
