@@ -52,4 +52,8 @@ public class BankAccountService {
             return new ResponseDTO(false, null,  new ErrorDTO(20, "cannot delete bank account"));
         }
     }
+
+    public BankAccount getBankAccountByIdAndSupplierId(Integer ibanId, Integer supplierId){
+        return bankAccountRepository.findByIdAndSupplierId(ibanId, supplierId);
+    }
 }

@@ -10,6 +10,7 @@ import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
 import { SupplierDTOBase } from "../../shared/swagger/model/SupplierDTO";
 import { NutsDTOBase } from "../../shared/swagger/model/NutsDTO";
 import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
+import { ActivatedRoute, Router } from "@angular/router";
 
 // Languages functionality
 import {UxEuLanguages, UxLanguage} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
@@ -70,7 +71,7 @@ export class SupplierProfileComponent {
     private newUserEmail: string = '';
     private addUser: boolean = false;
 
-    constructor(private localStorageService: LocalStorageService, private sharedService: SharedService, private supplierApi: SupplierApi, private nutsApi: NutsApi, private userApi: UserApi) {
+    constructor(private localStorageService: LocalStorageService, private sharedService: SharedService, private supplierApi: SupplierApi, private nutsApi: NutsApi, private userApi: UserApi, private router: Router, private route: ActivatedRoute) {
         this.fetchingData = true;
         if (this.sharedService.user) {
             this.user = this.sharedService.user;
@@ -343,6 +344,11 @@ export class SupplierProfileComponent {
         this.clearLogoFile();
         Object.assign(this.editedSupplier, this.supplier);
     }
+
+    private goToAccount(supplierId: number) {
+        this.router.navigate(['../bank-account/',supplierId], { relativeTo: this.route });
+    }
+
 /* ADD CONTACT
     private closeAddNewContactModal(){
         this.newUserEmail = '';
