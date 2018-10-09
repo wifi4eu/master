@@ -8,8 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.BankAccountDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
+import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.entity.supplier.BankAccount;
 import wifi4eu.wifi4eu.mapper.supplier.BankAccountMapper;
+import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.supplier.BankAccountRepository;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 
@@ -23,6 +25,9 @@ public class BankAccountService {
 
     @Autowired
     BankAccountRepository bankAccountRepository;
+
+    @Autowired
+    ApplicationRepository applicationRepository;
 
     private final Logger _log = LogManager.getLogger(BankAccountService.class);
 
@@ -39,7 +44,8 @@ public class BankAccountService {
     @Transactional
     public ResponseDTO deleteBankAccount(BankAccount bankAccount) throws Exception {
         // if it is attributed to a Beneficiary for payment the Wi-Fi Installation Company cannot delete it
-        if (bankAccount.getRegistrationId() == null) {
+        List<Application> applicationsWithBankAccount = applicationRepository.findByBankAccountIdAndSupplierId(bankAccount.getId(), bankAccount.getSupplierId());
+        if (applicationsWithBankAccount.isEmpty()) {
             bankAccountRepository.delete(bankAccount);
             return new ResponseDTO(true, "success", null);
         } else {

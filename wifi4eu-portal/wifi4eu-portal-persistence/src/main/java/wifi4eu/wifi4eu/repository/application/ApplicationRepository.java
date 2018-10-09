@@ -75,4 +75,6 @@ public interface ApplicationRepository extends CrudRepository<Application, Integ
     @Query(value = "SELECT a.* FROM applications a WHERE a.call_id = ?#{[0]} AND a.registration = ?#{[1]} AND a.id IN (SELECT vs.application FROM voucher_simulations vs where selection_status = 3)", nativeQuery = true)
     Application findVoucherApplicationByCallIdAndRegistrationId(Integer callId, Integer registrationId);
 
+
+    List<Application> findByBankAccountIdAndSupplierId(Integer bankAccountId, Integer supplierId);
 }

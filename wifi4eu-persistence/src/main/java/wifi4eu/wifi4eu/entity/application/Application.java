@@ -84,10 +84,16 @@ public class Application {
     @Column(name = "sent_email_date")
     private Date sentEmailDate;
 
+    @Column(name= "select_supplier_date ")
+    private Long selectSupplierDate;
+
+    @Column(name="bank_account_id")
+    private Integer bankAccountId;
+
     public Application() {
     }
 
-    public Application(Integer id, Integer callId, Integer registrationId, Integer supplierId, boolean voucherAwarded, Long date, Long lefExport, Long lefImport, Integer lefStatus, Long bcExport, Long bcImport, Integer bcStatus, Long lcExport, Long lcImport, Integer lcStatus, int status, String invalidateReason, String cancelReason, Boolean preSelectedFlag, Boolean rejected, Integer authorizedPerson, Date dateSignature, Date dateCounterSignature, boolean sentEmail, Date sentEmailDate) {
+    public Application(Integer id, Integer callId, Integer registrationId, Integer supplierId, boolean voucherAwarded, Long date, Long lefExport, Long lefImport, Integer lefStatus, Long bcExport, Long bcImport, Integer bcStatus, Long lcExport, Long lcImport, Integer lcStatus, int status, String invalidateReason, String cancelReason, Boolean preSelectedFlag, Boolean rejected, Integer authorizedPerson, Date dateSignature, Date dateCounterSignature, boolean sentEmail, Date sentEmailDate, Long selectSupplierDate, Integer bankAccountId) {
         this.id = id;
         this.callId = callId;
         this.registrationId = registrationId;
@@ -113,6 +119,8 @@ public class Application {
         this.dateCounterSignature = dateCounterSignature;
         this.sentEmail = sentEmail;
         this.sentEmailDate = sentEmailDate;
+        this.selectSupplierDate = selectSupplierDate;
+        this.bankAccountId = bankAccountId;
     }
 
     public Integer getId() {
@@ -309,5 +317,13 @@ public class Application {
 
     public void setSentEmailDate(Date sentEmailDate) {
         this.sentEmailDate = sentEmailDate;
+    }
+
+    public Integer getBankAccountId() {
+        return bankAccountId;
+    }
+
+    public void setBankAccountId(Integer bankAccountId) {
+        this.bankAccountId = bankAccountId;
     }
 }

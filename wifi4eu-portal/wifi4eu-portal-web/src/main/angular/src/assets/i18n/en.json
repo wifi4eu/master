@@ -1033,5 +1033,9 @@
   "dgconn.voucherAssignment.runningPreSelectionList": "Creating Pre-selection List…",
   "itemMenu.myInstallation": "My installation",
   "supplier.myInstallation.title": "Request for installation by Municipalities",
-  "supplier.myInstallation.subTitle": "As a Wi-Fi installation company, youc an enconde your bank account(s) at any time. Once you're selected by the municipality then you can select a bank account and afterwards complete the installation report."
+  "supplier.myInstallation.subTitle": "As a Wi-Fi installation company, youc an enconde your bank account(s) at any time. Once you're selected by the municipality then you can select a bank account and afterwards complete the installation report.",
+  "supplier.myInstallation.dateReceived": "Date received",
+  "supplier.bankAccount": "Bank Account",
+  "supplier.myInstallation.installationReportBtn": "Installation report",
+  "supplier.myInstallation.selectBankBtn": "Select bank account"
 }

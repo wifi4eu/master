@@ -47,9 +47,6 @@ public class BankAccount {
     @Column(name = "account_holder_Country")
     private String accountHolderCountry;
 
-    @Column(name = "registration_id")
-    private Integer registrationId;
-
     public BankAccount() {
     }
 
@@ -157,11 +154,4 @@ public class BankAccount {
         this.accountHolderCountry = accountHolderCountry;
     }
 
-    public Integer getRegistrationId() {
-        return registrationId;
-    }
-
-    public void setRegistrationId(Integer registrationId) {
-        this.registrationId = registrationId;
-    }
 }

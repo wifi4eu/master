@@ -1,6 +1,37 @@
 <div class="container">
     <div class="ui-g-12 center" style="margin-top: 1em;">
         <p class="beneficiaryTitle labelModal">{{'supplier.myInstallation.title' | translate}}</p>
-        <p class="offset-md-1 col-md-10 left" >{{'supplier.myInstallation.subTitle' | translate}}</p>
+        <p class="offset-md-1 col-md-10 left">{{'supplier.myInstallation.subTitle' | translate}}</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="ui-g-12">
+        <p-dataTable *ngIf="!firstDataDownload" #tableBeneficiaries [value]="beneficiaryList" [responsive]="true">
+            <p-column field="country" sortable="true" header="{{'shared.country.label' | translate}}">
+                <ng-template let-row="rowData" pTemplate="body">
+                    <!-- {{ row.country | titlecase }}  -->
+                    {{ row.country | slice:0:1 | uppercase }}{{row.country | slice:1:row.country.length | lowercase }}
+                </ng-template>
+            </p-column>
+            <p-column field="name" sortable="true" header="{{'shared.municipality.label' | translate}}"></p-column>
+            <p-column field="selectSupplierDate" sortable="true" header="{{'supplier.myInstallation.dateReceived' | translate}}">
+                <ng-template let-row="rowData" pTemplate="body">
+                    <span *ngIf="row.selectSupplierDate">{{ row.selectSupplierDate | date:'dd/MM/yyyy HH:mm' }}</span>
+                </ng-template>
+            </p-column>
+            <p-column header="{{'supplier.bankAccount' | translate}}">
+                <ng-template let-row="rowData" pTemplate="body">
+                    <button class="btn btn-primary">
+                        {{'supplier.myInstallation.selectBankBtn' | translate}}</button>
+                </ng-template>
+            </p-column>
+            <p-column header="{{'benef.installationTitle' | translate}}">
+                <ng-template let-row="rowData" pTemplate="body">
+                    <button class="btn btn-primary">{{'supplier.myInstallation.installationReportBtn'
+                        | translate}} </button>
+                </ng-template>
+            </p-column>
+        </p-dataTable>
     </div>
 </div>
