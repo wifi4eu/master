@@ -378,8 +378,8 @@
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
                 <mail.smtp.password>${encrypted.smtp.password}</mail.smtp.password>
-		       	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
-		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        
+                <serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+                <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>
             </properties>
         </profile>
         <profile>
@@ -420,8 +420,8 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
-	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
-		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        
+                <serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+                <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>
             </properties>
         </profile>
         <profile>
@@ -464,8 +464,8 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
-	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
-		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>
+                <serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+                <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>
             </properties>
         </profile>
         <profile>
@@ -508,8 +508,8 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
-	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
-		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        																																					 
+                <serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+                <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>
             </properties>
         </profile>
         <profile>
@@ -550,8 +550,8 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
-	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
-		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        																						   																							 
+                <serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+                <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>
             </properties>
         </profile>
         <profile>
@@ -594,8 +594,8 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
-				<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
-		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>																						   																							 
+                <serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+                <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>
             </properties>
         </profile>
         <profile>
@@ -638,8 +638,8 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
-	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
-		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        
+                <serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+                <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>
             </properties>
         </profile>
         <profile>
@@ -682,8 +682,8 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
-	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
-		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>
+                <serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+                <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>
             </properties>
         </profile>
         <profile>
@@ -726,8 +726,8 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
-	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
-		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        
+                <serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+                <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>
             </properties>
         </profile>
         <profile>
@@ -773,8 +773,8 @@
                 </cns.user.preferences.service.url>
                 <cns.client.system.key>${cns.client.system.key.pro}</cns.client.system.key>
                 <cns.client.system.password>${cns.client.system.password.pro}</cns.client.system.password>                
-	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
-		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        
+                <serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+                <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>
             </properties>
         </profile>
         <profile>
@@ -815,8 +815,8 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.acc}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.acchf}</azure.blob.legal.files.key>
-	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
-		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        
+                <serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+                <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>
             </properties>
         </profile>
         <profile>
@@ -861,8 +861,8 @@
                 </cns.user.preferences.service.url>
                 <cns.client.system.key>${cns.client.system.key.pro}</cns.client.system.key>
                 <cns.client.system.password>${cns.client.system.password.pro}</cns.client.system.password>
-	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.pro}</serco.helpdesk.endpoint>
-		        <serco.helpdesk.formid>${serco.helpdesk.formid.pro}</serco.helpdesk.formid>        
+                <serco.helpdesk.endpoint>${serco.helpdesk.endpoint.pro}</serco.helpdesk.endpoint>
+                <serco.helpdesk.formid>${serco.helpdesk.formid.pro}</serco.helpdesk.formid>
             </properties>
         </profile>
     </profiles>
