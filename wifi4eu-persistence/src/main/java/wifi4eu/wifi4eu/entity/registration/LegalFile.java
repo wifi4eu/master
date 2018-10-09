@@ -12,9 +12,6 @@ public class LegalFile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "registration")
-    private int registration;
-
     @Column(name = "data")
     private String fileData;
 
@@ -45,21 +42,9 @@ public class LegalFile {
     @Column(name = "new")
     private Integer isNew;
 
-    public LegalFile() {
-    }
-
-    public LegalFile(int registration, String fileData, int fileType, Long uploadTime, Integer userId, int fileSize, String fileMime, String fileName, Integer status, Integer isNew) {
-        this.registration = registration;
-        this.fileData = fileData;
-        this.fileType = fileType;
-        this.uploadTime = uploadTime;
-        this.userId = userId;
-        this.fileSize = fileSize;
-        this.fileMime = fileMime;
-        this.fileName = fileName;
-        this.status = status;
-        this.isNew = isNew;
-    }
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "registration")
+    private Registration registration;
 
     public Integer getId() {
         return id;
@@ -69,11 +54,11 @@ public class LegalFile {
         this.id = id;
     }
 
-    public int getRegistration() {
+    public Registration getRegistration() {
         return registration;
     }
 
-    public void setRegistration(int registration) {
+    public void setRegistration(Registration registration) {
         this.registration = registration;
     }
 

@@ -94,6 +94,9 @@ public class Registration {
           inverseJoinColumns = @JoinColumn( name="_user", referencedColumnName = "id"))
     private List<User> users;
 
+    @OneToMany(mappedBy = "registration")
+    private List<LegalFile> legalFiles;
+
     public Registration() {
     }
 
@@ -315,5 +318,16 @@ public class Registration {
 
     public void setApplications(List<Application> applications) {
         this.applications = applications;
+    }
+
+    public List<LegalFile> getLegalFiles() {
+        if (legalFiles == null) {
+            legalFiles = new ArrayList<>(0);
+        }
+        return legalFiles;
+    }
+
+    public void setLegalFiles(List<LegalFile> legalFiles) {
+        this.legalFiles = legalFiles;
     }
 }
