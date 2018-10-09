@@ -79,7 +79,7 @@ public interface MunicipalityRepository extends JpaRepository<Municipality, Inte
             "inner join m.registrations r " +
             "inner join r.applications a " +
             "inner join r.legalFiles lf on lf.fileType = 1 " +
-            "inner join m.voucherSimulations vs " +
+            "inner join m.voucherSimulations vs on (vs.selectionStatus = 1 or vs.selectionStatus = 3) " +
             "inner join vs.voucherAssignment va on va.status = 3 " +
             "left join m.municipalitiesAbac ma " +
             "left join r.users u " +
