@@ -9,11 +9,6 @@ module VagrantPlugins
 end
 
 # script to move configuration files and libraries to Tomcat container
-$script_dbLoad = <<-'SCRIPT'
-docker exec -d sql1 /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'SQLserver1' -Q 'RESTORE DATABASE wifi4eu FROM DISK = "/tmp/sql/wifi4eu.bak"'
-SCRIPT
-
-# script to move configuration files and libraries to Tomcat container
 $script_tomcatConfig = <<-SCRIPT
 docker cp /home/bargee/dev/lib/mssql-jdbc-6.4.0.jre8.jar tomcat:/usr/local/tomcat/lib
 docker cp /home/bargee/dev/lib/jtds-1.3.1.jar tomcat:/usr/local/tomcat/lib

@@ -46,7 +46,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        
+
         <!-- DEPENDENCIES VERSIONS -->
 
         <jdk.version>1.7</jdk.version>
@@ -121,7 +121,7 @@
         <server.test.address>wifi4eu.everisdigitalchannels.com</server.test.address>
         <server.test.port>8080</server.test.port>
         <mail.serv.enable>false</mail.serv.enable>
-        
+
         <!-- DEV environments -->
         <server.azure.dev.address>wifi4eu-dev.everincloud.com</server.azure.dev.address>
         <server.azure.devb.address>wifi4eu-devb.everincloud.com</server.azure.devb.address>
@@ -236,6 +236,14 @@
             9GCRl1rzZFa+p3vnZX+rcQvIZExBSry601fDXJ+a1QjrQ1amhTtjNju/aPaOq5vlUrFfMUJ9vQYJfgEtn3ES7w3HYVclvtr8iK1MzizNWsTjlb2YxZjWsnruv4Djw3ksmThnwHbgkVE/3ucgmy6lt/R2dRN7b9mRHFNShVxvU+epRCbq6WS+I/W2EUWjKkzc4S1WAnaycqxYy5U/Ly910iemAXN2DqF1LvzPdSdUwYAQucutNNsTVsfDiBT7PE8dKrz2oFcAgbKPGjLaF0sAFA==
         </azure.blob.legal.files.key.pro>
 
+        <!-- Help desk SERCO -->
+        <serco.helpdesk.endpoint>https://webgate.acceptance.ec.europa.eu/fpfis/webtools/form-tools/process.php</serco.helpdesk.endpoint>
+        <serco.helpdesk.endpoint.acc>https://webgate.acceptance.ec.europa.eu/fpfis/webtools/form-tools/process.php</serco.helpdesk.endpoint.acc>        
+        <serco.helpdesk.endpoint.pro>https://webtools.ec.europa.eu/form-tools/process.php</serco.helpdesk.endpoint.pro>        
+        <serco.helpdesk.formid>1047</serco.helpdesk.formid>
+        <serco.helpdesk.formid.acc>1047</serco.helpdesk.formid.acc>        
+        <serco.helpdesk.formid.pro>1434</serco.helpdesk.formid.pro>
+		
         <!-- RabbitMQ - TODO not in use -->
         <rabbitmq.host>localhost</rabbitmq.host>
         <rabbitmq.username>guest</rabbitmq.username>
@@ -276,7 +284,7 @@
             </modules>
         </profile>
 
-		<!-- APP PROFILES -->
+        <!-- APP PROFILES -->
 
         <profile>
             <id>wifi4eu-portal</id>
@@ -290,7 +298,7 @@
             </modules>
         </profile>
 
-		<profile>
+        <profile>
             <id>wifi4eu-public-portal</id>
             <modules>
                 <!-- Common modules -->
@@ -302,7 +310,7 @@
             </modules>
         </profile>
 
-		<profile>
+        <profile>
             <id>wifi4eu-dgconn</id>
             <modules>
                 <!-- Common modules -->
@@ -314,7 +322,7 @@
             </modules>
         </profile>
 
-		<profile>
+        <profile>
             <id>wifi4eu-supplier</id>
             <modules>
                 <!-- Common modules -->
@@ -326,7 +334,7 @@
             </modules>
         </profile>
 
-		<profile>
+        <profile>
             <id>wifi4eu-financial</id>
             <modules>
                 <!-- Common modules -->
@@ -365,11 +373,13 @@
                 <mail.serv.location>https://wifi4eu.everisdigitalchannels.com:8080/wifi4eu/#/</mail.serv.location>
                 <mail.serv.enable>true</mail.serv.enable>
                 <mail.serv.using.smtp>true</mail.serv.using.smtp>
-                <mail.serv.using.cns>false</mail.serv.using.cns>                
+                <mail.serv.using.cns>false</mail.serv.using.cns>
                 <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
                 <mail.smtp.password>${encrypted.smtp.password}</mail.smtp.password>
+		       	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        
             </properties>
         </profile>
         <profile>
@@ -410,6 +420,8 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        
             </properties>
         </profile>
         <profile>
@@ -449,9 +461,11 @@
                 <redis.sentinel.uris>10.0.2.31,10.0.2.32,10.0.2.33</redis.sentinel.uris>
                 -->
                 <mail.serv.using.smtp>false</mail.serv.using.smtp>
-                <mail.serv.using.cns>true</mail.serv.using.cns>                
+                <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>
             </properties>
         </profile>
         <profile>
@@ -494,6 +508,8 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        																																					 
             </properties>
         </profile>
         <profile>
@@ -534,6 +550,8 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        																						   																							 
             </properties>
         </profile>
         <profile>
@@ -576,6 +594,8 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
+				<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>																						   																							 
             </properties>
         </profile>
         <profile>
@@ -618,6 +638,8 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        
             </properties>
         </profile>
         <profile>
@@ -660,6 +682,8 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>
             </properties>
         </profile>
         <profile>
@@ -702,6 +726,8 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        
             </properties>
         </profile>
         <profile>
@@ -747,6 +773,8 @@
                 </cns.user.preferences.service.url>
                 <cns.client.system.key>${cns.client.system.key.pro}</cns.client.system.key>
                 <cns.client.system.password>${cns.client.system.password.pro}</cns.client.system.password>                
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        
             </properties>
         </profile>
         <profile>
@@ -787,6 +815,8 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.acc}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.acchf}</azure.blob.legal.files.key>
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        
             </properties>
         </profile>
         <profile>
@@ -831,6 +861,8 @@
                 </cns.user.preferences.service.url>
                 <cns.client.system.key>${cns.client.system.key.pro}</cns.client.system.key>
                 <cns.client.system.password>${cns.client.system.password.pro}</cns.client.system.password>
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.pro}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.pro}</serco.helpdesk.formid>        
             </properties>
         </profile>
     </profiles>
@@ -1175,7 +1207,7 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j-impl</artifactId>
         </dependency>
-        
+
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-jcl</artifactId>
