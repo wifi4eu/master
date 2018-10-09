@@ -34,17 +34,19 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Envelope;
 import com.rabbitmq.client.GetResponse;
 
-import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
-import wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO;
-import wifi4eu.wifi4eu.common.dto.model.HelpdeskTicketDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
+import wifi4eu.wifi4eu.entity.admin.AdminActions;
 import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
+import wifi4eu.wifi4eu.repository.admin.AdminActionsRepository;
 import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherSimulationRepository;
+import wifi4eu.wifi4eu.service.admin.AdminActionsService;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
 import wifi4eu.wifi4eu.service.user.UserService;
@@ -100,7 +102,13 @@ public class ScheduledTasks {
 
     @Autowired
     DateUtils dateUtils;
-    
+
+    @Autowired
+    AzureBlobConnector azureBlobConnector;
+
+    @Autowired
+    AdminActionsService adminActionsService;
+
     /**
      * This cron method consumes the messages from the RabbitMQ
      */
@@ -259,10 +267,6 @@ public class ScheduledTasks {
         HttpURLConnection connection = null;
         
         _log.info("targetUrl [{}] urlParameters.length[{}], urlParameters[{}]", targetURL, (urlParameters == null ? "NULL" : urlParameters.length()), (urlParameters.length() <= 100 ? urlParameters : urlParameters.substring(0, 100)));
-<<<<<<< HEAD
-=======
-//        _log.info("targetUrl [{}] urlParameters.length[{}], urlParameters[{}]", targetURL, (urlParameters == null ? "NULL" : urlParameters.length()), urlParameters);
->>>>>>> EDCC Scheduled process
         
         try {
             URL url = new URL(targetURL);
@@ -333,6 +337,24 @@ public class ScheduledTasks {
         }
 
         _log.debug("SCHEDULED TASK: Reminder email for users who haven't signed after 7 or 14 days before the notification date - FINISH");
+    }
+
+    @Scheduled(cron = "0 0 23 * * ?", zone = "Europe/Madrid")
+    public void cleanExportExcels() {
+        _log.debug("SCHEDULED TASK: Clean export excels from azure blob storage every day at 23pm - START");
+        List<AdminActionsDTO> adminActions = adminActionsService.getByActionsByName("export_municipality_applications");
+        for (AdminActionsDTO adminActionDTO: adminActions) {
+            if (!adminActionDTO.isRunning()) {
+                if (Validator.isNotNull(adminActionDTO.getData()) && !adminActionDTO.getData().isEmpty()) {
+                    boolean deleted = azureBlobConnector.deleteExportExcel(adminActionDTO.getData());
+                    if (deleted) {
+                        adminActionDTO.setData(null);
+                        adminActionsService.updateAdminAction(adminActionDTO);
+                    }
+                }
+            }
+        }
+        _log.debug("SCHEDULED TASK: Clean export excels from azure blob storage every day at 23pm - FINISH");
     }
 
 }
