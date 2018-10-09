@@ -187,9 +187,9 @@
 			<id>PRO</id>
 			<properties>
 				<wifi4eu.queue.uri>10.0.2.70,10.0.2.71,10.0.2.72</wifi4eu.queue.uri>
-				<wifi4eu.masterdb.url>jdbc:sqlserver://wifi4eu-dbserver.database.windows.net:1433;databaseName=wifi4eudb-prod_01_TESTUPGRADE</wifi4eu.masterdb.url>
+				<wifi4eu.masterdb.url>jdbc:sqlserver://wifi4eu-dbserver.database.windows.net:1433;databaseName=W4EPRDdatabase</wifi4eu.masterdb.url>
 				<wifi4eu.masterdb.user>taqof2g1aamcdvf@wifi4eu-dbserver</wifi4eu.masterdb.user>
-				<wifi4eu.masterdb.password>TFpKzD@8RkK1Be-/yV2D.QbC3lRzTL*H$EN</wifi4eu.masterdb.password>
+				<wifi4eu.masterdb.password>6=[Mvn-R27-u-N7?_b!ps2[4{gSw-{>,u</wifi4eu.masterdb.password>
 			</properties>
 		</profile>
 		
