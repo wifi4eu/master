@@ -4,8 +4,10 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -32,19 +34,17 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Envelope;
 import com.rabbitmq.client.GetResponse;
 
-import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
+import wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO;
+import wifi4eu.wifi4eu.common.dto.model.HelpdeskTicketDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
-import wifi4eu.wifi4eu.entity.admin.AdminActions;
 import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
-import wifi4eu.wifi4eu.repository.admin.AdminActionsRepository;
 import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherSimulationRepository;
-import wifi4eu.wifi4eu.service.admin.AdminActionsService;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
 import wifi4eu.wifi4eu.service.user.UserService;
@@ -67,6 +67,12 @@ public class ScheduledTasks {
 
     @Value("${rabbitmq.password}")
     private String rabbitPassword;
+    
+	@Value("${serco.helpdesk.endpoint}")
+	private String sercoHelpdeskEndpoint;
+
+    @Value("${serco.helpdesk.formid}")
+    private String helpdeskFormId;
 
     @Autowired
     private HelpdeskService helpdeskService;
@@ -94,13 +100,7 @@ public class ScheduledTasks {
 
     @Autowired
     DateUtils dateUtils;
-
-    @Autowired
-    AzureBlobConnector azureBlobConnector;
-
-    @Autowired
-    AdminActionsService adminActionsService;
-
+    
     /**
      * This cron method consumes the messages from the RabbitMQ
      */
@@ -164,39 +164,65 @@ public class ScheduledTasks {
     }
 
     //-- DGCONN-NOT-NECESSARY @Scheduled(cron = "0 0 9,17 * * MON-FRI")
+    @Scheduled(cron = "0 0 9,17 * * MON-FRI")
     public void scheduleHelpdeskIssues() {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Starting helpdesk issues scheduled");
+    	final String confirmationMessage = "Thank you for your message.";
+    	
+        _log.debug("Running DGConn Scheduled Task - HelpDeskIssues");
+
         List<HelpdeskIssueDTO> helpdeskIssueDTOS = helpdeskService.getAllHelpdeskIssueNoSubmited();
-        for (HelpdeskIssueDTO helpdeskIssue : helpdeskIssueDTOS) {
+        _log.info("helpdeskIssueDTOS.size() [{}]", helpdeskIssueDTOS == null ? "NULL" : helpdeskIssueDTOS.size());
 
-            try {
-                HelpdeskTicketDTO helpdeskTicketDTO = new HelpdeskTicketDTO();
-                helpdeskTicketDTO.setEmailAdress(helpdeskIssue.getFromEmail());
-                helpdeskTicketDTO.setEmailAdressconf(helpdeskTicketDTO.getEmailAdress());
-                helpdeskTicketDTO.setUuid("wifi4eu_" + helpdeskIssue.getId());
-                UserDTO userDTO = userService.getUserByEcasEmail(helpdeskIssue.getFromEmail());
+        if (helpdeskIssueDTOS != null) {
 
-                if (userDTO != null) {
-                    helpdeskTicketDTO.setFirstname(userDTO.getName());
-                    helpdeskTicketDTO.setLastname(userDTO.getSurname());
-                    helpdeskTicketDTO.setTxtsubjext(helpdeskIssue.getTopic());
-                    helpdeskTicketDTO.setQuestion(helpdeskIssue.getSummary());
-                    String result = executePost("https://webtools.ec.europa.eu/form-tools/process.php", helpdeskTicketDTO.toString());
+        	for (HelpdeskIssueDTO helpdeskIssue : helpdeskIssueDTOS) {
+        		_log.info("Processing ticket id[{}]", helpdeskIssue.getId());
 
-                    if (result != null && result.contains("Thankyou.js")) {
-                        helpdeskIssue.setTicket(true);
-                        helpdeskService.createHelpdeskIssue(helpdeskIssue);
-                    } else {
-                        _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The result do not contain the proper text");
-                    }
-                } else {
-                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot retrieve the user for this helpdesk issue");
-                }
-            } catch (Exception e) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot process this helpdesk issue", e);
-            }
+        		try {
+        			HelpdeskTicketDTO helpdeskTicketDTO = new HelpdeskTicketDTO();
+        			helpdeskTicketDTO.setForm_tools_form_id(this.helpdeskFormId);
+        			helpdeskTicketDTO.setEmailAdress(helpdeskIssue.getFromEmail());
+        			helpdeskTicketDTO.setEmailAdressconf(helpdeskTicketDTO.getEmailAdress());
+        			helpdeskTicketDTO.setUuid("wifi4eu_" + helpdeskIssue.getId());
+        			helpdeskTicketDTO.setLang(helpdeskIssue.getLang());
+        			helpdeskTicketDTO.setPref_lg(helpdeskIssue.getLang());
+        			helpdeskTicketDTO.setPref_lg2(helpdeskIssue.getLang());
+        			
+        			UserDTO userDTO = userService.getUserByEcasEmail(helpdeskIssue.getFromEmail());
+    				_log.info("userDTO id[{}]", userDTO == null ? "NULL" : userDTO.getId());
+
+        			if (userDTO != null) {
+        				String escapedFirstName = URLEncoder.encode(userDTO.getName(), "UTF-8");
+        				String escapedLastName = URLEncoder.encode(userDTO.getSurname(), "UTF-8");
+        				String escapedTopic = URLEncoder.encode(helpdeskIssue.getTopic(), "UTF-8");
+        				String escapedQuestion = URLEncoder.encode(helpdeskIssue.getSummary(), "UTF-8");
+        				
+        				helpdeskTicketDTO.setFirstname(escapedFirstName);
+        				helpdeskTicketDTO.setLastname(escapedLastName);
+        				helpdeskTicketDTO.setTxtsubjext(escapedTopic);
+        				helpdeskTicketDTO.setQuestion(escapedQuestion);
+        				
+        				String result = executePost(sercoHelpdeskEndpoint, helpdeskTicketDTO.toString());
+
+        				_log.info("Result posting to queue [{}]", result);
+
+        				if (result != null && result.contains(confirmationMessage)) {
+        					_log.info("Updating Helpdesk issue");
+
+        					helpdeskIssue.setTicket(true);
+        					helpdeskService.createOrUpdateHelpdeskIssue(helpdeskIssue);
+
+        					_log.info("Helpdesk issue updated");
+        				} else {
+        					_log.info("The result do not contain the proper text");
+        				}
+        			} else {
+        				_log.info("Cannot retrieve the user for this helpdesk issue");
+        			}
+        		} catch (Exception e) {
+        			_log.error("Cannot process this helpdesk issue", e);
+        		}
+        	}
         }
     }
 
@@ -231,6 +257,10 @@ public class ScheduledTasks {
 
     public static String executePost(String targetURL, String urlParameters) {
         HttpURLConnection connection = null;
+        
+        _log.info("targetUrl [{}] urlParameters.length[{}], urlParameters[{}]", targetURL, (urlParameters == null ? "NULL" : urlParameters.length()), (urlParameters.length() <= 100 ? urlParameters : urlParameters.substring(0, 100)));
+//        _log.info("targetUrl [{}] urlParameters.length[{}], urlParameters[{}]", targetURL, (urlParameters == null ? "NULL" : urlParameters.length()), urlParameters);
+        
         try {
             URL url = new URL(targetURL);
             connection = (HttpURLConnection) url.openConnection();
@@ -266,7 +296,7 @@ public class ScheduledTasks {
             rd.close();
             return response.toString();
         } catch (Exception e) {
-            _log.error(e.getMessage());
+            _log.error(e.getMessage(), e);
             return null;
         } finally {
             if (connection != null) {
@@ -300,24 +330,6 @@ public class ScheduledTasks {
         }
 
         _log.debug("SCHEDULED TASK: Reminder email for users who haven't signed after 7 or 14 days before the notification date - FINISH");
-    }
-
-    @Scheduled(cron = "0 0 23 * * ?", zone = "Europe/Madrid")
-    public void cleanExportExcels() {
-        _log.debug("SCHEDULED TASK: Clean export excels from azure blob storage every day at 23pm - START");
-        List<AdminActionsDTO> adminActions = adminActionsService.getByActionsByName("export_municipality_applications");
-        for (AdminActionsDTO adminActionDTO: adminActions) {
-            if (!adminActionDTO.isRunning()) {
-                if (Validator.isNotNull(adminActionDTO.getData()) && !adminActionDTO.getData().isEmpty()) {
-                    boolean deleted = azureBlobConnector.deleteExportExcel(adminActionDTO.getData());
-                    if (deleted) {
-                        adminActionDTO.setData(null);
-                        adminActionsService.updateAdminAction(adminActionDTO);
-                    }
-                }
-            }
-        }
-        _log.debug("SCHEDULED TASK: Clean export excels from azure blob storage every day at 23pm - FINISH");
     }
 
 }
