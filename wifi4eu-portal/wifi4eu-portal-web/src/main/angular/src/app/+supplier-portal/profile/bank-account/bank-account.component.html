@@ -12,11 +12,16 @@
 
 
     <div *ngFor="let  bankAccountDTO of bankAccountDTOList; let i = index">
+
         <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12 col-sm-4">
             <span class="beneficiaryTitle">{{ 'suppRegistration.bankAccount.bankAccount' | translate }} {{i + 1}}</span>
-            <span class="link-label right editRegistrationsLabel" (click)="goToEditProfile()">
-                <i class="fa fa-pencil" aria-hidden="true"></i> {{'shared.hide.label' | translate}}
+            <span *ngIf="!checkShow(i)" class="link-label right editRegistrationsLabel" (click)="changeShow(i)">
+                {{'shared.hide.label' | translate}} <i class="fa fa-angle-down" aria-hidden="true"></i> 
             </span>
+            <span *ngIf="checkShow(i)" class="link-label right editRegistrationsLabel" (click)="changeShow(i)">
+                {{'shared.hide.label' | translate}} <i class="fa fa-angle-up" aria-hidden="true"></i> 
+            </span>
+
             <span class="link-label right editRegistrationsLabel" (click)="delete(i)">
                 <i class="fa fa-trash" aria-hidden="true"></i> {{'suppRegistration.bankAccount.delete' | translate}}
             </span>
@@ -25,12 +30,14 @@
             </span>
         </div>
 
+        <div *ngIf="checkShow(i)">
+
         <div class="row">
             <div class="col-sm-12"> <hr class="registrationHr"> </div>
         </div>
 
         <div class="col-sm-8">
-        <div class="ui-g-12" style="padding-top: 0;">
+        <div cla ss="ui-g-12" style="padding-top: 0;">
             <div class="ui-g-8 ui-lg-8 ui-md-12 ui-sm-12" style="margin-top: 1em;">
                 <p class="beneficiaryMayor">{{ 'suppRegistration.bankAccount.accountDetails' | translate }}</p>
                 <div class="ui-g-12 whitePanel">
@@ -122,6 +129,7 @@
                 </div>
             </div>
             <br/><br/>
+        
         </div>
 
         </div>
@@ -132,7 +140,11 @@
             </ux-alert>
         </div>
 
+   
+        </div>
         <br/><br/>
+
+        
     </div>
 
     <div class="row">
@@ -197,6 +209,7 @@
 
                     <p> <b>{{ 'suppRegistration.bankAccount.bankDetails' | translate }}</b></p>
 
+                    <input type="checkbox">  {{ 'suppRegistration.bankAccount.confirmSameAddres' | translate }}     
                     
                     <div class="col-sm-12">
                         <label>{{ 'suppRegistration.bankAccount.bankName' | translate }}</label>

@@ -29,6 +29,8 @@ export class BankAccountComponent {
 
     private reader: FileReader = new FileReader();
 
+    private show : boolean[] = [];
+
     private fileURL: string = '/wifi4eu/api/bankAccount/getDocument/';
 
     constructor(private bankAccountApi: BankAccountApi, private supplierApi: SupplierApi, private sharedService: SharedService) {
@@ -53,6 +55,10 @@ export class BankAccountComponent {
                         (responseDTO: ResponseDTOBase) => {
                             if (responseDTO.success){
                                 this.bankAccountDTOList = responseDTO.data;   
+
+                                for(let i = 0;i< this.bankAccountDTOList.length; i++){
+                                    this.show.push(true);
+                                }
                                 
                                 this.bankAccountApi.getBankAccountDocsBySupplierId(this.supplier.id).subscribe(
                                     (responseDTO: ResponseDTOBase) => {
@@ -129,6 +135,7 @@ export class BankAccountComponent {
 
                     }else{ //CREATE
                         this.bankAccountDTOList.push(responseDTO.data); 
+                        this.show.push(true);
                     }
                     
                     if (this.bankAccountDocumentDTOToUpdate){
@@ -238,5 +245,12 @@ export class BankAccountComponent {
         });
     }
 
+    private changeShow(index: number){
+        this.show[index]  = !this.show[index];
+    }
 
+
+    private checkShow(index: number) : boolean{
+        return this.show[index];
+    }
 }
