@@ -51,7 +51,7 @@ public class LEFDocumentGeneratorServiceImpl implements LEFDocumentGeneratorServ
     @Value("${lef.document.generator.filename.prefix}")
     private String lefFileName;
 
-    @Value("${lef.document.generator.separator:' : '}")
+    @Value("${lef.document.generator.separator: : }")
     private String separator;
 
     @Value("${lef.document.generator.title}")
@@ -99,16 +99,11 @@ public class LEFDocumentGeneratorServiceImpl implements LEFDocumentGeneratorServ
     @Value("${lef.docment.generator.footer.date.text}")
     private String lefFooterText;
 
-    @Value("${lef.document.generator.footer.dateFormat:'E yyyy.MM.dd - hh:mm:ss a zzz'}")
+    @Value("${lef.document.generator.footer.dateFormat:E yyyy.MM.dd - hh:mm:ss a zzz}")
     private String dateFormat;
 
-    private SimpleDateFormat dateFormater;
-
     public SimpleDateFormat getDateFormater() {
-        if (dateFormater == null) {
-            dateFormater = new SimpleDateFormat(dateFormat);
-        }
-        return dateFormater;
+        return new SimpleDateFormat(dateFormat);
     }
 
     @Autowired
