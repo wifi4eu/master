@@ -9,7 +9,7 @@ import wifi4eu.wifi4eu.common.dto.audit.AuditDataDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.mapper.audit.AuditMapper;
+import wifi4eu.wifi4eu.common.mapper.audit.AuditMapper;
 import wifi4eu.wifi4eu.repository.audit.AuditRepository;
 import wifi4eu.wifi4eu.service.user.UserService;
 

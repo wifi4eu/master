@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.NutsDTO;
-import wifi4eu.wifi4eu.mapper.location.NutsMapper;
+import wifi4eu.wifi4eu.common.mapper.location.NutsMapper;
 import wifi4eu.wifi4eu.repository.location.NutsRepository;
 
 import java.util.List;

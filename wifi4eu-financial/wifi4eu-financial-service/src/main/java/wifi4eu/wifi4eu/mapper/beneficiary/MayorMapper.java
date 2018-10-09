@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.mapper.beneficiary;
+package wifi4eu.wifi4eu.common.mapper.beneficiary;
 
 import org.mapstruct.Mapper;
 import wifi4eu.wifi4eu.common.dto.model.MayorDTO;

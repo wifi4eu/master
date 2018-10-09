@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.RepresentationDTO;
-import wifi4eu.wifi4eu.mapper.representation.RepresentationMapper;
+import wifi4eu.wifi4eu.common.mapper.representation.RepresentationMapper;
 import wifi4eu.wifi4eu.repository.representation.RepresentationRepository;
 
 import java.util.List;

@@ -11,8 +11,8 @@ import com.google.common.collect.Lists;
 
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskCommentDTO;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO;
-import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskCommentMapper;
-import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskIssueMapper;
+import wifi4eu.wifi4eu.common.mapper.helpdesk.HelpdeskCommentMapper;
+import wifi4eu.wifi4eu.common.mapper.helpdesk.HelpdeskIssueMapper;
 import wifi4eu.wifi4eu.repository.helpdesk.HelpdeskCommentRepository;
 import wifi4eu.wifi4eu.repository.helpdesk.HelpdeskIssueRepository;
 

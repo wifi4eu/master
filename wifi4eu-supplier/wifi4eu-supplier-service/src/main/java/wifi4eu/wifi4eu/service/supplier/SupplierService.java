@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
-import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
+import wifi4eu.wifi4eu.common.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
 
 @Service("publicSupplierService")

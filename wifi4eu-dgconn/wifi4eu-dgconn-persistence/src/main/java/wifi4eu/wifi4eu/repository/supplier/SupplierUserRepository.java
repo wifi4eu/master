@@ -11,16 +11,10 @@ import java.util.List;
 
 public interface SupplierUserRepository extends CrudRepository<SupplierUser,Integer> {
 
-    SupplierUser findFirstSupplierUserBySupplierIdAndEmail(@Param("supplierId") int supplierId, @Param("email") String email);
-
-    List<SupplierUser> findByEmail(@Param("email") String email);
-
     List<SupplierUser> findByEmailAndSupplierId(@Param("email") String email, @Param("supplierId") Integer supplierId);
 
     @Query(value = "SELECT user_id FROM supplier_users WHERE supplier_id = ?1 AND main = 1", nativeQuery = true)
     int findUserIdBySupplierId(int supplierId);
-
-    int countByEmail(@Param("email") String email);
 
     @Modifying
     @Transactional

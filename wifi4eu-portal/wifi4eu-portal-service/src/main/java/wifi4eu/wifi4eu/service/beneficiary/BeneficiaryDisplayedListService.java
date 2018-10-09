@@ -9,7 +9,7 @@ import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryDisplayedListMapper;
+import wifi4eu.wifi4eu.common.mapper.beneficiary.BeneficiaryDisplayedListMapper;
 import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryDisplayedListRepository;
 import wifi4eu.wifi4eu.service.user.UserService;
 

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.google.common.collect.Lists;
 
 import wifi4eu.wifi4eu.common.dto.model.OrganizationDTO;
-import wifi4eu.wifi4eu.mapper.organization.OrganizationMapper;
+import wifi4eu.wifi4eu.common.mapper.organization.OrganizationMapper;
 import wifi4eu.wifi4eu.repository.organization.OrganizationRepository;
 
 @Service("portalOrganizationService")

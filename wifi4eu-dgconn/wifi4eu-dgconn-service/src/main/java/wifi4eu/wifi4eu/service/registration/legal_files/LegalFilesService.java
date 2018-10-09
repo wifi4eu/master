@@ -9,7 +9,7 @@ import wifi4eu.wifi4eu.common.dto.model.LegalFileDTO;
 import wifi4eu.wifi4eu.common.enums.FileTypes;
 import wifi4eu.wifi4eu.common.enums.LegalFileStatus;
 import wifi4eu.wifi4eu.entity.registration.LegalFile;
-import wifi4eu.wifi4eu.mapper.registration.legal_files.LegalFilesMapper;
+import wifi4eu.wifi4eu.common.mapper.registration.legal_files.LegalFilesMapper;
 import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 

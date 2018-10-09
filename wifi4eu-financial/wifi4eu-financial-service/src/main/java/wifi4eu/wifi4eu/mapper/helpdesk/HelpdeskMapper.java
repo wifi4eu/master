@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.mapper.helpdesk;
+package wifi4eu.wifi4eu.common.mapper.helpdesk;
 
 import org.mapstruct.Mapper;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO;

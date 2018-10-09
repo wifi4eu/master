@@ -9,7 +9,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.MunicipalityCacheDTO;
 import wifi4eu.wifi4eu.common.dto.model.NutsDTO;
-import wifi4eu.wifi4eu.mapper.municipality.MunicipalityMapper;
+import wifi4eu.wifi4eu.common.mapper.municipality.MunicipalityMapper;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.service.location.NutsService;
 

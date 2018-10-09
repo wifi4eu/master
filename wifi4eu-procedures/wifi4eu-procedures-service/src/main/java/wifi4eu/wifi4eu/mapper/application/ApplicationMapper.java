@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.mapper.application;
+package wifi4eu.wifi4eu.common.mapper.application;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

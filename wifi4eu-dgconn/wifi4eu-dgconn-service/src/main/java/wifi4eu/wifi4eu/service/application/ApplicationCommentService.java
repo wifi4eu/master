@@ -17,7 +17,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.entity.application.ApplicationComment;
-import wifi4eu.wifi4eu.mapper.application.ApplicationCommentMapper;
+import wifi4eu.wifi4eu.common.mapper.application.ApplicationCommentMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationCommentRepository;
 import wifi4eu.wifi4eu.service.user.UserService;
 

@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.UserThreadsDTO;
-import wifi4eu.wifi4eu.mapper.thread.UserThreadsMapper;
+import wifi4eu.wifi4eu.common.mapper.thread.UserThreadsMapper;
 import wifi4eu.wifi4eu.repository.thread.UserThreadsRepository;
 
 import java.util.List;

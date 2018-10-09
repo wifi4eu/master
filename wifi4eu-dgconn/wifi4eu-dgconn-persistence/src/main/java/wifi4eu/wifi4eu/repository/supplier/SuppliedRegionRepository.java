@@ -9,5 +9,4 @@ import wifi4eu.wifi4eu.entity.supplier.SuppliedRegion;
 public interface SuppliedRegionRepository  extends CrudRepository<SuppliedRegion,Integer> {
     @Query(value = "SELECT COUNT(id), region FROM supplied_regions GROUP BY region", nativeQuery = true)
     Iterable<Object> findSuppliedRegionsCountGroupedByRegionId();
-    Iterable<SuppliedRegion> findBySupplierId(Integer supplierId);
 }

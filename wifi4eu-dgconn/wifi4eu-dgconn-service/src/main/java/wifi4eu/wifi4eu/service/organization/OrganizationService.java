@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.OrganizationDTO;
-import wifi4eu.wifi4eu.mapper.organization.OrganizationMapper;
+import wifi4eu.wifi4eu.common.mapper.organization.OrganizationMapper;
 import wifi4eu.wifi4eu.repository.organization.OrganizationRepository;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 

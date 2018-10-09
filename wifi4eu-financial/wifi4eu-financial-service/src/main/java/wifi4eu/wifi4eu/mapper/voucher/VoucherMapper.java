@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.mapper.voucher;
+package wifi4eu.wifi4eu.common.mapper.voucher;
 
 import org.mapstruct.Mapper;
 import wifi4eu.wifi4eu.common.dto.model.VoucherDTO;

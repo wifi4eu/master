@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.mapper.timeline;
+package wifi4eu.wifi4eu.common.mapper.timeline;
 
 import org.mapstruct.Mapper;
 import wifi4eu.wifi4eu.common.dto.model.TimelineDTO;

@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.mapper.supplier;
+package wifi4eu.wifi4eu.common.mapper.supplier;
 
 import org.mapstruct.Mapper;
 import wifi4eu.wifi4eu.common.dto.model.BenPubSupDTO;

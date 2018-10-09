@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.google.common.collect.Lists;
 
 import wifi4eu.wifi4eu.common.dto.model.UserThreadsDTO;
-import wifi4eu.wifi4eu.mapper.thread.UserThreadsMapper;
+import wifi4eu.wifi4eu.common.mapper.thread.UserThreadsMapper;
 import wifi4eu.wifi4eu.repository.thread.UserThreadsRepository;
 
 @Service

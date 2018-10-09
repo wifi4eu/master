@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.VoucherDTO;
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
-import wifi4eu.wifi4eu.mapper.security.UserMapper;
-import wifi4eu.wifi4eu.mapper.voucher.VoucherMapper;
+import wifi4eu.wifi4eu.common.mapper.security.UserMapper;
+import wifi4eu.wifi4eu.common.mapper.voucher.VoucherMapper;
 import wifi4eu.wifi4eu.repository.security.SecurityUserRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherRepository;
 

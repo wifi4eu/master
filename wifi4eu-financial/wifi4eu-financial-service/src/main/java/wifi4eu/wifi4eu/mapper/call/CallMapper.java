@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.mapper.call;
+package wifi4eu.wifi4eu.common.mapper.call;
 
 import org.mapstruct.Mapper;
 import wifi4eu.wifi4eu.common.dto.model.CallDTO;

@@ -16,11 +16,6 @@ public interface LegalFileCorrectionReasonRepository extends CrudRepository<Lega
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE legal_files_correction_reason SET request_correction = ?1 WHERE registration = ?2", nativeQuery = true)
-    void updateLegalFileCorrectionStatusByRegistrationId(int status, int registrationId);
-
-    @Modifying
-    @Transactional
     @Query(value = "DELETE FROM legal_files_correction_reason WHERE registration = ?1", nativeQuery = true)
     void deleteLegalFileCorrectionByRegistrationId(int registrationId);
 

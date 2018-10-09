@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.google.common.collect.Lists;
 
 import wifi4eu.wifi4eu.common.dto.model.TimelineDTO;
-import wifi4eu.wifi4eu.mapper.timeline.TimelineMapper;
+import wifi4eu.wifi4eu.common.mapper.timeline.TimelineMapper;
 import wifi4eu.wifi4eu.repository.timeline.TimelineRepository;
 
 @Service

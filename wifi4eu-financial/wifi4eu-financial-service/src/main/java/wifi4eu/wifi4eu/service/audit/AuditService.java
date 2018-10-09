@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.audit.AuditDataDTO;
-import wifi4eu.wifi4eu.mapper.audit.AuditMapper;
+import wifi4eu.wifi4eu.common.mapper.audit.AuditMapper;
 import wifi4eu.wifi4eu.repository.audit.AuditRepository;
 
 @Service

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.google.common.collect.Lists;
 
 import wifi4eu.wifi4eu.common.dto.model.RepresentationDTO;
-import wifi4eu.wifi4eu.mapper.representation.RepresentationMapper;
+import wifi4eu.wifi4eu.common.mapper.representation.RepresentationMapper;
 import wifi4eu.wifi4eu.repository.representation.RepresentationRepository;
 
 @Service

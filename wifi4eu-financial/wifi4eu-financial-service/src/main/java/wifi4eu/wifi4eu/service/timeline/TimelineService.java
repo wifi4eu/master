@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.TimelineDTO;
-import wifi4eu.wifi4eu.mapper.timeline.TimelineMapper;
+import wifi4eu.wifi4eu.common.mapper.timeline.TimelineMapper;
 import wifi4eu.wifi4eu.repository.timeline.TimelineRepository;
 
 import java.util.List;

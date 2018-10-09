@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.mapper.security;
+package wifi4eu.wifi4eu.common.mapper.security;
 
 import org.mapstruct.Mapper;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;

@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.mapper.security;
+package wifi4eu.wifi4eu.common.mapper.security;
 
 import wifi4eu.wifi4eu.common.dto.security.RightDTO;
 import wifi4eu.wifi4eu.entity.security.Right;

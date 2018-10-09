@@ -6,7 +6,7 @@ import wifi4eu.wifi4eu.common.dto.model.ConditionsAgreementDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.entity.registration.ConditionsAgreement;
-import wifi4eu.wifi4eu.mapper.registration.ConditionsAgreementMapper;
+import wifi4eu.wifi4eu.common.mapper.registration.ConditionsAgreementMapper;
 import wifi4eu.wifi4eu.repository.registration.ConditionsAgreementRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.call.CallService;

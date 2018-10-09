@@ -14,8 +14,8 @@ import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskCommentDTO;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO;
-import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskCommentMapper;
-import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskMapper;
+import wifi4eu.wifi4eu.common.mapper.helpdesk.HelpdeskCommentMapper;
+import wifi4eu.wifi4eu.common.mapper.helpdesk.HelpdeskMapper;
 import wifi4eu.wifi4eu.repository.helpdesk.HelpdeskCommentRepository;
 import wifi4eu.wifi4eu.repository.helpdesk.HelpdeskRepository;
 

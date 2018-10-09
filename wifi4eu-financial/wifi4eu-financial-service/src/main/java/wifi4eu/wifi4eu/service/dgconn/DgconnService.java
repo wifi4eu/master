@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.BenPubSupDTO;
 import wifi4eu.wifi4eu.common.dto.model.LegalEntityDTO;
-import wifi4eu.wifi4eu.mapper.supplier.BenPubSupMapper;
-import wifi4eu.wifi4eu.mapper.beneficiary.LegalEntityMapper;
+import wifi4eu.wifi4eu.common.mapper.supplier.BenPubSupMapper;
+import wifi4eu.wifi4eu.common.mapper.beneficiary.LegalEntityMapper;
 import wifi4eu.wifi4eu.repository.supplier.BenPubSupRepository;
 import wifi4eu.wifi4eu.repository.beneficiary.LegalEntityRepository;
 
