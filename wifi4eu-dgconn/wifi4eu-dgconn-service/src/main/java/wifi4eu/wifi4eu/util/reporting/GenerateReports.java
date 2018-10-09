@@ -24,6 +24,10 @@ public class GenerateReports {
                 reportingUtils.generateCallOpenReporting(workbook);
                 break;
 
+            case Constant.REPORTING_TIME_TO_INFORM:
+                reportingUtils.generateTimeToInformReporting(workbook);
+                break;
+
             case Constant.REPORTING_TYPES_INSTALLATION_REPORT:
                 reportingUtils.generateTypesInstallationReport(workbook);
                 break;
@@ -43,4 +47,33 @@ public class GenerateReports {
 
         return bos.toByteArray();
     }
+
+    public byte[] generateExcelFileBytes(String currentQuery, Integer callId) throws IOException {
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        switch (currentQuery){
+
+            case Constant.REPORTING_PRE_SELECTION:
+                reportingUtils.generatePreSelectionReporting(workbook, callId);
+                break;
+
+            case Constant.REPORTING_NOTIFICATIONS_SENT_OUT:
+                reportingUtils.generateNotificationsSentOutReporting(workbook, callId);
+                break;
+
+            default:
+                break;
+        }
+
+        System.out.println("Your excel file has been generated!");
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        try {
+            workbook.write(bos);
+        } finally {
+            workbook.close();
+            bos.close();
+        }
+
+        return bos.toByteArray();
+    }
+
 }

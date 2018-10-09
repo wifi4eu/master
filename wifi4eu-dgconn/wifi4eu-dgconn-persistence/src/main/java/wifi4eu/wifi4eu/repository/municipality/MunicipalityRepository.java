@@ -1,14 +1,16 @@
 package wifi4eu.wifi4eu.repository.municipality;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public interface MunicipalityRepository extends CrudRepository<Municipality, Integer> {
-    Iterable<Municipality> findByLauId(Integer lauId);
+public interface MunicipalityRepository extends JpaRepository<Municipality, Integer> {
+
+    List<Municipality> findByLauId(Integer lauId);
+
     @Query(value = "SELECT COUNT(id),lau FROM municipalities GROUP BY lau", nativeQuery = true)
     Iterable<Object> findMunicipalitiesCountGroupedByLauId();
 

@@ -90,6 +90,13 @@ public class GrantAgreementResource {
         return permissionChecker.checkIfAuthorizedGrantAgreement(applicationId);
     }
 
+    @ApiOperation(value = "Check if lef import is done")
+    @RequestMapping(value = "/isLefImportDone/{registrationId}", method = RequestMethod.GET)
+    @ResponseBody
+    public Boolean isLefImportDone(@PathVariable("registrationId") Integer registrationId) {
+        return grantAgreementService.checkIsLefImportDone(registrationId);
+    }
+
     @ApiOperation(value = "Create grant agreement")
     @RequestMapping(value = "/createGrantAgreement", method = RequestMethod.POST)
     @ResponseBody
@@ -131,7 +138,7 @@ public class GrantAgreementResource {
             }
 
             GrantAgreementDTO grantAgreementDTO = grantAgreementService.getGrantAgreementByApplicationId(applicationId);
-            if(Validator.isNotNull(grantAgreementDTO.getDocumentLocation())){
+            if(Validator.isNull(grantAgreementDTO.getDocumentLocation())){
                 throw new AppException("");
             }
             byte[] file = grantAgreementService.downloadGrantAgreementSigned(grantAgreementDTO);
@@ -165,7 +172,7 @@ public class GrantAgreementResource {
             }
 
             GrantAgreementDTO grantAgreementDTO = grantAgreementService.getGrantAgreementByApplicationId(applicationId);
-            if(Validator.isNotNull(grantAgreementDTO.getDocumentLocationCounterSigned())){
+            if(Validator.isNull(grantAgreementDTO.getDocumentLocationCounterSigned())){
                 throw new AppException("");
             }
             byte[] file = grantAgreementService.downloadGrantAgreementCounterSigned(grantAgreementDTO);

@@ -30,6 +30,17 @@ public class CallService {
         return callMapper.toDTOList(Lists.newArrayList(callRepository.findAll()));
     }
 
+    public List<CallDTO> getAllCallsClosed() {
+        return callMapper.toDTOList(callRepository.findAllCallsClosed());
+    }
+
+    public List<CallDTO> getAllCallsClosedNotified() {
+        return callMapper.toDTOList(callRepository.findAllCallsClosedNotified());
+    }
+
+    public List<CallDTO> getAllCallsClosedPreSelected() {
+        return callMapper.toDTOList(callRepository.findAllCallsClosedPreSelected());
+    }
     public CallDTO getCallById(int callId) {
         return callMapper.toDTO(callRepository.findOne(callId));
     }

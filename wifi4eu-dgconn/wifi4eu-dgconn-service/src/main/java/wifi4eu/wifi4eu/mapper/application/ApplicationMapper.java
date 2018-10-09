@@ -9,6 +9,7 @@ import wifi4eu.wifi4eu.entity.application.Application;
 import java.util.List;
 import java.util.Map;
 
+// TODO: code duplication, please, move/join all ApplicationMapper's to one place
 @Mapper(componentModel = "spring")
 public interface ApplicationMapper {
     /*@Mappings({
@@ -16,11 +17,17 @@ public interface ApplicationMapper {
             @Mapping(source = "entity.registration.id", target = "registrationId"),
             @Mapping(source = "entity.supplier.id", target = "supplierId")
     })*/
+    @Mappings({
+            @Mapping(source = "entity.registration.id", target = "registrationId")
+    })
     ApplicationDTO toDTO(Application entity);
     /*@Mappings({
             @Mapping(source = "vo.callId", target = "call.id"),
             @Mapping(source = "vo.registrationId", target = "registration.id")
     })*/
+    @Mappings({
+            @Mapping(source = "vo.registrationId", target = "registration.id")
+    })
     Application toEntity(ApplicationDTO vo);
     List<ApplicationDTO> toDTOList(List<Application> list);
     List<Application> toEntityList(List<ApplicationDTO> list);

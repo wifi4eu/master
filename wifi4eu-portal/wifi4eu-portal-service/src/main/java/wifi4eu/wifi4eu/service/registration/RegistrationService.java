@@ -491,6 +491,10 @@ public class RegistrationService {
         return registrationMapper.toDTO(registrationRepository.findByMunicipalityId(municipalityId));
     }
 
+    public Integer getRegistrationIdByMunicipalityId(int municipalityId) {
+        return registrationRepository.findIdByMunicipalityId(municipalityId);
+    }
+
     public RegistrationDTO getRegistrationByUserAndMunicipality(int userId, int municipalityId) {
         return registrationMapper.toDTO(registrationRepository.findByUserIdAndMunicipalityId(userId, municipalityId));
     }

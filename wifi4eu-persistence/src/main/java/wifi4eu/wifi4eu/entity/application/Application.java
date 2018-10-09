@@ -1,7 +1,12 @@
 package wifi4eu.wifi4eu.entity.application;
 
+import wifi4eu.wifi4eu.entity.grantAgreement.GrantAgreement;
+import wifi4eu.wifi4eu.entity.registration.Registration;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "applications")
@@ -14,9 +19,6 @@ public class Application {
 
     @Column(name = "call_id")
     private Integer callId;
-
-    @Column(name = "registration")
-    private Integer registrationId;
 
     @Column(name = "supplier")
     private Integer supplierId;
@@ -84,44 +86,29 @@ public class Application {
     @Column(name = "sent_email_date")
     private Date sentEmailDate;
 
-    @Column(name= "select_supplier_date ")
+    @ManyToOne
+    @JoinColumn(name = "registration")
+    private Registration registration;
+
+    @Column(name = "registration", insertable = false, updatable = false)
+    private Integer registrationId;
+
+    @OneToMany(mappedBy = "application")
+    private List<GrantAgreement> grantAgreements;
+
+//    @Column(name = "sent_email_date")
+//    private Date sentEmailDate;
+
+    @Column(name = "select_supplier_date ")
     private Long selectSupplierDate;
 
-    @Column(name="bank_account_id")
+    @Column(name = "bank_account_id")
     private Integer bankAccountId;
+
 
     public Application() {
     }
 
-    public Application(Integer id, Integer callId, Integer registrationId, Integer supplierId, boolean voucherAwarded, Long date, Long lefExport, Long lefImport, Integer lefStatus, Long bcExport, Long bcImport, Integer bcStatus, Long lcExport, Long lcImport, Integer lcStatus, int status, String invalidateReason, String cancelReason, Boolean preSelectedFlag, Boolean rejected, Integer authorizedPerson, Date dateSignature, Date dateCounterSignature, boolean sentEmail, Date sentEmailDate, Long selectSupplierDate, Integer bankAccountId) {
-        this.id = id;
-        this.callId = callId;
-        this.registrationId = registrationId;
-        this.supplierId = supplierId;
-        this.voucherAwarded = voucherAwarded;
-        this.date = date;
-        this.lefExport = lefExport;
-        this.lefImport = lefImport;
-        this.lefStatus = lefStatus;
-        this.bcExport = bcExport;
-        this.bcImport = bcImport;
-        this.bcStatus = bcStatus;
-        this.lcExport = lcExport;
-        this.lcImport = lcImport;
-        this.lcStatus = lcStatus;
-        this.status = status;
-        this.invalidateReason = invalidateReason;
-        this.cancelReason = cancelReason;
-        this.preSelectedFlag = preSelectedFlag;
-        this.rejected = rejected;
-        this.authorizedPerson = authorizedPerson;
-        this.dateSignature = dateSignature;
-        this.dateCounterSignature = dateCounterSignature;
-        this.sentEmail = sentEmail;
-        this.sentEmailDate = sentEmailDate;
-        this.selectSupplierDate = selectSupplierDate;
-        this.bankAccountId = bankAccountId;
-    }
 
     public Integer getId() {
         return id;
@@ -137,14 +124,6 @@ public class Application {
 
     public void setCallId(Integer callId) {
         this.callId = callId;
-    }
-
-    public Integer getRegistrationId() {
-        return registrationId;
-    }
-
-    public void setRegistrationId(Integer registrationId) {
-        this.registrationId = registrationId;
     }
 
     public Integer getSupplierId() {
@@ -283,9 +262,13 @@ public class Application {
         this.rejected = rejected;
     }
 
-    public Integer getAuthorizedPerson(){ return authorizedPerson; }
+    public Integer getAuthorizedPerson() {
+        return authorizedPerson;
+    }
 
-    public void setAuthorizedPerson(Integer authorizedPerson) { this.authorizedPerson = authorizedPerson; }
+    public void setAuthorizedPerson(Integer authorizedPerson) {
+        this.authorizedPerson = authorizedPerson;
+    }
 
     public Date getDateSignature() {
         return dateSignature;
@@ -319,6 +302,30 @@ public class Application {
         this.sentEmailDate = sentEmailDate;
     }
 
+    public Registration getRegistration() {
+        return registration;
+    }
+
+    public void setRegistration(Registration registration) {
+        this.registration = registration;
+    }
+
+    @Deprecated
+    public Integer getRegistrationId() {
+        return registrationId;
+    }
+
+    public List<GrantAgreement> getGrantAgreements() {
+        if (grantAgreements == null) {
+            grantAgreements = new ArrayList<>(0);
+        }
+        return grantAgreements;
+    }
+
+    public void setGrantAgreements(List<GrantAgreement> grantAgreements) {
+        this.grantAgreements = grantAgreements;
+    }
+
     public Integer getBankAccountId() {
         return bankAccountId;
     }
@@ -326,4 +333,5 @@ public class Application {
     public void setBankAccountId(Integer bankAccountId) {
         this.bankAccountId = bankAccountId;
     }
+
 }

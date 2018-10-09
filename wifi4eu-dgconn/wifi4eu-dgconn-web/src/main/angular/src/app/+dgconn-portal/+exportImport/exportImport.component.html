@@ -1,95 +1,95 @@
 <div class="container">
     <div class="ui-g-12" style="margin-top: 1em; font-size: 14px;">
-        <a class="link-label" routerLink=".." routerLinkActive="active">
+        <a class="link-label" routerLink="/dgconn-portal" routerLinkActive="active">
             <i class="fa fa-arrow-left" aria-hidden="true"></i> {{'shared.back.button' | translate}}
         </a>
         <p class="beneficiaryTitle">{{'dgConn.importexport.title' | translate}}</p>
         <p>{{'dgConn.importexport.introduction' | translate}}</p>
     </div>
+
     <span class="ui-g-12"><b>{{'dgConn.importexport.lef' | translate}}</b></span>
-    <div class="ui-g-6 ui-lg-6 ui-md-12">
-        <div class="panelItem ui-g-12" (click)="importRegistrationData()">
-            <span class="beneficiaryMayor">{{'dgConn.importexport.lef.import.finallist' | translate}}</span>
-            <p>{{'dgConn.importexport.lef.import.finallist.desc' | translate}}</p>
-        </div>
-    </div>
-    <div class="ui-g-6 ui-lg-6 ui-md-12">
-        <div class="panelItem ui-g-12" (click)="exportBeneficiaryInformation()">
-            <span class="beneficiaryMayor">{{'dgConn.importexport.lef.export.legalentities' | translate}}</span>
-            <p>{{'dgConn.importexport.lef.export.legalentities.desc' | translate}}</p>
-        </div>
-    </div>
+
+    <panelButton
+        title="{{ 'dgConn.importexport.lef.import.finallist' | translate }}"
+        description="{{ 'dgConn.importexport.lef.import.finallist.desc' | translate }}"
+        (onClick)="importDgBudgList()"></panelButton>
+
+    <panelButton
+            title="{{ 'dgConn.importexport.lef.export.legalentities' | translate }}"
+            description="{{ 'dgConn.importexport.lef.export.legalentities.desc' | translate }}"
+            (onClick)="exportBeneficiaryInformation()"></panelButton>
+
     <br/><br/>
-    <div class="ui-g-6 ui-lg-6 ui-md-12">
-        <div class="panelItem ui-g-12" (click)="importLegalEntityFBCValidate()">
-            <span class="beneficiaryMayor">{{'dgConn.importexport.lef.import.legalentities' | translate}}</span>
-            <p>{{'dgConn.importexport.lef.export.legalentities.desc' | translate}}</p>
-        </div>
-    </div>
-    <div class="ui-g-6 ui-lg-6 ui-md-12">
-        <div class="panelItem ui-g-12" (click)="importRegistrationData()">
-            <span class="beneficiaryMayor">{{'dgConn.importexport.lef.import.references' | translate}}</span>
-            <p>{{'dgConn.importexport.lef.import.references.desc' | translate}}</p>
-        </div>
-    </div>
+
+    <panelButton
+            title="{{ 'dgConn.importexport.lef.import.legalentities' | translate }}"
+            description="{{ 'dgConn.importexport.lef.export.legalentities.desc' | translate }}"
+            (onClick)="navigateToImportLefFile()"></panelButton>
+
+    <panelButton
+            title="{{ 'dgConn.importexport.lef.import.references' | translate }}"
+            description="{{ 'dgConn.importexport.lef.import.references.desc' | translate }}"
+            panelDisabled="true"></panelButton>
+
     <br/><br/>
+
     <span class="ui-g-12"><b>{{'dgConn.importexport.bc' | translate}}</b></span>
-    <div class="ui-g-6 ui-lg-6 ui-md-12">
-        <div class="panelItem ui-g-12" (click)="exportBudgetaryCommitment()">
-            <span class="beneficiaryMayor">{{'dgConn.importexport.bc.export' | translate}}</span>
-            <p>{{'dgConn.importexport.bc.export.desc' | translate}}</p>
-        </div>
-    </div>
-    <div class="ui-g-6 ui-lg-6 ui-md-12">
-        <div class="panelItem ui-g-12" (click)="importRegistrationData()">
-            <span class="beneficiaryMayor">{{'dgConn.importexport.bc.import' | translate}}</span>
-            <p>{{'dgConn.importexport.bc.import.desc' | translate}}</p>
-        </div>
-    </div>
+
+    <panelButton
+            title="{{ 'dgConn.importexport.bc.export' | translate }}"
+            description="{{ 'dgConn.importexport.bc.export.desc' | translate }}"
+            (onClick)="exportBudgetaryCommitment()"></panelButton>
+
+    <panelButton
+            title="{{ 'dgConn.importexport.bc.import' | translate }}"
+            description="{{ 'dgConn.importexport.bc.import.desc' | translate }}"
+            (onClick)="navigateToImportBcFile()"></panelButton>
+
     <br/><br/>
+
     <span class="ui-g-12"><b>{{'dgConn.importexport.lc' | translate}}</b></span>
-    <div class="ui-g-6 ui-lg-6 ui-md-12">
-        <div class="panelItem ui-g-12 panelDisabled">
-            <span class="beneficiaryMayor">{{'dgConn.importexport.lc.export' | translate}}</span>
-            <p>{{'dgConn.importexport.lc.export.desc' | translate}}</p>
-        </div>
-    </div>
-    <div class="ui-g-6 ui-lg-6 ui-md-12">
-        <div class="panelItem ui-g-12 panelDisabled">
-            <span class="beneficiaryMayor">{{'dgConn.importexport.lc.import' | translate}}</span>
-            <p>{{'dgConn.importexport.lc.import.desc' | translate}}</p>
-        </div>
-    </div>
+
+    <panelButton
+            title="{{ 'dgConn.importexport.lc.export' | translate }}"
+            description="{{ 'dgConn.importexport.lc.export.desc' | translate }}"
+            (onClick)="exportLegalCommitment()"></panelButton>
+
+    <panelButton
+            title="{{ 'dgConn.importexport.lc.import' | translate }}"
+            description="{{ 'dgConn.importexport.lc.import.desc' | translate }}"
+            (onClick)="navigateToImportLcFile()"></panelButton>
+
     <br/><br/>
+
     <span class="ui-g-12"><b>{{'dgConn.importexport.ba' | translate}}</b></span>
-    <div class="ui-g-6 ui-lg-6 ui-md-12">
-        <div class="panelItem ui-g-12 panelDisabled">
-            <span class="beneficiaryMayor">{{'dgConn.importexport.ba.export' | translate}}</span>
-            <p>{{'dgConn.importexport.ba.export.desc' | translate}}</p>
-        </div>
-    </div>
-    <div class="ui-g-6 ui-lg-6 ui-md-12">
-        <div class="panelItem ui-g-12 panelDisabled">
-            <span class="beneficiaryMayor">{{'dgConn.importexport.ba.import' | translate}}</span>
-            <p>{{'dgConn.importexport.ba.import.desc' | translate}}</p>
-        </div>
-    </div>
+
+    <panelButton
+            title="{{ 'dgConn.importexport.ba.export' | translate }}"
+            description="{{ 'dgConn.importexport.ba.export.desc' | translate }}"
+            panelDisabled="true"></panelButton>
+
+    <panelButton
+            title="{{ 'dgConn.importexport.ba.import' | translate }}"
+            description="{{ 'dgConn.importexport.ba.import.desc' | translate }}"
+            panelDisabled="true"></panelButton>
+
     <br/>
+
     <hr class="genericHr">
     <span class="ui-g-12"><b>{{'dgConn.importexport.gc' | translate}}</b></span>
-    <div class="ui-g-6 ui-lg-6 ui-md-12">
-        <div class="panelItem ui-g-12 panelDisabled">
-            <span class="beneficiaryMayor">{{'dgConn.importexport.gc.configure' | translate}}</span>
-            <p>{{'dgConn.importexport.gc.configure.desc' | translate}}</p>
-        </div>
-    </div>
+
+    <panelButton
+            title="{{ 'dgConn.importexport.gc.configure' | translate }}"
+            description="{{ 'dgConn.importexport.gc.configure.desc' | translate }}"
+            panelDisabled="true"></panelButton>
+
     <br/><br/>
 </div>
 
 <p-dialog [(visible)]="processingOperation" [modal]="true" [responsive]="true" [resizable]="false"
           [draggable]="false" [closable]="false">
     <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title' | translate }}</h1>
-    <div style="text-align: center;font-size: 4em;margin: 1em 0em;">
+    <div style="text-align: center;font-size: 4em;margin: 1em 0">
         <i [@enterSpinner] class="fa fa-spinner loading-icon" style="text-align: center;"></i>
     </div>
 </p-dialog>

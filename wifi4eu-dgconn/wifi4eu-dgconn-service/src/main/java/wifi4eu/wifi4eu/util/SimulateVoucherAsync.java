@@ -511,11 +511,7 @@ public class SimulateVoucherAsync implements Runnable {
                 _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Saving simulation to database");
 
                 voucherAssignment.setVoucherSimulations(simulations);
-                VoucherAssignmentDTO res = voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(voucherAssignment)));
-                VoucherAssignmentAuxiliarDTO voucher = new VoucherAssignmentAuxiliarDTO();
-                voucher.setId(res.getId());
-                voucher.setStatus(res.getStatus());
-                voucher.setExecutionDate(res.getExecutionDate());
+                voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(voucherAssignment)));
                 _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Voucher simulation successfully executed");
                 adminActions.setRunning(false);
                 adminActions.setEndDate(new Date());
@@ -527,11 +523,10 @@ public class SimulateVoucherAsync implements Runnable {
             }
         } catch (Exception ex) {
             if (Validator.isNotNull(adminActions)) {
-                adminActions = new AdminActions();
                 adminActions.setAction("voucher_simulation");
                 adminActions.setRunning(false);
                 adminActions.setUser(userMapper.toEntity(userConnected));
-                adminActions = adminActionsRepository.save(adminActions);
+                adminActionsRepository.save(adminActions);
             }
             _log.error("It seems that Spring context is not available", ex.getMessage());
         }
