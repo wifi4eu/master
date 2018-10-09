@@ -148,9 +148,8 @@ public class LEFDocumentGeneratorServiceImpl implements LEFDocumentGeneratorServ
             } else if (mayorParagraphText != null && !WIN_LATIN1_ENCODER.canEncode(mayorParagraphText)) {
                 needsUnicode = true;
             } else {
-                Iterator<String> representationIterator = representationsParagraphTextList.iterator();
-                for (String representationText = representationIterator.next(); representationIterator.hasNext() && !needsUnicode;) {
-                    needsUnicode = !WIN_LATIN1_ENCODER.canEncode(representationText);
+                for (Iterator<String> representationIterator = representationsParagraphTextList.iterator(); representationIterator.hasNext() && !needsUnicode;) {
+                    needsUnicode = !WIN_LATIN1_ENCODER.canEncode(representationIterator.next());
                 }
             }
 
