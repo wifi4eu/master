@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.web.exception;
+package wifi4eu.wifi4eu.common.exception;
 
 public class ExceptionResponse {
 	private int errorCode;

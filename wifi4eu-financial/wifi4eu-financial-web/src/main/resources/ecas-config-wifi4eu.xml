@@ -15,7 +15,7 @@
 
     <requestingUserDetails>true</requestingUserDetails>
 
-    <extraGroupHandler>wifi4eu.wifi4eu.web.util.ecas.RbacEcasExtraGroupHandler</extraGroupHandler>
+    <extraGroupHandler>wifi4eu.wifi4eu.common.util.ecas.RbacEcasExtraGroupHandler</extraGroupHandler>
 
     <ecasBaseUrl>${ecas.config.base.url}</ecasBaseUrl>
     <assuranceLevel>${ecas.config.assuranceLevel}</assuranceLevel>
