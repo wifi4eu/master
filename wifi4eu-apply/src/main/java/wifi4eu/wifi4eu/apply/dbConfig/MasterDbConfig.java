@@ -20,61 +20,56 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(
-  entityManagerFactoryRef = "masterEntityManagerFactory",
-  transactionManagerRef = "masterTransactionManager",
-  basePackages = { "wifi4eu.wifi4eu.apply.masterEntity" }
-)
+@EnableJpaRepositories(entityManagerFactoryRef = "masterEntityManagerFactory", transactionManagerRef = "masterTransactionManager", basePackages = {
+		"wifi4eu.wifi4eu.apply.masterEntity" })
 public class MasterDbConfig {
-	
+
 	@Value("${wifi4eu.masterdb.user}")
 	private String user;
 
 	@Value("${wifi4eu.masterdb.password}")
 	private char[] password;
-	
+
 	@Value("${wifi4eu.masterdb.url}")
-	private String masterDBUrl;
+	private String url;
 
 	@Value("${wifi4eu.masterdb.driver}")
-	private String masterDBDriver;
+	private String driver;
+
+	private String dialect = "org.hibernate.dialect.SQLServer2012Dialect";
 
 	@Bean(name = "masterDataSource")
 	public DataSource dataSource() {
-        DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
-        dataSourceBuilder.driverClassName(this.masterDBUrl);
-        dataSourceBuilder.username(this.user);
-        dataSourceBuilder.password(String.valueOf(this.password));
-        dataSourceBuilder.url(this.masterDBUrl);
-        
-        DataSource ds = (DataSource) dataSourceBuilder.build(); 
-        // TODO review ds.setConnectionTestQuery("SELECT 1");
+		DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
+		dataSourceBuilder.driverClassName(this.driver);
+		dataSourceBuilder.url(this.url);
+		dataSourceBuilder.username(this.user);
+		dataSourceBuilder.password(String.valueOf(this.password));
 
-        return ds;   
+		DataSource ds = (DataSource) dataSourceBuilder.build();
+		// TODO review ds.setConnectionTestQuery("SELECT 1");
+
+		return ds;
 	}
-	  
+
 	@Bean(name = "masterEntityManagerFactory")
 	public LocalContainerEntityManagerFactoryBean masterEntityManagerFactory(EntityManagerFactoryBuilder builder,
 			@Qualifier("masterDataSource") DataSource dataSource) {
-		
+
 		Map<String, String> properties = new HashMap<>();
-		properties.put("hibernate.hbm2ddl.auto", "update");
-		properties.put("hibernate.dialect", "org.hibernate.dialect.SQLServer2012Dialect");
+		properties.put("hibernate.hbm2ddl.auto", "validate");
+		properties.put("hibernate.dialect", dialect);
 
 		LocalContainerEntityManagerFactoryBean container = builder.dataSource(dataSource)
-				.packages("wifi4eu.wifi4eu.apply.masterEntity")
-				.persistenceUnit("master")
-				.properties(properties)
-				.build();
-		
+				.packages("wifi4eu.wifi4eu.apply.masterEntity").persistenceUnit("master").properties(properties).build();
+
 		return container;
-				
+
 	}
 
 	@Bean(name = "masterTransactionManager")
-	public PlatformTransactionManager masterTransactionManager(@Qualifier("masterEntityManagerFactory") EntityManagerFactory
-			masterEntityManagerFactory) {
+	public PlatformTransactionManager masterTransactionManager(
+			@Qualifier("masterEntityManagerFactory") EntityManagerFactory masterEntityManagerFactory) {
 		return new JpaTransactionManager(masterEntityManagerFactory);
-	}	
-
+	}
 }

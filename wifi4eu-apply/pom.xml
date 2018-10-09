@@ -39,7 +39,7 @@
 		<wifi4eu.localdb.uri>jdbc:sqlite:wifi4eu-call.db</wifi4eu.localdb.uri>
 
 		<!-- remote databases -->
-		<wifi4eu.masterdb.driver>net.sourceforge.jtds.jdbc.Driver</wifi4eu.masterdb.driver>
+		<wifi4eu.masterdb.driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</wifi4eu.masterdb.driver>
 		<wifi4eu.masterdb.url>jdbc:sqlserver://localhost:1433;databaseName=wifi4eu-dev</wifi4eu.masterdb.url>
 		<wifi4eu.masterdb.user>testuser</wifi4eu.masterdb.user>
 		<wifi4eu.masterdb.password>TESTpassword123</wifi4eu.masterdb.password>
