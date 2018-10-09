@@ -23,8 +23,9 @@ public class VoucherSimulation {
     @Column(name = "country")
     private String country;
 
-    @Column(name = "municipality")
-    private Integer municipality;
+    @ManyToOne
+    @JoinColumn(name = "municipality")
+    private Municipality municipality;
 
     @Column(name = "num_applications")
     private Integer numApplications;
@@ -45,23 +46,6 @@ public class VoucherSimulation {
 
     @Column(name = "issues")
     private Integer issues;
-
-    public VoucherSimulation() {
-    }
-
-    public VoucherSimulation(Integer id, Integer euRank, Integer countryRank, String country, Integer municipality, Integer numApplications, Integer rejected, Integer selectionStatus, Application application, VoucherAssignment voucherAssignment, Integer issues) {
-        this.id = id;
-        this.euRank = euRank;
-        this.countryRank = countryRank;
-        this.country = country;
-        this.municipality = municipality;
-        this.numApplications = numApplications;
-        this.rejected = rejected;
-        this.selectionStatus = selectionStatus;
-        this.application = application;
-        this.voucherAssignment = voucherAssignment;
-        this.issues = issues;
-    }
 
     public Integer getId() {
         return id;
@@ -95,11 +79,11 @@ public class VoucherSimulation {
         this.countryRank = countryRank;
     }
 
-    public Integer getMunicipality() {
+    public Municipality getMunicipality() {
         return municipality;
     }
 
-    public void setMunicipality(Integer municipality) {
+    public void setMunicipality(Municipality municipality) {
         this.municipality = municipality;
     }
 

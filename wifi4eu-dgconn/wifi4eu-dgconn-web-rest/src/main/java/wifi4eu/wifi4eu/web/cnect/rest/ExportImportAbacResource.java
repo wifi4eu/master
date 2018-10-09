@@ -144,23 +144,6 @@ public class ExportImportAbacResource {
         return responseReturn;
     }
 
-    @Deprecated
-    @ApiOperation(value = "Export registration data")
-    @RequestMapping(value = "/exportRegistrationData", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public ResponseDTO exportRegistrationData() {
-        try {
-            logger.debug("exportRegistrationData");
-
-            exportImportAbacService.exportRegistrationData();
-
-            return new ResponseDTO(true, null);
-        } catch (Exception e) {
-            return new ServerErrorResponseDTO(e.getMessage());
-        }
-    }
-
     @RequestMapping(value = "/importDgBudgList", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody

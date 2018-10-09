@@ -10,9 +10,6 @@ public interface ExportImportAbacService {
 
     ByteArrayOutputStream exportLegalEntities() throws IOException;
 
-    @Deprecated
-    void exportRegistrationData() throws Exception;
-
     boolean importDgBudgList(InputStream inputStream) throws Exception;
 
     byte[] exportBudgetaryCommitment() throws IOException;
