@@ -11,6 +11,7 @@ DELETE FROM application_comment
 DELETE FROM voucher_simulations
 DELETE FROM voucher_assignments
 DELETE FROM registration_users
+DELETE FROM admin_actions
 DELETE FROM rights
 DELETE FROM conditions_agreement
 DELETE FROM users
@@ -72,7 +73,7 @@ VALUES
 INSERT INTO municipalities
     (name,address,address_num,postal_code,country,lau)
 VALUES
-       ('Österåker', 'Akersberga', '1', '123', 'Sverige', 104140)
+       (N'Österåker', 'Akersberga', '1', '123', 'Sverige', 104140)
 -- Add user and municipality link
 SET @u_id = (SELECT TOP 1 id FROM users ORDER BY ID DESC)
 SET @m_id = (SELECT TOP 1 id FROM municipalities ORDER BY ID DESC)
@@ -144,7 +145,7 @@ VALUES
 INSERT INTO municipalities
     (name,address,address_num,postal_code,country,lau)
 VALUES
-       ('Черешка', 'Черешка', '1', '22000', 'България', 7813)
+       (N'Черешка', N'Черешка', '1', '22000', N'България', 7813)
 -- Add user and municipality link
 SET @u_id = (SELECT TOP 1 id FROM users ORDER BY ID DESC)
 SET @m_id = (SELECT TOP 1 id FROM municipalities ORDER BY ID DESC)
@@ -210,12 +211,12 @@ VALUES
 INSERT INTO users
     (treatment, name, surname, address, address_num, postal_code, email, password, create_date, access_date, ecas_email, ecas_username, type, verified, lang)
 VALUES
-       ('', 'aalankr', 'aalankr', 'Κοινότητα ητα', '605', '121221', 'Kristine.AALAND@ec.europa.eu', '08028', 1523537782500, 1523537782500, 'Kristine.AALAND@ec.europa.eu', 'aalankr', 5, 0, 'gr')
+       ('', 'aalankr', 'aalankr', N'Κοινότητα ητα', '605', '121221', 'Kristine.AALAND@ec.europa.eu', '08028', 1523537782500, 1523537782500, 'Kristine.AALAND@ec.europa.eu', 'aalankr', 5, 0, 'gr')
 -- Add municipality
 INSERT INTO municipalities
     (name,address,address_num,postal_code,country,lau)
 VALUES
-       ('Κοκκινογείων', 'Τοπική Κοινότητα Κοκκινογείων', '605', '08028', 'Greece', 28646)
+       (N'Κοκκινογείων', N'Τοπική Κοινότητα Κοκκινογείων', '605', '08028', 'Greece', 28646)
 -- Add user and municipality link
 SET @u_id = (SELECT TOP 1 id FROM users ORDER BY ID DESC)
 SET @m_id = (SELECT TOP 1 id FROM municipalities ORDER BY ID DESC)
@@ -359,7 +360,7 @@ VALUES
 INSERT INTO municipalities
     (name,address,address_num,postal_code,country,lau)
 VALUES
-       ('Kößlarn', 'Trifterner str.', '12', '2344', 'Deutschland', 21810)
+       (N'Kößlarn', 'Trifterner str.', '12', '2344', 'Deutschland', 21810)
 -- Add user and municipality link
 SET @u_id = (SELECT TOP 1 id FROM users ORDER BY ID DESC)
 SET @m_id = (SELECT TOP 1 id FROM municipalities ORDER BY ID DESC)
@@ -503,7 +504,7 @@ VALUES
 INSERT INTO municipalities
     (name,address,address_num,postal_code,country,lau)
 VALUES
-       ('Høje-Taastrup', 'Fløng Sogn', '5', '08028', 'Danmark', 26096)
+       (N'Høje-Taastrup', N'Fløng Sogn', '5', '08028', 'Danmark', 26096)
 -- Add user and municipality link
 SET @u_id = (SELECT TOP 1 id FROM users ORDER BY ID DESC)
 SET @m_id = (SELECT TOP 1 id FROM municipalities ORDER BY ID DESC)
@@ -935,7 +936,7 @@ VALUES
 INSERT INTO municipalities
     (name,address,address_num,postal_code,country,lau)
 VALUES
-       ('Яковци', 'Яковци иковци', '10', '123', 'Bulgaria', 7907)
+       (N'Яковци', N'Яковци иковци', '10', '123', 'Bulgaria', 7907)
 -- Add user and municipality link
 SET @u_id = (SELECT TOP 1 id FROM users ORDER BY ID DESC)
 SET @m_id = (SELECT TOP 1 id FROM municipalities ORDER BY ID DESC)
@@ -1007,7 +1008,7 @@ VALUES
 INSERT INTO municipalities
     (name,address,address_num,postal_code,country,lau)
 VALUES
-       ('Попови ливади', 'Попови ливади', '75', '1233', 'Bulgaria', 7947)
+       (N'Попови ливади', N'Попови ливади', '75', '1233', 'Bulgaria', 7947)
 -- Add user and municipality link
 SET @u_id = (SELECT TOP 1 id FROM users ORDER BY ID DESC)
 SET @m_id = (SELECT TOP 1 id FROM municipalities ORDER BY ID DESC)
@@ -1079,7 +1080,7 @@ VALUES
 INSERT INTO municipalities
     (name,address,address_num,postal_code,country,lau)
 VALUES
-       ('Mhère', 'Next Door Blvd.', '75', '234343', 'France', 65057)
+       (N'Mhère', 'Next Door Blvd.', '75', '234343', 'France', 65057)
 -- Add user and municipality link
 SET @u_id = (SELECT TOP 1 id FROM users ORDER BY ID DESC)
 SET @m_id = (SELECT TOP 1 id FROM municipalities ORDER BY ID DESC)
