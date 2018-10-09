@@ -10,6 +10,7 @@ public interface ExportImportRegistrationDataRepository extends CrudRepository<E
 
     @Query(value = "select distinct d from ExportImportRegistrationData d " +
             "inner join d.municipality.registrations r " +
+            "inner join d.municipality.voucherSimulations vs on vs.selectionStatus = 3 " +
             "inner join r.applications a " +
             "where d.abacReference is not null " +
             "and d.municipality.budgetaryCommitments is empty " +

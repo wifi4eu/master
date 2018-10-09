@@ -155,6 +155,11 @@ public class AzureBlobConnector {
         return fileUri;
     }
 
+    public String uploadByteArray(final String fileName, final byte[] data) {
+        return uploadByteArray(DEFAULT_CONTAINER_NAME, fileName, data);
+    }
+
+
     public String upload(final String containerName, final String fileName, final InputStream sourceStream, final long length) {
 
         checkContainerName(containerName);
