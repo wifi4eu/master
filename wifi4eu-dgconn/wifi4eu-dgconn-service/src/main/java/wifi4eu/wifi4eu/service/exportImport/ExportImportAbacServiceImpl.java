@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
 import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.entity.exportImport.AbacStatus;
@@ -43,6 +44,7 @@ import wifi4eu.wifi4eu.repository.exportImport.GlobalCommitmentRepository;
 import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
 import wifi4eu.wifi4eu.repository.mayor.MayorRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.representation.RepresentationRepository;
 import wifi4eu.wifi4eu.util.DateUtils;
 import wifi4eu.wifi4eu.util.ExportFileUtils;
@@ -85,6 +87,9 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
     private static final String THE_RECORD_WAS_SKIPPED_AS_ITS_STATUS_IS_NOT_VALID = "The record was skipped as its status is not valid";
 
     @Autowired
+    private LEFDocumentGeneratorService lefDocumentGeneratorService;
+
+    @Autowired
     private ExportImportRegistrationDataRepository exportImportRegistrationDataRepository;
 
     @Autowired
@@ -92,6 +97,9 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
 
     @Autowired
     private MayorRepository mayorRepository;
+
+    @Autowired
+    private RegistrationRepository registrationRepository;
 
     @Autowired
     private RepresentationRepository representationRepository;
@@ -214,7 +222,6 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
                     processDocumentInformation(beneficiaryInformation, documentGeneratedMunicipalities, documentsPrinter, exportFiles);
                 });
             }
-
         }
 
         // Add the Beneficiary CSV file
@@ -274,17 +281,36 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
         } else {
             documentGeneratedMunicipalities.add(beneficiaryInformation.getMun_id());
         }
-        //if (StringUtils.isNotBlank(beneficiaryInformation.getAzureUri())) {
-
-        //String fileName = getMunicipalityPrefixedFileName(beneficiaryInformation);
 
         try {
+
+            byte[] fileData = null;
+
+            /*
+            if (StringUtils.isNotEmpty(beneficiaryInformation.getAzureUri())) {
+                String base64FileData = azureBlobConnector.downloadLegalFile(beneficiaryInformation.getAzureUri());
+                if (StringUtils.isNotEmpty(base64FileData)) {
+                    fileData = Base64Utils.decodeFromString(base64FileData);
+                }
+            }
+            */
+
             String fileName = "lef_supporting_document-" + beneficiaryInformation.getMun_id() + ".pdf";
+
+            //if (fileData == null) {
+                //generate a new pdf file
+                ByteArrayOutputStream os = new ByteArrayOutputStream();
+                lefDocumentGeneratorService.generateLefPdf(municipalityRepository.getOne(beneficiaryInformation.getMun_id()), os);
+                fileData = os.toByteArray();
+            //}
+
+            ExportFile exportFile = new ExportFile(fileName, fileData);
+            exportFiles.add(exportFile);
 
             csvPrinter.printRecord(
                     beneficiaryInformation.getMun_id(),
                     beneficiaryInformation.getDoc_portalId(),
-                    "lef_supporting_document.pdf",
+                    "lef_supporting_document",
                     fileName,
                     "application/pdf",
                     dateUtilities.convertDate2String(beneficiaryInformation.getDoc_date()),
@@ -292,32 +318,9 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
                     defaultEmpty(beneficiaryInformation.getAresReference())
             );
 
-                /* we should really keep this instead
-                csvPrinter.printRecord(
-                        beneficiaryInformation.getMun_id(),
-                        defaultEmpty(beneficiaryInformation.getDoc_portalId()),
-                        StringUtils.defaultString(beneficiaryInformation.getDoc_name(), fileName),
-                        fileName,
-                        defaultEmpty(beneficiaryInformation.getDoc_mimeType()),
-                        dateUtilities.convertDate2String(beneficiaryInformation.getDoc_date()),
-                        defaultEmpty(beneficiaryInformation.getDoc_type()),
-                        defaultEmpty(beneficiaryInformation.getAresReference())
-                );
-
-                // What if a file is too big?
-                String base64FileData = azureBlobConnector.downloadLegalFile(beneficiaryInformation.getAzureUri());
-                byte[] fileData = StringUtils.isNotEmpty(base64FileData) ? Base64Utils.decodeFromString(base64FileData) : new byte[0];
-                */
-
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            createBeneficiaryAbacPDF(beneficiaryInformation, os);
-            ExportFile exportFile = new ExportFile(fileName, os.toByteArray());
-            exportFiles.add(exportFile);
         } catch (IOException e) {
             _log.error(ERROR_WRITING_DOWN_TO_THE_CSV_FILE, e);
         }
-
-        //}
     }
 
     /**
