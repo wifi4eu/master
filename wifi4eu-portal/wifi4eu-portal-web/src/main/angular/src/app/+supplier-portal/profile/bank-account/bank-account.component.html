@@ -26,9 +26,7 @@
         </div>
 
         <div class="row">
-            <div class="col-sm-12">
-                <hr class="registrationHr">
-            </div>
+            <div class="col-sm-12"> <hr class="registrationHr"> </div>
         </div>
 
         <div class="col-sm-8">
@@ -107,20 +105,23 @@
 
         <br/><br/>
 
-        <div class="ui-g-12" style="padding-top: 0;">
+        <p class="beneficiaryMayor">{{ 'suppRegistration.bankAccount.supportingDocuments' | translate }}</p>
+
+        <div class="ui-g-12 whitePanel" style="padding-top: 0;">
             <div class="ui-g-8 ui-lg-8 ui-md-12 ui-sm-12" style="margin-top: 1em;">
-                <p class="beneficiaryMayor">{{ 'suppRegistration.bankAccount.supportingDocuments' | translate }}</p>
-                <div class="ui-g-12 whitePanel">
+                <div *ngFor="let bankAccountDocumentDTO of bankAccountDTO.bankAccountDocumentDTOList; let j = index">
                     <div class="ui-g-12">
-                        <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.document' | translate }}</span>
-                        <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.accountName }} </b> </span>
-                    </div>
-                    <div class="ui-g-12">
-                        <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.document' | translate }}</span>
-                        <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.iban }} </b> </span>
+                        <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.document' | translate }} {{j + 1}}</span>
+                        <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDocumentDTO.fileName }} </b> </span>
+
+                        <a class="link-label"  href="{{fileURL}}{{supplier.id}}/{{bankAccountDocumentDTO.id}}"target="_blank">
+                            <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' |
+                            translate }}
+                        </a>
                     </div>
                 </div>
             </div>
+            <br/><br/>
         </div>
 
         </div>
@@ -135,9 +136,7 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-12">
-            <hr class="registrationHr">
-        </div>
+        <div class="col-sm-12"> <hr class="registrationHr">  </div>
     </div>
 
     <span class="link-label  editRegistrationsLabel" (click)="addBankAccount()">
@@ -146,7 +145,7 @@
     
     <p-dialog [(visible)]="addOrEditBankAccount" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
     [closeOnEscape]="false" (onAfterHide)="closeModalCancel()">
-    <form (ngSubmit)="requestLegalFilesCorrection()" #requestLegalFilesCorrectionForm="ngForm">
+    <form>
         <div class="form-group">
             <div>
 
@@ -229,7 +228,32 @@
                             [(ngModel)]="currentBankAccountDTO.bankCountry" maxlength="255" required  (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
                     </div>
 
+                    <br/><br/>
+
+                    <p> <b>{{ 'suppRegistration.bankAccount.documents.header' | translate }}</b> </p>
+
+                    <p>{{ 'suppRegistration.bankAccount.documents.line1' | translate }}</p>
+                    <p> - {{ 'suppRegistration.bankAccount.documents.line2' | translate }}</p>
+                    <p> - {{ 'suppRegistration.bankAccount.documents.line3' | translate }}</p>
+                    <p> - {{ 'suppRegistration.bankAccount.documents.line4' | translate }}</p>
+   
+                <br/><br/>
+
+                <div class="col-sm-4">
+                    <div class="fileUpload btn btn-primary">
+                        <span>{{'shared.uploadDocuments' | translate }}</span>
+                        <input #document2 id="document2" name="document2" (change)="uploadFile($event)" type="file"
+                            class="upload" accept=".png, .jpg, .pdf" />
+                    </div>
                 </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12"> <hr class="registrationHr">  </div>
+                </div>
+
+                <br/> <br/>
 
                 <div class="row center">
                     <div class="col-sm-6">

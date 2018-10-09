@@ -3,13 +3,13 @@ package wifi4eu.wifi4eu.entity.supplier;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "bank_account_document")
+@Table(name = "bank_account_documents")
 public class BankAccountDocument {
 
     @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "bank_account_id")
     private int bankAccountId;
@@ -20,7 +20,7 @@ public class BankAccountDocument {
     @Column(name = "upload_time")
     private Long uploadTime;
 
-    @Column(name = "userId")
+    @Column(name = "user_id")
     private Integer userId;
 
     @Column(name = "file_size")
@@ -35,11 +35,11 @@ public class BankAccountDocument {
     @Column(name = "azure_uri")
     private String azureUri;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

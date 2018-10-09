@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface BankAccountDocumentRepository extends CrudRepository<BankAccountDocument,Integer> {
 
-    List<BankAccountDocument> findBySupplierIdOrderByAccountId(int supplierId);
+    List<BankAccountDocument> findBySupplierIdOrderByBankAccountId(int supplierId);
 }

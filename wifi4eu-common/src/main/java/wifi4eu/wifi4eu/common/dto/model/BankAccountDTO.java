@@ -1,5 +1,8 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BankAccountDTO {
 
     private int id;
@@ -21,6 +24,8 @@ public class BankAccountDTO {
 
     private Integer status;
     private String rejectionCause;
+
+    private List<BankAccountDocumentDTO> bankAccountDocumentDTOList = new ArrayList<>();
 
     public BankAccountDTO() {
     }
@@ -143,5 +148,13 @@ public class BankAccountDTO {
 
     public void setRejectionCause(String rejectionCause) {
         this.rejectionCause = rejectionCause;
+    }
+
+    public List<BankAccountDocumentDTO> getBankAccountDocumentDTOList() {
+        return bankAccountDocumentDTOList;
+    }
+
+    public void setBankAccountDocumentDTOList(List<BankAccountDocumentDTO> bankAccountDocumentDTOList) {
+        this.bankAccountDocumentDTOList = bankAccountDocumentDTOList;
     }
 }

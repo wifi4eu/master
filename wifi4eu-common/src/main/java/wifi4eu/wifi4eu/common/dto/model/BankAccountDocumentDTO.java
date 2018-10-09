@@ -2,7 +2,7 @@ package wifi4eu.wifi4eu.common.dto.model;
 
 public class BankAccountDocumentDTO {
 
-    private int id;
+    private Integer id;
     private int bankAccountId;
     private int supplierId;
 
@@ -14,11 +14,11 @@ public class BankAccountDocumentDTO {
     private String fileName;
     private String azureUri;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
