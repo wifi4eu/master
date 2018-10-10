@@ -86,6 +86,7 @@
         <swagger-codegen.version>2.2.1</swagger-codegen.version>
         <jersey.version>2.22.2</jersey.version>
         <commons-codec.version>1.10</commons-codec.version>
+        <commons-io.version>2.6</commons-io.version>
 
         <!-- ECAS PROPERTIES -->
 
@@ -896,6 +897,12 @@
                 <groupId>commons-lang</groupId>
                 <artifactId>commons-lang</artifactId>
                 <version>${commons-lang.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
             </dependency>
 
             <dependency>
