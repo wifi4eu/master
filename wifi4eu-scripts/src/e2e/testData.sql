@@ -140,7 +140,7 @@ VALUES
 INSERT INTO users
     (treatment, name, surname, address, address_num, postal_code, email, password, create_date, access_date, ecas_email, ecas_username, type, verified, lang)
 VALUES
-       ('', 'aagaape', 'aagaape', 'Черешка', '605', '08028', 'Peter.Aagaard@ec.europa.eu', '123123', 1523537782500, 1523537782500, 'Peter.Aagaard@ec.europa.eu', 'aagaape', 5, 0, 'bg')
+       ('', 'aagaape', 'aagaape', N'Черешка', '605', '08028', 'Peter.Aagaard@ec.europa.eu', '123123', 1523537782500, 1523537782500, 'Peter.Aagaard@ec.europa.eu', 'aagaape', 5, 0, 'bg')
 -- Add municipality
 INSERT INTO municipalities
     (name,address,address_num,postal_code,country,lau)
@@ -1003,7 +1003,7 @@ VALUES
 INSERT INTO users
     (treatment, name, surname, address, address_num, postal_code, email, password, create_date, access_date, ecas_email, ecas_username, type, verified, lang)
 VALUES
-       ('', 'Ruben', 'Garcia Tamayo', 'Попови ливади', '1', '1030', 'ruben.garcia@everis.com', '1234567', 1523537782500, 1523537782500, 'ruben.garcia@everis.com', 'rugarci', 5, 0, 'es')
+       ('', 'Ruben', 'Garcia Tamayo', N'Попови ливади', '1', '1030', 'ruben.garcia@everis.com', '1234567', 1523537782500, 1523537782500, 'ruben.garcia@everis.com', 'rugarci', 5, 0, 'es')
 -- Add municipality
 INSERT INTO municipalities
     (name,address,address_num,postal_code,country,lau)
