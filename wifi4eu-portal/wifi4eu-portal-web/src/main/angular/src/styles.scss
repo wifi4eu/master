@@ -1036,7 +1036,7 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
   float: right;
 }
 
-.fileUpload {
+/* .fileUpload {
   position: relative;
   overflow: hidden;
   margin: 10px;
@@ -1051,6 +1051,26 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
   font-size: 20px;
   cursor: pointer;
   opacity: 0;
+  filter: alpha(opacity=0);
+} */
+
+.fileUpload {
+  position: relative;
+  overflow: hidden;
+  margin: 10px;
+}
+
+.fileUpload .upload {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  bottom: 60px;
+  font-size: 0px;
+  cursor: pointer;
+  opacity: 0;
+  overflow: hidden;
   filter: alpha(opacity=0);
 }
 
