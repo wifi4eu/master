@@ -16,13 +16,13 @@
         <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12 col-sm-4">
             <span class="beneficiaryTitle">{{ 'suppRegistration.bankAccount.bankAccount' | translate }} {{i + 1}}</span>
             <span *ngIf="!checkShow(i)" class="link-label right editRegistrationsLabel" (click)="changeShow(i)">
-                {{'shared.hide.label' | translate}} <i class="fa fa-angle-down" aria-hidden="true"></i> 
+                {{'shared.hide.label' | translate}} <i class="fa fa-angle-down" aria-hidden="true"></i>
             </span>
             <span *ngIf="checkShow(i)" class="link-label right editRegistrationsLabel" (click)="changeShow(i)">
-                {{'shared.hide.label' | translate}} <i class="fa fa-angle-up" aria-hidden="true"></i> 
+                {{'shared.hide.label' | translate}} <i class="fa fa-angle-up" aria-hidden="true"></i>
             </span>
 
-            <span class="link-label right editRegistrationsLabel" (click)="delete(i)">
+            <span class="link-label right editRegistrationsLabel" (click)="deleteBankAccount(i)">
                 <i class="fa fa-trash" aria-hidden="true"></i> {{'suppRegistration.bankAccount.delete' | translate}}
             </span>
             <span class="link-label right editRegistrationsLabel" (click)="editBankAccount(i)">
@@ -32,258 +32,291 @@
 
         <div *ngIf="checkShow(i)">
 
-        <div class="row">
-            <div class="col-sm-12"> <hr class="registrationHr"> </div>
-        </div>
-
-        <div class="col-sm-8">
-        <div cla ss="ui-g-12" style="padding-top: 0;">
-            <div class="ui-g-8 ui-lg-8 ui-md-12 ui-sm-12" style="margin-top: 1em;">
-                <p class="beneficiaryMayor">{{ 'suppRegistration.bankAccount.accountDetails' | translate }}</p>
-                <div class="ui-g-12 whitePanel">
-                    <div class="ui-g-12">
-                        <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.accountName' | translate }}</span>
-                        <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.accountName }} </b> </span>
-                    </div>
-                    <div class="ui-g-12">
-                        <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.iban' | translate }}</span>
-                        <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.iban }} </b> </span>
-                    </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <hr class="registrationHr">
                 </div>
             </div>
-        </div>
 
-        <br/><br/>
-
-        <p class="beneficiaryMayor">{{ 'suppRegistration.bankAccount.bankDetails' | translate }}</p>
-        <div>
-            <div class="clearfix"></div>
-            
-            <div class="ui-g-12 whitePanel">
-                <div class="ui-g-12">
-                    <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.bankName' | translate }}</span>
-                    <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.bankName }} </b> </span>
-                </div>
-                <div class="ui-g-12">
-                    <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.bankStreet' | translate }}</span>
-                    <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.bankStreet }} </b> </span>
-                </div>
-                <div class="ui-g-12">
-                    <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.bankNumber' | translate }}</span>
-                    <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.bankNumber }} </b></span>
-                </div>
-                <div class="ui-g-12">
-                    <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.bankCity' | translate }}</span>
-                    <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.bankCity }} </b>
-                    </span>
-                </div>
-                <div class="ui-g-12">
-                    <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.bankCountry' | translate }}</span>
-                    <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.bankCountry }} </b> </span>
-                </div>
-            </div>
-        </div>
-
-        <br/><br/>
-
-        <p class="beneficiaryMayor">{{ 'suppRegistration.bankAccount.accountHolderDetails' | translate }}</p>
-        <div>
-            <div class="clearfix"></div>
-           
-            <div class="ui-g-12 whitePanel">
-                <div class="ui-g-12">
-                    <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.accountHolderStreet' | translate }}</span>
-                    <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.accountHolderStreet }} </b> </span>
-                </div>
-                <div class="ui-g-12">
-                    <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.accountHolderNumber' | translate }}</span>
-                    <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.accountHolderNumber }} </b> </span>
-                </div>
-                <div class="ui-g-12">
-                    <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.accountHolderCity' | translate }}</span>
-                    <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.accountHolderCity }} </b></span>
-                </div>
-                <div class="ui-g-12">
-                    <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.accountHolderCountry' | translate }}</span>
-                    <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.accountHolderCountry }} </b></span>
-                </div>
-            </div>
-        </div>
-
-        <br/><br/>
-
-        <p class="beneficiaryMayor">{{ 'suppRegistration.bankAccount.supportingDocuments' | translate }}</p>
-
-        <div class="ui-g-12 whitePanel" style="padding-top: 0;">
-            <div class="ui-g-8 ui-lg-8 ui-md-12 ui-sm-12" style="margin-top: 1em;">
-                <div *ngFor="let bankAccountDocumentDTO of bankAccountDTO.bankAccountDocumentDTOList; let j = index">
-                    <div class="ui-g-12">
-                        <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.document' | translate }} {{j + 1}}</span>
-                        <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDocumentDTO.fileName }} </b> </span>
-
-                        <a class="link-label"  href="{{fileURL}}{{supplier.id}}/{{bankAccountDocumentDTO.id}}"target="_blank">
-                            <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' |
-                            translate }}
-                        </a>
+            <div class="col-sm-8">
+                <div cla ss="ui-g-12" style="padding-top: 0;">
+                    <div class="ui-g-8 ui-lg-8 ui-md-12 ui-sm-12" style="margin-top: 1em;">
+                        <p class="beneficiaryMayor">{{ 'suppRegistration.bankAccount.accountDetails' | translate }}</p>
+                        <div class="ui-g-12 whitePanel">
+                            <div class="ui-g-12">
+                                <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.accountName' | translate
+                                    }}</span>
+                                <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.accountName }} </b> </span>
+                            </div>
+                            <div class="ui-g-12">
+                                <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.iban' | translate }}</span>
+                                <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.iban }} </b> </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <br /><br />
+
+                <p class="beneficiaryMayor">{{ 'suppRegistration.bankAccount.bankDetails' | translate }}</p>
+                <div>
+                    <div class="clearfix"></div>
+
+                    <div class="ui-g-12 whitePanel">
+                        <div class="ui-g-12">
+                            <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.bankName' | translate }}</span>
+                            <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.bankName }} </b> </span>
+                        </div>
+                        <div class="ui-g-12">
+                            <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.bankStreet' | translate }}</span>
+                            <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.bankStreet }} </b> </span>
+                        </div>
+                        <div class="ui-g-12">
+                            <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.bankNumber' | translate }}</span>
+                            <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.bankNumber }} </b></span>
+                        </div>
+                        <div class="ui-g-12">
+                            <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.bankCity' | translate }}</span>
+                            <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.bankCity }} </b>
+                            </span>
+                        </div>
+                        <div class="ui-g-12">
+                            <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.bankCountry' | translate }}</span>
+                            <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.bankCountry }} </b> </span>
+                        </div>
+                    </div>
+                </div>
+
+                <br /><br />
+
+                <p class="beneficiaryMayor">{{ 'suppRegistration.bankAccount.accountHolderDetails' | translate }}</p>
+                <div>
+                    <div class="clearfix"></div>
+
+                    <div class="ui-g-12 whitePanel">
+                        <div class="ui-g-12">
+                            <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.accountHolderStreet' |
+                                translate }}</span>
+                            <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.accountHolderStreet }} </b> </span>
+                        </div>
+                        <div class="ui-g-12">
+                            <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.accountHolderNumber' |
+                                translate }}</span>
+                            <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.accountHolderNumber }} </b> </span>
+                        </div>
+                        <div class="ui-g-12">
+                            <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.accountHolderCity' |
+                                translate }}</span>
+                            <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.accountHolderCity }} </b></span>
+                        </div>
+                        <div class="ui-g-12">
+                            <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.accountHolderCountry' |
+                                translate }}</span>
+                            <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDTO.accountHolderCountry }} </b></span>
+                        </div>
+                    </div>
+                </div>
+
+                <br /><br />
+
+                <p class="beneficiaryMayor">{{ 'suppRegistration.bankAccount.supportingDocuments' | translate }}</p>
+
+                <div class="ui-g-12 whitePanel" style="padding-top: 0;">
+                    <div class="ui-g-8 ui-lg-8 ui-md-12 ui-sm-12" style="margin-top: 1em;">
+                        <div *ngFor="let bankAccountDocumentDTO of bankAccountDTO.bankAccountDocumentDTOList; let j = index">
+                            <div class="ui-g-12">
+                                <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.document' | translate }}
+                                    {{j + 1}}</span>
+                                <span class="ui-g-8 ui-sm-12"> <b>{{ bankAccountDocumentDTO.fileName }} </b> </span>
+
+                                <a class="link-label" href="{{fileURL}}{{supplier.id}}/{{bankAccountDocumentDTO.id}}"
+                                    target="_blank">
+                                    <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' |
+                                    translate }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <br /><br />
+
+                </div>
+
             </div>
-            <br/><br/>
-        
-        </div>
+            <div class="col-sm-4">
+                <br /><br /><br /><br />
+                <ux-alert class="documents-info" iconClass="fa fa-exclamation-circle alert-icon">
+                    {{ 'shared.statusLabel' | translate}} {{ 'shared.statusUploadDocs' | translate}}
+                </ux-alert>
+            </div>
+
 
         </div>
-        <div class = "col-sm-4">
-            <br/><br/><br/><br/>
-            <ux-alert class="documents-info" iconClass="fa fa-exclamation-circle alert-icon">
-                {{ 'shared.statusLabel' | translate}} {{ 'shared.statusUploadDocs' | translate}}
-            </ux-alert>
-        </div>
+        <br /><br />
 
-   
-        </div>
-        <br/><br/>
 
-        
     </div>
 
     <div class="row">
-        <div class="col-sm-12"> <hr class="registrationHr">  </div>
+        <div class="col-sm-12">
+            <hr class="registrationHr">
+        </div>
     </div>
 
     <span class="link-label  editRegistrationsLabel" (click)="addBankAccount()">
         <i class="fa fa-plus" aria-hidden="true"></i> {{'suppRegistration.bankAccount.add' | translate}}
     </span>
-    
+
     <p-dialog [(visible)]="addOrEditBankAccount" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
-    [closeOnEscape]="false" (onAfterHide)="closeModalCancel()">
-    <form>
-        <div class="form-group">
-            <div>
+        [closeOnEscape]="false" (onAfterHide)="closeModalCancel()">
+        <form>
+            <div class="form-group">
+                <div>
 
-                <div style="padding: 2em; padding-top: 0em;" class="center">
-                    <h2 class="beneficiaryMayor">{{ 'suppRegistration.bankAccount.add.title' | translate }}</h2>
-                    <p [innerHTML]="'suppRegistration.bankAccount.add.desc' | translate"></p>
-                </div>
-
-                <div class="ui-g-12 col-sm-12">
-
-                    <p> <b>{{ 'suppRegistration.bankAccount.bankDetails' | translate }}</b></p>
-                    
-                    <label>{{ 'suppRegistration.bankAccount.accountName' | translate }}</label>
-                    <input [id]="accountName" type="text" [name]="accountName" class="form-control"
-                    [(ngModel)]="currentBankAccountDTO.accountName" maxlength="255" required  (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
-
-
-                    <label>{{ 'suppRegistration.bankAccount.iban' | translate }}</label>
-                    <input [id]="iban" type="text" [name]="iban" class="form-control"
-                    [(ngModel)]="currentBankAccountDTO.iban" maxlength="255" required  (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
-
-                    <br>
-                    <p> <b>{{ 'suppRegistration.bankAccount.accountHolderDetails' | translate }}</b></p>
-
-                    
-                    <div class="col-sm-9">
-                        <label>{{ 'suppRegistration.bankAccount.accountHolderStreet' | translate }}</label>
-                        <input [id]="accountName" type="text" [name]="accountName" class="form-control ui-sm-9"
-                        [(ngModel)]="currentBankAccountDTO.accountHolderStreet" maxlength="255" required  (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
+                    <div style="padding: 2em; padding-top: 0em;" class="center">
+                        <h2 class="beneficiaryMayor">{{ 'suppRegistration.bankAccount.add.title' | translate }}</h2>
+                        <p [innerHTML]="'suppRegistration.bankAccount.add.desc' | translate"></p>
                     </div>
 
-                    <div class="col-sm-3">
-                        <label>{{ 'suppRegistration.bankAccount.accountHolderNumber' | translate }}</label>
-                        <input [id]="accountHolderNumber" type="text" [name]="accountHolderNumber" class="form-control ui-sm-3"
-                            [(ngModel)]="currentBankAccountDTO.accountHolderNumber" maxlength="255" required  (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
+                    <div class="ui-g-12 col-sm-12">
+
+                        <p> <b>{{ 'suppRegistration.bankAccount.bankDetails' | translate }}</b></p>
+
+                        <label>{{ 'suppRegistration.bankAccount.accountName' | translate }}</label>
+                        <input [id]="accountName" type="text" [name]="accountName" class="form-control" [(ngModel)]="currentBankAccountDTO.accountName"
+                            maxlength="255" required (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
+
+
+                        <label>{{ 'suppRegistration.bankAccount.iban' | translate }}</label>
+                        <input [id]="iban" type="text" [name]="iban" class="form-control" [(ngModel)]="currentBankAccountDTO.iban"
+                            maxlength="255" required (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
+
+                        <br>
+                        <p> <b>{{ 'suppRegistration.bankAccount.accountHolderDetails' | translate }}</b></p>
+
+
+                        <div class="col-sm-9">
+                            <label>{{ 'suppRegistration.bankAccount.accountHolderStreet' | translate }}</label>
+                            <input [id]="accountName" type="text" [name]="accountName" class="form-control ui-sm-9"
+                                [(ngModel)]="currentBankAccountDTO.accountHolderStreet" maxlength="255" required
+                                (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
+                        </div>
+
+                        <div class="col-sm-3">
+                            <label>{{ 'suppRegistration.bankAccount.accountHolderNumber' | translate }}</label>
+                            <input [id]="accountHolderNumber" type="text" [name]="accountHolderNumber" class="form-control ui-sm-3"
+                                [(ngModel)]="currentBankAccountDTO.accountHolderNumber" maxlength="255" required
+                                (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label>{{ 'suppRegistration.bankAccount.accountHolderCity' | translate }}</label>
+                            <input [id]="accountHolderCity" type="text" [name]="accountHolderCity" class="form-control"
+                                [(ngModel)]="currentBankAccountDTO.accountHolderCity" maxlength="255" required
+                                (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label>{{ 'suppRegistration.bankAccount.accountHolderCountry' | translate }}</label>
+                            <input [id]="accountHolderCountry" type="text" [name]="accountHolderCountry" class="form-control"
+                                [(ngModel)]="currentBankAccountDTO.accountHolderCountry" maxlength="255" required
+                                (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
+                        </div>
+
+                        <p> <b>{{ 'suppRegistration.bankAccount.bankDetails' | translate }}</b></p>
+
+                        <input type="checkbox"> {{ 'suppRegistration.bankAccount.confirmSameAddres' | translate }}
+
+                        <div class="col-sm-12">
+                            <label>{{ 'suppRegistration.bankAccount.bankName' | translate }}</label>
+                            <input [id]="bankName" type="text" [name]="bankName" class="form-control" [(ngModel)]="currentBankAccountDTO.bankName"
+                                maxlength="255" required (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
+                        </div>
+
+                        <div class="col-sm-9">
+                            <label>{{ 'suppRegistration.bankAccount.bankStreet' | translate }}</label>
+                            <input [id]="bankStreet" type="text" [name]="bankStreet" class="form-control ui-sm-9"
+                                [(ngModel)]="currentBankAccountDTO.bankStreet" maxlength="255" required (ngModelChange)="enableButtonConfirm()"
+                                [ngModelOptions]="{standalone: true}">
+                        </div>
+
+                        <div class="col-sm-3">
+                            <label>{{ 'suppRegistration.bankAccount.bankNumber' | translate }}</label>
+                            <input [id]="bankNumber" type="text" [name]="bankNumber" class="form-control ui-sm-3"
+                                [(ngModel)]="currentBankAccountDTO.bankNumber" maxlength="255" required (ngModelChange)="enableButtonConfirm()"
+                                [ngModelOptions]="{standalone: true}">
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label>{{ 'suppRegistration.bankAccount.bankCity' | translate }}</label>
+                            <input [id]="bankCity" type="text" [name]="bankCity" class="form-control" [(ngModel)]="currentBankAccountDTO.bankCity"
+                                maxlength="255" required (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label>{{ 'suppRegistration.bankAccount.bankCountry' | translate }}</label>
+                            <input [id]="bankCountry" type="text" [name]="bankCountry" class="form-control" [(ngModel)]="currentBankAccountDTO.bankCountry"
+                                maxlength="255" required (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
+                        </div>
+
+                        <br /><br />
+
+                        <p> <b>{{ 'suppRegistration.bankAccount.documents.header' | translate }}</b> </p>
+
+                        <p>{{ 'suppRegistration.bankAccount.documents.line1' | translate }}</p>
+                        <p> - {{ 'suppRegistration.bankAccount.documents.line2' | translate }}</p>
+                        <p> - {{ 'suppRegistration.bankAccount.documents.line3' | translate }}</p>
+                        <p> - {{ 'suppRegistration.bankAccount.documents.line4' | translate }}</p>
+
+                        <br /><br />
+
+                        <div class="col-sm-4">
+                            <div class="fileUpload btn btn-primary">
+                                <span>{{'shared.uploadDocuments' | translate }}</span>
+                                <input #document2 id="document2" name="document2" (change)="uploadFile($event)" type="file"
+                                    class="upload" accept=".png, .jpg, .pdf" />
+                            </div>
+                        </div>
+
                     </div>
 
-                    <div class="col-sm-6">
-                        <label>{{ 'suppRegistration.bankAccount.accountHolderCity' | translate }}</label>
-                        <input [id]="accountHolderCity" type="text" [name]="accountHolderCity" class="form-control"
-                            [(ngModel)]="currentBankAccountDTO.accountHolderCity" maxlength="255" required  (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <hr class="registrationHr">
+                        </div>
                     </div>
 
-                    <div class="col-sm-6">
-                        <label>{{ 'suppRegistration.bankAccount.accountHolderCountry' | translate }}</label>
-                        <input [id]="accountHolderCountry" type="text" [name]="accountHolderCountry" class="form-control"
-                            [(ngModel)]="currentBankAccountDTO.accountHolderCountry" maxlength="255" required  (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
-                    </div>
+                    <br /> <br />
 
-                    <p> <b>{{ 'suppRegistration.bankAccount.bankDetails' | translate }}</b></p>
-
-                    <input type="checkbox">  {{ 'suppRegistration.bankAccount.confirmSameAddres' | translate }}     
-                    
-                    <div class="col-sm-12">
-                        <label>{{ 'suppRegistration.bankAccount.bankName' | translate }}</label>
-                        <input [id]="bankName" type="text" [name]="bankName" class="form-control"
-                            [(ngModel)]="currentBankAccountDTO.bankName" maxlength="255" required  (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
-                    </div>
-
-                    <div class="col-sm-9">
-                        <label>{{ 'suppRegistration.bankAccount.bankStreet' | translate }}</label>
-                        <input [id]="bankStreet" type="text" [name]="bankStreet" class="form-control ui-sm-9"
-                        [(ngModel)]="currentBankAccountDTO.bankStreet" maxlength="255" required  (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
-                    </div>
-
-                    <div class="col-sm-3">
-                        <label>{{ 'suppRegistration.bankAccount.bankNumber' | translate }}</label>
-                        <input [id]="bankNumber" type="text" [name]="bankNumber" class="form-control ui-sm-3"
-                            [(ngModel)]="currentBankAccountDTO.bankNumber" maxlength="255" required  (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
-                    </div>
-
-                    <div class="col-sm-6">
-                        <label>{{ 'suppRegistration.bankAccount.bankCity' | translate }}</label>
-                        <input [id]="bankCity" type="text" [name]="bankCity" class="form-control"
-                            [(ngModel)]="currentBankAccountDTO.bankCity" maxlength="255" required  (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
-                    </div>
-
-                    <div class="col-sm-6">
-                        <label>{{ 'suppRegistration.bankAccount.bankCountry' | translate }}</label>
-                        <input [id]="bankCountry" type="text" [name]="bankCountry" class="form-control"
-                            [(ngModel)]="currentBankAccountDTO.bankCountry" maxlength="255" required  (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
-                    </div>
-
-                    <br/><br/>
-
-                    <p> <b>{{ 'suppRegistration.bankAccount.documents.header' | translate }}</b> </p>
-
-                    <p>{{ 'suppRegistration.bankAccount.documents.line1' | translate }}</p>
-                    <p> - {{ 'suppRegistration.bankAccount.documents.line2' | translate }}</p>
-                    <p> - {{ 'suppRegistration.bankAccount.documents.line3' | translate }}</p>
-                    <p> - {{ 'suppRegistration.bankAccount.documents.line4' | translate }}</p>
-   
-                <br/><br/>
-
-                <div class="col-sm-4">
-                    <div class="fileUpload btn btn-primary">
-                        <span>{{'shared.uploadDocuments' | translate }}</span>
-                        <input #document2 id="document2" name="document2" (change)="uploadFile($event)" type="file"
-                            class="upload" accept=".png, .jpg, .pdf" />
-                    </div>
-                </div>
-
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-12"> <hr class="registrationHr">  </div>
-                </div>
-
-                <br/> <br/>
-
-                <div class="row center">
-                    <div class="col-sm-6">
-                        <button type="button" class="btn btn-primary cancel-button" (click)="closeModalCancel()">
-                            {{ 'shared.cancel.button' | translate }}
-                        </button>
-                    </div>
-                    <div class="col-sm-6">
-                        <button type="submit" class="btn btn-primary publish-button" (click)="closeModalOK()" [disabled]="!confirmEnabled">
-                            {{ 'shared.confirm.button' | translate }}
-                            <i *ngIf="processingRequest" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
-                        </button>
+                    <div class="row center">
+                        <div class="col-sm-6">
+                            <button type="button" class="btn btn-primary cancel-button" (click)="closeModalCancel()">
+                                {{ 'shared.cancel.button' | translate }}
+                            </button>
+                        </div>
+                        <div class="col-sm-6">
+                            <button type="submit" class="btn btn-primary publish-button" (click)="closeModalOK()"
+                                [disabled]="!confirmEnabled">
+                                {{ 'shared.confirm.button' | translate }}
+                                <i *ngIf="processingRequest" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </form>
+        </form>
     </p-dialog>
 
 </div>
+
+<p-dialog [(visible)]="cannotDeleteIbanPopUp" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
+    [closable]="false">
+    <div class="center modal-body mb-2">
+        <p>{{'suppRegistration.bankAccount.removeIban.error'|translate}}</p>
+    </div>
+    <div class="col-sm-12 center">
+        <button type="submit" (click)="closeModalCancel()" class="btn btn-primary publish-button">
+            {{ 'shared.confirm' | translate }}
+        </button>
+    </div>
+
+</p-dialog>

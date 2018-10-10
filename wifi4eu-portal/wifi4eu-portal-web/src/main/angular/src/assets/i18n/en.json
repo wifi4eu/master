@@ -1037,10 +1037,12 @@
   "supplier.myInstallation.title": "Request for installation by Municipalities",
   "supplier.myInstallation.subTitle": "As a Wi-Fi installation company, you can enconde your bank account(s) at any time. Once you're selected by the municipality then you can select a bank account and afterwards complete the installation report.",
   "supplier.myInstallation.dateReceived": "Date received",
-  "supplier.bankAccount": "Bank Account",
+  "suppRegistration.bankAccount.bankAccount": "Bank Account",
   "supplier.myInstallation.installationReportBtn": "Installation report",
   "supplier.myInstallation.selectBank": "Select bank account",
   "supplier.myInstallation.selectBankSubtitle": "Please select one of the following bank accounts:",
   "supplier.myInstallation.selectBankConfirmation": "Are you sure you want to use this bank account for payment?",
-  "supplier.myInstallation.selectBankSuccess": "Bank account successfuly attributed for the selected munipality."
+  "supplier.myInstallation.selectBankSuccess": "Bank account successfuly attributed for the selected munipality.",
+  "suppRegistration.bankAccount.removeIban.error": "You may not delete this bank account, as it is already attributed to a beneficiary. If you wish to delete it, you must first de-select this bank account from the beneficiary.",
+  "suppRegistration.bankAccount.removeIban.sucess" : "Bank account removed."
 }

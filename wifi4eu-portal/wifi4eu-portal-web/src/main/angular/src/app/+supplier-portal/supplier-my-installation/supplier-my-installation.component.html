@@ -20,7 +20,7 @@
                     <span *ngIf="row.selectSupplierDate">{{ row.selectSupplierDate | date:'dd/MM/yyyy HH:mm' }}</span>
                 </ng-template>
             </p-column>
-            <p-column header="{{'supplier.bankAccount' | translate}}">
+            <p-column header="{{'suppRegistration.bankAccount.bankAccount' | translate}}">
                 <ng-template let-row="rowData" pTemplate="body">
                     <button class="btn btn-primary" [disabled]='!bankAccounts || bankAccounts.length == 0' (click)="selectBankAccount(row, row.bankAccountId)">
                         {{'supplier.myInstallation.selectBank' | translate}}</button>
@@ -43,7 +43,7 @@
 </div>
 
 <p-dialog [(visible)]="displaySelectBankAccount" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
-    [closable]="true">
+    [closable]="false">
     <h1 class="beneficiaryMayorModal">{{'supplier.myInstallation.selectBank' | translate}}</h1>
     <p class="ModalpConfirmation">{{'supplier.myInstallation.selectBankSubtitle' | translate}}</p>
     <form #selectBankForm="ngForm" (submit)="confirmAttribute=true; displaySelectBankAccount=false;">
@@ -51,7 +51,7 @@
             <div *ngFor="let iban of bankAccounts">
                 <label for="bankAccount_{{iban.id}}">
                     <input id="bankAccount_{{iban.id}}" [value]="iban.id" type="radio" name="bankAccounts" [(ngModel)]="selectedBankAccount" />
-                    {{'supplier.bankAccount' | translate}} - {{iban.iban}}
+                    {{'suppRegistration.bankAccount.bankAccount' | translate}} - {{iban.iban}}
                 </label>
             </div>
         </div>
@@ -71,7 +71,7 @@
 </p-dialog>
 
 <p-dialog [(visible)]="confirmAttribute" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
-    [closable]="true">
+    [closable]="false">
     <div class="offset-lg-2 modal-body mb-2">
         <p>{{'supplier.myInstallation.selectBankConfirmation'|translate}}</p>
     </div>

@@ -16,31 +16,33 @@ import { Observable } from "rxjs/Observable";
 
 export class BankAccountComponent {
 
-    private currentBankAccountDTO : BankAccountDTOBase = new BankAccountDTOBase();
-    private bankAccountDTOList : BankAccountDTOBase[] = [];
-    private supplier : SupplierDTOBase;
-    private user : UserDTOBase;
+    private currentBankAccountDTO: BankAccountDTOBase = new BankAccountDTOBase();
+    private bankAccountDTOList: BankAccountDTOBase[] = [];
+    private supplier: SupplierDTOBase;
+    private user: UserDTOBase;
 
     private addOrEditBankAccount: boolean = false;
     private confirmEnabled: boolean = false;
     private index: number;
 
-    private bankAccountDocumentDTOToUpdate :BankAccountDocumentDTOBase = null;
+    private bankAccountDocumentDTOToUpdate: BankAccountDocumentDTOBase = null;
 
     private reader: FileReader = new FileReader();
 
-    private show : boolean[] = [];
+    private show: boolean[] = [];
 
     private fileURL: string = '/wifi4eu/api/bankAccount/getDocument/';
+
+    private cannotDeleteIbanPopUp: boolean = false;
 
     constructor(private bankAccountApi: BankAccountApi, private supplierApi: SupplierApi, private sharedService: SharedService) {
         if (this.sharedService.user) {
             this.user = this.sharedService.user;
-            this.fillSuplierAndBankAccounts(); 
+            this.fillSuplierAndBankAccounts();
         } else {
             this.sharedService.loginEmitter.map(() => {
                 this.user = this.sharedService.user;
-                this.fillSuplierAndBankAccounts(); 
+                this.fillSuplierAndBankAccounts();
             });
         }
     }
@@ -53,106 +55,121 @@ export class BankAccountComponent {
 
                     this.bankAccountApi.getBankAccountsBySupplierId(this.supplier.id).subscribe(
                         (responseDTO: ResponseDTOBase) => {
-                            if (responseDTO.success){
-                                this.bankAccountDTOList = responseDTO.data;   
+                            if (responseDTO.success) {
+                                this.bankAccountDTOList = responseDTO.data;
 
-                                for(let i = 0;i< this.bankAccountDTOList.length; i++){
+                                for (let i = 0; i < this.bankAccountDTOList.length; i++) {
                                     this.show.push(true);
                                 }
-                                
+
                                 this.bankAccountApi.getBankAccountDocsBySupplierId(this.supplier.id).subscribe(
                                     (responseDTO: ResponseDTOBase) => {
-                                        if (responseDTO.success){
-                                            let bankAccountDocumentDTOList : BankAccountDocumentDTOBase[] = responseDTO.data;
+                                        if (responseDTO.success) {
+                                            let bankAccountDocumentDTOList: BankAccountDocumentDTOBase[] = responseDTO.data;
 
-                                             let bankAccountIndex : number = 0;
-                                             
-                                             for (let i = 0; i < bankAccountDocumentDTOList.length; i++) {
-                                                let bankAccountDocumentDTO : BankAccountDocumentDTOBase = bankAccountDocumentDTOList[i];
+                                            let bankAccountIndex: number = 0;
+
+                                            for (let i = 0; i < bankAccountDocumentDTOList.length; i++) {
+                                                let bankAccountDocumentDTO: BankAccountDocumentDTOBase = bankAccountDocumentDTOList[i];
 
                                                 while (bankAccountDocumentDTO.bankAccountId != this.bankAccountDTOList[bankAccountIndex].id) {
                                                     bankAccountIndex++;
                                                 }
 
                                                 this.bankAccountDTOList[bankAccountIndex].bankAccountDocumentDTOList.push(bankAccountDocumentDTO);
-                                             }
+                                            }
                                         }
                                     }
                                 );
                             }
                         }
                     );
-                }                    
+                }
             }
         );
     }
 
     private enableButtonConfirm() {
-        this.confirmEnabled = !(this.isEmpty(this.currentBankAccountDTO.accountName) || this.isEmpty(this.currentBankAccountDTO.iban) 
-            || this.isEmpty(this.currentBankAccountDTO.accountHolderStreet) || this.isEmpty(this.currentBankAccountDTO.accountHolderNumber) 
-            || this.isEmpty(this.currentBankAccountDTO.accountHolderCity) || this.isEmpty(this.currentBankAccountDTO.accountHolderCountry)  
-            || this.isEmpty(this.currentBankAccountDTO.bankName) 
-            || this.isEmpty(this.currentBankAccountDTO.bankStreet) || this.isEmpty(this.currentBankAccountDTO.bankNumber) 
-            || this.isEmpty(this.currentBankAccountDTO.bankCity) || this.isEmpty(this.currentBankAccountDTO.bankCountry)); 
+        this.confirmEnabled = !(this.isEmpty(this.currentBankAccountDTO.accountName) || this.isEmpty(this.currentBankAccountDTO.iban)
+            || this.isEmpty(this.currentBankAccountDTO.accountHolderStreet) || this.isEmpty(this.currentBankAccountDTO.accountHolderNumber)
+            || this.isEmpty(this.currentBankAccountDTO.accountHolderCity) || this.isEmpty(this.currentBankAccountDTO.accountHolderCountry)
+            || this.isEmpty(this.currentBankAccountDTO.bankName)
+            || this.isEmpty(this.currentBankAccountDTO.bankStreet) || this.isEmpty(this.currentBankAccountDTO.bankNumber)
+            || this.isEmpty(this.currentBankAccountDTO.bankCity) || this.isEmpty(this.currentBankAccountDTO.bankCountry));
     }
 
-    private addBankAccount(){
+    private addBankAccount() {
         this.currentBankAccountDTO = new BankAccountDTOBase();
         this.currentBankAccountDTO.supplierId = this.supplier.id;
         this.currentBankAccountDTO.status = 2;
         this.activateAddOrEditBankAccountModal();
     }
-    
-    private editBankAccount(index: number){
+
+    private editBankAccount(index: number) {
         this.index = index;
-        this.currentBankAccountDTO = this.cloneBankAccount(this.bankAccountDTOList[index]); ;
+        this.currentBankAccountDTO = this.cloneBankAccount(this.bankAccountDTOList[index]);;
         this.activateAddOrEditBankAccountModal();
     }
 
-    private deleteBankAccount(index: number){
-        this.currentBankAccountDTO =this.bankAccountDTOList[index]; ;
+    private deleteBankAccount(index: number) {
+        this.bankAccountDTOList[index];
+        this.bankAccountApi.deleteIban(this.bankAccountDTOList[index].id).subscribe((response: ResponseDTOBase) => {
+            if (response.success) {
+                //removing this bank account from the array
+                this.bankAccountDTOList.splice(index, 1);
+                this.sharedService.growlTranslation('Bank account removed.', 'suppRegistration.bankAccount.removeIban.sucess', 'success');
+            } else if (response.error && response.error.errorCode == 20) {
+                this.cannotDeleteIbanPopUp = true;
+            } else {
+                this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later.', 'shared.error.api.generic', 'error');
+            }
+        }, error => {
+            console.log(error);
+            this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later.', 'shared.error.api.generic', 'error');
+        });
     }
-    
-    private activateAddOrEditBankAccountModal(){
+
+    private activateAddOrEditBankAccountModal() {
         this.addOrEditBankAccount = true;
         this.bankAccountDocumentDTOToUpdate = null;
         this.enableButtonConfirm();
     }
 
-    private closeModalCancel(){
+    private closeModalCancel() {
         this.addOrEditBankAccount = false;
+        this.cannotDeleteIbanPopUp = false;
     }
 
-    private closeModalOK(){
+    private closeModalOK() {
         this.addOrEditBankAccount = false;
 
         this.bankAccountApi.saveBankAccount(this.currentBankAccountDTO).subscribe(
             (responseDTO: ResponseDTOBase) => {
-                if (responseDTO.success){
-                    if (this.currentBankAccountDTO.id){ //EDIT
+                if (responseDTO.success) {
+                    if (this.currentBankAccountDTO.id) { //EDIT
                         responseDTO.data.bankAccountDocumentDTOList = this.bankAccountDTOList[this.index].bankAccountDocumentDTOList;
                         this.bankAccountDTOList[this.index] = responseDTO.data;
 
-                    }else{ //CREATE
-                        this.bankAccountDTOList.push(responseDTO.data); 
+                    } else { //CREATE
+                        this.bankAccountDTOList.push(responseDTO.data);
                         this.show.push(true);
                     }
-                    
-                    if (this.bankAccountDocumentDTOToUpdate){
 
-                        let bankAccountDTO : BankAccountDTOBase = responseDTO.data;
-                        this.bankAccountDocumentDTOToUpdate.bankAccountId = bankAccountDTO.id; 
+                    if (this.bankAccountDocumentDTOToUpdate) {
+
+                        let bankAccountDTO: BankAccountDTOBase = responseDTO.data;
+                        this.bankAccountDocumentDTOToUpdate.bankAccountId = bankAccountDTO.id;
 
                         this.bankAccountApi.saveBankAccountDocument(this.bankAccountDocumentDTOToUpdate).subscribe(
                             (responseDTO: ResponseDTOBase) => {
-                                if (responseDTO.success){
+                                if (responseDTO.success) {
                                     bankAccountDTO.bankAccountDocumentDTOList.push(responseDTO.data);
                                 }
                             }
                         );
                     }
 
-                }else{
+                } else {
                     this.sharedService.growlTranslation('An error occurred and your Bank Account could not be saved.', 'shared.suppRegistration.bankAccount.save.error', 'error');
                 }
             }, error => {
@@ -161,11 +178,11 @@ export class BankAccountComponent {
         );;
     }
 
-    private isEmpty(string: String) : boolean{
+    private isEmpty(string: String): boolean {
         return string == null || string.trim() == "";
     }
 
-    private cloneBankAccount(bankAccountDTO: BankAccountDTOBase): BankAccountDTOBase{
+    private cloneBankAccount(bankAccountDTO: BankAccountDTOBase): BankAccountDTOBase {
         return JSON.parse(JSON.stringify(bankAccountDTO));
     }
 
@@ -186,9 +203,9 @@ export class BankAccountComponent {
                                 let file = new BankAccountDocumentDTOBase();
                                 file.fileData = this.reader.result;
 
-                                let nameWithExtension : String = event.target.files[0].name;
+                                let nameWithExtension: String = event.target.files[0].name;
 
-                                file.fileName = nameWithExtension.substring(0,nameWithExtension.lastIndexOf('.'));
+                                file.fileName = nameWithExtension.substring(0, nameWithExtension.lastIndexOf('.'));
                                 file.fileSize = event.target.files[0].size;
                                 file.supplierId = this.supplier.id;
                                 this.bankAccountDocumentDTOToUpdate = file;
@@ -245,12 +262,12 @@ export class BankAccountComponent {
         });
     }
 
-    private changeShow(index: number){
-        this.show[index]  = !this.show[index];
+    private changeShow(index: number) {
+        this.show[index] = !this.show[index];
     }
 
 
-    private checkShow(index: number) : boolean{
+    private checkShow(index: number): boolean {
         return this.show[index];
     }
 }
