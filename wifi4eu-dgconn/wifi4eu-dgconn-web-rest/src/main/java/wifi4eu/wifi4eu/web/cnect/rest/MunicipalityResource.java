@@ -11,22 +11,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import wifi4eu.wifi4eu.common.dto.model.LogEmailDTO;
 import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
-import wifi4eu.wifi4eu.common.dto.model.ThreadDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserThreadsDTO;
-import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
@@ -35,12 +29,9 @@ import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
-import wifi4eu.wifi4eu.service.thread.ThreadService;
-import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserService;
-import wifi4eu.wifi4eu.web.util.authorisation.DashboardUsersOnly;
+import wifi4eu.wifi4eu.web.authorisation.DashboardUsersOnly;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
@@ -50,6 +41,9 @@ import java.util.List;
 @Api(value = "/municipality", description = "Municipality object REST API services")
 @RequestMapping("municipality")
 public class MunicipalityResource {
+
+    private static final Logger _log = LoggerFactory.getLogger(MunicipalityResource.class);
+
     @Autowired
     private MunicipalityService municipalityService;
 
@@ -63,15 +57,7 @@ public class MunicipalityResource {
     private RegistrationService registrationService;
 
     @Autowired
-    private UserThreadsService userThreadsService;
-
-    @Autowired
-    private ThreadService threadService;
-
-    @Autowired
     private RegistrationUsersRepository registrationUsersRepository;
-
-    private static final Logger _log = LoggerFactory.getLogger(MunicipalityResource.class);
 
     @ApiOperation(value = "Get municipality by specific id")
     @RequestMapping(value = "/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
@@ -93,75 +79,6 @@ public class MunicipalityResource {
             return null;
         }
         return municipalityService.getMunicipalityById(municipalityId);
-    }
-
-    @ApiOperation(value = "Get municipality by specific id")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType =
-                    "string", paramType = "header")
-    })
-    @RequestMapping(value = "/usersMunicipality/{municipalityId}", method = RequestMethod.GET, produces =
-            "application/json")
-    @ResponseBody
-    public ResponseDTO getUsersMunicipalityById(@PathVariable("municipalityId") final Integer municipalityId) {
-        return municipalityService.getUsersMunicipalityById(municipalityId);
-    }
-
-    @ApiOperation(value = "Get municipality by specific id for thread")
-    @RequestMapping(value = "/thread/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public MunicipalityDTO getMunicipalityThreadById(@PathVariable("municipalityId") final Integer municipalityId) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving municipality by id " + municipalityId + " for thread");
-        MunicipalityDTO municipality = municipalityService.getMunicipalityById(municipalityId);
-        if (userConnected.getType() == 5) {
-            municipality.setRegistrations(null);
-            return municipality;
-        } else {
-            List<UserThreadsDTO> userThreadsDTOList = userThreadsService.getUserThreadsByUserId(userConnected.getId());
-            for (UserThreadsDTO userThread : userThreadsDTOList) {
-                ThreadDTO threadDTO = threadService.getThreadById(userThread.getThreadId());
-                if (threadDTO.getTitle().equals(municipality.getName())) {
-                    if (userThread.getUserId() == userConnected.getId()) {
-                        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving municipality by id " + municipalityId + " for thread id " + threadDTO.getId());                        municipality.setRegistrations(null);
-                        return municipality;
-                    } else {
-                        permissionChecker.check(userConnected, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
-                    }
-                }
-            }
-            permissionChecker.check(userConnected, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
-            return null;
-        }
-    }
-
-    @ApiOperation(value = "Update municipality details")
-    @RequestMapping(method = RequestMethod.PUT)
-    @ResponseBody
-    public ResponseDTO updateMunicipalityDetails(@RequestBody final MunicipalityDTO municipalityDTO,
-                                                 HttpServletResponse response) throws IOException {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating municipality details");
-        try {
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            Integer registrationId = registrationService.getRegistrationIdByMunicipalityId(municipalityDTO.getId());
-            if (registrationUsersRepository.findByUserIdAndRegistrationId(userDTO.getId(), registrationId) == null) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-            permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityDTO.getId());
-            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Municipality details updated successfully");
-            return new ResponseDTO(true, municipalityService.updateMunicipalityDetails(municipalityDTO), null);
-        } catch (AccessDeniedException ade) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to update the details of this municipality", ade.getMessage());
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
-        } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The details of this municipality cannot been updated", e);
-            response.sendError(HttpStatus.BAD_REQUEST.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
-        }
     }
 
     @ApiOperation(value = "Get municipalities by specific lau id")
@@ -220,7 +137,7 @@ public class MunicipalityResource {
     @ApiOperation(value = "Create correspondence")
     @RequestMapping(method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public LogEmailDTO createApplicationComment() throws IOException {
+    public LogEmailDTO createApplicationComment() {
         return null;
     }
 }

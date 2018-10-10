@@ -15,10 +15,10 @@ import java.util.Iterator;
 public class ReportingUtils {
 
     @Autowired
-    ReportTypesInstallation reportTypesInstallation;
+    private ReportTypesInstallation reportTypesInstallation;
 
     @Autowired
-    ReportCallOpen reportCallOpen;
+    private ReportCallOpen reportCallOpen;
 
     public void generateTypesInstallationReport(HSSFWorkbook workbook) {
         reportTypesInstallation.generate(workbook);

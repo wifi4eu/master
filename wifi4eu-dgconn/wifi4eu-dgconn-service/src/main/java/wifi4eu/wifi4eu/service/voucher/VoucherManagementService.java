@@ -12,10 +12,10 @@ import java.util.List;
 public class VoucherManagementService {
 
     @Autowired
-    VoucherManagementRepository voucherManagementRepository;
+    private VoucherManagementRepository voucherManagementRepository;
 
     @Autowired
-    VoucherManagementMapper voucherManagementMapper;
+    private VoucherManagementMapper voucherManagementMapper;
 
 
     public List<VoucherManagementDTO> getVoucherManagementByCall(int callId) {

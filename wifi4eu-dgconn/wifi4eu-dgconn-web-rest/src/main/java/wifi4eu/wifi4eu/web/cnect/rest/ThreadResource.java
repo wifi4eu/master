@@ -15,11 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import wifi4eu.wifi4eu.common.dto.model.ThreadDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
-import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserService;
@@ -32,6 +30,7 @@ import java.io.IOException;
 @Api(value = "/thread", description = "Thread object REST API services")
 @RequestMapping("thread")
 public class ThreadResource {
+
     @Autowired
     private ThreadService threadService;
 
@@ -41,31 +40,15 @@ public class ThreadResource {
     @Autowired
     private UserThreadsService userThreadsService;
 
-    @Autowired
-    private PermissionChecker permissionChecker;
-
     private static final Logger _log = LoggerFactory.getLogger(ThreadResource.class);
 
+    // TODO: remove. Swagger uses this endpoint to generate ThreadDTO which is used elsewhere. This method is never called so far.
     @ApiOperation(value = "Get thread by specific id")
     @RequestMapping(value = "/{threadId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ThreadDTO getThreadById(@PathVariable("threadId") final Integer threadId, HttpServletResponse response) throws IOException {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting thread by id " + threadId);
-        try {
-            UserDTO userDTO = userConnected;
-            if (userThreadsService.getByUserIdAndThreadId(userDTO.getId(), threadId) == null) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-        } catch (AccessDeniedException ade) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this thread", ade.getMessage());
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            return null;
-        }
-        return threadService.getThreadById(threadId);
+        throw new IllegalAccessError("Not implemented");
     }
-
 
     @ApiOperation(value = "Get thread by specific type")
     @RequestMapping(value = "/type/{type}/reason/{reason}", method = RequestMethod.GET, produces = "application/json")
@@ -75,11 +58,10 @@ public class ThreadResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting thread by type " + type + " and reason " + reason);
         try {
-            UserDTO user = userConnected;
             ThreadDTO thread = threadService.getThreadByTypeAndReason(type, reason);
             if (thread != null) {
-                if (user.getType() != 5) {
-                    if (userThreadsService.getByUserIdAndThreadId(user.getId(), thread.getId()) == null) {
+                if (userConnected.getType() != 5) {
+                    if (userThreadsService.getByUserIdAndThreadId(userConnected.getId(), thread.getId()) == null) {
                         throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
                     }
                 }
@@ -96,28 +78,4 @@ public class ThreadResource {
         }
     }
 
-    @ApiOperation(value = "Set mediation to thread")
-    @RequestMapping(value = "{threadId}/setMediation", method = RequestMethod.POST, produces = "application/json")
-    @ResponseBody
-    public ResponseDTO askMediationThread(@PathVariable("threadId") final Integer threadId, HttpServletResponse response) throws IOException {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Setting mediation to thread with id " + threadId);
-        try {
-            UserDTO user = userConnected;
-            if (userThreadsService.getByUserIdAndThreadId(user.getId(), threadId) == null && !permissionChecker.checkIfDashboardUser()) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-            ThreadDTO resThread = threadService.setMediationToThread(threadId);
-            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Mediation set to thread successfully");
-            return new ResponseDTO(true, resThread, null);
-        } catch (AccessDeniedException ade) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to set mediation to threads", ade.getMessage());
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            return null;
-        } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This thread cannot been set with mediation", e);
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
-        }
-    }
 }

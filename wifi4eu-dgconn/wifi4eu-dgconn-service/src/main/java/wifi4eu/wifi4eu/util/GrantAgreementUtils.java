@@ -16,10 +16,10 @@ import wifi4eu.wifi4eu.service.user.UserService;
 public class GrantAgreementUtils {
 
     @Autowired
-    MailService mailService;
+    private MailService mailService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     public boolean sendEmailSignPdfNotified(int userId, String email, Long days){
         if (email != null && email.trim().length() > 0 && days != null) {

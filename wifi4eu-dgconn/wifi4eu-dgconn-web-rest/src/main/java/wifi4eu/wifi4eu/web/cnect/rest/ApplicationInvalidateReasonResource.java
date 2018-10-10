@@ -24,7 +24,7 @@ import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.service.application.ApplicationInvalidateReasonService;
 import wifi4eu.wifi4eu.service.user.UserService;
-import wifi4eu.wifi4eu.web.util.authorisation.DashboardUsersOnly;
+import wifi4eu.wifi4eu.web.authorisation.DashboardUsersOnly;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -1,7 +1,7 @@
 package wifi4eu.wifi4eu.service.access_point;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,12 +22,12 @@ import java.util.List;
 public class AccessPointRepositoryImpl implements AccessPointRepositoryCustom {
 
     @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
-    Logger _log = LogManager.getLogger(AccessPointRepositoryImpl.class);
+    private static final Logger _log = LoggerFactory.getLogger(AccessPointRepositoryImpl.class);
 
     @Override
     public List<AccessPoint> searchAccessPointByInstallationSite(int page, int delta, int id_installationSite, String fieldName, String orderField) {

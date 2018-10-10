@@ -1,15 +1,8 @@
 package wifi4eu.wifi4eu.service.voucher;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.google.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.task.TaskExecutor;
@@ -18,48 +11,27 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.google.common.collect.Lists;
-
-import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
-import wifi4eu.wifi4eu.common.dto.model.CallDTO;
-import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationWarningDTO;
-import wifi4eu.wifi4eu.common.dto.model.SimpleLauDTO;
-import wifi4eu.wifi4eu.common.dto.model.SimpleMunicipalityDTO;
-import wifi4eu.wifi4eu.common.dto.model.SimpleRegistrationDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
-import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentAuxiliarDTO;
-import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentDTO;
-import wifi4eu.wifi4eu.common.dto.model.VoucherManagementDTO;
-import wifi4eu.wifi4eu.common.dto.model.VoucherSimulationDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.enums.SelectionStatus;
 import wifi4eu.wifi4eu.common.enums.VoucherAssignmentStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.helper.Validator;
-import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.entity.admin.AdminActions;
-import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
-import wifi4eu.wifi4eu.entity.voucher.VoucherAssignmentAuxiliar;
-import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
-import wifi4eu.wifi4eu.common.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.common.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.common.mapper.voucher.VoucherAssignmentAuxiliarMapper;
 import wifi4eu.wifi4eu.common.mapper.voucher.VoucherAssignmentMapper;
 import wifi4eu.wifi4eu.common.mapper.voucher.VoucherSimulationMapper;
+import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.admin.AdminActions;
+import wifi4eu.wifi4eu.entity.voucher.VoucherAssignmentAuxiliar;
+import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
 import wifi4eu.wifi4eu.repository.admin.AdminActionsRepository;
-import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentAuxiliarRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherSimulationRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.call.CallService;
-import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
-import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.INEAPermissionChecker;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
@@ -70,79 +42,62 @@ import wifi4eu.wifi4eu.util.SimulateVoucherAsync;
 import wifi4eu.wifi4eu.util.VoucherSimulationExportGenerator;
 
 import javax.annotation.PostConstruct;
-import java.text.MessageFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service("portalVoucherService")
 public class VoucherService {
 
-    private Logger _log = LogManager.getLogger(this.getClass());
+    private static final Logger _log = LoggerFactory.getLogger(VoucherService.class);
 
     @Autowired
-    VoucherAssignmentMapper voucherAssignmentMapper;
+    private VoucherAssignmentMapper voucherAssignmentMapper;
 
     @Autowired
-    VoucherAssignmentAuxiliarMapper voucherAssignmentAuxiliarMapper;
+    private VoucherAssignmentAuxiliarMapper voucherAssignmentAuxiliarMapper;
 
     @Autowired
-    VoucherSimulationMapper voucherSimulationMapper;
+    private VoucherSimulationMapper voucherSimulationMapper;
 
     @Autowired
-    CallService callService;
+    private CallService callService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    PermissionChecker permissionChecker;
+    private PermissionChecker permissionChecker;
 
     @Autowired
-    VoucherManagementService voucherManagementService;
+    private RegistrationWarningService registrationWarningService;
 
     @Autowired
-    RegistrationWarningService registrationWarningService;
+    private ApplicationService applicationService;
 
     @Autowired
-    ApplicationService applicationService;
+    private VoucherSimulationRepository voucherSimulationRepository;
 
     @Autowired
-    VoucherSimulationRepository voucherSimulationRepository;
+    private VoucherAssignmentRepository voucherAssignmentRepository;
 
     @Autowired
-    VoucherAssignmentRepository voucherAssignmentRepository;
+    private VoucherAssignmentAuxiliarRepository voucherAssignmentAuxiliarRepository;
 
     @Autowired
-    VoucherAssignmentAuxiliarRepository voucherAssignmentAuxiliarRepository;
+    private SimpleMunicipalityService simpleMunicipalityService;
 
     @Autowired
-    ApplicationMapper applicationMapper;
+    private ApplicationContext context;
 
     @Autowired
-    private SimpleRegistrationService simpleRegistrationService;
+    private TaskExecutor taskExecutor;
 
     @Autowired
-    RegistrationService registrationService;
-
-    @Autowired
-    SimpleMunicipalityService simpleMunicipalityService;
-
-    @Autowired
-    SimpleLauService simpleLauService;
-
-    @Autowired
-    MunicipalityService municipalityService;
-
-    @Autowired
-    ApplicationRepository applicationRepository;
-
-    @Autowired
-    ApplicationContext context;
-
-    @Autowired
-    TaskExecutor taskExecutor;
-
-    @Autowired
-    AdminActionsRepository adminActionsRepository;
+    private AdminActionsRepository adminActionsRepository;
 
     @Autowired
     private UserMapper userMapper;
@@ -474,8 +429,6 @@ public class VoucherService {
         _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Launched notification for applicants, starting thread...");
         taskExecutor.execute(context.getBean(SendNotificationsAsync.class, callId, userConnected));
         return new ResponseDTO(true, null, null);
-
-
     }
 
 }

@@ -18,19 +18,17 @@ import java.util.List;
 @Service
 public class GrantAgreementService {
 
-    Logger _log = LogManager.getLogger(GrantAgreementService.class);
+    @Autowired
+    private AzureBlobConnector azureBlobConnector;
 
     @Autowired
-    AzureBlobConnector azureBlobConnector;
+    private GrantAgreementRepository agreementRepository;
 
     @Autowired
-    GrantAgreementRepository agreementRepository;
+    private GrantAgreementMapper grantAgreementMapper;
 
     @Autowired
-    GrantAgreementMapper grantAgreementMapper;
-
-    @Autowired
-    ApplicationService applicationService;
+    private ApplicationService applicationService;
 
     public GrantAgreementDTO getGrantAgreementByApplicationId(Integer applicationId) {
         //TODO fix as the db allows more than on grant agreement
@@ -46,7 +44,7 @@ public class GrantAgreementService {
         return getGrantAgreementByApplicationId(applicationDTO.getId());
     }
 
-    public byte[] downloadGrantAgreementSigned(Integer applicationId, GrantAgreementDTO grantAgreementDTO) {
+    public byte[] downloadGrantAgreementSigned(GrantAgreementDTO grantAgreementDTO) {
         byte[] fileBytes = null;
         try {
             if(Validator.isNotNull(grantAgreementDTO)){

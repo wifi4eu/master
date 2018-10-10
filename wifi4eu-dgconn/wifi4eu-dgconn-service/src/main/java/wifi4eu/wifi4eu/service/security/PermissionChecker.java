@@ -3,50 +3,46 @@ package wifi4eu.wifi4eu.service.security;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import org.apache.http.HttpStatus;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
-import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
-import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.dto.security.RightDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.mapper.security.RightMapper;
+import wifi4eu.wifi4eu.common.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.Right;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.entity.user.User;
-import wifi4eu.wifi4eu.common.mapper.security.RightMapper;
-import wifi4eu.wifi4eu.common.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.security.RightRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.user.UserService;
 
-import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @Service
 public class PermissionChecker {
 
-    private final Logger _log = LogManager.getLogger(PermissionChecker.class);
+    private static final Logger _log = LoggerFactory.getLogger(PermissionChecker.class);
 
     @Autowired
-    UserMapper userMapper;
+    private UserMapper userMapper;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    RightMapper rightMapper;
+    private RightMapper rightMapper;
 
     @Autowired
-    RightRepository rightRepository;
+    private RightRepository rightRepository;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     public boolean check(String rightDesc){
         UserContext userContext = UserHolder.getUser();
@@ -86,27 +82,4 @@ public class PermissionChecker {
         return (currentUserDTO.getType() == 5);
     }
 
-    /**
-     * Forbids petitions that are not from a logged user. It verifies that this user is a beneficiary.
-     * This means that in localhost making petitions using postman or any other rest client is not going to work if mr
-     * tester is not type 3. Please change it on your local database.
-     *
-     * @throws AccessDeniedException
-     */
-    public UserDTO checkBeneficiaryPermission() throws AccessDeniedException {
-        UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-        if (userDTO.getType() != Constant.ROLE_REPRESENTATIVE ) {
-            throw new AccessDeniedException("403 FORBIDDEN");
-        }
-        check(RightConstants.REGISTRATIONS_TABLE + userDTO.getId());
-        check(RightConstants.MUNICIPALITIES_TABLE + userDTO.getId());
-        return userDTO;
-    }
-
-    public ResponseDTO getAccessDeniedResponse() {
-        ResponseDTO response = new ResponseDTO();
-        response.setSuccess(false);
-        response.setError(new ErrorDTO(403, "shared.error.notallowed"));
-        return response;
-    }
 }

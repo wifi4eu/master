@@ -1,13 +1,5 @@
 package wifi4eu.wifi4eu.service.exportImport;
 
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -22,7 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
 import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
 import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.entity.exportImport.AbacStatus;
@@ -33,19 +24,14 @@ import wifi4eu.wifi4eu.entity.exportImport.ExportImportLegalCommitmentInformatio
 import wifi4eu.wifi4eu.entity.exportImport.ExportImportRegistrationData;
 import wifi4eu.wifi4eu.entity.exportImport.GlobalCommitment;
 import wifi4eu.wifi4eu.entity.grantAgreement.GrantAgreement;
-import wifi4eu.wifi4eu.entity.mayor.Mayor;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.entity.registration.Registration;
-import wifi4eu.wifi4eu.entity.representation.Representation;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.exportImport.BudgetaryCommitmentRepository;
 import wifi4eu.wifi4eu.repository.exportImport.ExportImportRegistrationDataRepository;
 import wifi4eu.wifi4eu.repository.exportImport.GlobalCommitmentRepository;
 import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
-import wifi4eu.wifi4eu.repository.mayor.MayorRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
-import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
-import wifi4eu.wifi4eu.repository.representation.RepresentationRepository;
 import wifi4eu.wifi4eu.util.DateUtils;
 import wifi4eu.wifi4eu.util.ExportFileUtils;
 import wifi4eu.wifi4eu.util.ZipFileReader;
@@ -59,7 +45,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -80,7 +65,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class ExportImportAbacServiceImpl implements ExportImportAbacService {
 
-    private final Logger _log = LoggerFactory.getLogger(ExportImportAbacServiceImpl.class);
+    private static final Logger _log = LoggerFactory.getLogger(ExportImportAbacServiceImpl.class);
 
     private static final String ERROR_WRITING_DOWN_TO_THE_CSV_FILE = "Error writing down to the CSV file. The record will be skipped.";
 
@@ -94,15 +79,6 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
 
     @Autowired
     private MunicipalityRepository municipalityRepository;
-
-    @Autowired
-    private MayorRepository mayorRepository;
-
-    @Autowired
-    private RegistrationRepository registrationRepository;
-
-    @Autowired
-    private RepresentationRepository representationRepository;
 
     @Autowired
     private ExportFileUtils exportFileUtilities;
@@ -321,83 +297,6 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
         } catch (IOException e) {
             _log.error(ERROR_WRITING_DOWN_TO_THE_CSV_FILE, e);
         }
-    }
-
-    /**
-     * Meant as a temporary solution while we try to convince BUDG that this is meaningless
-     * Create a pdf containing municipality and mayor/representation data
-     *
-     * @param beneficiaryInformation
-     * @param os
-     * @return
-     */
-    private OutputStream createBeneficiaryAbacPDF(BeneficiaryInformation beneficiaryInformation, OutputStream os) {
-        Document document = new Document();
-        try {
-            int chapterNum = 0;
-            PdfWriter.getInstance(document, os);
-            document.open();
-            Font tittleFont = FontFactory.getFont(FontFactory.HELVETICA, 24, Font.BOLD);
-            Font chapterFont = FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLDITALIC);
-            Font paragraphFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL);
-
-            Chunk titleTxt = new Chunk("LEF supporting document", tittleFont);
-            Paragraph titlePar = new Paragraph(titleTxt);
-            titlePar.setAlignment(Element.ALIGN_CENTER);
-            document.add(titlePar);
-
-            document.add(new Paragraph(new Chunk("Municipality information", chapterFont)));
-
-            StringBuilder municipalityParagraphText = new StringBuilder();
-            municipalityParagraphText.append("Municipality id: ").append(beneficiaryInformation.getMun_id()).append("\n");
-            municipalityParagraphText.append("Municipality name: ").append(beneficiaryInformation.getMun_name()).append("\n");
-            municipalityParagraphText.append("Municipality ABAC name: ").append(beneficiaryInformation.getMun_abacName()).append("\n");
-            municipalityParagraphText.append("Municipality adress: ").append(beneficiaryInformation.getFullAddress()).append("\n");
-            municipalityParagraphText.append("Municipality postal code: ").append(beneficiaryInformation.getMun_postalCode()).append("\n");
-            municipalityParagraphText.append("Municipality country code: ").append(beneficiaryInformation.getMun_countryCodeISO()).append("\n");
-
-            document.add(new Paragraph(new Chunk(municipalityParagraphText.toString(), paragraphFont)));
-
-            Mayor mayor = mayorRepository.findByMunicipalityId(beneficiaryInformation.getMun_id());
-            if (mayor != null) {
-
-                document.add(new Paragraph(new Chunk("Mayor information", chapterFont)));
-
-                StringBuilder mayorParagraphText = new StringBuilder();
-                mayorParagraphText.append("Mayor id: ").append(mayor.getId()).append("\n");
-                mayorParagraphText.append("Mayor name: ").append(mayor.getName()).append("\n");
-                mayorParagraphText.append("Mayor surname: ").append(mayor.getSurname()).append("\n");
-                mayorParagraphText.append("Mayor email: ").append(mayor.getEmail()).append("\n");
-
-                document.add(new Paragraph(new Chunk(mayorParagraphText.toString(), paragraphFont)));
-            }
-
-            Iterable<Representation> representations = representationRepository.findByMunicipalityId(beneficiaryInformation.getMun_id());
-            if (representations.iterator().hasNext()) {
-
-                document.add(new Paragraph(new Chunk("Representations information", chapterFont)));
-
-                representations.forEach(representation -> {
-                    StringBuilder representationParagraphText = new StringBuilder();
-                    Mayor mayorRep = representation.getMayor();
-                    representationParagraphText.append("Mayor id: ").append(mayorRep.getId()).append("\n");
-                    representationParagraphText.append("Mayor name: ").append(mayorRep.getName()).append("\n");
-                    representationParagraphText.append("Mayor surname: ").append(mayorRep.getSurname()).append("\n");
-                    representationParagraphText.append("Mayor email: ").append(mayorRep.getEmail()).append("\n");
-
-                    try {
-                        document.add(new Paragraph(new Chunk(representationParagraphText.toString(), paragraphFont)));
-                    } catch (DocumentException e) {
-                        _log.error("unable to create representation in beneficiary pdf", e);
-                    }
-                });
-            }
-
-            document.close();
-        } catch (DocumentException e) {
-            _log.error("unable to create beneficiary pdf", e);
-        }
-        return os;
     }
 
     @Override
@@ -714,7 +613,7 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
              ))) {
 
             List<ExportImportLegalCommitmentInformation> legalCommitmentsInformations = searchLegalCommitments();
-            this._log.debug("legalCommitmentsData.size [{}]", legalCommitmentsInformations.size());
+            _log.debug("legalCommitmentsData.size [{}]", legalCommitmentsInformations.size());
 
             if (CollectionUtils.isNotEmpty(legalCommitmentsInformations)) {
                 for (ExportImportLegalCommitmentInformation legalCommitmentInformation : legalCommitmentsInformations) {
@@ -748,7 +647,7 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
         // Add the Legal Commitment CSV file
         byte[] fileBytes = outputStream.toByteArray();
 
-        this._log.debug("Exporting to file. FileName [{}]", legalCommitmentExportFileName);
+        _log.debug("Exporting to file. FileName [{}]", legalCommitmentExportFileName);
 
         ExportFile csvLegalCommitmentsFile = new ExportFile(legalCommitmentExportFileName, fileBytes);
         exportFiles.add(csvLegalCommitmentsFile);
@@ -761,7 +660,7 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
         List<BudgetaryCommitment> listBudgetaryCommitment = budgetaryCommitmentRepository.findByAbacBcKeyIsNotNullAndAbacLcKeyIsNull();
-        this._log.debug("listBudgetaryCommitment.size [{}]", listBudgetaryCommitment.size());
+        _log.debug("listBudgetaryCommitment.size [{}]", listBudgetaryCommitment.size());
         List<Application> listApplications = new ArrayList<>();
 
         // TODO Change this query logic
@@ -777,7 +676,7 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
         }
 
         int listApplicationsSize = listApplications.size();
-        this._log.debug("Applications.size [{}]", listApplicationsSize);
+        _log.debug("Applications.size [{}]", listApplicationsSize);
 
         List<ExportImportLegalCommitmentInformation> listLegalCommitmentInformation = new ArrayList<>();
         int i = 0;
@@ -785,13 +684,13 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
         for (Application application : listApplications) {
             Integer applicationId = application.getId();
 
-            this._log.debug("Processing applications. Application.Id [{}]. Progress [{}]/[{}]", applicationId, ++i, listApplicationsSize);
+            _log.debug("Processing applications. Application.Id [{}]. Progress [{}]/[{}]", applicationId, ++i, listApplicationsSize);
 
             List<GrantAgreement> listGrantAgreement = application.getGrantAgreements();
-            this._log.debug("   listGrantAgreement.size()[{}]", listGrantAgreement.size());
+            _log.debug("   listGrantAgreement.size()[{}]", listGrantAgreement.size());
 
             GrantAgreement grantAgreement = !listGrantAgreement.isEmpty() ? listGrantAgreement.get(0) : null;
-            this._log.debug("   First Grant Agreement. grantAgreement.id [{}]", grantAgreement == null ? "NULL" : grantAgreement.getId());
+            _log.debug("   First Grant Agreement. grantAgreement.id [{}]", grantAgreement == null ? "NULL" : grantAgreement.getId());
 
             ExportImportLegalCommitmentInformation legalCommitmentInformation = new ExportImportLegalCommitmentInformation();
             legalCommitmentInformation.setFiles(new ArrayList<>());
@@ -827,7 +726,7 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
                     byte[] fileContent = this.azureBlobConnector.downloadFileByUri(documentLocation);
 
                     byte[] fileData = fileContent == null ? new byte[0] : fileContent;
-                    this._log.debug("   Downloaded fileContent.length [{}] bytes", fileContent == null ? "NULL" : fileContent.length);
+                    _log.debug("   Downloaded fileContent.length [{}] bytes", fileContent == null ? "NULL" : fileContent.length);
                     ExportFile exportFile = new ExportFile(legalCommitmentInformation.getZipFileDocumentName(), fileData);
 
                     legalCommitmentInformation.getFiles().add(exportFile);

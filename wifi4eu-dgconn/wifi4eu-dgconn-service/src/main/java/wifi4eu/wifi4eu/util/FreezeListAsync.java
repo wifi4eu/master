@@ -2,33 +2,34 @@ package wifi4eu.wifi4eu.util;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import wifi4eu.wifi4eu.common.dto.model.*;
-import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
-import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
-import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.dto.model.CallDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentAuxiliarDTO;
+import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentDTO;
+import wifi4eu.wifi4eu.common.dto.model.VoucherSimulationDTO;
 import wifi4eu.wifi4eu.common.enums.SelectionStatus;
 import wifi4eu.wifi4eu.common.enums.VoucherAssignmentStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.helper.Validator;
-import wifi4eu.wifi4eu.entity.admin.AdminActions;
 import wifi4eu.wifi4eu.common.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.common.mapper.voucher.VoucherAssignmentAuxiliarMapper;
 import wifi4eu.wifi4eu.common.mapper.voucher.VoucherAssignmentMapper;
 import wifi4eu.wifi4eu.common.mapper.voucher.VoucherSimulationMapper;
+import wifi4eu.wifi4eu.entity.admin.AdminActions;
 import wifi4eu.wifi4eu.repository.admin.AdminActionsRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentAuxiliarRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherSimulationRepository;
 import wifi4eu.wifi4eu.service.call.CallService;
-import wifi4eu.wifi4eu.service.security.INEAPermissionChecker;
-import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.voucher.VoucherService;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by rgarcita on 11/02/2017.
@@ -38,42 +39,36 @@ import java.util.*;
 public class FreezeListAsync implements Runnable {
 
     @Autowired
-    VoucherAssignmentAuxiliarRepository voucherAssignmentAuxiliarRepository;
+    private VoucherAssignmentAuxiliarRepository voucherAssignmentAuxiliarRepository;
 
     @Autowired
-    VoucherAssignmentAuxiliarMapper voucherAssignmentAuxiliarMapper;
+    private VoucherAssignmentAuxiliarMapper voucherAssignmentAuxiliarMapper;
 
     @Autowired
-    VoucherSimulationMapper voucherSimulationMapper;
+    private VoucherSimulationMapper voucherSimulationMapper;
 
     @Autowired
-    VoucherSimulationRepository voucherSimulationRepository;
+    private VoucherSimulationRepository voucherSimulationRepository;
 
     @Autowired
-    VoucherAssignmentMapper voucherAssignmentMapper;
+    private VoucherAssignmentMapper voucherAssignmentMapper;
 
     @Autowired
-    UserMapper userMapper;
+    private UserMapper userMapper;
 
     @Autowired
-    CallService callService;
+    private CallService callService;
 
     @Autowired
-    UserService userService;
+    private VoucherService voucherService;
 
     @Autowired
-    VoucherService voucherService;
+    private AdminActionsRepository adminActionsRepository;
 
     @Autowired
-    AdminActionsRepository adminActionsRepository;
+    private VoucherAssignmentRepository voucherAssignmentRepository;
 
-    @Autowired
-    VoucherAssignmentRepository voucherAssignmentRepository;
-
-    public final static String FROM_ADDRESS = "no-reply@wifi4eu.eu";
-    public final static String NO_ACTION = "NO ACTION LOGGED";
-
-    private final Logger _log = LogManager.getLogger(FreezeListAsync.class);
+    private static final Logger _log = LogManager.getLogger(FreezeListAsync.class);
 
     private UserDTO userConnected;
 

@@ -21,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ServerErrorResponseDTO;
 import wifi4eu.wifi4eu.service.exportImport.ExportImportAbacService;
-import wifi4eu.wifi4eu.web.util.authorisation.DashboardUsersOnly;
+import wifi4eu.wifi4eu.web.authorisation.DashboardUsersOnly;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;

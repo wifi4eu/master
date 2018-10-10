@@ -13,10 +13,10 @@ import java.util.List;
 @Service("portalNutsService")
 public class NutsService {
     @Autowired
-    NutsMapper nutsMapper;
+    private NutsMapper nutsMapper;
 
     @Autowired
-    NutsRepository nutsRepository;
+    private NutsRepository nutsRepository;
 
     public List<NutsDTO> getAllNuts() {
         return nutsMapper.toDTOList(Lists.newArrayList(nutsRepository.findAll()));

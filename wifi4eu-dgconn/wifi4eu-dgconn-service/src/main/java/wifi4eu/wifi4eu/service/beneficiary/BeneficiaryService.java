@@ -1,341 +1,59 @@
 package wifi4eu.wifi4eu.service.beneficiary;
 
-import java.io.ByteArrayOutputStream;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
-
-import wifi4eu.wifi4eu.common.Constant;
-import wifi4eu.wifi4eu.common.dto.mail.MailData;
-import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
 import wifi4eu.wifi4eu.common.dto.model.BeneficiaryFinalListItemDTO;
 import wifi4eu.wifi4eu.common.dto.model.BeneficiaryListItemDTO;
-import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
-import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
-import wifi4eu.wifi4eu.common.dto.model.ThreadDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserThreadsDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
-import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
-import wifi4eu.wifi4eu.common.mail.MailHelper;
-import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.common.service.mail.MailService;
-import wifi4eu.wifi4eu.common.utils.MunicipalityValidator;
-import wifi4eu.wifi4eu.entity.application.Application;
-import wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryListItem;
-import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
-import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.common.mapper.beneficiary.BeneficiaryFinalListItemMapper;
 import wifi4eu.wifi4eu.common.mapper.beneficiary.BeneficiaryListItemMapper;
-import wifi4eu.wifi4eu.common.mapper.user.UserMapper;
+import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.application.Application;
+import wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryListItem;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryFinalListItemRepository;
 import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryListItemRepository;
-import wifi4eu.wifi4eu.repository.user.UserRepository;
-import wifi4eu.wifi4eu.service.location.LauService;
-import wifi4eu.wifi4eu.service.location.NutsService;
-import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
-import wifi4eu.wifi4eu.service.security.PermissionChecker;
-import wifi4eu.wifi4eu.service.thread.ThreadService;
-import wifi4eu.wifi4eu.service.thread.UserThreadsService;
-import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.ExcelExportGenerator;
+
+import java.util.List;
 
 @Service
 public class BeneficiaryService {
 
     @Autowired
-    BeneficiaryListItemMapper beneficiaryListItemMapper;
+    private BeneficiaryListItemMapper beneficiaryListItemMapper;
 
     @Autowired
-    BeneficiaryListItemRepository beneficiaryListItemRepository;
+    private BeneficiaryListItemRepository beneficiaryListItemRepository;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    MunicipalityService municipalityService;
+    private MunicipalityService municipalityService;
 
     @Autowired
-    RegistrationService registrationService;
+    private RegistrationService registrationService;
 
     @Autowired
-    ThreadService threadService;
+    private ApplicationRepository applicationRepository;
 
     @Autowired
-    UserThreadsService userThreadsService;
+    private BeneficiaryFinalListItemRepository beneficiaryFinalListItemRepository;
 
     @Autowired
-    MayorService mayorService;
+    private BeneficiaryFinalListItemMapper beneficiaryFinalListItemMapper;
 
-    @Autowired
-    LauService lauService;
-
-    @Autowired
-    NutsService nutsService;
-
-    @Autowired
-    PermissionChecker permissionChecker;
-
-    @Autowired
-    MailService mailService;
-
-    @Autowired
-    UserMapper userMapper;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    ApplicationRepository applicationRepository;
-
-    @Autowired
-    BeneficiaryFinalListItemRepository beneficiaryFinalListItemRepository;
-
-    @Autowired
-    BeneficiaryFinalListItemMapper beneficiaryFinalListItemMapper;
-
-    private final Logger _log = LogManager.getLogger(BeneficiaryService.class);
-
-    private List<Integer> municipalitiesLauIdToHold = new ArrayList<>();
-    private final String MAYOR = "Mayor";
-    private final String REPRESENTATIVE = "Representative";
-
-    @Transactional
-    public List<RegistrationDTO> submitBeneficiaryRegistration(BeneficiaryDTO beneficiaryDTO, String ip, HttpServletRequest request) throws Exception {
-        /* Validate municipalities */
-        for (MunicipalityDTO municipalityDTO : beneficiaryDTO.getMunicipalities()) {
-            MunicipalityValidator.validateMunicipality(municipalityDTO, lauService.getLauById(municipalityDTO.getLauId()),
-                    nutsService.getNutsByLevel(0));
-        }
-
-        /* Get user from ECAS */
-        UserDTO user = new UserDTO();
-        UserContext userContext = UserHolder.getUser();
-        boolean isEcasUser = false;
-
-        if (userContext != null) {
-            /* user from ECAS */
-            user = userService.getUserByUserContext(userContext);
-            user.setName(beneficiaryDTO.getUser().getName());
-            user.setSurname(beneficiaryDTO.getUser().getSurname());
-            user.setAddress(beneficiaryDTO.getUser().getAddress());
-            user.setAddressNum(beneficiaryDTO.getUser().getAddressNum());
-            user.setPostalCode(beneficiaryDTO.getUser().getPostalCode());
-            user.setEmail(beneficiaryDTO.getUser().getEmail());
-            user.setEcasEmail(beneficiaryDTO.getUser().getEcasEmail());
-            user.setType(3);
-            isEcasUser = true;
-        }
-
-        user.setCreateDate(new Date().getTime());
-        user.setLang(beneficiaryDTO.getLang());
-
-        UserDTO resUser = new UserDTO();
-        if (isEcasUser) {
-            resUser = userService.saveUserChanges(user);
-        }
-
-        /* create municipalities and check duplicates */
-        List<MunicipalityDTO> resMunicipalities = getMunicipalityList(beneficiaryDTO);
-
-        /* create registrations between user and municipality */
-        List<RegistrationDTO> registrations = getRegistrationsList(resUser, beneficiaryDTO, resMunicipalities, ip, request);
-
-        /* send Activate Account Email*/
-        userService.sendActivateAccountMail(resUser);
-
-        /*send request for documents email*/
-        registrationService.requestLegalDocuments(registrations.get(0).getId());
-
-        /* check Duplicates and crate Threads if apply */
-        checkDuplicates(resUser, resMunicipalities);
-
-        return registrations;
-    }
-
-    private List<RegistrationDTO> getRegistrationsList(UserDTO userDTO, BeneficiaryDTO beneficiaryDTO, List<MunicipalityDTO> resMunicipalities, String ip, HttpServletRequest request) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        List<RegistrationDTO> registrations = new ArrayList<>();
-        for (int i = 0; i < resMunicipalities.size(); i++) {
-            MunicipalityDTO municipality = resMunicipalities.get(i);
-            MayorDTO mayor = beneficiaryDTO.getMayors().get(i);
-            mayor.setMunicipalityId(municipality.getId());
-
-            /* create mayor */
-            MayorDTO mayorDtoOutput = mayorService.saveMayor(mayor, request);
-            permissionChecker.addTablePermissions(userDTO, Integer.toString(mayorDtoOutput.getId()),
-                    RightConstants.MAYORS_TABLE, "[MAYORS] - id: " + mayor.getId() + " - Email: " + mayor.getEmail() + " - Municipality Id: " + mayor.getMunicipalityId());
-
-            /* create registration */
-            RegistrationDTO registration = generateNewRegistration(REPRESENTATIVE, municipality, userDTO.getId());
-            registration.setIpRegistration(ip);
-            registration.setAssociationName(beneficiaryDTO.getAssociationName());
-            registration.setOrganisationId(beneficiaryDTO.getOrganisationId());
-            RegistrationDTO registrationDtoOutput = registrationService.createRegistration(registration);
-            registrations.add(registrationDtoOutput);
-
-            permissionChecker.addTablePermissions(userDTO, Integer.toString(registrationDtoOutput.getId()),
-                    RightConstants.REGISTRATIONS_TABLE, "[REGISTRATIONS] - id: " + registration.getId() + " - Role: " + registration.getRole() + " - Municipality Id: " + registration.getMunicipalityId());
-        }
-        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - List is retrieved correctly");
-        return registrations;
-    }
-
-    private void checkDuplicates(UserDTO userDTO, List<MunicipalityDTO> municipalityDTOs) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        for (MunicipalityDTO municipalityDTO : municipalityDTOs) {
-            List<MunicipalityDTO> municipalitiesWithSameLau = municipalityService.getMunicipalitiesByLauId(municipalityDTO.getLauId());
-            permissionChecker.addTablePermissions(userDTO, Integer.toString(municipalityDTO.getId()),
-                    RightConstants.MUNICIPALITIES_TABLE, "[MUNICIPALITIES] - id: " + municipalityDTO.getId() + " - Country: " + municipalityDTO.getCountry() + " - Lau Id: " + municipalityDTO.getLauId());
-
-            if (municipalitiesWithSameLau.size() > 1) {
-                Locale locale = new Locale(UserConstants.DEFAULT_LANG);
-                if (userDTO.getLang() != null) {
-                    locale = new Locale(userDTO.getLang());
-                }
-
-                MailData mailData = MailHelper.buildMailMultipleRegistrations(
-                		userDTO.getEcasEmail(), MailService.FROM_ADDRESS, municipalityDTO.getId(), "checkDuplicates", locale);
-            	mailService.sendMail(mailData, true);
-                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + userDTO.getEcasEmail());
-
-
-                if (municipalitiesWithSameLau.size() <= 10) {
-                    for (MunicipalityDTO municipality : municipalitiesWithSameLau) {
-                        RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipality.getId());
-                        if (registrationDTO == null) {
-                            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Registration from the municipality with id " + municipality.getId() + " does not exist");
-                            continue;
-                        }
-                        UserDTO userRegistration = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
-                        if (userRegistration.getId() == userDTO.getId() || userRegistration == null) {
-                            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Registration from the municipality with id " + municipality.getId() + " does not exist");
-                            continue;
-                        }
-                        locale = new Locale(userRegistration.getLang());
-                        
-                        MailData mailDataIn = MailHelper.buildMailMultipleRegistrations(
-                        		userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, municipalityDTO.getId(), "checkDuplicates", locale);
-                    	mailService.sendMail(mailDataIn, true);
-                        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + userRegistration.getEcasEmail());
-                    }
-                }
-
-                /* verificamos que existe el thread */
-                ThreadDTO threadDTO = threadService.getThreadByTypeAndReason(1, String.valueOf(municipalityDTO.getLauId()));
-
-                if (threadDTO == null) {
-                    /* creamos el thread */
-                    threadDTO = new ThreadDTO();
-                    threadDTO.setTitle(municipalityDTO.getName());
-                    threadDTO.setType(Constant.THREAD_REASON_LAU);
-                    threadDTO.setReason(String.valueOf(municipalityDTO.getLauId()));
-                    threadDTO = threadService.createThread(threadDTO);
-                    _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Thread " + threadDTO.getId() + " created");
-
-                    /* Añado todos los user threads */
-                    for (MunicipalityDTO conflictMunicipality : municipalitiesWithSameLau) {
-                        RegistrationDTO conflictRegistrationDTO = registrationService.getRegistrationByMunicipalityId(conflictMunicipality.getId());
-                        if (conflictRegistrationDTO != null) {
-                            UserThreadsDTO userThreadsDTO = new UserThreadsDTO();
-                            userThreadsDTO.setUserId(userRepository.findMainUserFromRegistration(conflictRegistrationDTO.getId()).getId());
-                            userThreadsDTO.setThreadId(threadDTO.getId());
-                            userThreadsService.createUserThreads(userThreadsDTO);
-                            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - User thread " + threadDTO.getId() + " added");
-                        }
-                    }
-                } else {
-                    /* añado el nuevo user thread */
-                    UserThreadsDTO userThreadsDTO = new UserThreadsDTO();
-                    userThreadsDTO.setUserId(userDTO.getId());
-                    userThreadsDTO.setThreadId(threadDTO.getId());
-                    userThreadsDTO = userThreadsService.createUserThreads(userThreadsDTO);
-                    _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Thread " + threadDTO.getId() + " added");
-                }
-            }
-            /* change registration status to Hold on conflict Registrations*/
-            updateRegistrationStatusToHold(municipalitiesWithSameLau);
-            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Duplicates checked");
-            //municipalitiesLauIdToHold.add(municipality.getLauId());
-        }
-    }
-
-    private RegistrationDTO generateNewRegistration(final String role, final MunicipalityDTO municipality, final int userId) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        RegistrationDTO registration = new RegistrationDTO();
-        RegistrationUsers registrationUsers = new RegistrationUsers();
-        registration.setRole(role);
-        registration.setMunicipalityId(municipality.getId());
-       // registration.setUserId(userId);
-        registration.setStatus(generateRegistrationStatus(municipality));
-        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - New registration generated");
-        return registration;
-    }
-
-    private int generateRegistrationStatus(MunicipalityDTO aMunicipalityDTO) {
-        if (municipalitiesLauIdToHold.contains(aMunicipalityDTO.getLauId())) {
-            return RegistrationStatus.HOLD.getValue();
-        } else {
-            return RegistrationStatus.OK.getValue();
-        }
-    }
-
-    private List<MunicipalityDTO> getMunicipalityList(final BeneficiaryDTO beneficiaryDTO) throws Exception {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        List<MunicipalityDTO> resMunicipalities = new ArrayList<>();
-        for (MunicipalityDTO municipality : beneficiaryDTO.getMunicipalities()) {
-            /* search for other users registered on the same municipality */
-
-            MunicipalityDTO municipalityDtoOutput = municipalityService.saveMunicipality(municipality);
-            resMunicipalities.add(municipalityDtoOutput);
-            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Municipality " + municipalityDtoOutput.getId() + " added to the list");
-        }
-        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Municipalities retrieved correctly");
-        return resMunicipalities;
-    }
-
-    /**
-     * The update registration status to hold
-     */
-    private void updateRegistrationStatusToHold(List<MunicipalityDTO> municipalitiesWithSameLau) {
-        final String LOG_STATUS_2_HOLD = "Registration Id {0} updated to the status HOLD";
-
-        /* put all the registrations for a given municipality on Hold*/
-        for (MunicipalityDTO aMunicipality : municipalitiesWithSameLau) {
-            RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(aMunicipality.getId());
-            if (registration != null) {
-                registration.setStatus(RegistrationStatus.HOLD.getValue());
-                registrationService.saveRegistration(registration);
-                _log.info(MessageFormat.format(LOG_STATUS_2_HOLD, registration.getId()));
-            }
-        }
-    }
+    private static final Logger _log = LoggerFactory.getLogger(BeneficiaryService.class);
 
     public List<BeneficiaryListItemDTO> findDgconnBeneficiaresList(String name, int offset, int count, String orderField, int orderType) throws Exception {
         UserContext userContext = UserHolder.getUser();
@@ -626,28 +344,6 @@ public class BeneficiaryService {
         response.setXTotalCount(beneficiaryFinalListItemRepository.countBeneficiariesFromFinalList(callId));
         response.setData(beneficiaryFinalListItemDTOList);
         return response;
-    }
-
-    public ByteArrayOutputStream downloadGrantAgreementPdfFromRegistrationId(int registrationId){
-        ByteArrayOutputStream outputStream = null;
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Downloading Grant Agreement Pdf");
-        try {
-            Document document = new Document();
-            outputStream = new ByteArrayOutputStream();
-            PdfWriter.getInstance(document, outputStream);
-            document.open();
-            String docName = "This pdf will show the Grant Agreement of the registration" + registrationId;
-            document.addTitle(docName);
-            document.addSubject(docName);
-            document.add(new Paragraph(docName));
-            document.close();
-        } catch (DocumentException e){
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Error generating PDF Grant Agreement");
-            e.printStackTrace();
-        }
-        return outputStream;
     }
 
     public ResponseDTO cancelBeneficiaryFromRegistrationId(int registrationId, String reason, int callId){

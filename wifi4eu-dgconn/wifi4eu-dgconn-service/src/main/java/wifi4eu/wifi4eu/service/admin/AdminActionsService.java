@@ -12,10 +12,10 @@ import java.util.List;
 public class AdminActionsService {
 
     @Autowired
-    AdminActionsRepository adminActionsRepository;
+    private AdminActionsRepository adminActionsRepository;
 
     @Autowired
-    AdminActionsMapper adminActionsMapper;
+    private AdminActionsMapper adminActionsMapper;
 
     public AdminActionsDTO getByActionName(String action){
         return adminActionsMapper.toDTO(adminActionsRepository.findOneByAction(action));

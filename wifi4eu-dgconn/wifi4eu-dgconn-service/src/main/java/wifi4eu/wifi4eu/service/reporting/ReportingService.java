@@ -23,13 +23,13 @@ import java.util.ArrayList;
 public class ReportingService {
 
     @Autowired
-    PermissionChecker permissionChecker;
+    private PermissionChecker permissionChecker;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    CallRepository callRepository;
+    private CallRepository callRepository;
 
     public ResponseDTO generateCallOpenReport(){
         if (!permissionChecker.checkIfDashboardUser()) {

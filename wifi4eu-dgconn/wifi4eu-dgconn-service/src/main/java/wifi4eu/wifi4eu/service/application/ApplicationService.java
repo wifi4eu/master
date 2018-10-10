@@ -1,25 +1,8 @@
 package wifi4eu.wifi4eu.service.application;
 
 import com.google.common.collect.Lists;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.text.MessageFormat;
-import java.time.DateTimeException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -37,149 +20,129 @@ import wifi4eu.wifi4eu.common.enums.LegalFileStatus;
 import wifi4eu.wifi4eu.common.enums.LegalFileValidationStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.mail.MailHelper;
-import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
-import wifi4eu.wifi4eu.common.service.mail.MailService;
-import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
-import wifi4eu.wifi4eu.entity.admin.AdminActions;
-import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
-import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
-import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.common.mapper.application.ApplicantListItemMapper;
-import wifi4eu.wifi4eu.common.mapper.application.ApplicationInvalidateReasonMapper;
 import wifi4eu.wifi4eu.common.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.common.mapper.application.CorrectionRequestEmailMapper;
 import wifi4eu.wifi4eu.common.mapper.registration.LegalFileCorrectionReasonMapper;
 import wifi4eu.wifi4eu.common.mapper.registration.legal_files.LegalFilesMapper;
 import wifi4eu.wifi4eu.common.mapper.user.UserMapper;
-import wifi4eu.wifi4eu.repository.application.*;
+import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
+import wifi4eu.wifi4eu.common.service.mail.MailService;
+import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
+import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
+import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
+import wifi4eu.wifi4eu.entity.registration.Registration;
+import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
+import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
+import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
+import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
 import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
-import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
-import wifi4eu.wifi4eu.repository.warning.RegistrationWarningRepository;
 import wifi4eu.wifi4eu.service.admin.AdminActionsService;
-import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
-import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.security.INEAPermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.voucher.VoucherService;
-import wifi4eu.wifi4eu.util.ExcelExportGenerator;
 import wifi4eu.wifi4eu.util.ExcelExportGeneratorAsync;
-import wifi4eu.wifi4eu.util.SendNotificationsAsync;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.ByteArrayOutputStream;
 import java.text.MessageFormat;
 import java.time.DateTimeException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 @Service
 public class ApplicationService {
-    private static final Logger _log = LogManager.getLogger(ApplicationService.class);
+    private static final Logger _log = LoggerFactory.getLogger(ApplicationService.class);
 
     @Value("${mail.server.location}")
     private String baseUrl;
 
     @Autowired
-    ApplicantListItemMapper applicantListItemMapper;
+    private ApplicantListItemMapper applicantListItemMapper;
 
     @Autowired
-    ApplicantListItemRepository applicantListItemRepository;
+    private ApplicantListItemRepository applicantListItemRepository;
 
     @Autowired
-    ApplicationMapper applicationMapper;
+    private ApplicationMapper applicationMapper;
 
     @Autowired
-    ApplicationRepository applicationRepository;
+    private ApplicationRepository applicationRepository;
 
     @Autowired
-    MailService mailService;
+    private MailService mailService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    RegistrationService registrationService;
+    private RegistrationService registrationService;
 
     @Autowired
-    MunicipalityService municipalityService;
+    private MunicipalityService municipalityService;
 
     @Autowired
-    CallService callService;
+    private CallService callService;
 
     @Autowired
-    RegistrationWarningRepository registrationWarningRepository;
+    private CorrectionRequestEmailMapper correctionRequestEmailMapper;
 
     @Autowired
-    CorrectionRequestEmailMapper correctionRequestEmailMapper;
+    private CorrectionRequestEmailRepository correctionRequestEmailRepository;
 
     @Autowired
-    CorrectionRequestEmailRepository correctionRequestEmailRepository;
+    private VoucherService voucherService;
 
     @Autowired
-    VoucherService voucherService;
+    private ApplicationIssueUtilRepository applicationIssueUtilRepository;
 
     @Autowired
-    BeneficiaryService beneficiaryService;
+    private UserRepository userRepository;
 
     @Autowired
-    ApplicationIssueUtilRepository applicationIssueUtilRepository;
+    private UserMapper userMapper;
 
     @Autowired
-    RegistrationUsersRepository registrationUsersRepository;
+    private RegistrationRepository registrationRepository;
 
     @Autowired
-    UserRepository userRepository;
+    private LogEmailRepository logEmailRepository;
 
     @Autowired
-    UserMapper userMapper;
+    private LegalFileCorrectionReasonRepository legalFileCorrectionReasonRepository;
 
     @Autowired
-    RegistrationRepository registrationRepository;
+    private LegalFileCorrectionReasonMapper legalFileCorrectionReasonMapper;
 
     @Autowired
-    LegalFilesService legalFilesService;
+    private LegalFilesMapper legalFilesMapper;
 
     @Autowired
-    ApplicationInvalidateReasonMapper applicationInvalidateReasonMapper;
+    private LegalFilesRepository legalFilesRepository;
 
     @Autowired
-    ApplicationInvalidateReasonRepository applicationInvalidateReasonRepository;
+    private ApplicationContext context;
 
     @Autowired
-    LogEmailRepository logEmailRepository;
+    private TaskExecutor taskExecutor;
 
     @Autowired
-    LegalFileCorrectionReasonRepository legalFileCorrectionReasonRepository;
+    private AdminActionsService adminActionsService;
 
     @Autowired
-    LegalFileCorrectionReasonMapper legalFileCorrectionReasonMapper;
-
-    @Autowired
-    LegalFilesMapper legalFilesMapper;
-
-    @Autowired
-    LegalFilesRepository legalFilesRepository;
-
-    @Autowired
-    ApplicationContext context;
-
-    @Autowired
-    TaskExecutor taskExecutor;
-
-    @Autowired
-    AdminActionsService adminActionsService;
-
-    @Autowired
-    AzureBlobConnector azureBlobConnector;
-
-    public static final String TMP_DIR = System.getProperty("java.io.tmpdir");
+    private AzureBlobConnector azureBlobConnector;
 
     public ApplicationDTO getApplicationById(int applicationId) {
         return applicationMapper.toDTO(applicationRepository.findOne(applicationId));
@@ -217,7 +180,7 @@ public class ApplicationService {
                     }
                     applicationDTO.setDate(queueTimestamp);
                     applicationDTO = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
-                    _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Application " + applicationDTO.getId() + " created successfully");
+                    _log.info("[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Application " + applicationDTO.getId() + " created successfully");
                     return applicationDTO;
                 } else {
                     _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Trying to register an application existent on the DB, callId: "
@@ -283,7 +246,7 @@ public class ApplicationService {
                 applicationDTO.setId(0);
             }
             ApplicationDTO application = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
-            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Application created");
+            _log.info("[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Application created");
             return application;
         }
         return null;
@@ -503,7 +466,7 @@ public class ApplicationService {
 //        applicationDB.setSentEmailDate(null);
         registrationService.saveRegistration(registration);
         ApplicationDTO applicationResponse = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDB)));
-        _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Legal files from the application are sent for correction");
+        _log.info("[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Legal files from the application are sent for correction");
         return applicationResponse;
     }
 

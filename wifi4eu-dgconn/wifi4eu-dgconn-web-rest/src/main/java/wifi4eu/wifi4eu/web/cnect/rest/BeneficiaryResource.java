@@ -26,7 +26,7 @@ import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.grantAgreement.GrantAgreementService;
 import wifi4eu.wifi4eu.service.user.UserService;
-import wifi4eu.wifi4eu.web.util.authorisation.DashboardUsersOnly;
+import wifi4eu.wifi4eu.web.authorisation.DashboardUsersOnly;
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -195,7 +195,7 @@ public class BeneficiaryResource {
         headers.setContentDispositionFormData(filename, filename);
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
         GrantAgreementDTO grantAgreementDTO = grantAgreementService.getGrantAgreementByCallAndRegistrationId(registrationId, callId);
-        byte[] file = grantAgreementService.downloadGrantAgreementSigned(grantAgreementDTO.getApplicationId(), grantAgreementDTO);
+        byte[] file = grantAgreementService.downloadGrantAgreementSigned(grantAgreementDTO);
         _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - PDF Grant Agreement generated correctly");
         return new ResponseEntity<>(file, headers, HttpStatus.OK);
     }

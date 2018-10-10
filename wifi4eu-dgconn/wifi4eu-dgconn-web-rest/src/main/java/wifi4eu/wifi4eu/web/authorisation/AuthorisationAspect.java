@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.web.util.authorisation;
+package wifi4eu.wifi4eu.web.authorisation;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -32,7 +32,7 @@ public class AuthorisationAspect {
     private UserService userService;
 
     @Around(value = "execution(* wifi4eu.wifi4eu.web.cnect.rest.*.*(..)) " +
-            "&& (@target(wifi4eu.wifi4eu.web.util.authorisation.DashboardUsersOnly) || @annotation(wifi4eu.wifi4eu.web.util.authorisation.DashboardUsersOnly))")
+            "&& (@target(wifi4eu.wifi4eu.web.authorisation.DashboardUsersOnly) || @annotation(wifi4eu.wifi4eu.web.authorisation.DashboardUsersOnly))")
     public Object before(ProceedingJoinPoint joinPoint) throws Throwable {
         return proceed(joinPoint);
     }

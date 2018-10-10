@@ -1,12 +1,12 @@
 package wifi4eu.wifi4eu.repository.call;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import wifi4eu.wifi4eu.entity.call.Call;
 
 import java.util.ArrayList;
 
-public interface CallRepository extends CrudRepository<Call,Integer> {
+public interface CallRepository extends JpaRepository<Call,Integer> {
 
     @Query(value = "SELECT * FROM calls " +
             "WHERE end_date < cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000 OR " +

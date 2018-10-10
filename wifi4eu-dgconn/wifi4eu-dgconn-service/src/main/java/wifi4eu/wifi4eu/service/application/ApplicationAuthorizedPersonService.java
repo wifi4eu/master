@@ -13,10 +13,10 @@ import java.util.List;
 public class ApplicationAuthorizedPersonService {
 
     @Autowired
-    ApplicantAuthorizedPersonMapper applicantAuthorizedPersonMapper;
+    private ApplicantAuthorizedPersonMapper applicantAuthorizedPersonMapper;
 
     @Autowired
-    ApplicationAuthorizedPersonRepository applicationAuthorizedPersonRepository;
+    private ApplicationAuthorizedPersonRepository applicationAuthorizedPersonRepository;
 
 
     public ApplicationAuthorizedPersonDTO findByApplicationAndAuthorisedPerson(int applicationId, int authorizedPerson) {

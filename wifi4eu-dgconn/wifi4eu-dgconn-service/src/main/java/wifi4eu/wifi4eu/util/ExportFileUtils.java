@@ -17,9 +17,7 @@ import java.util.zip.ZipOutputStream;
 @Service
 public class ExportFileUtils {
 
-    private static final String SEPARATOR = ",";
-
-    private final Logger log = LoggerFactory.getLogger(ExportFileUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(ExportFileUtils.class);
 
     public ByteArrayOutputStream generateZipFileStream(List<ExportFile> includedExportFiles) {
         if (includedExportFiles == null || includedExportFiles.size() == 0) {
@@ -69,27 +67,6 @@ public class ExportFileUtils {
                 LegalEntityDocumentCSVColumn.DOCUMENT_DATE.getValue(),
                 LegalEntityDocumentCSVColumn.DOCUMENT_TYPE.getValue(),
                 LegalEntityDocumentCSVColumn.ARES_REFERENCE.getValue());
-    }
-
-    /**
-     * Generates the headers for the CSV file according to the String[] provided.
-     *
-     * @return
-     */
-    public String generateCSVHeaders(String[] headers) {
-        StringBuilder headerData = new StringBuilder();
-
-        boolean first = true;
-        for (String header : headers) {
-            if (first) {
-                headerData.append(header);
-                first = false;
-            } else {
-                headerData.append(SEPARATOR).append(header);
-            }
-        }
-
-        return headerData.toString();
     }
 
 }

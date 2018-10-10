@@ -13,10 +13,10 @@ public class SimpleMunicipalityService {
 
 
     @Autowired
-    SimpleMunicipalityMapper municipalityMapper;
+    private SimpleMunicipalityMapper municipalityMapper;
 
     @Autowired
-    SimpleMunicipalityRepository municipalityRepository;
+    private SimpleMunicipalityRepository municipalityRepository;
 
     public List<SimpleMunicipalityDTO> getAllMunicipalities() {
         return municipalityMapper.toDTOList(municipalityRepository.findAllMunicipalitiesFromApplications());

@@ -26,21 +26,21 @@ import java.util.ArrayList;
 public class ReportTypesInstallation {
 
     @Autowired
-    CallRepository callRepository;
+    private CallRepository callRepository;
 
     @Autowired
-    ApplicationRepository applicationRepository;
+    private ApplicationRepository applicationRepository;
 
     @Autowired
-    NutCallCustomRepository nutCallCustomRepository;
+    private NutCallCustomRepository nutCallCustomRepository;
 
     @Autowired
-    MunicipalityRepository municipalityRepository;
+    private MunicipalityRepository municipalityRepository;
 
     @Autowired
-    AccessPointRepository accessPointRepository;
+    private AccessPointRepository accessPointRepository;
 
-    static String[] fields = {"Number of beneficiaries", "Number of installation sites", "Average number of Indoor AP", "Standard deviation for Indoor AP", "Average number of Outdoor AP", "Standard deviation for Outdoor AP"};
+    private static String[] fields = {"Number of beneficiaries", "Number of installation sites", "Average number of Indoor AP", "Standard deviation for Indoor AP", "Average number of Outdoor AP", "Standard deviation for Outdoor AP"};
 
     int beneficiariesNumber = 0;
     int installationSitesNumber = 0;

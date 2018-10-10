@@ -39,7 +39,7 @@ import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.voucher.VoucherService;
-import wifi4eu.wifi4eu.web.util.authorisation.DashboardUsersOnly;
+import wifi4eu.wifi4eu.web.authorisation.DashboardUsersOnly;
 
 @CrossOrigin(origins = "*")
 @Controller

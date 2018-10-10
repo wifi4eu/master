@@ -24,9 +24,8 @@ import { UserDTOBase } from "../../../shared/swagger/model/UserDTO";
 import { LegalFileCorrectionReasonDTOBase } from "../../../shared/swagger/model/LegalFileCorrectionReasonDTO";
 import { VoucherAssignmentAuxiliarDTOBase } from "../../../shared/swagger/model/VoucherAssignmentAuxiliarDTO";
 import { TranslateService } from "ng2-translate";
-import * as FileSaver from "file-saver";
-import { RegistrationWarningApi, InvalidateReasonApi, ApplicationInvalidateReasonDTO, ApplicationCommentDTO, ApplicationcommentApi, LogEmailDTO, LegalFileDTOBase, ApplicationauthorizedPersonApi, ApplicationAuthorizedPersonDTOBase } from "../../../shared/swagger";
-import { NgForm, NgModel } from "@angular/forms";
+import { RegistrationWarningApi, InvalidateReasonApi, ApplicationInvalidateReasonDTO, ApplicationCommentDTO, ApplicationcommentApi, LogEmailDTO, ApplicationauthorizedPersonApi, ApplicationAuthorizedPersonDTOBase } from "../../../shared/swagger";
+import { NgForm } from "@angular/forms";
 import { Observable } from "rxjs/Observable";
 import {environment} from '../../../../environments/environment';
 

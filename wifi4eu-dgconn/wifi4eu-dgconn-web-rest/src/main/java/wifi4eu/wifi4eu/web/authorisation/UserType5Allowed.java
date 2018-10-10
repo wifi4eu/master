@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.web.util.authorisation;
+package wifi4eu.wifi4eu.web.authorisation;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 

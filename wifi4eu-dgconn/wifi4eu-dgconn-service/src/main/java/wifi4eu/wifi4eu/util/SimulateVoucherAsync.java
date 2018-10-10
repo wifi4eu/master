@@ -6,77 +6,80 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import wifi4eu.wifi4eu.common.dto.model.*;
-import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.SelectionStatus;
 import wifi4eu.wifi4eu.common.enums.VoucherAssignmentStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.helper.Validator;
-import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.entity.admin.AdminActions;
 import wifi4eu.wifi4eu.common.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.common.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.common.mapper.voucher.VoucherAssignmentMapper;
+import wifi4eu.wifi4eu.entity.admin.AdminActions;
 import wifi4eu.wifi4eu.repository.admin.AdminActionsRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherSimulationRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.call.CallService;
-import wifi4eu.wifi4eu.service.user.UserService;
-import wifi4eu.wifi4eu.service.voucher.*;
+import wifi4eu.wifi4eu.service.voucher.SimpleLauService;
+import wifi4eu.wifi4eu.service.voucher.SimpleMunicipalityService;
+import wifi4eu.wifi4eu.service.voucher.SimpleRegistrationService;
+import wifi4eu.wifi4eu.service.voucher.VoucherManagementService;
+import wifi4eu.wifi4eu.service.voucher.VoucherService;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Component
 @Scope("prototype")
 public class SimulateVoucherAsync implements Runnable {
     @Autowired
-    VoucherAssignmentMapper voucherAssignmentMapper;
+    private VoucherAssignmentMapper voucherAssignmentMapper;
 
     @Autowired
-    CallService callService;
+    private CallService callService;
 
     @Autowired
-    UserService userService;
+    private VoucherManagementService voucherManagementService;
 
     @Autowired
-    VoucherManagementService voucherManagementService;
-
-
-    @Autowired
-    ApplicationService applicationService;
+    private ApplicationService applicationService;
 
     @Autowired
-    VoucherSimulationRepository voucherSimulationRepository;
+    private VoucherSimulationRepository voucherSimulationRepository;
 
     @Autowired
-    VoucherAssignmentRepository voucherAssignmentRepository;
+    private VoucherAssignmentRepository voucherAssignmentRepository;
 
     @Autowired
-    ApplicationMapper applicationMapper;
+    private ApplicationMapper applicationMapper;
 
     @Autowired
-    SimpleMunicipalityService simpleMunicipalityService;
+    private SimpleMunicipalityService simpleMunicipalityService;
 
     @Autowired
-    SimpleLauService simpleLauService;
+    private SimpleLauService simpleLauService;
 
     @Autowired
-    ApplicationRepository applicationRepository;
+    private ApplicationRepository applicationRepository;
 
     @Autowired
-    AdminActionsRepository adminActionsRepository;
+    private AdminActionsRepository adminActionsRepository;
 
     @Autowired
-    UserMapper userMapper;
+    private UserMapper userMapper;
 
     @Autowired
-    VoucherService voucherService;
+    private VoucherService voucherService;
 
     @Autowired
-    SimpleRegistrationService simpleRegistrationService;
+    private SimpleRegistrationService simpleRegistrationService;
 
-    private final Logger _log = LogManager.getLogger(SimulateVoucherAsync.class);
+    private static final Logger _log = LogManager.getLogger(SimulateVoucherAsync.class);
 
     private UserDTO userConnected;
 

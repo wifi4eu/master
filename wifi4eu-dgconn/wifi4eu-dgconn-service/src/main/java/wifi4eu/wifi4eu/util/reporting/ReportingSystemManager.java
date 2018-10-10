@@ -21,13 +21,13 @@ import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobStorageUtils;
 public class ReportingSystemManager {
 
     @Autowired
-    AzureBlobStorageUtils azureBlobStorageUtils;
+    private AzureBlobStorageUtils azureBlobStorageUtils;
 
     @Autowired
-    AzureBlobStorage azureBlobStorage;
+    private AzureBlobStorage azureBlobStorage;
 
     @Autowired
-    GenerateReports generateReports;
+    private GenerateReports generateReports;
 
     private static final Logger logger = LoggerFactory.getLogger(ReportingSystemManager.class);
 

@@ -26,7 +26,7 @@ import wifi4eu.wifi4eu.common.utils.HelpdeskIssueValidator;
 import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
 import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.user.UserService;
-import wifi4eu.wifi4eu.web.util.authorisation.DashboardUsersOnly;
+import wifi4eu.wifi4eu.web.authorisation.DashboardUsersOnly;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -105,35 +105,4 @@ public class HelpdeskIssueResource {
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
-
-    /*
-    @ApiOperation(value = "Delete helpdesk by specific id")
-    @RequestMapping(method = RequestMethod.DELETE)
-    @ResponseBody
-    public ResponseDTO deleteHelpdeskIssue(@RequestBody final Integer issueId, HttpServletResponse response) throws IOException {
-        try {
-            _log.info("deleteHelpdeskIssue: " + issueId);
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(userDTO.getType() != 5){
-                response.sendError(HttpStatus.NOT_FOUND.value());
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-            HelpdeskIssueDTO resHelpdeskIssue = helpdeskService.deleteHelpdeskIssue(issueId);
-            return new ResponseDTO(true, resHelpdeskIssue, null);
-        }
-        catch (AccessDeniedException ade) {
-          if (_log.isErrorEnabled()) {
-            _log.error("Access denied on 'deleteHelpdeskIssue' operation.", ade);
-        }
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        }
-        catch (Exception e) {
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'deleteHelpdeskIssue' operation.", e);
-            }
-        }
-        return new ResponseDTO(false, null, null);
-    }
-    */
 }

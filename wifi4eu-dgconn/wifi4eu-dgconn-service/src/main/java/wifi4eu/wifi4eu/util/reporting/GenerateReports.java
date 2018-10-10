@@ -14,7 +14,7 @@ import java.io.IOException;
 public class GenerateReports {
 
     @Autowired
-    ReportingUtils reportingUtils;
+    private ReportingUtils reportingUtils;
 
     public byte[] generateExcelFileBytes(String currentQuery) throws IOException {
         HSSFWorkbook workbook = new HSSFWorkbook();

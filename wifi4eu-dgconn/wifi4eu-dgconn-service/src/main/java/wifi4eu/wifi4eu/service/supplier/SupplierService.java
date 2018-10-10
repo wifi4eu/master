@@ -1,138 +1,52 @@
 package wifi4eu.wifi4eu.service.supplier;
 
-import java.util.Base64;
-import java.util.List;
-import java.util.Locale;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.google.common.collect.Lists;
-
 import wifi4eu.wifi4eu.common.dto.mail.MailData;
-import wifi4eu.wifi4eu.common.dto.model.SuppliedRegionDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierListItemDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.mail.MailHelper;
-import wifi4eu.wifi4eu.common.service.mail.MailService;
-import wifi4eu.wifi4eu.common.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.common.mapper.supplier.SupplierListItemMapper;
 import wifi4eu.wifi4eu.common.mapper.supplier.SupplierMapper;
-import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
+import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.repository.supplier.SupplierListItemRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierUserRepository;
-import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
+
+import java.util.List;
+import java.util.Locale;
 
 @Service("portalSupplierService")
 public class SupplierService {
     @Autowired
-    SupplierMapper supplierMapper;
+    private SupplierMapper supplierMapper;
 
     @Autowired
-    SupplierListItemMapper supplierListItemMapper;
+    private SupplierListItemMapper supplierListItemMapper;
 
     @Autowired
-    SupplierRepository supplierRepository;
+    private SupplierRepository supplierRepository;
 
     @Autowired
-    SupplierListItemRepository supplierListItemRepository;
+    private SupplierListItemRepository supplierListItemRepository;
 
     @Autowired
-    SuppliedRegionMapper suppliedRegionMapper;
+    private SupplierUserRepository supplierUserRepository;
 
     @Autowired
-    SupplierUserRepository supplierUserRepository;
+    private UserService userService;
 
     @Autowired
-    SuppliedRegionRepository suppliedRegionRepository;
-
-    @Autowired
-    UserService userService;
-
-    @Autowired
-    MailService mailService;
-
-    private final Logger _log = LogManager.getLogger(SupplierService.class);
-
-    public List<SupplierDTO> getAllSuppliers() {
-        return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findAll()));
-    }
+    private MailService mailService;
 
     public SupplierDTO getSupplierById(int supplierId) {
         return supplierMapper.toDTO(supplierRepository.findOne(supplierId));
-    }
-
-    @Transactional
-    public SupplierDTO updateSupplierDetails(SupplierDTO supplierDTO, String name, String address, String vat, String bic, String logo) throws Exception {
-        supplierDTO.setName(name);
-        supplierDTO.setAddress(address);
-        supplierDTO.setVat(vat);
-        supplierDTO.setBic(bic);
-        if (logo != null) {
-            byte[] logoByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(logo));
-            String logoMimeType = LegalFilesService.getMimeType(logo);
-            if (logoByteArray.length > 2560000) {
-                throw new Exception("File size cannot bet greater than 2.5 MB.");
-            } else if (!logoMimeType.equals("image/png") && !logoMimeType.equals("image/jpg") && !logoMimeType.equals("image/jpeg")) {
-                throw new Exception("File must have a valid extension.");
-            } else {
-                supplierDTO.setLogo(logo);
-            }
-        } else {
-            supplierDTO.setLogo(null);
-        }
-        return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
-    }
-
-    @Transactional
-    public SupplierDTO deleteSupplier(int supplierId) {
-        //TODO: change to a soft delete
-        SupplierDTO supplierDTO = supplierMapper.toDTO(supplierRepository.findOne(supplierId));
-        if (supplierDTO != null) {
-            supplierUserRepository.deleteBySupplierId((long) supplierId);
-            supplierRepository.delete(supplierMapper.toEntity(supplierDTO));
-
-            return supplierDTO;
-        } else {
-            return null;
-        }
-    }
-
-    public List<SuppliedRegionDTO> getAllSuppliedRegions() {
-        return suppliedRegionMapper.toDTOList(Lists.newArrayList(suppliedRegionRepository.findAll()));
-    }
-
-    public SupplierDTO getSupplierByUserId(int userId) {
-        return supplierMapper.toDTO(supplierRepository.getByUserId(userId));
-    }
-
-    public List<SupplierDTO> getSuppliersByVat(String vat) {
-        return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findByVat(vat)));
-    }
-
-    public List<SupplierDTO> getSuppliersByAccountNumber(String accountNumber) {
-        return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findByAccountNumber(accountNumber)));
-    }
-
-    @Cacheable(value = "portalGetSuppliedRegionsCountGroupedByRegionId")
-    public List<Object> getSuppliedRegionsCountGroupedByRegionId() {
-        return Lists.newArrayList(suppliedRegionRepository.findSuppliedRegionsCountGroupedByRegionId());
-    }
-
-    public List<SupplierDTO> findSimilarSuppliers(int supplierId) {
-        return supplierMapper.toDTOList(supplierRepository.findSimilarSuppliers(supplierId));
     }
 
     public ResponseDTO findSimilarSuppliersPaged(int supplierId, int offset, int size) {
@@ -257,18 +171,8 @@ public class SupplierService {
         return supplierRepository.countByNameContainingIgnoreCase(name);
     }
 
-    public Page<String> getSuppliersByRegionOrCountry(String countryCode, int regionId, Pageable pageable) {
-        if (regionId == 0) {
-            return supplierRepository.findSuppliersByCountryCode(countryCode, pageable);
-        }
-        return supplierRepository.findSuppliersByRegion(regionId, pageable);
-    }
-
     public int getUserIdFromSupplier(int supplierId) {
         return supplierUserRepository.findUserIdBySupplierId(supplierId);
     }
 
-    private boolean checkHasNoNotBeingRegisteredBefore(String userEmail, Integer supplierId) {
-        return supplierUserRepository.findByEmailAndSupplierId(userEmail, supplierId).isEmpty();
-    }
 }

@@ -20,7 +20,7 @@ import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.service.admin.AdminActionsService;
 import wifi4eu.wifi4eu.service.user.UserService;
-import wifi4eu.wifi4eu.web.util.authorisation.DashboardUsersOnly;
+import wifi4eu.wifi4eu.web.authorisation.DashboardUsersOnly;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -56,6 +56,7 @@ public class AdminActionsResource {
         }
     }
 
+    // TODO: not used. Remove.
     @ApiOperation(value = "Disabled")
     @RequestMapping(value = "/disabled", method = RequestMethod.GET)
     @ResponseBody

@@ -1,23 +1,25 @@
 package wifi4eu.wifi4eu.service.municipality;
 
-import com.google.common.collect.Lists;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
+import wifi4eu.wifi4eu.common.dto.model.LogEmailDTO;
+import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
+import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
+import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.mapper.municipality.MunicipalityCorrespondenceMapper;
+import wifi4eu.wifi4eu.common.mapper.municipality.MunicipalityMapper;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
-import wifi4eu.wifi4eu.common.mapper.municipality.MunicipalityCorrespondenceMapper;
-import wifi4eu.wifi4eu.common.mapper.municipality.MunicipalityMapper;
 import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
@@ -27,39 +29,35 @@ import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service("portalMunicipalityService")
 public class MunicipalityService {
     @Autowired
-    MunicipalityMapper municipalityMapper;
+    private MunicipalityMapper municipalityMapper;
 
     @Autowired
-    MunicipalityRepository municipalityRepository;
+    private MunicipalityRepository municipalityRepository;
 
     @Autowired
-    RegistrationService registrationService;
+    private RegistrationService registrationService;
 
     @Autowired
-    ApplicationService applicationService;
+    private ApplicationService applicationService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    MayorService mayorService;
+    private MayorService mayorService;
 
     @Autowired
-    MunicipalityService municipalityService;
+    private LogEmailRepository logEmailRepository;
 
     @Autowired
-    LogEmailRepository logEmailRepository;
+    private MunicipalityCorrespondenceMapper municipalityCorrespondenceMapper;
 
-    @Autowired
-    MunicipalityCorrespondenceMapper municipalityCorrespondenceMapper;
-
-    private final Logger _log = LogManager.getLogger(MayorService.class);
+    private static final Logger _log = LoggerFactory.getLogger(MayorService.class);
 
     @Autowired
     PermissionChecker permissionChecker;
@@ -67,59 +65,6 @@ public class MunicipalityService {
     public MunicipalityDTO getMunicipalityById(int municipalityId) {
         Municipality municipality = municipalityRepository.findOne(municipalityId);
         return municipalityMapper.toDTO(municipality);
-    }
-
-    /**
-     * This service is used only on the beneficiary-portal/installations page.
-     * We need to allow only to return the municipalities that the user is associated with.
-     *
-     * @param municipalityId
-     * @return
-     */
-    public ResponseDTO getUsersMunicipalityById(Integer municipalityId) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving users from municipality with id " +municipalityId);
-        ResponseDTO response = new ResponseDTO();
-        MunicipalityDTO municipality = getMunicipalityById(municipalityId);
-        if (checkPermissions(municipalityId)) {
-            response.setSuccess(true);
-            response.setData(municipality);
-        } else {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to access");
-            return permissionChecker.getAccessDeniedResponse();
-        }
-        return response;
-    }
-
-    public boolean checkPermissions(int idMunicipality) throws AccessDeniedException {
-        try {
-            //first we check if user logged in is a supplier
-            UserDTO user = permissionChecker.checkBeneficiaryPermission();
-            //and then we check that it has a relation to this installation site's municipality
-            if (registrationService.getRegistrationByUserAndMunicipality(user.getId(), idMunicipality) == null) {
-                throw new AccessDeniedException("403 FORBIDDEN");
-            }
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
-    }
-
-    @Transactional
-    public MunicipalityDTO saveMunicipality(MunicipalityDTO municipalityDTO) {
-        return municipalityMapper.toDTO(municipalityRepository.save(municipalityMapper.toEntity(municipalityDTO)));
-    }
-
-    @Transactional
-    public MunicipalityDTO updateMunicipalityDetails(MunicipalityDTO municipalityDTO) {
-        MunicipalityDTO municipalitySave = municipalityService.getMunicipalityById(municipalityDTO.getId());
-
-        municipalitySave.setAddress(municipalityDTO.getAddress());
-        municipalitySave.setAddressNum(municipalityDTO.getAddressNum());
-        municipalitySave.setPostalCode(municipalityDTO.getPostalCode());
-
-        return municipalityMapper.toDTO(municipalityRepository.save(municipalityMapper.toEntity(municipalitySave)));
     }
 
     @Transactional
@@ -156,23 +101,6 @@ public class MunicipalityService {
         return municipalityMapper.toDTOList(municipalities);
     }
 
-    public List<MunicipalityDTO> getMunicipalitiesByUserId(int userId) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        List<MunicipalityDTO> municipalities = new ArrayList<>();
-        List<RegistrationDTO> registrations = registrationService.getRegistrationsByUserId(userId);
-        for (RegistrationDTO registration : registrations) {
-            municipalities.add(getMunicipalityById(registration.getMunicipalityId()));
-            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Municipality with id " + registration.getMunicipalityId() + " added to the list");
-        }
-        return municipalities;
-    }
-
-    @Cacheable(value = "portalGetMunicipalitiesCountGroupedByLauId")
-    public List<Object> getMunicipalitiesCountGroupedByLauId() {
-        return Lists.newArrayList(municipalityRepository.findMunicipalitiesCountGroupedByLauId());
-    }
-
     public Integer getCountDistinctMunicipalities() {
         return municipalityRepository.countDistinctMunicipalities();
     }
@@ -201,7 +129,4 @@ public class MunicipalityService {
         return new ResponseDTO(true, correspondanceDTOS, page.getTotalElements(), null);
     }
 
-    public LogEmailDTO getCorrespondenceByMunicipalityIdAndAction(Integer municipalityId, String action){
-        return municipalityCorrespondenceMapper.toDTO(logEmailRepository.findTopByMunicipalityIdAndActionOrderBySentDateDesc(municipalityId, action));
-    }
 }

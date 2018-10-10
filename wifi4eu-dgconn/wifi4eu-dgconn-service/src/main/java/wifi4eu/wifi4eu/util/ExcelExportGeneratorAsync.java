@@ -1,25 +1,24 @@
 package wifi4eu.wifi4eu.util;
 
-import com.microsoft.applicationinsights.core.dependencies.apachecommons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.model.ApplicantListItemDTO;
+import wifi4eu.wifi4eu.common.dto.model.BeneficiaryListItemDTO;
+import wifi4eu.wifi4eu.common.dto.model.PagingSortingDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.helper.Validator;
+import wifi4eu.wifi4eu.common.mapper.application.ApplicantListItemMapper;
+import wifi4eu.wifi4eu.common.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
 import wifi4eu.wifi4eu.entity.admin.AdminActions;
 import wifi4eu.wifi4eu.entity.application.ApplicantListItem;
 import wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryListItem;
-import wifi4eu.wifi4eu.common.mapper.application.ApplicantListItemMapper;
-import wifi4eu.wifi4eu.common.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.admin.AdminActionsRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
-import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
-import wifi4eu.wifi4eu.service.user.UserService;
 
-import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -28,25 +27,22 @@ import java.util.List;
 public class ExcelExportGeneratorAsync implements Runnable  {
 
     @Autowired
-    MunicipalityService municipalityService;
+    private MunicipalityService municipalityService;
 
     @Autowired
     private AdminActionsRepository adminActionsRepository;
 
     @Autowired
-    private UserService userService;
+    private UserMapper userMapper;
 
     @Autowired
-    UserMapper userMapper;
+    private ApplicantListItemMapper applicantListItemMapper;
 
     @Autowired
-    ApplicantListItemMapper applicantListItemMapper;
+    private ApplicantListItemRepository applicantListItemRepository;
 
     @Autowired
-    ApplicantListItemRepository applicantListItemRepository;
-
-    @Autowired
-    AzureBlobConnector azureBlobConnector;
+    private AzureBlobConnector azureBlobConnector;
 
     private UserDTO userConnected;
     private Integer callId;

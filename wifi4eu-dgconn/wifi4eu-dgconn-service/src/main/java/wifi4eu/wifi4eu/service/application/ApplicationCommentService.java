@@ -3,8 +3,8 @@ package wifi4eu.wifi4eu.service.application;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import wifi4eu.wifi4eu.common.dto.model.ApplicationCommentDTO;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
-import wifi4eu.wifi4eu.common.dto.model.HelpdeskCommentDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
@@ -24,23 +23,19 @@ import wifi4eu.wifi4eu.service.user.UserService;
 @Service
 public class ApplicationCommentService {
 
-    private Logger _log = LogManager.getLogger(this.getClass());
+    private static final Logger _log = LoggerFactory.getLogger(ApplicationCommentService.class);
 
     @Autowired
-    ApplicationCommentRepository applicationCommentRepository;
+    private ApplicationCommentRepository applicationCommentRepository;
 
     @Autowired
-    ApplicationCommentMapper applicationCommentMapper;
+    private ApplicationCommentMapper applicationCommentMapper;
 
     @Autowired
-    ApplicationService applicationService;
+    private ApplicationService applicationService;
 
     @Autowired
-    UserService userService;
-
-    public List<ApplicationCommentDTO> getApplicationCommentsByApplicationId(Integer applicationId){
-        return applicationCommentMapper.toDTOList(applicationCommentRepository.findAllByApplicationId(applicationId));
-    }
+    private UserService userService;
 
     public ResponseDTO getApplicationCommentsByApplicationIdPaginated(Integer applicationId, Pageable pageable){
         Page<ApplicationComment> page = applicationCommentRepository.findAllByApplicationId(applicationId, pageable);

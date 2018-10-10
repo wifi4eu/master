@@ -12,10 +12,10 @@ import java.util.List;
 public class SimpleLauService {
 
     @Autowired
-    SimpleLauMapper simplelauMapper;
+    private SimpleLauMapper simplelauMapper;
 
     @Autowired
-    SimpleLauRepository simplelauRepository;
+    private SimpleLauRepository simplelauRepository;
 
     public List<SimpleLauDTO> getAllLausFromApplications(){
         return simplelauMapper.toDTOList(simplelauRepository.findAllLausFromApplications());

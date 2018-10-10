@@ -32,7 +32,7 @@ import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
-import wifi4eu.wifi4eu.web.util.authorisation.DashboardUsersOnly;
+import wifi4eu.wifi4eu.web.authorisation.DashboardUsersOnly;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,6 +44,7 @@ import java.util.List;
 @Api(value = "/application", description = "Application object REST API services")
 @RequestMapping("application")
 public class ApplicationResource {
+
     @Autowired
     private ApplicationService applicationService;
 
@@ -51,35 +52,17 @@ public class ApplicationResource {
     private MunicipalityService municipalityService;
 
     @Autowired
-    private PermissionChecker permissionChecker;
-
-    @Autowired
     private UserService userService;
 
     private static final Logger _log = LoggerFactory.getLogger(ApplicationResource.class);
 
+    // TODO: not used. Remove.
     @ApiOperation(value = "Get application by call and registration id")
     @RequestMapping(value = "/call/{callId}/registration/{registrationId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ApplicationDTO getApplicationByCallIdAndRegistrationId(@PathVariable("callId") final Integer callId, @PathVariable("registrationId") final Integer registrationId, HttpServletResponse response) throws IOException {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting applications by call id " + callId + " and registration id " + registrationId);
-        try {
-            permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId);
-        } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Permission not found", e.getMessage());
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        }
-
-        ApplicationDTO responseApp = applicationService.getApplicationByCallIdAndRegistrationId(callId, registrationId);
-        if (responseApp == null) {
-            _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - Application not found");
-            responseApp = new ApplicationDTO();
-        } else {
-            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Application is retrieved correctly");
-        }
-        return responseApp;
+    @DashboardUsersOnly
+    public ApplicationDTO getApplicationByCallIdAndRegistrationId(@PathVariable("callId") final Integer callId, @PathVariable("registrationId") final Integer registrationId, HttpServletResponse response) {
+        return null;
     }
 
     @ApiOperation(value = "Get applications voucher info by call id")
@@ -101,6 +84,7 @@ public class ApplicationResource {
         }
     }
 
+    // TODO: not used. Remove.
     @ApiOperation(value = "Get applications voucher info by call id")
     @RequestMapping(value = "/voucherInfo/application/{applicationId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -108,6 +92,7 @@ public class ApplicationResource {
         return null;
     }
 
+    // TODO: not used. Remove.
     @ApiOperation(value = "Resource to generate ApplicantListItemDTO")
     @RequestMapping(value = "/getApplicantListItem", method = RequestMethod.GET)
     @ResponseBody

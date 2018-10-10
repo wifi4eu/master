@@ -82,10 +82,7 @@ public class SendNotificationsAsync implements Runnable {
 	@Autowired
     private AdminActionsRepository adminActionsRepository;
 
-	public final static String FROM_ADDRESS = "no-reply@wifi4eu.eu";
-	public final static String NO_ACTION = "NO ACTION LOGGED";
-
-	private final Logger _log = LogManager.getLogger(SendNotificationsAsync.class);
+	private static final Logger _log = LogManager.getLogger(SendNotificationsAsync.class);
 
 	private UserDTO userConnected;
 

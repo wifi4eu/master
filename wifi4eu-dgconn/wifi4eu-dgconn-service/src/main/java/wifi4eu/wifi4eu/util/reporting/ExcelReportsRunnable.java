@@ -18,14 +18,14 @@ public class ExcelReportsRunnable implements Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(ExcelReportsRunnable.class);
 
-    MailService mailService;
-    ReportingSystemManager reportingSystemManager;
-    
-    String currentQuery;
-    String name;
-    String email;
-    String lang;
-    String urlFinal;
+    private MailService mailService;
+    private ReportingSystemManager reportingSystemManager;
+
+    private String currentQuery;
+    private String name;
+    private String email;
+    private String lang;
+    private String urlFinal;
 
     public ExcelReportsRunnable(String currentQuery, String name, String email, String lang){
         this.currentQuery = currentQuery;

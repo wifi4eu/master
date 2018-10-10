@@ -1,98 +1,95 @@
 package wifi4eu.wifi4eu.service.application;
 
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.Constant;
-import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.model.ApplicationAuthorizedPersonDTO;
+import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
+import wifi4eu.wifi4eu.common.dto.model.ApplicationInvalidateReasonDTO;
+import wifi4eu.wifi4eu.common.dto.model.InvalidReasonViewDTO;
+import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
 import wifi4eu.wifi4eu.common.enums.VoucherAssignmentStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.helper.Validator;
+import wifi4eu.wifi4eu.common.mapper.application.ApplicantAuthorizedPersonMapper;
+import wifi4eu.wifi4eu.common.mapper.application.ApplicationInvalidateReasonMapper;
+import wifi4eu.wifi4eu.common.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.entity.application.ApplicationInvalidateReason;
 import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
-import wifi4eu.wifi4eu.common.mapper.application.ApplicantAuthorizedPersonMapper;
-import wifi4eu.wifi4eu.common.mapper.application.ApplicationInvalidateReasonMapper;
-import wifi4eu.wifi4eu.common.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationAuthorizedPersonRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationInvalidateReasonRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
-import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
 import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
-import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
 import wifi4eu.wifi4eu.repository.voucher.SimpleMunicipalityRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherSimulationRepository;
-import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ApplicationInvalidateReasonService {
 
-    private static final Logger _log = LogManager.getLogger(ApplicationInvalidateReasonService.class);
+    private static final Logger _log = LoggerFactory.getLogger(ApplicationInvalidateReasonService.class);
 
     //requirement: after a request for correction is sent, cannot validate or invalidate for 2 days
     private static final Integer UPLOAD_DOCUMENT_CORRECTION_DEADLINE = 2;
 
     @Autowired
-    ApplicationInvalidateReasonRepository applicationInvalidateReasonRepository;
+    private ApplicationInvalidateReasonRepository applicationInvalidateReasonRepository;
 
     @Autowired
-    ApplicationInvalidateReasonMapper applicationInvalidateReasonMapper;
+    private ApplicationInvalidateReasonMapper applicationInvalidateReasonMapper;
 
     @Autowired
-    ApplicationMapper applicationMapper;
+    private ApplicationMapper applicationMapper;
 
     @Autowired
-    ApplicationRepository applicationRepository;
+    private ApplicationRepository applicationRepository;
 
     @Autowired
-    ApplicationService applicationService;
+    private ApplicationService applicationService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    RegistrationService registrationService;
+    private RegistrationService registrationService;
 
     @Autowired
-    MunicipalityService municipalityService;
+    private LegalFileCorrectionReasonRepository legalFileCorrectionReasonRepository;
 
     @Autowired
-    LegalFilesRepository legalFilesRepository;
+    private SimpleMunicipalityRepository simpleMunicipalityRepository;
 
     @Autowired
-    LegalFileCorrectionReasonRepository legalFileCorrectionReasonRepository;
+    private VoucherSimulationRepository voucherSimulationRepository;
 
     @Autowired
-    CorrectionRequestEmailRepository correctionRequestEmailRepository;
+    private ApplicantAuthorizedPersonMapper applicant_authorizedPersonMapper;
 
     @Autowired
-    SimpleMunicipalityRepository simpleMunicipalityRepository;
+    private ApplicationAuthorizedPersonRepository application_authorizedPersonRepository;
 
     @Autowired
-    VoucherSimulationRepository voucherSimulationRepository;
-
-    @Autowired
-    ApplicantAuthorizedPersonMapper applicant_authorizedPersonMapper;
-
-    @Autowired
-    ApplicationAuthorizedPersonRepository application_authorizedPersonRepository;
-
-    @Autowired
-    LogEmailRepository logEmailRepository;
+    private LogEmailRepository logEmailRepository;
 
     public List<ApplicationInvalidateReasonDTO> getInvalidateReasonByApplicationId(Integer applicationId) {
         return applicationInvalidateReasonMapper.toDTOList(applicationInvalidateReasonRepository.findAllByApplicationIdOrderByReason(applicationId));
@@ -199,7 +196,7 @@ public class ApplicationInvalidateReasonService {
             }
         }
         */
-        _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - The application is invalid due the following reasons: " + invalidReasonViewDTO.getReasons().toString());
+        _log.info("[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - The application is invalid due the following reasons: " + invalidReasonViewDTO.getReasons().toString());
         return applicationInvalidateReasonMapper.toDTOList(invalidateReason);
     }
 
@@ -249,7 +246,7 @@ public class ApplicationInvalidateReasonService {
             }
         }
         */
-        _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - The application is valid");
+        _log.info("[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - The application is valid");
         return validatedApplication;
     }
 
