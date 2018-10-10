@@ -15,6 +15,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.io.input.BOMInputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -142,9 +143,9 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
     public boolean importLegalEntitiesFromAbac(InputStream fileDataStream) throws IOException {
         _log.debug("importLegalEntityFBCValidate");
 
-        try (InputStreamReader inputStreamReader = new InputStreamReader(fileDataStream)) {
+        try (InputStreamReader inputStreamReader = new InputStreamReader(new BOMInputStream(fileDataStream, ByteOrderMark.UTF_16LE), StandardCharsets.UTF_16LE)) {
 
-            CSVParser csvParser = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(inputStreamReader);
+            CSVParser csvParser = CSVFormat.TDF.withFirstRecordAsHeader().parse(inputStreamReader);
             csvParser.forEach(csvRecord -> {
                 ExportImportRegistrationData validatedLEF = parseValidatedLEF(csvRecord);
                 if (validatedLEF != null) {
@@ -321,83 +322,6 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
         } catch (IOException e) {
             _log.error(ERROR_WRITING_DOWN_TO_THE_CSV_FILE, e);
         }
-    }
-
-    /**
-     * Meant as a temporary solution while we try to convince BUDG that this is meaningless
-     * Create a pdf containing municipality and mayor/representation data
-     *
-     * @param beneficiaryInformation
-     * @param os
-     * @return
-     */
-    private OutputStream createBeneficiaryAbacPDF(BeneficiaryInformation beneficiaryInformation, OutputStream os) {
-        Document document = new Document();
-        try {
-            int chapterNum = 0;
-            PdfWriter.getInstance(document, os);
-            document.open();
-            Font tittleFont = FontFactory.getFont(FontFactory.HELVETICA, 24, Font.BOLD);
-            Font chapterFont = FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLDITALIC);
-            Font paragraphFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL);
-
-            Chunk titleTxt = new Chunk("LEF supporting document", tittleFont);
-            Paragraph titlePar = new Paragraph(titleTxt);
-            titlePar.setAlignment(Element.ALIGN_CENTER);
-            document.add(titlePar);
-
-            document.add(new Paragraph(new Chunk("Municipality information", chapterFont)));
-
-            StringBuilder municipalityParagraphText = new StringBuilder();
-            municipalityParagraphText.append("Municipality id: ").append(beneficiaryInformation.getMun_id()).append("\n");
-            municipalityParagraphText.append("Municipality name: ").append(beneficiaryInformation.getMun_name()).append("\n");
-            municipalityParagraphText.append("Municipality ABAC name: ").append(beneficiaryInformation.getMun_abacName()).append("\n");
-            municipalityParagraphText.append("Municipality adress: ").append(beneficiaryInformation.getFullAddress()).append("\n");
-            municipalityParagraphText.append("Municipality postal code: ").append(beneficiaryInformation.getMun_postalCode()).append("\n");
-            municipalityParagraphText.append("Municipality country code: ").append(beneficiaryInformation.getMun_countryCodeISO()).append("\n");
-
-            document.add(new Paragraph(new Chunk(municipalityParagraphText.toString(), paragraphFont)));
-
-            Mayor mayor = mayorRepository.findByMunicipalityId(beneficiaryInformation.getMun_id());
-            if (mayor != null) {
-
-                document.add(new Paragraph(new Chunk("Mayor information", chapterFont)));
-
-                StringBuilder mayorParagraphText = new StringBuilder();
-                mayorParagraphText.append("Mayor id: ").append(mayor.getId()).append("\n");
-                mayorParagraphText.append("Mayor name: ").append(mayor.getName()).append("\n");
-                mayorParagraphText.append("Mayor surname: ").append(mayor.getSurname()).append("\n");
-                mayorParagraphText.append("Mayor email: ").append(mayor.getEmail()).append("\n");
-
-                document.add(new Paragraph(new Chunk(mayorParagraphText.toString(), paragraphFont)));
-            }
-
-            Iterable<Representation> representations = representationRepository.findByMunicipalityId(beneficiaryInformation.getMun_id());
-            if (representations.iterator().hasNext()) {
-
-                document.add(new Paragraph(new Chunk("Representations information", chapterFont)));
-
-                representations.forEach(representation -> {
-                    StringBuilder representationParagraphText = new StringBuilder();
-                    Mayor mayorRep = representation.getMayor();
-                    representationParagraphText.append("Mayor id: ").append(mayorRep.getId()).append("\n");
-                    representationParagraphText.append("Mayor name: ").append(mayorRep.getName()).append("\n");
-                    representationParagraphText.append("Mayor surname: ").append(mayorRep.getSurname()).append("\n");
-                    representationParagraphText.append("Mayor email: ").append(mayorRep.getEmail()).append("\n");
-
-                    try {
-                        document.add(new Paragraph(new Chunk(representationParagraphText.toString(), paragraphFont)));
-                    } catch (DocumentException e) {
-                        _log.error("unable to create representation in beneficiary pdf", e);
-                    }
-                });
-            }
-
-            document.close();
-        } catch (DocumentException e) {
-            _log.error("unable to create beneficiary pdf", e);
-        }
-        return os;
     }
 
     @Override
