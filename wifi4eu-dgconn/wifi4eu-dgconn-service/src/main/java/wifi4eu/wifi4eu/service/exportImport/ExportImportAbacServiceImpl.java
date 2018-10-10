@@ -8,13 +8,14 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
+import org.apache.commons.io.ByteOrderMark;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.util.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
 import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
 import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.entity.exportImport.AbacStatus;
@@ -54,13 +54,7 @@ import wifi4eu.wifi4eu.util.parsing.LegalCommitmentCSVColumn;
 import wifi4eu.wifi4eu.util.parsing.LegalCommitmentDocumentCSVColumn;
 import wifi4eu.wifi4eu.util.parsing.LegalEntityCSVColumn;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -206,10 +200,16 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
 
         ByteArrayOutputStream entitiesOutputStream = new ByteArrayOutputStream();
         ByteArrayOutputStream documentsOutputStream = new ByteArrayOutputStream();
-        try (OutputStreamWriter entitiesOutputStreamWriter = new OutputStreamWriter(entitiesOutputStream, StandardCharsets.UTF_8);
+
+        //prepend a BOM for excel to open properly the files
+        IOUtils.write(ByteOrderMark.UTF_16LE.getBytes(), entitiesOutputStream);
+        IOUtils.write(ByteOrderMark.UTF_16LE.getBytes(), documentsOutputStream);
+
+        try (OutputStreamWriter entitiesOutputStreamWriter = new OutputStreamWriter(entitiesOutputStream, StandardCharsets.UTF_16LE);
              CSVPrinter entitiesPrinter = new CSVPrinter(entitiesOutputStreamWriter, exportFileUtilities.getMunicipalitiesCsvHeaders());
-             OutputStreamWriter documentsOutputStreamWriter = new OutputStreamWriter(documentsOutputStream, StandardCharsets.UTF_8);
+             OutputStreamWriter documentsOutputStreamWriter = new OutputStreamWriter(documentsOutputStream, StandardCharsets.UTF_16LE);
              CSVPrinter documentsPrinter = new CSVPrinter(documentsOutputStreamWriter, exportFileUtilities.getMunicipalitiesDocCsvHeaders())) {
+
 
             List<BeneficiaryInformation> beneficiariesInformation = municipalityRepository.findBeneficiaryInformation();
 
@@ -251,7 +251,7 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
                     defaultEmpty(beneficiaryInformation.getMun_id()),
                     defaultEmpty(beneficiaryInformation.getMun_name()),
                     defaultEmpty(beneficiaryInformation.getMun_abacName()),
-                    defaultEmpty(ExportFileUtils.QUOTE + beneficiaryInformation.getFullAddress() + ExportFileUtils.QUOTE),
+                    defaultEmpty(beneficiaryInformation.getFullAddress()),
                     defaultEmpty(beneficiaryInformation.getMun_postalCode()),
                     defaultEmpty(beneficiaryInformation.getMun_city()),
                     defaultEmpty(beneficiaryInformation.getMun_countryCodeISO()),
