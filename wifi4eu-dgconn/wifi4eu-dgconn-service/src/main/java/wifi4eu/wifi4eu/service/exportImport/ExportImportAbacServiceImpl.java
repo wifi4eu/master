@@ -251,7 +251,7 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
                     defaultEmpty(beneficiaryInformation.getMun_id()),
                     defaultEmpty(beneficiaryInformation.getMun_name()),
                     defaultEmpty(beneficiaryInformation.getMun_abacName()),
-                    defaultEmpty(ExportFileUtils.QUOTE + beneficiaryInformation.getFullAddress() + ExportFileUtils.QUOTE),
+                    defaultEmpty(beneficiaryInformation.getFullAddress()),
                     defaultEmpty(beneficiaryInformation.getMun_postalCode()),
                     defaultEmpty(beneficiaryInformation.getMun_city()),
                     defaultEmpty(beneficiaryInformation.getMun_countryCodeISO()),
