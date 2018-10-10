@@ -483,7 +483,7 @@ public class MailHelper {
 	 * @param toAddress
 	 * @param fromAddress
 	 * @param event
-	 * @param additionalInfoUrl
+     * @param invalidSupportingDocuments
 	 * @param municipalityId
 	 * @param action
 	 * @param locale
@@ -521,5 +521,46 @@ public class MailHelper {
 
 		return mailData;
 	}
+
+	/**
+	 * Mail to notify selected supplier
+	 *
+	 * @param toAddress
+	 * @param fromAddress
+     * @param municipalityName
+     * @param municipalityCountry
+	 * @param additionalInfoUrl
+	 * @param locale
+	 * @return
+	 */
+	public static MailData buildMailNotifySelectedSupplier(String toAddress, String fromAddress, String municipalityName, String municipalityCountry, String additionalInfoUrl, Locale locale) {
+		ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+		String subject = bundle.getString("mail.notifySelectedSupplier.subject");
+		String body = bundle.getString("mail.notifySelectedSupplier.body");
+		body = MessageFormat.format(body, municipalityName, municipalityCountry, additionalInfoUrl);
+		MailData mailData = new MailData(toAddress, fromAddress, subject, body, locale);
+
+		return mailData;
+	}
+
+    /**
+     * Mail to notify rejected supplier
+     *
+     * @param toAddress
+     * @param fromAddress
+     * @param municipalityName
+     * @param municipalityCountry
+     * @param locale
+     * @return
+     */
+    public static MailData buildMailNotifyRejectedSupplier(String toAddress, String fromAddress, String municipalityName, String municipalityCountry, Locale locale) {
+        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+        String subject = bundle.getString("mail.notifyRejectedSupplier.subject");
+        String body = bundle.getString("mail.notifyRejectedSupplier.body");
+        body = MessageFormat.format(body, municipalityName, municipalityCountry);
+        MailData mailData = new MailData(toAddress, fromAddress, subject, body, locale);
+
+        return mailData;
+    }
 
 }

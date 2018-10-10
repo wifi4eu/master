@@ -37,6 +37,7 @@ export class SelectSupplierComponent {
   private municipalityId: number;
   private registration: RegistrationDTOBase;
   private region: NutsDTOBase = {};
+  private calls: CallDTOBase[];
   
   /* To get region suppliers */
   private supplier: SupplierDTOBase;
@@ -99,53 +100,56 @@ export class SelectSupplierComponent {
           /* Get current application of the beneficiary */
             this.callApi.allCalls().subscribe(
               (calls: CallDTOBase[]) => {
-                  this.applicationApi.getApplicationByCallIdAndRegistrationId(calls[(calls.length-1)].id, this.registration.id).subscribe(
-                    (application: ApplicationDTOBase) => {
-                      this.application = application;
-                      
-                      /* Check if the application already has a supplier assigned */
-                      if (!application.supplierId) {
-                        this.hasSupplierAssigned = false;
-                      }
-
-                      /* Get validated suppliers given a municipalityId */
-                      this.municipalityApi.getMunicipalityById(this.registration.municipalityId).subscribe(
-                        (municipality: MunicipalityDTOBase) => {
-
-                          if(municipality != null) {
-                            this.supplierApi.getValidatedSuppliersListByMunicipalityId(this.registration.municipalityId).subscribe(
-                            (suppliers: SupplierDTOBase[]) => {
-                              this.suppliers = suppliers;
-                              this.suppliersCopy = this.suppliers;
-                    
-                              /* Get previously selected supplier (if it exists) */
-                              if(this.hasSupplierAssigned) {
-                                this.supplierApi.getSupplierDetailsById(this.application.supplierId, this.municipalityId).subscribe(
-                                  (supplier: SupplierDTOBase) => {
-                                    for(var i = 0; i < this.suppliers.length; i++) {
-                                      if(this.suppliers[i].id == supplier.id) {
-                                        this.selectedSupplier = this.suppliers[i];
-                                        this.oldSupplier = this.suppliers[i];
-                                        break;
-                                      } 
-                                    }
-                                  }
-                                );
-                                /* Get the date when supplier was selected */
-                                this.getStringDate(this.application.date);
-                              }
-
-                            }
-                          );
+                  this.calls = calls;
+                  if(this.calls != null && this.calls.length != 0) {
+                    this.applicationApi.getApplicationByCallIdAndRegistrationId(calls[(calls.length-1)].id, this.registration.id, new Date().getTime()).subscribe(
+                      (application: ApplicationDTOBase) => {
+                        this.application = application;
+                        
+                        /* Check if the application already has a supplier assigned */
+                        if (!application.supplierId) {
+                          this.hasSupplierAssigned = false;
                         }
-                      }
-                  );  
-                    
-                }
-              );
+  
+                        /* Get validated suppliers given a municipalityId */
+                        this.municipalityApi.getMunicipalityById(this.registration.municipalityId).subscribe(
+                          (municipality: MunicipalityDTOBase) => {
+  
+                            if(municipality != null) {
+                              this.supplierApi.getValidatedSuppliersListByMunicipalityId(this.municipalityId, this.registration.id, this.calls[(calls.length-1)].id, this.application.id).subscribe(
+                              (suppliers: SupplierDTOBase[]) => {
+                                this.suppliers = suppliers;
+                                this.suppliersCopy = this.suppliers;
+                      
+                                /* Get previously selected supplier (if it exists) */
+                                if(this.hasSupplierAssigned) {
+                                  this.supplierApi.getDetailsBySupplierId(this.application.supplierId, this.calls[(calls.length-1)].id, this.registration.id, this.application.id).subscribe(
+                                    (supplier: SupplierDTOBase) => {
+                                      for(var i = 0; i < this.suppliers.length; i++) {
+                                        if(this.suppliers[i].id == supplier.id) {
+                                          this.selectedSupplier = this.suppliers[i];
+                                          this.oldSupplier = this.suppliers[i];
+                                          break;
+                                        } 
+                                      }
+                                    }
+                                  );
+                                  /* Get the date when supplier was selected */
+                                  this.getStringDate(this.application.date);
+                                }
+  
+                              }
+                            );
+                          }
+                        }
+                    );  
+                      
+                  }
+                );
+              }
             }
           );
-              
+
         }
       );
     }

@@ -26,12 +26,14 @@ export class SelectedSupplierDetailsComponent {
   private application: ApplicationDTOBase;
   private supplier: SupplierDTOBase;
   private supplierContactUser: UserDTOBase;
+  private calls: Array<CallDTOBase>
 
   // User characteristics
   private user: UserDTOBase;
   private storedRegistrationQueues = [];
   
   // Component specific properties
+  private municipality: MunicipalityDTOBase; 
   private municipalityId: number;
   private paramsSupplierId: number;
   private changedSupplierChoice: boolean = false;
@@ -51,7 +53,8 @@ export class SelectedSupplierDetailsComponent {
     private callApi: CallApi,
     private applicationApi: ApplicationApi,
     private supplierApi: SupplierApi,
-    private userApi: UserApi
+    private userApi: UserApi,
+    private municipalityApi: MunicipalityApi
   ) {
 
     /* Get params from URL */
@@ -76,22 +79,32 @@ export class SelectedSupplierDetailsComponent {
             if(registrations[i].municipalityId === this.municipalityId) {
               this.registration = registrations[i];
               !this.registration.installationSiteConfirmation ? this.hasConfirmedInstallation = false : this.hasConfirmedInstallation = true;
+              if(this.registration) {
+                this.municipalityApi.getMunicipalityById(this.registration.municipalityId).subscribe(
+                  (municipality: MunicipalityDTOBase) => {
+                    this.municipality = municipality;
+                  }
+                );
+              }
             }
           }
           
           /* Get current application of the beneficiary */
           this.callApi.allCalls().subscribe(
             (calls: CallDTOBase[]) => {
-              this.applicationApi.getApplicationByCallIdAndRegistrationId(calls[(calls.length-1)].id, this.registration.id).subscribe(
-                (application: ApplicationDTOBase) => {
-                  this.application = application;
-                  if(this.application.supplierId !== this.paramsSupplierId) {
-                    this.changedSupplierChoice = true;
-                  }
-                  this.getSupplierDetails(this.paramsSupplierId, this.municipalityId);
-                  this.getSupplierMainContact(this.paramsSupplierId, this.municipalityId);
-                  }
-                );
+              this.calls = calls;
+              if(this.calls != null && this.calls.length != 0) {
+                this.applicationApi.getApplicationByCallIdAndRegistrationId(calls[(calls.length-1)].id, this.registration.id, new Date().getTime()).subscribe(
+                  (application: ApplicationDTOBase) => {
+                    this.application = application;
+                    if(this.application.supplierId !== this.paramsSupplierId) {
+                      this.changedSupplierChoice = true;
+                    }
+                    this.getSupplierDetails(this.paramsSupplierId, this.registration.id, this.application.id);
+                    this.getSupplierMainContact(this.paramsSupplierId, this.calls[(this.calls.length-1)].id, this.registration.id, this.application.id);
+                    }
+                  );
+                }
               }
             ); 
         }
@@ -102,8 +115,8 @@ export class SelectedSupplierDetailsComponent {
   
   /*  -- METHODS -- */
   /* Get supplier details from supplierId requested through params */
-  getSupplierDetails(supplierId, municipalityId) {
-    this.supplierApi.getSupplierDetailsById(supplierId, municipalityId).subscribe(
+  getSupplierDetails(supplierId, registrationId, applicationId) {
+    this.supplierApi.getDetailsBySupplierId(supplierId, this.calls[(this.calls.length-1)].id, registrationId, applicationId).subscribe(
       (supplier: SupplierDTOBase) => {            
         this.supplier = supplier;
       }
@@ -116,11 +129,10 @@ export class SelectedSupplierDetailsComponent {
   }
 
   /* Get supplier main contact details from supplierId requested through params */
-  getSupplierMainContact(supplierId, municipalityId) {
-    this.userApi.getSupplierMainContact(supplierId, municipalityId).subscribe(
+  getSupplierMainContact(supplierId, callId, registrationId, applicationId) {
+    this.userApi.getSupplierMainContact(supplierId, callId, registrationId, applicationId).subscribe(
       (supplierContact: UserDTOBase) => {
         this.supplierContactUser = supplierContact;
-        console.log("Supplier contact user is ", this.supplierContactUser);
       }
     );
   }
@@ -138,35 +150,14 @@ export class SelectedSupplierDetailsComponent {
   }
   
   /* Assign supplier to the beneficiary application */
-  private saveAndNotify() {    
-    if(!this.application.supplierId) {
-      this.application.supplierId = this.paramsSupplierId;
-      this.assignSupplierAndNotify();
-    }
-
-    else if(this.changedSupplierChoice) {
-      this.supplierApi.notifyRejectedSupplier(this.municipalityId).subscribe(
-        (res: ResponseDTOBase) => {
-          this.application.supplierId = this.paramsSupplierId;
-          this.assignSupplierAndNotify();
-        }
-      );  
-    } 
-    
-  }
-  
-  assignSupplierAndNotify() {
-    this.applicationApi.assignSupplier(this.registration.municipalityId, this.application).subscribe(
+  // NEW METHODS
+  private saveAndNotify() {
+    this.application.supplierId = this.paramsSupplierId;
+    this.applicationApi.assignSupplier(this.calls[(this.calls.length-1)].id, this.registration.municipalityId, this.application).subscribe(
       (resAplication: ResponseDTOBase) => {
-        this.supplierApi.notifySelectedSupplier(this.municipalityId).subscribe(
-          (res: ResponseDTOBase) => {
-            this.changedSupplierChoice = false;
-            this.router.navigate(['/beneficiary-portal/my-voucher']);
-          }, error => {
-            console.log("ERROR on email sending");
-          }
-        );
-        
+        this.router.navigate(['/beneficiary-portal/my-voucher']);
+      }, error => {
+        console.log("ERROR on email sending");
       }
     );
   }

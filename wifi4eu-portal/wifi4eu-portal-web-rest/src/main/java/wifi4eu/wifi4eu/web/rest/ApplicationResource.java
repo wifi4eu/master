@@ -28,8 +28,6 @@ import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
-import java.util.Date;
-
 @CrossOrigin(origins = "*")
 @Controller
 @Api(value = "/application", description = "Application object REST API services")
@@ -56,7 +54,9 @@ public class ApplicationResource {
     @ApiOperation(value = "Get application by call and registration id")
     @RequestMapping(value = "/call/{callId}/registration/{registrationId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ApplicationDTO getApplicationByCallIdAndRegistrationId(@PathVariable("callId") final Integer callId, @PathVariable("registrationId") final Integer registrationId, HttpServletResponse response) throws IOException {
+    public ApplicationDTO getApplicationByCallIdAndRegistrationId(@PathVariable("callId") final Integer callId,
+                                                                  @PathVariable("registrationId") final Integer registrationId,
+                                                                  @RequestParam("date") final Long timestamp, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting applications by call id " + callId + " and registration id " + registrationId);
@@ -80,7 +80,8 @@ public class ApplicationResource {
     @ApiOperation(value = "Get voucher application by call and registration id")
     @RequestMapping(value = "/call/{callId}/registration/{registrationId}/voucher", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ResponseDTO getVoucherApplicationByCallIdAndRegistrationId(@PathVariable("callId") final Integer callId, @PathVariable("registrationId") final Integer registrationId, HttpServletResponse response) throws IOException {
+    public ResponseDTO getVoucherApplicationByCallIdAndRegistrationId(@PathVariable("callId") final Integer callId, 
+        @PathVariable("registrationId") final Integer registrationId, @RequestParam("date") final Long timestamp, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         ResponseDTO responseDTO = new ResponseDTO();
@@ -167,24 +168,28 @@ public class ApplicationResource {
     }
 
     // Save supplier Id into the application
+    // Notifiy Selected Supplier
+    // If supplier Id different from previous selected supplier, send an email to the rejected supplier and delete installation report
     @ApiOperation(value = "Assign supplier")
     @RequestMapping(value = "/assignSupplier", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO assignSupplier(@RequestParam("municipalityId") final int municipalityId, @RequestBody final ApplicationDTO applicationDTO, HttpServletResponse response) throws IOException {
+    public ResponseDTO assignSupplier(@RequestParam("callId") final int callId, @RequestParam("municipalityId") final int municipalityId, @RequestBody final ApplicationDTO applicationDTO, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         try {
             if (_log.isInfoEnabled()) {
-                _log.info("assignSupplier");
+                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Assigning supplier for applications id " + applicationDTO.getId());
             }
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(!permissionChecker.checkIfVoucherAwarded(userDTO, municipalityId)) {
+            permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + applicationDTO.getRegistrationId());
+            if (!applicationService.checkIfVoucherWasAwarded(callId, applicationDTO.getRegistrationId())) {
+                _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - No vouchers found for application id" + applicationDTO.getId());
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            if(!permissionChecker.checkIfSupplierProvidesMunicipalityRegion(municipalityId, applicationDTO.getSupplierId())) {
+            if (!supplierService.checkIfSupplierProvidesMunicipalityRegion(municipalityId, applicationDTO.getSupplierId())) {
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - No valid supplier found for application id" + applicationDTO.getId());
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            applicationDTO.setDate(new Date().getTime());
-            applicationDTO.setSelectSupplierDate(new Date().getTime());
-            ApplicationDTO resApplication = applicationService.saveApplication(applicationDTO);
+            ApplicationDTO resApplication = applicationService.assignSupplier(applicationDTO);
             return new ResponseDTO(true, resApplication, null);
         } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {

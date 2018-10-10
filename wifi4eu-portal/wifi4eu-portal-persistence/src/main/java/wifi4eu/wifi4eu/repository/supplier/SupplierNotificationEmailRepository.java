@@ -5,12 +5,11 @@ import org.springframework.data.repository.CrudRepository;
 import wifi4eu.wifi4eu.entity.supplier.SupplierNotificationEmail;
 
 public interface SupplierNotificationEmailRepository extends CrudRepository<SupplierNotificationEmail, Integer> {
-    @Query(value = "SELECT r.id AS registrationId, s.contact_email AS supplierEmail, m.id AS municipalityId, m.name AS municipalityName, m.country AS municipalityCountry, u.lang AS userLang " +
+    @Query(value = "SELECT u.ecas_email AS supplierEmail, m.name AS municipalityName, m.country AS municipalityCountry, u.lang AS supplierLang " +
     "FROM registrations r \n" +
-    "INNER JOIN applications a ON a.registration = r.id \n" +
-    "INNER JOIN suppliers s ON s.id = a.supplier \n" +
+    "INNER JOIN supplier_users su ON su.supplier_id = ?#{[0]} \n" +
     "INNER JOIN municipalities m ON m.id = r.municipality \n" +
-    "INNER JOIN users u ON u.id = r._user \n" +
-    "WHERE m.id = ?#{[0]}", nativeQuery = true)
-    SupplierNotificationEmail findSupplierNotificationEmailDetailsByMunicipalityId(Integer municipalityId);
+    "INNER JOIN users u ON u.id = su.user_id \n" +
+    "WHERE r.id = ?#{[1]}", nativeQuery = true)
+    SupplierNotificationEmail findSupplierNotificationEmailDetailsByMunicipalityId(int supplierId, int registrationId);
 }

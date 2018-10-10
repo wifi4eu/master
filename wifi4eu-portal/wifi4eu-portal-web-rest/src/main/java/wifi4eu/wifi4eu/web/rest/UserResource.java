@@ -17,6 +17,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.helper.Validator;
+import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.util.RedisUtil;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.session.RecoverHttpSession;
@@ -27,6 +28,7 @@ import wifi4eu.wifi4eu.entity.user.UserContactDetails;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
+import wifi4eu.wifi4eu.service.grantAgreement.GrantAgreementService;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -53,6 +55,12 @@ public class UserResource {
 
     @Autowired
     private RedisUtil redisUtil;
+
+    @Autowired
+    private GrantAgreementService grantAgreementService;
+
+    @Autowired
+    private ApplicationService applicationService;
 
     Logger _log = LogManager.getLogger(UserResource.class);
 
@@ -398,24 +406,32 @@ public class UserResource {
     @ApiOperation(value = "Get supplier main contact by specific id")
     @RequestMapping(value = "/mainSupplierContact/{supplierId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public UserDTO getSupplierMainContact(@PathVariable("supplierId") final Integer supplierId, @RequestParam("municipalityId") Integer municipalityId, HttpServletResponse response) throws IOException {
+    public UserDTO getSupplierMainContact(@PathVariable("supplierId") final Integer supplierId,
+                                          @RequestParam("callId") final Integer callId,
+                                          @RequestParam("registrationId") final int registrationId,
+                                          @RequestParam("applicationId") final int applicationId, HttpServletResponse response) throws IOException {
         UserDTO supplierContactDTO;
         try {
-            _log.info("getSupplierDetailsById: " + supplierId);
+            _log.info("getDetailsBySupplierId: " + supplierId);
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (!permissionChecker.checkIfVoucherAwarded(userDTO, municipalityId)) {
+            if (!applicationService.checkIfVoucherWasAwarded(callId, registrationId)) {
+                _log.warn("ECAS Username: " + userDTO.getEcasUsername() + " - No voucher applications found with voucher awarded");
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            if (!grantAgreementService.checkIfGrantAgreementCounterSignature(applicationId)) {
+                _log.warn("ECAS Username: " + userDTO.getEcasUsername() + " - No voucher found for application " + applicationId);
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             supplierContactDTO = userService.getSupplierMainContact(supplierId);
             return supplierContactDTO;
         } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
-                _log.error("AccessDenied on 'getSupplierDetailsById' operation.", ade);
+                _log.error("AccessDenied on 'getDetailsBySupplierId' operation.", ade);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
-                _log.error("Error on 'getSupplierDetailsById' operation.", e);
+                _log.error("Error on 'getDetailsBySupplierId' operation.", e);
             }
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }

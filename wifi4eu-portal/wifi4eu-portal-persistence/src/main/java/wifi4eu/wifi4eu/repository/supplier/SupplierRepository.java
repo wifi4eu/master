@@ -37,11 +37,19 @@ public interface SupplierRepository extends JpaRepository<Supplier, Integer> {
     @Query(value = "SELECT * FROM suppliers WHERE id != ?#{[0]} and (vat = (SELECT vat FROM suppliers where id = ?#{[0]}) OR account_number = (SELECT account_number FROM suppliers where id = ?#{[0]}))", nativeQuery = true)
     List<Supplier> findSimilarSuppliers(Integer supplierId);
 
-    @Query(value = "SELECT suppliers.* FROM municipalities \n" +
+    @Query(value = "SELECT s.id, s.name, s.address, s.vat, s.website, s.logo FROM municipalities \n" +
     "INNER JOIN laus ON laus.id = municipalities.lau \n" +
     "INNER JOIN nuts ON nuts.code = laus.nuts3 \n" +
     "INNER JOIN supplied_regions sr ON sr.region = nuts.id \n" +
-    "INNER JOIN suppliers ON suppliers.id = sr.supplier \n" +
-    "WHERE municipalities.id = ?#{[0]} AND suppliers._status = 2", nativeQuery = true)
+    "INNER JOIN suppliers s ON s.id = sr.supplier \n" +
+    "WHERE municipalities.id = ?#{[0]} AND s._status = 2", nativeQuery = true)
     Iterable<Supplier> getValidatedSuppliersListByMunicipalityId(Integer municipalityId);
+
+    @Query(value = "SELECT s.id, s.name, s.address, s.vat, s.website, s.logo FROM municipalities \n" +
+    "INNER JOIN laus ON laus.id = municipalities.lau \n" +
+    "INNER JOIN nuts ON nuts.code = laus.nuts3 \n" +
+    "INNER JOIN supplied_regions sr ON sr.region = nuts.id \n" +
+    "INNER JOIN suppliers s ON s.id = sr.supplier \n" +
+    "WHERE municipalities.id = ?#{[0]} AND s.id = ?#{[1]} AND s._status = 2", nativeQuery = true)
+    Supplier getValidatedSupplierByMunicipalityIdAndSupplierId(int municipalityId, int supplierId);
 }

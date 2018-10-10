@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,24 +55,14 @@ import wifi4eu.wifi4eu.repository.supplier.SupplierUserRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
-import wifi4eu.wifi4eu.service.call.CallService;
-import wifi4eu.wifi4eu.service.location.NutsService;
-import wifi4eu.wifi4eu.service.thread.ThreadService;
-import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.RegistrationUtils;
-import wifi4eu.wifi4eu.common.service.mail.MailService;
-
-import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
-import wifi4eu.wifi4eu.service.application.ApplicationService;
 
 import wifi4eu.wifi4eu.repository.supplier.SupplierNotificationEmailRepository;
 import wifi4eu.wifi4eu.entity.supplier.SupplierNotificationEmail;
 
-import java.text.MessageFormat;
-import java.util.*;
 
 @Service("portalSupplierService")
 public class SupplierService {
@@ -99,16 +90,6 @@ public class SupplierService {
     @Autowired
     UserMapper userMapper;
 
-    // TO ERASEEE
-    // @Autowired
-    // NutsService nutsService;
-
-    // @Autowired
-    // ThreadService threadService;
-
-    // @Autowired
-    // UserThreadsService userThreadsService;
-
     @Autowired
     MailService mailService;
 
@@ -133,18 +114,8 @@ public class SupplierService {
     @Autowired
     PermissionChecker permissionChecker;
 
-    // TO ERASEEE
-    @Autowired
-    MunicipalityService municipalityService;
-
     @Autowired
     RegistrationService registrationService;
-
-    @Autowired
-    CallService callService;
-
-    @Autowired
-    ApplicationService applicationService;
 
     @Autowired
     SupplierNotificationEmailRepository supplierNotificationEmailRepository;
@@ -159,7 +130,7 @@ public class SupplierService {
         return supplierMapper.toDTO(supplierRepository.findOne(supplierId));
     }
 
-    public SupplierDTO getSupplierDetailsById(int supplierId) {
+    public SupplierDTO getDetailsBySupplierId(int supplierId) {
         SupplierDTO supplierDetails = supplierMapper.toDTO(supplierRepository.findOne(supplierId));
         supplierDetails.setAccountNumber(null);
         supplierDetails.setBic(null);
@@ -727,54 +698,38 @@ public class SupplierService {
     }
 
     // Send email to notify supplier that a beneficiary has selected him
-    public void notifySelectedSupplier(int municipalityId) throws Exception {
-        SupplierNotificationEmail notification = supplierNotificationEmailRepository.findSupplierNotificationEmailDetailsByMunicipalityId(municipalityId);
+    public void notifySelectedSupplier(int supplierId, int registrationId) throws Exception {
+        SupplierNotificationEmail notification = supplierNotificationEmailRepository.findSupplierNotificationEmailDetailsByMunicipalityId(supplierId, registrationId);
         if (notification != null) {
             Locale locale = new Locale(UserConstants.DEFAULT_LANG);
             if (notification.getUserLang() != null) {
                 locale = new Locale(notification.getUserLang());
             }
-
-            String additionalInfoUrl = userService.getBaseUrl() + "supplier-portal/notify-selected-supplier";
-            MailData mailData = MailHelper.buildMailNotifySelectedSupplier(notification.getSupplierEmail(), MailService.FROM_ADDRESS, additionalInfoUrl, locale);
+            String additionalInfoUrl = userService.getBaseUrl() + "supplier-portal/additional-info";
+            MailData mailData = MailHelper.buildMailNotifySelectedSupplier(notification.getSupplierEmail(), MailService.FROM_ADDRESS, notification.getMunicipalityName(), notification.getMunicipalityCountry(), additionalInfoUrl, locale);
             mailService.sendMail(mailData, false);
-
-            // ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-            // String fromAddress = MailService.FROM_ADDRESS;
-            // String subject = bundle.getString("mail.notifySelectedSupplier.subject");
-            // String msgBody = bundle.getString("mail.notifySelectedSupplier.body");
-            // msgBody = MessageFormat.format(msgBody, notification.getMunicipalityName(), notification.getMunicipalityCountry() );
-            // mailService.sendEmail(notification.getSupplierEmail(), fromAddress, subject, msgBody);
-
         } else {
             throw new Exception("Notification doesn't exist.");
         }
     }
 
     // Send email to notify supplier that a beneficiary has rejected him
-    public void notifyRejectedSupplier(int municipalityId) throws Exception {
-        SupplierNotificationEmail notification = supplierNotificationEmailRepository.findSupplierNotificationEmailDetailsByMunicipalityId(municipalityId);
+    public void notifyRejectedSupplier(int supplierId, int registrationId) throws Exception {
+        SupplierNotificationEmail notification = supplierNotificationEmailRepository.findSupplierNotificationEmailDetailsByMunicipalityId(supplierId, registrationId);
         if (notification != null) {
             Locale locale = new Locale(UserConstants.DEFAULT_LANG);
             if (notification.getUserLang() != null) {
                 locale = new Locale(notification.getUserLang());
             }
-            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-            String fromAddress = MailService.FROM_ADDRESS;
-            String subject = bundle.getString("mail.notifyRejectedSupplier.subject");
-            String msgBody = bundle.getString("mail.notifyRejectedSupplier.body");
-            msgBody = MessageFormat.format(msgBody, notification.getMunicipalityName(), notification.getMunicipalityCountry() );
-            mailService.sendEmail(notification.getSupplierEmail(), fromAddress, subject, msgBody);
+            MailData mailData = MailHelper.buildMailNotifyRejectedSupplier(notification.getSupplierEmail(), MailService.FROM_ADDRESS, notification.getMunicipalityName(), notification.getMunicipalityCountry(), locale);
+            mailService.sendMail(mailData, false);
         } else {
             throw new Exception("Notification doesn't exist.");
         }
-        // Update timestamps
-        RegistrationDTO registration = registrationService.getRegistrationById(notification.getRegistrationId());
-        registration.setInstallationSiteSubmission(null);
-        registration.setInstallationSiteRejection(new Date());
-        registration.setInstallationSiteConfirmation(null);
-        registrationService.saveRegistration(registration);
+    }
 
-        // Delete installation report --> TO BE COMPLETED
+    public boolean checkIfSupplierProvidesMunicipalityRegion(int municipalityId, int supplierId) {
+        SupplierDTO supplier = supplierMapper.toDTO(supplierRepository.getValidatedSupplierByMunicipalityIdAndSupplierId(municipalityId, supplierId));
+        return Validator.isNotNull(supplier);
     }
 }

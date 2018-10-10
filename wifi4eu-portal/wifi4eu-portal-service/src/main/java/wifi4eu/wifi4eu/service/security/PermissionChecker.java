@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationAuthorizedPersonDTO;
 
-import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
@@ -28,16 +27,9 @@ import wifi4eu.wifi4eu.repository.security.RightRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationAuthorizedPersonService;
 import wifi4eu.wifi4eu.service.user.UserService;
-import wifi4eu.wifi4eu.service.application.ApplicationService;
-
-import wifi4eu.wifi4eu.service.registration.RegistrationService;
-import wifi4eu.wifi4eu.service.supplier.SupplierService;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
-import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
 
 import java.nio.file.AccessDeniedException;
 import java.util.List;
-import java.util.ListIterator;
 
 @Service
 public class PermissionChecker {
@@ -57,19 +49,10 @@ public class PermissionChecker {
     RightRepository rightRepository;
 
     @Autowired
-    ApplicationService applicationService;
-
-    @Autowired
-    RegistrationService registrationService;
-
-    @Autowired
     ApplicationAuthorizedPersonService applicationAuthorizedPersonService;
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    SupplierService supplierService;
 
     public boolean check(String rightDesc){
         UserContext userContext = UserHolder.getUser();
@@ -166,30 +149,5 @@ public class PermissionChecker {
         response.setSuccess(false);
         response.setError(new ErrorDTO(403, "shared.error.notallowed"));
         return response;
-    }
-
-    public boolean checkIfVoucherAwarded(UserDTO userDTO, Integer municipalityId) {
-        List<RegistrationDTO> registrations = registrationService.getRegistrationsByUserId(userDTO.getId());
-        for (int i = 0; i < registrations.size(); i++) {
-            if(registrations.get(i).getMunicipalityId() == municipalityId) {
-                List<ApplicationDTO> applications = applicationService.getApplicationsByRegistrationId(registrations.get(i).getId());
-                for (int j = 0; j < applications.size(); i++) {
-                    if(applications.get(j).isVoucherAwarded()) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean checkIfSupplierProvidesMunicipalityRegion(Integer municipalityId, Integer supplierId) {
-        List<SupplierDTO> suppliers = supplierService.getValidatedSuppliersListByMunicipalityId(municipalityId);
-        for(int i = 0; i < suppliers.size(); i++) {
-            if(suppliers.get(i).getId() == supplierId) {
-                return true;
-            }
-        }
-        return false;
     }
 }

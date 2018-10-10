@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestParam;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
@@ -43,7 +44,10 @@ public class ApplyVoucherResource {
     @ApiOperation(value = "Get data for apply for voucher by specific user id")
     @RequestMapping(value = "/data/user/{userId}/call/{callId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<ApplyVoucher> getDataForApplyVoucherByUserIdAndCallId(@PathVariable("userId") final Integer userId, @PathVariable("callId") final Integer callId, HttpServletResponse response) throws IOException {
+    public List<ApplyVoucher> getDataForApplyVoucherByUserIdAndCallId(@PathVariable("userId") final Integer userId,
+                                                                      @PathVariable("callId") final Integer callId,
+                                                                      @RequestParam("date") final Long timestamp,
+                                                                      HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting data for apply for voucher by user id " + userId);

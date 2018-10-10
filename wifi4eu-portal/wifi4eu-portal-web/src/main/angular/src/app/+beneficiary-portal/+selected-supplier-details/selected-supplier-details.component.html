@@ -53,7 +53,7 @@
             <p class="profileData">{{ supplier?.vat }}</p>
           </div>
         </div>
-        <div class="row">
+        <div *ngIf="supplier.website" class="row">
           <div class="col-sm-4">
             <p>{{ 'benefPortal.selectSupplier.table.web' | translate }}</p>
           </div>
@@ -61,7 +61,7 @@
             <p class="profileData word-break-all">{{ supplier?.website }}</p>
           </div>
         </div>
-        <div class="row">
+        <div *ngIf="supplier.logo" class="row">
           <div class="col-sm-4">
             <p>{{ 'benefPortal.selectSupplier.table.logo' | translate }}</p>
           </div>
@@ -109,7 +109,7 @@
             <p>{{ 'suppRegistration.email.label' | translate }}</p>
           </div>
           <div class="col-sm-8">
-            <p class="profileData word-break-all">{{ supplierContactUser?.email }}</p>
+            <p class="profileData word-break-all">{{ supplierContactUser?.ecasEmail }}</p>
           </div>
         </div>
       </div>

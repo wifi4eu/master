@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationAuthorizedPersonDTO;
 import wifi4eu.wifi4eu.common.dto.model.GrantAgreementDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.service.application.ApplicationAuthorizedPersonService;
 import wifi4eu.wifi4eu.service.grantAgreement.GrantAgreementService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
@@ -105,22 +107,35 @@ public class GrantAgreementResource {
     @ApiOperation(value = "Get grant agreement by applicationId")
     @RequestMapping(value = "/getGrantAgreementByApplicationId/{applicationId}", method = RequestMethod.GET)
     @ResponseBody
-    public GrantAgreementDTO getGrantAgreementByApplicationId(@PathVariable("applicationId") Integer applicationId) {
+    public ResponseDTO getGrantAgreementByApplicationId(@PathVariable("applicationId") Integer applicationId, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
-        if (userConnected == null || userConnected.getType() == 1 || userConnected.getType() == 5) {
-            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            if (userConnected == null || userConnected.getType() == 1 || userConnected.getType() == 5) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            if(!permissionChecker.checkIfAuthorizedGrantAgreement(applicationId)){
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            GrantAgreementDTO grantAgreementDTO = grantAgreementService.getGrantAgreementByApplicationId(applicationId);
+            if(Validator.isNotNull(grantAgreementDTO)){
+                grantAgreementDTO.setDocumentLocation(null);
+                grantAgreementDTO.setDocumentLocationCounterSigned(null);
+            }
+            responseDTO.setSuccess(true);
+            responseDTO.setError(null);
+            responseDTO.setData(grantAgreementDTO);
+            return responseDTO;
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to view the grant agreement", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Error accessing grant agreement data", e);
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
-        if(!permissionChecker.checkIfAuthorizedGrantAgreement(applicationId)){
-            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-        }
-
-        GrantAgreementDTO grantAgreementDTO = grantAgreementService.getGrantAgreementByApplicationId(applicationId);
-        if(Validator.isNotNull(grantAgreementDTO)){
-            grantAgreementDTO.setDocumentLocation(null);
-            grantAgreementDTO.setDocumentLocationCounterSigned(null);
-        }
-        return grantAgreementDTO;
     }
 
     @ApiOperation(value = "Get grant agreement pdf signed by grantAgreementId")

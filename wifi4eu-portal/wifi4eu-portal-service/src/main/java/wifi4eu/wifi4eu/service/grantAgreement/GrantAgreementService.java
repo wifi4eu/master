@@ -274,4 +274,8 @@ public class GrantAgreementService {
         return fileBytes;
     }
 
+    public boolean checkIfGrantAgreementCounterSignature(int applicationId) {
+        return Validator.isNotNull(agreementRepository.findByApplicationId(applicationId));
+    }
+
 }

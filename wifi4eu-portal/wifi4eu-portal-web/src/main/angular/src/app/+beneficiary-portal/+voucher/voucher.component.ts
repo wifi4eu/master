@@ -45,19 +45,6 @@ export class VoucherComponent {
     private applyHourTime = {};
     private uploadDate: string[] = [];
     private uploadHour: string[] = [];
-
-    // TO ERASEEE
-    private selectionDate: Date;
-    private localeDate: Array<String>;
-    private displayedDate: String;
-    // private isMayor: boolean = false;
-    // private registration: RegistrationDTOBase;
-    // private mayor: MayorDTOBase;
-    // private docsOpen: boolean [] = [];
-    // private registrationsDocs: RegistrationDTOBase[] = [];
-    // private storedRegistrationQueues = [];
-    // private disableQueuing = [];
-
     private displayError = false;
     private displayCallClosed = false;
     private errorMessage = null;
@@ -67,6 +54,9 @@ export class VoucherComponent {
     private csrfTokenCookieName: string = "XSRF-TOKEN";
     private nameCookieApply: string = "hasRequested";
     private allRequestCompleted = false;
+    private selectionDate: Date;
+    private localeDate: Array<String>;
+    private displayedDate: String;
 
     private httpOptions = {
         headers: new Headers({
@@ -78,10 +68,10 @@ export class VoucherComponent {
         let storedUser = this.localStorage.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
-            this.callCustomApi.getCallForApply().subscribe(
-                (call: CallCustomBase) => {
-                    this.currentCall = call;
-                    if (this.currentCall) {
+            this.callCustomApi.getCallForApply(new Date().getTime()).subscribe(
+                (res: ResponseDTOBase) => {                
+                    this.currentCall = res.data;
+                        if (this.currentCall) {
                         this.voucherCompetitionState = this.currentCall.voucherCompetitionState;
                         if (this.voucherCompetitionState == 2) {
                             this.openedCalls = "greyImage";
@@ -113,7 +103,7 @@ export class VoucherComponent {
 
     private loadVoucherDataWithoutCall(callId) {
         this.allRequestCompleted = false;
-        this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id, callId)
+        this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id, callId, new Date().getTime())
             .finally(() => this.allRequestCompleted = true)
             .subscribe(
                 (applyVoucher: ApplyVoucherBase[]) => {
@@ -147,7 +137,7 @@ export class VoucherComponent {
         this.endDate = endDateCall.format("DD/MM/YYYY");
         this.endHour = endDateCall.format("HH:mm");
 
-        this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id, this.currentCall.id)
+        this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id, this.currentCall.id, new Date().getTime())
             .finally(() => this.allRequestCompleted = true)
             .subscribe(
                 (applyVoucher: ApplyVoucherBase[]) => {
@@ -158,7 +148,6 @@ export class VoucherComponent {
                             this.uploadDateTime[this.applyVouchersData[i].idMunicipality] = ('0' + uploaddate.getUTCDate()).toString().slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
                             this.uploadHourTime[this.applyVouchersData[i].idMunicipality] = ('0' + uploaddate.getHours()).toString().slice(-2) + ":" + ('0' + uploaddate.getMinutes()).slice(-2);
                         }
-                        console.log("Apply voucher data is ", this.applyVouchersData);
                     }
                 },
                 error => {

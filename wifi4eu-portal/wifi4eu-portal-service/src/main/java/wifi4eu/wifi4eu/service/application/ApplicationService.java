@@ -33,6 +33,7 @@ import wifi4eu.wifi4eu.common.dto.model.PagingSortingDTO;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentAuxiliarDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
@@ -40,6 +41,7 @@ import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
+import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.entity.registration.Registration;
@@ -53,6 +55,7 @@ import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
+import wifi4eu.wifi4eu.repository.installation.InstallationSiteRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
@@ -65,14 +68,9 @@ import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.voucher.VoucherService;
+import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.util.ExcelExportGenerator;
-
-/* TO ERASEEE
-import wifi4eu.wifi4eu.util.MailService;
-import java.text.MessageFormat;
-import java.time.DateTimeException;
-import java.util.*;
-*/
+import wifi4eu.wifi4eu.common.helper.Validator;
 
 @Service
 public class ApplicationService {
@@ -143,6 +141,12 @@ public class ApplicationService {
 
     @Autowired
     RegistrationRepository registrationRepository;
+
+    @Autowired
+    SupplierService supplierService;
+
+    @Autowired
+    InstallationSiteRepository installationSiteRepository;
 
     public ApplicationDTO getApplicationById(int applicationId) {
         return applicationMapper.toDTO(applicationRepository.findOne(applicationId));
@@ -262,13 +266,6 @@ public class ApplicationService {
         }
     }
 
-    /* TO ERASEEE
-    public List<ApplicationDTO> getApplicationsBySupplierId(int supplierId) {
-        return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findBySupplierId(supplierId)));
-    }
-    */
-
-    /* TO ERASEEE - FOLLOWING 2 METHODS LOOK VERY SIMILAR */
     public ApplicationDTO getApplicationByCallIdAndRegistrationId(int callId, int registrationId) {
         return applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
     }
@@ -555,9 +552,7 @@ public class ApplicationService {
             long currentTime = new Date().getTime();
             if (call.getStartDate() < currentTime && call.getEndDate() > currentTime) {
                 List<ApplicationDTO> pendingFollowupApps = applicationMapper.toDTOList(applicationRepository.findByCallIdAndStatus(call.getId(), ApplicationStatus.PENDING_FOLLOWUP.getValue()));
-                if (!pendingFollowupApps.isEmpty()) {
-                    return true;
-                }
+                return !pendingFollowupApps.isEmpty();
             }
         }
         return false;
@@ -597,8 +592,58 @@ public class ApplicationService {
         return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
     }
 
-    @Transactional
+    /* @Transactional
     public ApplicationDTO saveApplication(ApplicationDTO ApplicationDTO) {
         return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(ApplicationDTO)));
+    } */
+
+    @Transactional
+    public ApplicationDTO assignSupplier(ApplicationDTO frontApplicationDTO) throws Exception {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Assign Supplier");
+        ApplicationDTO backApplicationDTO = getApplicationById(frontApplicationDTO.getId());
+        // Cancel if provided supplier is null
+        if (Validator.isNull(frontApplicationDTO.getSupplierId())) {
+            throw new AppException("No supplier has been provided for the application with id: " + frontApplicationDTO.getSupplierId());
+        }
+        // Is it the first time beneficiary selects a supplier?
+        if (Validator.isNull(backApplicationDTO.getSupplierId())) {
+            frontApplicationDTO.setSelectSupplierDate(new Date().getTime());
+            applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(frontApplicationDTO)));
+            supplierService.notifySelectedSupplier(frontApplicationDTO.getSupplierId(), frontApplicationDTO.getRegistrationId());
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Application was saved correctly");
+            _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Create Notify Selected Supplier Email - Email sent to supplier id " + frontApplicationDTO.getSupplierId() + " by user " + userConnected.getEcasEmail() + " for the application id: " + frontApplicationDTO.getId());
+        } else  if (frontApplicationDTO.getSupplierId() != backApplicationDTO.getSupplierId()) {
+            // Is selected supplier from DB different from the one selected by the beneficiary?
+            supplierService.notifyRejectedSupplier(backApplicationDTO.getSupplierId(), backApplicationDTO.getRegistrationId());
+                _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Create Notify Rejected Supplier Email - Email sent to supplier id " + frontApplicationDTO.getSupplierId() + " by user " + userConnected.getEcasEmail() + " for the application id: " + frontApplicationDTO.getId());
+            supplierService.notifySelectedSupplier(frontApplicationDTO.getSupplierId(), frontApplicationDTO.getRegistrationId());
+                _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Create Notify Selected Supplier Email - Email sent to supplier id " + frontApplicationDTO.getSupplierId() + " by user " + userConnected.getEcasEmail() + " for the application id: " + frontApplicationDTO.getId());
+            frontApplicationDTO.setSelectSupplierDate(new Date().getTime());
+            applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(frontApplicationDTO)));
+                _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Application was saved correctly");
+
+            // Update timestamps
+            RegistrationDTO registration = registrationService.getRegistrationById(frontApplicationDTO.getRegistrationId());
+            registration.setInstallationSiteSubmission(null);
+            registration.setInstallationSiteRejection(new Date());
+            registration.setInstallationSiteConfirmation(null);
+            registrationService.saveRegistration(registration);
+
+            // Delete installation report from old supplier
+            installationSiteRepository.deleteByMunicipality(registration.getMunicipalityId());
+
+        } else {
+            _log.warn("No changes were made on the selection of the supplier for application id", frontApplicationDTO.getId());
+        }
+        return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(frontApplicationDTO)));
+    }
+
+    // Note we have another method called checkIfVoucherAwarded which states if the connected user has been awarded any voucher
+    // However this method is specific for a given application (here identified by callId and registrationId)
+    public boolean checkIfVoucherWasAwarded(Integer callId, Integer registrationId) {
+        Application application = applicationRepository.findVoucherApplicationByCallIdAndRegistrationId(callId, registrationId);
+        return Validator.isNotNull(application);
     }
 }

@@ -60,17 +60,17 @@ export class MyVoucherComponent {
     private confirmButtonDisabled: boolean = false;
     private startDate: string = '';
 
-        /* -- voucherCompetitionState values --
+    /* -- voucherCompetitionState values --
     0 = There are no calls created
     1 = There is a call created, but not started. DISPLAY TIMER
     2 = There is a call created, already started. You can 'Apply For Voucher'
     3 = Call created & started. You clicked 'Apply For Voucher' and are waiting for the approvement.
-     */
+    */
+   
     private voucherCompetitionState: number;
     private showPermissionsModal: boolean;
     private hasSigned: GrantAgreementDTO [] = [];
     private date: String [] = [];
-
 
     constructor(
         private localStorage: LocalStorageService,
@@ -99,28 +99,34 @@ export class MyVoucherComponent {
                         (calls: CallDTOBase[]) => {
                             this.calls = calls;
                             for(let i = 0; i < registrations.length; i++) {
-                                this.applicationApi.getVoucherApplicationByCallIdAndRegistrationId(this.calls[(this.calls.length)-1].id, registrations[i].id).subscribe(
+                                this.applicationApi.getVoucherApplicationByCallIdAndRegistrationId(this.calls[(this.calls.length)-1].id, registrations[i].id, new Date().getTime()).subscribe(
                                     (response : ResponseDTO) => {
-                                        if (response.data != null && response.data.id != 0) {        
+                                        if (response.data != null && response.data.id != 0) {
                                             this.municipalityApi.getMunicipalityById(registrations[i].municipalityId).subscribe(
                                                 (municipality : MunicipalityDTOBase) => {
-                                                    this.applications.push(response.data);
                                                     this.grantAgreementApi.getGrantAgreementByApplicationId(response.data.id).subscribe(
-                                                        (grantAgreement: GrantAgreementDTOBase)=>{
-                                                          if(grantAgreement != null && grantAgreement.dateSignature != null){
-                                                              grantAgreement.dateSignature = new Date(grantAgreement.dateSignature);
-                                                              grantAgreement['formattedDateSignature'] = ('0' + grantAgreement.dateSignature.getUTCDate()).slice(-2) + "/" + ('0' + ( grantAgreement.dateSignature.getUTCMonth() + 1)).slice(-2) + "/" +  grantAgreement.dateSignature.getUTCFullYear();
-                                                              this.hasSigned.push(grantAgreement);
-                                                              this.date[i] = ('0' + grantAgreement.dateSignature.getUTCDate()).slice(-2) + "/" + ('0' + ( grantAgreement.dateSignature.getUTCMonth() + 1)).slice(-2) + "/" +  grantAgreement.dateSignature.getUTCFullYear();
+                                                        (res: ResponseDTO )=>{                                                    
+                                                            let grantAgreement = res.data;
+                                                            if(grantAgreement != null && grantAgreement.dateSignature != null){
+                                                                grantAgreement.dateSignature = new Date(grantAgreement.dateSignature);
+                                                                grantAgreement['formattedDateSignature'] = ('0' + grantAgreement.dateSignature.getUTCDate()).slice(-2) + "/" + ('0' + ( grantAgreement.dateSignature.getUTCMonth() + 1)).slice(-2) + "/" +  grantAgreement.dateSignature.getUTCFullYear();
+                                                                this.hasSigned.push(grantAgreement);
+                                                                this.date[i] = ('0' + grantAgreement.dateSignature.getUTCDate()).slice(-2) + "/" + ('0' + ( grantAgreement.dateSignature.getUTCMonth() + 1)).slice(-2) + "/" +  grantAgreement.dateSignature.getUTCFullYear();
+                                                                this.registrations.push(registrations[i]);
+                                                                this.applications.push(response.data);
+                                                                this.municipalities.push(municipality);
+                                                                this.grantAgreementDates.push(this.date[i]);
                                                           } else {
-                                                              this.hasSigned.push(null);
+                                                                this.hasSigned.push(null);
+                                                                this.registrations.push(registrations[i]);
+                                                                this.applications.push(response.data);
+                                                                this.municipalities.push(municipality);
+                                                                this.grantAgreementDates.push(null);
                                                           }
+                                                          
                                                     }, error => {
                                                         console.log(error);                                                        
                                                     });
-                                                    this.registrations.push(registrations[i]);
-                                                    this.municipalities.push(municipality);
-                                                    if(i === 0) {this.grantAgreementDates.push(this.getStringDate(1529922797000));}  
                                                 }
                                             );
                                         }
@@ -149,10 +155,9 @@ export class MyVoucherComponent {
         }
     }
 
-    /* TO BE COMPLETED */
     /* Confirm and send email to network installation company */ 
-    private confirmInstallation() {
-        console.log("Write a -Confirm Network Installation- method");
+    private confirmInstallation(i) {
+        this.router.navigate(['/beneficiary-portal/installations/', this.municipalities[i].id]);
     }
     
     /* Redirect to selected supplier details */
@@ -179,14 +184,8 @@ export class MyVoucherComponent {
         
     }
 
-    private signGrantAgreement(index) {
-        this.grantAgreementDates.push(this.getStringDate(1530255941000));
-    }
-
-    /* TO BE COMPLETED */
-    /* Method that returns when was grant agreement signed, fake for the moment */
-
     private closeModal() {
         this.showPermissionsModal = false;
     }
+
 }

@@ -26,10 +26,12 @@ import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.common.utils.SupplierValidator;
 import wifi4eu.wifi4eu.common.utils.UserValidator;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
+import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.service.user.UserService;
-
+import wifi4eu.wifi4eu.service.application.ApplicationService;
+import wifi4eu.wifi4eu.service.grantAgreement.GrantAgreementService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -51,6 +53,15 @@ public class SupplierResource {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ApplicationService applicationService;
+
+    @Autowired
+    private GrantAgreementService grantAgreementService;
+
+    @Autowired
+    private RegistrationService registrationService;
 
     Logger _log = LogManager.getLogger(SupplierResource.class);
 
@@ -80,62 +91,39 @@ public class SupplierResource {
 
     // WARNING: Only municipalities that have ever been a awarded a voucher will be able to access
     @ApiOperation(value = "Get supplier details by specific id")
-    @RequestMapping(value = "/details/{supplierId}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/{supplierId}/details", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public SupplierDTO getSupplierDetailsById(@PathVariable("supplierId") final Integer supplierId, @RequestParam("municipalityId") Integer municipalityId, HttpServletResponse response) throws IOException {
+    public SupplierDTO getDetailsBySupplierId(@PathVariable("supplierId") final Integer supplierId,
+                                              @RequestParam("callId") final Integer callId,
+                                              @RequestParam("registrationId") final int registrationId,
+                                              @RequestParam("applicationId") final int applicationId, HttpServletResponse response) throws IOException {
         SupplierDTO supplierDTO = new SupplierDTO();
         try {
-            _log.info("getSupplierDetailsById: " + supplierId);
+            _log.info("getDetailsBySupplierId: " + supplierId);
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (!permissionChecker.checkIfVoucherAwarded(userDTO, municipalityId)) {
+            if (!applicationService.checkIfVoucherWasAwarded(callId, registrationId)) {
+                _log.error("ECAS Username: " + userDTO.getEcasUsername() + " - No voucher applications found with voucher awarded");
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            supplierDTO = supplierService.getSupplierDetailsById(supplierId);
+            if (!grantAgreementService.checkIfGrantAgreementCounterSignature(applicationId)) {
+                _log.error("ECAS Username: " + userDTO.getEcasUsername() + " - No voucher found for application " + applicationId);
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            supplierDTO = supplierService.getDetailsBySupplierId(supplierId);
             return supplierDTO;
         } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
-                _log.error("AccessDenied on 'getSupplierDetailsById' operation.", ade);
+                _log.error("AccessDenied on 'getDetailsBySupplierId' operation.", ade);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
-                _log.error("Error on 'getSupplierDetailsById' operation.", e);
+                _log.error("Error on 'getDetailsBySupplierId' operation.", e);
             }
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
         return null;
     }
-
-    /*
-    //TODO: is it necessary to be exposed? All the registration have to use submitSupplierRegistration endpoint?
-    @ApiOperation(value = "Create supplier")
-    @RequestMapping(method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public ResponseDTO createSupplier(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
-        try {
-            _log.info("createSupplier");
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (supplierDTO.getUserId() != userDTO.getId()) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-            SupplierValidator.validateSupplier(supplierDTO);
-            SupplierDTO resSupplier = supplierService.createSupplier(supplierDTO);
-            return new ResponseDTO(true, resSupplier, null);
-        } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("AccessDenied on 'createSupplier' operation.", ade);
-            }
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'createSupplier' operation.", e);
-            }
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
-        }
-    }
-    */
 
     @ApiOperation(value = "Update supplier")
     @RequestMapping(method = RequestMethod.POST)
@@ -276,7 +264,8 @@ public class SupplierResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This supplier cannot been retrieved", e);
+            _log.error("ECAS UserngetVoucherApplicationByCallIdAndRegistrationId" +
+                    "ame: " + userConnected.getEcasUsername() + "- This supplier cannot been retrieved", e);
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
             return null;
         }
@@ -494,7 +483,8 @@ public class SupplierResource {
     // @ApiOperation(value = "Generate invitation to be a supplier contact")
     // @RequestMapping(value = "/invitation-contact-supplier", method = RequestMethod.POST)
     // @ResponseBody
-    public ResponseDTO invitateContactSupplier(@RequestParam("supplierId") final int supplierId, @RequestParam("newContactEmail") final String newContactEmail, HttpServletResponse response) throws IOException {
+    public ResponseDTO invitateContactSupplier(@RequestParam("supplierId") final int supplierId,
+                                               @RequestParam("newContactEmail") final String newContactEmail, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         try {
@@ -526,15 +516,30 @@ public class SupplierResource {
 
     // Get validated suppliers that supply a specific region
     // WARNING: only will be able to access municipalities with an awarded voucher
-    @ApiOperation(value = "Get validated suppliers by regionID")
-    @RequestMapping(value = "/region/{municipalityId}/validated", method = RequestMethod.GET, produces = "application/json")
+    @ApiOperation(value = "Get validated suppliers by municipalityId")
+    @RequestMapping(value = "/{municipalityId}/region/validated", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<SupplierDTO> getValidatedSuppliersListByMunicipalityId(@PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse response) throws IOException {
+    public List<SupplierDTO> getValidatedSuppliersListByMunicipalityId(@PathVariable("municipalityId") final int municipalityId,
+                                                                       @RequestParam("registrationId") final int registrationId,
+                                                                       @RequestParam("callId") final int callId,
+                                                                       @RequestParam("applicationId") final int applicationId, HttpServletResponse response) throws IOException {
         List<SupplierDTO> suppliersList = new ArrayList<>();
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         try {
             _log.info("getValidatedSuppliersListByMunicipalityId " + municipalityId);
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (!permissionChecker.checkIfVoucherAwarded(userDTO, municipalityId)) {
+            permissionChecker.check(RightConstants.USER_TABLE + userConnected.getId());
+            if (!applicationService.checkIfVoucherWasAwarded(callId, registrationId)) {
+                _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - No voucher found for application " + applicationId);
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            if (!grantAgreementService.checkIfGrantAgreementCounterSignature(applicationId)) {
+                _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - Missing grant agreement counter signature for application " + applicationId);
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            RegistrationDTO registrationDTO = registrationService.getRegistrationById(registrationId);
+            if (Validator.isNotNull(registrationDTO.getInstallationSiteConfirmation())) {
+                _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - Installation site has been already confirmed for application " + applicationId);
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             suppliersList = supplierService.getValidatedSuppliersListByMunicipalityId(municipalityId);
@@ -549,56 +554,6 @@ public class SupplierResource {
                 _log.error("Error on 'getValidatedSuppliersListByMunicipalityId' operation.", e);
             }
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        }
-        return null;
-    }
-
-    @ApiOperation(value = "Notify supplier by email that a beneficiary selected him")
-    @RequestMapping(value = "/notifySelectedSupplier", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseDTO notifySelectedSupplier(@RequestBody final int municipalityId) {
-        _log.info("notify Selected Supplier: " + municipalityId);
-        try {
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (!permissionChecker.checkIfVoucherAwarded(userDTO, municipalityId)) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-            supplierService.notifySelectedSupplier(municipalityId);
-            return new ResponseDTO(true, null, null);
-        } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("AccessDenied on 'notifySelectedSupplier' operation", ade);
-            }
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'notifySelectedSupplier' operation.", e);
-            }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
-        }
-        return null;
-    }
-
-    @ApiOperation(value = "Notify supplier by email that a beneficiary has rejected him")
-    @RequestMapping(value = "/notifyRejectedSupplier", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseDTO notifyRejectedSupplier(@RequestBody final int municipalityId) {
-        _log.info("notify Selected Supplier: " + municipalityId);
-        try {
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (!permissionChecker.checkIfVoucherAwarded(userDTO, municipalityId)) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-            supplierService.notifyRejectedSupplier(municipalityId);
-            return new ResponseDTO(true, null, null);
-        } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("AccessDenied on 'notifyRejectedSupplier' operation.", ade);
-            }
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'notifyRejectedSupplier' operation.", e);
-            }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
         return null;
     }

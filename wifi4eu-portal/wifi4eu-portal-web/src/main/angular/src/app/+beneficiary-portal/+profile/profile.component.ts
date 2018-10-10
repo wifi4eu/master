@@ -145,52 +145,6 @@ export class BeneficiaryProfileComponent {
                             this.users[registration.municipalityId] = users;
                             if (users != null)
                                 this.userMain = users.find(x => x.main === 1);
-
-
-                        /* TO ERASEEE
-                                let storedUser = this.localStorageService.get('user');
-        this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
-        if (this.user != null) {
-            this.userApi.getUserById(this.user.id).subscribe(
-                (user: UserDTOBase) => {
-                    if (this.user != null) {
-                        this.user = user;
-                        if (this.user.type == 2 || this.user.type == 3) {
-                            Object.assign(this.editedUser, this.user);
-                           this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
-                                (registrations: RegistrationDTOBase[]) => {
-                                    if (registrations.length == 1) {
-                                        this.oneRegsitration = true;
-                                        this.oneRegistrationNumber = registrations[0].municipalityId;
-                                        if (registrations[0].allFilesFlag == 1) {
-                                            this.documentUploaded = true;
-                                        }
-                                    } else {
-                                        this.oneRegsitration = false;
-                                    }
-                                    for (let registration of registrations) {
-                                        this.allDocumentsUploaded.push(registration.allFilesFlag == 1);
-                                        this.isRegisterHold = (registration.status == 0); // 0 status is HOLD
-                                        this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
-                                            (municipality: MunicipalityDTOBase) => {
-                                                this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
-                                                    (mayor: MayorDTOBase) => {
-                                                        this.municipalities.push(municipality);
-                                                        this.mayors.push(mayor);
-                                                    }
-                                                );
-                                            }
-                                        );
-                                    }
-                                }
-                            );
-                        } else {
-                            this.sharedService.growlTranslation('You are not allowed to view this page.', 'shared.error.notallowed', 'warn');
-                            this.router.navigateByUrl('/home');
-                        }
-                        */
-
-
                         }
                     );
                 }
@@ -274,24 +228,6 @@ export class BeneficiaryProfileComponent {
                 break;
         }
     }
-
-    /* TO ERASEEE
-    private saveUserChanges() {
-        if (this.editedUser.email != this.user.email) {
-            this.editedUser.email = this.user.email;
-        }
-        this.submittingData = true;
-        this.userApi.updateUserDetails(this.editedUser).subscribe(
-            (response: ResponseDTOBase) => {
-                if (response.success) {
-                    this.user = response.data;
-                    this.closeModal();
-                    this.submittingData = false;
-                }
-            }
-        );
-    }
-    */
 
     private saveMunicipalityChanges() {
         if (this.editedMunicipality.country != this.municipalities[this.currentEditIndex].country) {

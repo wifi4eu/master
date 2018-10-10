@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.repository.installation;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.entity.installation.InstallationSite;
 
 public interface InstallationSiteRepository extends PagingAndSortingRepository<InstallationSite, Integer>, InstallationSiteRepositoryCustom {
@@ -19,4 +20,7 @@ public interface InstallationSiteRepository extends PagingAndSortingRepository<I
     InstallationSite findInstallationSiteById(Integer id);
 
     InstallationSite findInstallationSiteByIdAndMunicipality(Integer id, Integer municipality);
+
+    @Transactional
+    void deleteByMunicipality(int municipalityId);
 }
