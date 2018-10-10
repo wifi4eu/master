@@ -320,7 +320,7 @@ public class ApplicationService {
         if (country == null) {
             country = "%";
         }
-        switch (pagingSortingData.getOrderField()) {
+        switch (pagingSortingData.getOrderField().toLowerCase()) {
             case "name":
                 if (pagingSortingData.getOrderType() == -1) {
                     if (name != null) {
@@ -340,7 +340,7 @@ public class ApplicationService {
                     applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByNameAsc(callId, country, pagingSortingData.getOffset(), pagingSortingData.getCount()));
                 }
                 break;
-            case "countryCode":
+            case "countrycode":
                 if (pagingSortingData.getOrderType() == -1) {
                     if (name != null) {
                         if (name.trim().length() > 0) {
