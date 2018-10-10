@@ -10,10 +10,8 @@ import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
 import wifi4eu.wifi4eu.abac.data.enums.LegalCommitmentCSVColumn;
 import wifi4eu.wifi4eu.abac.utils.DateTimeUtils;
 
-import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.List;
 
 @Component
@@ -34,22 +32,18 @@ public class LegalCommitmentCSVFileParser extends AbstractCSVFileParser{
 		try {
 
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-			OutputStreamWriter streamWriter = new OutputStreamWriter(stream);
-			BufferedWriter writer = new BufferedWriter(streamWriter);
-
-			CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
-					.withHeader(
-							LegalCommitmentCSVColumn.MUNICIPALITY_PORTAL_ID.toString(),
-							LegalCommitmentCSVColumn.GRANT_AGREEMENT_SIGNATURE_DATE.toString(),
-							LegalCommitmentCSVColumn.GRANT_AGREEMENT_COUNTERSIGNATURE_DATE.toString(),
-							LegalCommitmentCSVColumn.ABAC_STATUS.toString(),
-							LegalCommitmentCSVColumn.ABAC_MESSAGE.toString(),
-							LegalCommitmentCSVColumn.ABAC_KEY.toString(),
-							LegalCommitmentCSVColumn.DATE_EXPORTED.toString(),
-							LegalCommitmentCSVColumn.USER_EXPORTED.toString(),
-							LegalCommitmentCSVColumn.BATCH_REFERENCE.toString()
-					));
-
+			CSVPrinter csvPrinter = createCSVPrinter(stream, CSVFormat.DEFAULT.withHeader(
+				LegalCommitmentCSVColumn.MUNICIPALITY_PORTAL_ID.toString(),
+				LegalCommitmentCSVColumn.GRANT_AGREEMENT_SIGNATURE_DATE.toString(),
+				LegalCommitmentCSVColumn.GRANT_AGREEMENT_COUNTERSIGNATURE_DATE.toString(),
+				LegalCommitmentCSVColumn.ABAC_STATUS.toString(),
+				LegalCommitmentCSVColumn.ABAC_MESSAGE.toString(),
+				LegalCommitmentCSVColumn.ABAC_KEY.toString(),
+				LegalCommitmentCSVColumn.DATE_EXPORTED.toString(),
+				LegalCommitmentCSVColumn.USER_EXPORTED.toString(),
+				LegalCommitmentCSVColumn.BATCH_REFERENCE.toString()
+			));
+			
 			for (LegalCommitment legalCommitment : legalCommitments) {
 				csvPrinter.printRecord(
 						legalCommitment.getLegalEntity().getMid(),
@@ -66,7 +60,7 @@ public class LegalCommitmentCSVFileParser extends AbstractCSVFileParser{
 
 			csvPrinter.flush();
 			csvPrinter.close();
-			return stream.toString();
+			return createCSVFileContent(stream);
 
 		} catch (IOException e) {
 			e.printStackTrace();

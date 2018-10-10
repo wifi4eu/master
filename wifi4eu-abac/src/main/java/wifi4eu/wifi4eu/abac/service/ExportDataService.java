@@ -1,9 +1,7 @@
 package wifi4eu.wifi4eu.abac.service;
 
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import wifi4eu.wifi4eu.abac.data.dto.FileDTO;
 import wifi4eu.wifi4eu.abac.data.entity.*;
-import wifi4eu.wifi4eu.abac.utils.DateTimeUtils;
 import wifi4eu.wifi4eu.abac.utils.ZipFileWriter;
 import wifi4eu.wifi4eu.abac.utils.csvparser.BudgetaryCommitmentCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.csvparser.DocumentCSVFileParser;
@@ -52,16 +49,16 @@ public class ExportDataService {
 	@Autowired
 	private LegalCommitmentService legalCommitmentService;
 
-	static final String LEGAL_ENTITY_INFORMATION_CSV_FILENAME = "airgap_exportBeneficiaryInformation.csv";
-	static final String BUDGETARY_COMMITMENT_INFORMATION_CSV_FILENAME = "airgap_exportBudgetaryCommitmentInformation.csv";
-	static final String LEGAL_COMMITMENT_INFORMATION_CSV_FILENAME = "airgap_exportLegalCommitmentInformation.csv";
-	static final String LEGAL_COMMITMENT_INFORMATION_ZIP_FILENAME = "airgap_exportLegalCommitments.zip";
-	static final String LEGAL_ENTITY_DOCUMENTS_CSV_FILENAME = "airgap_exportBeneficiaryDocuments.csv";
+	public static final String LEGAL_ENTITY_INFORMATION_CSV_FILENAME = "airgap_exportBeneficiaryInformation.csv";
+	public static final String BUDGETARY_COMMITMENT_INFORMATION_CSV_FILENAME = "airgap_exportBudgetaryCommitmentInformation.csv";
+	public static final String LEGAL_COMMITMENT_INFORMATION_CSV_FILENAME = "airgap_exportLegalCommitmentInformation.csv";
+	public static final String LEGAL_COMMITMENT_INFORMATION_ZIP_FILENAME = "airgap_exportLegalCommitments.zip";
+	public static final String LEGAL_ENTITY_DOCUMENTS_CSV_FILENAME = "airgap_exportBeneficiaryDocuments.csv";
 
 	private final Logger log = LoggerFactory.getLogger(ExportDataService.class);
 
 	@Transactional
-	public FileDTO exportLegalEntities() throws UnsupportedEncodingException {
+	public String exportLegalEntities() throws UnsupportedEncodingException {
 		log.info("exportLegalEntities");
 		List<LegalEntity> legalEntities = legalEntityService.getAllLegalEntitiesForExport();
 		String csvFile = legalEntityCSVFileParser.exportLegalEntitiesToCSV(legalEntities);
@@ -72,12 +69,14 @@ public class ExportDataService {
 			legalEntity.setUserExported(ecasUserService.getCurrentUsername());
 			legalEntityService.saveLegalEntity(legalEntity);
 		}
-
-		return new FileDTO(LEGAL_ENTITY_INFORMATION_CSV_FILENAME, csvFile.getBytes(StandardCharsets.UTF_8));
+		
+		return csvFile;
+		
+		//return new FileDTO(LEGAL_ENTITY_INFORMATION_CSV_FILENAME, csvFile.getBytes(StandardCharsets.UTF_8));
 	}
 
 	@Transactional
-	public FileDTO exportBudgetaryCommitments() throws UnsupportedEncodingException {
+	public String exportBudgetaryCommitments() throws UnsupportedEncodingException {
 		log.info("exportBudgetaryCommitmentyContent");
 		List<BudgetaryCommitmentPosition> budgetaryCommitmentPositions = (List<BudgetaryCommitmentPosition>) budgetaryCommitmentService.findAllBudgetaryCommitmentPositionsForExport();
 		String csvFile = budgetaryCommitmentCSVFileParser.exportBudgetaryCommitmentToCSV(budgetaryCommitmentPositions);
@@ -89,7 +88,9 @@ public class ExportDataService {
 			budgetaryCommitmentService.save(budgetaryCommitmentPosition.getBudgetaryCommitment());
 		}
 
-		return new FileDTO(BUDGETARY_COMMITMENT_INFORMATION_CSV_FILENAME, csvFile.getBytes("UTF-8"));
+		return csvFile;
+		
+		//return new FileDTO(BUDGETARY_COMMITMENT_INFORMATION_CSV_FILENAME, csvFile.getBytes("UTF-8"));
 	}
 
 	@Transactional
