@@ -84,8 +84,7 @@ public class MayorResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting mayor by municipality id " + municipalityId);
         try {
-            UserDTO user = userService.getUserByUserContext(UserHolder.getUser());
-            if (user.getType() != 5) {
+            if (userConnected.getType() != 5) {
                 if (!permissionChecker.checkIfDashboardUser()) {
                     permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
                 }
@@ -93,9 +92,11 @@ public class MayorResource {
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve the mayor from this municipality", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The mayor from this municipality cannot been retrieved", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
+            return null;
         }
         return mayorService.getMayorByMunicipalityId(municipalityId);
     }

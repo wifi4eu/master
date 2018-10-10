@@ -30,8 +30,8 @@
                                 <p-autoComplete id="municipality" class="form-control {{css_class_municipalities[0]}}"
                                                 name="municipality" field="name1" [(ngModel)]="laus[0]"
                                                 [suggestions]="lauSuggestions" (completeMethod)="search($event)"
-                                                (onSelect)="checkMunicipalitiesSelected()"
-                                                (input)="checkMunicipalitiesSelected()"
+                                                (onSelect)="checkMunicipalitiesSelected(0)"
+                                                (input)="checkMunicipalitiesSelected(0)"
                                                 (focusout)="clearMunicipality(0)" required></p-autoComplete>
                             </div>
                         </div>
@@ -42,8 +42,7 @@
                 <div class="ui-g-12">
                     <div class="ui-g-8">
                         <div class="form-group">
-                            <label class="label floatLeft" for="address">{{ 'benefRegistration.townHall.address' |
-                                translate }}</label>
+                            <label class="label floatLeft" for="address">{{ 'benefRegistration.address.label' | translate }}</label>
                             <input type="text" class="form-control paddingInput" min="1" 
                                    id="addressStep2" name="address" [(ngModel)]="municipalities[0].address"  maxlength="255" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)" required>
                         </div>
@@ -134,7 +133,7 @@
                                     <div class="ui-g-12">
                                         <div class="form-group">
                                             <label class="label floatLeft" for="municipality">
-                                                {{ 'shared.municipality.label' | translate }}
+                                                {{ 'benefRegistration.municipalityDropdown' | translate }}
                                             </label>
                                             <div class="clearfix"></div>
                                             <p-autoComplete [id]="'municipality-'+i"
@@ -143,8 +142,8 @@
                                                             [(ngModel)]="laus[i]"
                                                             [suggestions]="lauSuggestions"
                                                             (completeMethod)="search($event)"
-                                                            (onSelect)="checkMunicipalitiesSelected()"
-                                                            (input)="checkMunicipalitiesSelected()"
+                                                            (onSelect)="checkMunicipalitiesSelected(i)"
+                                                            (input)="checkMunicipalitiesSelected(i)"
                                                             (focusout)="clearMunicipality(i)"
                                                             required></p-autoComplete>
                                         </div>

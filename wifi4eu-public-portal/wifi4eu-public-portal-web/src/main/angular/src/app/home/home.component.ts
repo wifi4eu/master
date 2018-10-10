@@ -5,6 +5,9 @@ import { CallDTOBase } from "../shared/swagger/model/CallDTO";
 import { LocalStorageService } from "angular-2-local-storage";
 import { ResponseDTOBase } from "../shared/swagger/model/ResponseDTO";
 import { CallcustomApi, CallCustomBase } from "../shared/swagger";
+import * as moment from 'moment';
+import 'moment-timezone';
+import{ AppConstants} from '../shared/constants/AppConstants';
 
 @Component({
     selector: 'app-home',
@@ -50,10 +53,10 @@ export class HomeComponent {
                 this.currentCall = call;
                 if (this.currentCall) {
                     this.callState = this.currentCall.voucherCompetitionState;
-                    if (this.callState == 1) {
-                        let date = new Date(this.currentCall.startDate);
-                        this.dateNumber = ('0' + date.getUTCDate()).toString().slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
-                        this.hourNumber = ('0' + (date.getUTCHours() + 2)).toString().slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
+                    if (this.callState >= 1) {
+                        let date = moment(this.currentCall.startDate).tz(AppConstants.timezone);
+                        this.dateNumber = date.format("DD/MM/YYYY");
+                        this.hourNumber = date.format("HH:mm");
                         this.showTimer = true;
                     }
                 } else {

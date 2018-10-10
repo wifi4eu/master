@@ -12,13 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.helper.Validator;
-import wifi4eu.wifi4eu.util.RedisUtil;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.session.RecoverHttpSession;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
@@ -28,6 +26,7 @@ import wifi4eu.wifi4eu.entity.user.UserContactDetails;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
+import wifi4eu.wifi4eu.util.RedisUtil;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -83,8 +82,15 @@ public class UserResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         //Permissions
         ObjectMapper mapper = new ObjectMapper();
-        List<UserContactDetails> usersList = mapper.convertValue(users.get("users"), new TypeReference<ArrayList<UserContactDetails>>() {
-        });
+        List<UserContactDetails> usersList = mapper.convertValue(users.get("users"), new TypeReference<ArrayList<UserContactDetails>>(){});
+
+        //WIFIFOREU-3443 Works WITH and WITHOUT CONTACTS
+        if (!userService.userIsAuthorisedToMakeThisChanges(usersList, userConnected)){
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permission to update user details");
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+        }
+
         for (UserContactDetails user : usersList) {
             try {
                 _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating user details by id " + user.getId());

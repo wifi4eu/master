@@ -1,5 +1,7 @@
 package wifi4eu.wifi4eu.entity.grantAgreement;
 
+import wifi4eu.wifi4eu.entity.application.Application;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -20,9 +22,6 @@ public class GrantAgreement {
     @Column(name = "signature_proof")
     private String signatureProof;
 
-    @Column(name = "application_id")
-    private Integer applicationId;
-
     @Column(name = "date_signature")
     private Date dateSignature;
 
@@ -38,21 +37,10 @@ public class GrantAgreement {
     @Column(name = "document_language")
     private String documentLanguage;
 
-    public GrantAgreement() {
-    }
+    @ManyToOne
+    @JoinColumn(name = "application_id")
+    private Application application;
 
-    public GrantAgreement(Integer id, String signatureId, String counterSignatureId, String signatureProof, Integer applicationId, Date dateSignature, Date dateCounterSignature, String documentLocation, String documentLocationCounterSigned, String documentLanguage) {
-        this.id = id;
-        this.signatureId = signatureId;
-        this.counterSignatureId = counterSignatureId;
-        this.signatureProof = signatureProof;
-        this.applicationId = applicationId;
-        this.dateSignature = dateSignature;
-        this.dateCounterSignature = dateCounterSignature;
-        this.documentLocation = documentLocation;
-        this.documentLocationCounterSigned = documentLocationCounterSigned;
-        this.documentLanguage = documentLanguage;
-    }
 
     public Integer getId() {
         return id;
@@ -82,16 +70,8 @@ public class GrantAgreement {
         return signatureProof;
     }
 
-    public void setSignatureProof(String signatureProof) {
+    public void  setSignatureProof(String signatureProof) {
         this.signatureProof = signatureProof;
-    }
-
-    public Integer getApplicationId() {
-        return applicationId;
-    }
-
-    public void setApplicationId(Integer applicationId) {
-        this.applicationId = applicationId;
     }
 
     public Date getDateSignature() {
@@ -132,5 +112,13 @@ public class GrantAgreement {
 
     public void setDocumentLocationCounterSigned(String documentLocationCounterSigned) {
         this.documentLocationCounterSigned = documentLocationCounterSigned;
+    }
+
+    public Application getApplication() {
+        return application;
+    }
+
+    public void setApplication(Application application) {
+        this.application = application;
     }
 }

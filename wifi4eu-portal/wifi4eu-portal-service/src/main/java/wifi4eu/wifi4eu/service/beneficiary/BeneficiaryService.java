@@ -313,21 +313,31 @@ public class BeneficiaryService {
                     /* Añado todos los user threads */
                     for (MunicipalityDTO conflictMunicipality : municipalitiesWithSameLau) {
                         RegistrationDTO conflictRegistrationDTO = registrationService.getRegistrationByMunicipalityId(conflictMunicipality.getId());
-                        if (conflictRegistrationDTO != null) {
+                        Integer userId = userRepository.findMainUserFromRegistration(conflictRegistrationDTO.getId()).getId();
+                        Integer threadId = threadDTO.getId();
+                        if (conflictRegistrationDTO != null && userThreadsService.getByUserIdAndThreadId(userId, threadId) == null) {                      
                             UserThreadsDTO userThreadsDTO = new UserThreadsDTO();
-                            userThreadsDTO.setUserId(userRepository.findMainUserFromRegistration(conflictRegistrationDTO.getId()).getId());
-                            userThreadsDTO.setThreadId(threadDTO.getId());
+                            userThreadsDTO.setUserId(userId);
+                            userThreadsDTO.setThreadId(threadId);
                             userThreadsService.createUserThreads(userThreadsDTO);
-                            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - User thread " + threadDTO.getId() + " added");
-                        }
+                            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - User thread " + threadId + " added");
+                    	} else {
+                    		_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Thread " + threadId + " already existed");
+                    	}
                     }
                 } else {
-                    /* añado el nuevo user thread */
-                    UserThreadsDTO userThreadsDTO = new UserThreadsDTO();
-                    userThreadsDTO.setUserId(userDTO.getId());
-                    userThreadsDTO.setThreadId(threadDTO.getId());
-                    userThreadsDTO = userThreadsService.createUserThreads(userThreadsDTO);
-                    _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Thread " + threadDTO.getId() + " added");
+                	Integer userId = userDTO.getId();
+                	Integer threadId = threadDTO.getId();
+                	if (userThreadsService.getByUserIdAndThreadId(userId, threadId) == null) {
+	                    /* añado el nuevo user thread */
+	                    UserThreadsDTO userThreadsDTO = new UserThreadsDTO();
+	                    userThreadsDTO.setUserId(userDTO.getId());
+	                    userThreadsDTO.setThreadId(threadDTO.getId());
+	                    userThreadsDTO = userThreadsService.createUserThreads(userThreadsDTO);
+	                    _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Thread " + threadId + " added");
+                	} else {
+                		_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Thread " + threadId + " already existed");
+                	}
                 }
             }
             /* change registration status to Hold on conflict Registrations*/

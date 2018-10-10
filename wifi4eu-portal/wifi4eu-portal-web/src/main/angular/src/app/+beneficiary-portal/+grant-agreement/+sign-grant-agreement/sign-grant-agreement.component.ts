@@ -42,8 +42,6 @@ export class SignGrantAgreementComponent {
         let id;
         this.languagesArray = UxEuLanguages.getLanguages(this.languageCodeArray);
         this.route.params.subscribe(params => id = params['id']);
-  
-    
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         //TODO GET REGISTRATION ID FROM ROUTING
@@ -59,16 +57,24 @@ export class SignGrantAgreementComponent {
                         return;
                       }
                     })
+                    this.grantAgreementApi.isLefImportDone(registrationId).subscribe((response: boolean) => {
+                        this.contentVisible = response;
+                        if(!response){
+                          this.sharedService.growlTranslation("You cannot sign the grant agreement until the lef import has been done", "benefPortal.grantAgreement.lefImport", "error");              
+                          this.router.navigate(['./beneficiary-portal/my-voucher/grant-agreement']);
+                          return;
+                        }
+                      })
                     this.callApi.getCallById(application.callId).subscribe(
                         (call: CallDTOBase) =>{        
                             this.call = call;
                             this.applicationApi.getApplicationByCallIdAndRegistrationId(this.call.id, registrationId).subscribe(
                                 (application: ApplicationDTOBase) => {
                                     this.application = application;
-                                    this.applicationAuthorizedPersonApi.findByApplicationAndUserId(this.application.id, this.user.id).subscribe(
-                                        (applicationAuthorized: ApplicationAuthorizedPersonDTOBase  ) =>{
-                                            if(applicationAuthorized != null){
-                                                this.userApi.getUserById(applicationAuthorized['authorized_person']).subscribe(
+                                    this.applicationAuthorizedPersonApi.findByApplication(this.application.id).subscribe(
+                                        (response: ResponseDTO) =>{
+                                            if(response.success && response.data){
+                                                this.userApi.getUserById(this.user.id).subscribe(
                                                     (user: UserDTOBase) => {
                                                         this.authorizedUser = user;
                                                         this.inputGrantAgreement.applicationId = this.application.id;
@@ -158,7 +164,7 @@ export class SignGrantAgreementComponent {
             this.grantAgreementApi.downloadGrantAgreementPdf(this.inputGrantAgreement).subscribe(          
                 (response) => {
                     let blob = new Blob([response], {type: 'application/pdf'});
-                    FileSaver.saveAs(blob, 'grantAgreementPdf_'+this.inputGrantAgreement.documentLanguage+'.pdf');
+                    FileSaver.saveAs(blob, `grant_agreement_${this.application.id}_${this.inputGrantAgreement.documentLanguage}.pdf`);
                     this.sharedService.growlTranslation("Your file have been downloaded correctly!", "dgconn.dashboard.card.messageDownload", "success");              
                 }, error => {
                     this.sharedService.growlTranslation("An error occurred while trying to retrieve the data from the server. Please, try again later.", "shared.error.api.generic", "error");

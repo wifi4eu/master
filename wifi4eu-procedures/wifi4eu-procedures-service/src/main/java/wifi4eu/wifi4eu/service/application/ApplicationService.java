@@ -13,21 +13,23 @@ import org.springframework.stereotype.Service;
 
 import wifi4eu.wifi4eu.common.dto.mail.MailData;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
+import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.service.mail.MailService;
+import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
+import wifi4eu.wifi4eu.repository.call.CallRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 
 @Service
 public class ApplicationService {
-    private static final Logger _log = LogManager.getLogger(ApplicationService.class);
 
-    @Value("${mail.server.location}")
-    private String baseUrl;
+    private static final Logger _log = LogManager.getLogger(ApplicationService.class);
 
     @Autowired
     private MailService mailService;
@@ -42,53 +44,58 @@ public class ApplicationService {
     private UserRepository userRepository;
 
     @Autowired
-    private ApplicationService applicationService;
+    private CallRepository callRepository;
 
     @Autowired
     ApplicationMapper applicationMapper;
 
     public void sendCreateApplicationEmail(User user, Integer municipalityId, ApplicationDTO application) throws Exception {
         Locale locale = new Locale(UserConstants.DEFAULT_LANG);
-        if (user.getLang() != null) {
+        if (Validator.isNotNull(user.getLang())) {
             locale = new Locale(user.getLang());
         } else {
-            _log.warn("SCHEDULED TASK: Create Application Emails - The user " + user.getEcasUsername() + " has not specified a language");
+            _log.warn("Create Application Emails - The user " + user.getEcasUsername() + " has not specified a language");
         }
-
-    	MailData mailData = MailHelper.buildMailCreateApplication(user.getEcasEmail(), MailService.FROM_ADDRESS, municipalityId, "createApplication", locale);
-    	mailService.sendMail(mailData, true);
-    	
-        application.setSentEmail(true);
-        applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(application)));
-        _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Create Application Emails - Email will be sent to " + user.getEcasEmail() + " for the " + "application id: " + application.getId());
+        Municipality municipality = municipalityRepository.findOne(municipalityId);
+        if (Validator.isNotNull(municipality)) {
+            MailData mailData = MailHelper.buildMailCreateApplication(user.getEcasEmail(), MailService.FROM_ADDRESS, municipalityId, municipality.getName(),"createApplication", locale);
+            mailService.sendMail(mailData, true);
+            application.setSentEmail(true);
+            application.setSentEmailDate(new Date());
+            applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(application)));
+            _log.log(Level.getLevel("BUSINESS"), "Create Application Emails - Email will be sent to " + user.getEcasEmail() + " for the " + "application id: " + application.getId());
+        }
     }
 
     public Integer[] sendEmailApplications(Integer callId) throws Exception {
+        if (Validator.isNull(callRepository.findOne(callId))){
+            throw new AppException("Call ID " + callId + " does not exist");
+        }
         Integer sentEmailsUsers = 0;
         Integer sentEmailsMunicipalities = 0;
-        _log.debug("SCHEDULED TASK: Create Application Emails - STARTING");
-        //in case of server failure also search for applications that weren't sent the email and that were created at least four hours ago
+        _log.debug("Create Application Emails - STARTING");
+        // in case of server failure also search for applications that weren't sent the email and that were created at least four hours ago
         List<ApplicationDTO> applicationList = applicationMapper.toDTOList(applicationRepository.findByCreateApplicationEmailNotSent(callId, new Date().getTime()));
-        _log.info("SCHEDULED TASK: Create Application Emails - There is " + applicationList.size() + " municipalities to be sent the email in this " +
+        _log.info("Create Application Emails - There is " + applicationList.size() + " municipalities to be sent the email in this " +
                 "last four hours.");
         for (ApplicationDTO app : applicationList) {
             Integer municipalityId = municipalityRepository.findByRegistrationId(app.getRegistrationId()).getId();
             List<User> users = userRepository.findUsersByRegistrationId(app.getRegistrationId());
-            if(users != null && !users.isEmpty()) {
+            if(Validator.isNotNull(users) && !users.isEmpty()) {
                 for (User user : users) {
-                    if (municipalityId != null && user != null) {
-                        applicationService.sendCreateApplicationEmail(user, municipalityId, app);
+                    if (Validator.isNotNull(municipalityId) && Validator.isNotNull(user)) {
+                        sendCreateApplicationEmail(user, municipalityId, app);
                         sentEmailsUsers++;
                     } else {
-                        _log.error("SCHEDULED TASK: Create Application Emails - inconsistency in data. User or municipality is null. Application id: " + app.getId());
+                        _log.error("Create Application Emails - inconsistency in data. User or municipality is null. Application id: " + app.getId());
                     }
                 }
             } else {
-                _log.error("SCHEDULED TASK: Create Application Emails - No users are related to the municipality. Application id: " + app.getId());
+                _log.error("Create Application Emails - No users are related to the municipality. Application id: " + app.getId());
             }
             sentEmailsMunicipalities++;
         }
-        _log.debug("SCHEDULED TASK: Create Application Emails - FINISHED");
+        _log.debug("Create Application Emails - FINISHED");
         return new Integer[] {sentEmailsUsers, sentEmailsMunicipalities};
     }
 
