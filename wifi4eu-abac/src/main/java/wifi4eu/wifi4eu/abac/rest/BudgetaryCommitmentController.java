@@ -71,7 +71,7 @@ public class BudgetaryCommitmentController {
 	}
 
 	@PreAuthorize("hasRole('ROLE_INEA_OFFICER')")
-	@RequestMapping(value = "export", method = RequestMethod.GET, produces = "text/csv")
+	@RequestMapping(value = "export", method = RequestMethod.GET, produces = "text/csv;charset=utf-8")
 	public ResponseEntity<byte[]> exportBudgetaryCommitment(final HttpServletResponse response, Model model)
 			throws Exception {
 		log.info("exportBudgetaryCommitment");

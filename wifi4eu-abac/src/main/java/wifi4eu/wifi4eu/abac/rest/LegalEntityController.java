@@ -74,7 +74,7 @@ public class LegalEntityController {
 	}
 
 	@PreAuthorize ("hasRole('ROLE_INEA_OFFICER')")
-	@RequestMapping(value = "export", method = RequestMethod.GET, produces = "text/csv")
+	@RequestMapping(value = "export", method = RequestMethod.GET, produces = "text/csv;charset=utf-8")
 	public ResponseEntity<byte[]> exportLegalEntity(final HttpServletResponse response, Model model) throws Exception {
 		log.info("exportLegalEntity");
 
@@ -82,7 +82,7 @@ public class LegalEntityController {
 
 		ResponseEntity<byte[]> responseReturn = null;
 		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.parseMediaType("text/csv"));
+		headers.setContentType(MediaType.parseMediaType("text/csv;charset=utf-8"));
 		headers.setContentDispositionFormData(fileDTO.getFileName(), fileDTO.getFileName());
 		headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 

@@ -1,8 +1,6 @@
 package wifi4eu.wifi4eu.abac.service;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -24,7 +22,6 @@ import java.util.List;
 public class LegalEntityService {
 
 	public static final int ABAC_NAME_MAX_CHARS = 35;
-	private final Logger log = LoggerFactory.getLogger(LegalEntityService.class);
 
 	@Autowired
 	private LegalEntityRepository legalEntityRepository;
@@ -34,9 +31,6 @@ public class LegalEntityService {
 
 	@Autowired
 	private CountryService countryService;
-
-	public LegalEntityService() {
-	}
 
 	//TODO This should be refactored to use javax validation.
 	private void validate(LegalEntity legalEntity) {

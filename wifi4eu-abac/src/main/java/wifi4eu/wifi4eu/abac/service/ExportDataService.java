@@ -2,6 +2,8 @@ package wifi4eu.wifi4eu.abac.service;
 
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -59,7 +61,7 @@ public class ExportDataService {
 	private final Logger log = LoggerFactory.getLogger(ExportDataService.class);
 
 	@Transactional
-	public FileDTO exportLegalEntities() {
+	public FileDTO exportLegalEntities() throws UnsupportedEncodingException {
 		log.info("exportLegalEntities");
 		List<LegalEntity> legalEntities = legalEntityService.getAllLegalEntitiesForExport();
 		String csvFile = legalEntityCSVFileParser.exportLegalEntitiesToCSV(legalEntities);
@@ -71,7 +73,7 @@ public class ExportDataService {
 			legalEntityService.saveLegalEntity(legalEntity);
 		}
 
-		return new FileDTO(LEGAL_ENTITY_INFORMATION_CSV_FILENAME, csvFile.getBytes());
+		return new FileDTO(LEGAL_ENTITY_INFORMATION_CSV_FILENAME, csvFile.getBytes(StandardCharsets.UTF_8));
 	}
 
 	@Transactional

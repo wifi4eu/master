@@ -52,7 +52,7 @@ public class XCharacterDecoder {
      * @throws UnsupportedEncodingException
      */
     public static String decode(final String str, final String charsetName) throws UnsupportedEncodingException {
-        return decode(new String(str.getBytes(charsetName), "UTF-8"));
+        return decode(new String(str.getBytes(charsetName), "utf-8"));
     }
 
     private static String[] getCache(int section) {
@@ -116,7 +116,7 @@ public class XCharacterDecoder {
      * @throws UnsupportedEncodingException
      */
     public static String initials(final String str, final String charsetName) throws UnsupportedEncodingException {
-        return initials(new String(str.getBytes(charsetName), "UTF-8"));
+        return initials(new String(str.getBytes(charsetName), "utf-8"));
     }
 
     private XCharacterDecoder() {

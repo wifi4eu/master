@@ -12,10 +12,7 @@ import wifi4eu.wifi4eu.abac.data.enums.LegalCommitmentCSVColumn;
 import wifi4eu.wifi4eu.abac.data.enums.LegalEntityCSVColumn;
 import wifi4eu.wifi4eu.abac.utils.DateTimeUtils;
 
-import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,8 +72,8 @@ public class LegalEntityCSVFileParser extends AbstractCSVFileParser {
 		try {
 
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-			OutputStreamWriter streamWriter = new OutputStreamWriter(stream);
-			BufferedWriter writer = new BufferedWriter(streamWriter);
+			OutputStreamWriter streamWriter = new OutputStreamWriter(stream, "UTF-8");
+			PrintWriter writer = new PrintWriter(streamWriter);
 
 			CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
 					.withHeader(
