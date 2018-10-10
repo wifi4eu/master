@@ -1,7 +1,7 @@
 package wifi4eu.wifi4eu.util;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +31,7 @@ import java.util.List;
 @Controller
 public class ScheduledTasks {
 	
-    private static final Logger _log = LogManager.getLogger(ScheduledTasks.class);
+    private static final Logger _log = LoggerFactory.getLogger(ScheduledTasks.class);
 
     @Value("${rabbitmq.host}")
     private String rabbitMQHost;

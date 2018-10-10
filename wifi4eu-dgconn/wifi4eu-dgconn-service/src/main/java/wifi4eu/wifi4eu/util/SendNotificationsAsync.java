@@ -5,8 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -24,7 +24,6 @@ import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.common.helper.Validator;
-import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.admin.AdminActions;
 import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
 import wifi4eu.wifi4eu.common.mapper.application.ApplicationMapper;
@@ -33,14 +32,11 @@ import wifi4eu.wifi4eu.repository.admin.AdminActionsRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentRepository;
-import wifi4eu.wifi4eu.service.admin.AdminActionsService;
 import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.voucher.VoucherService;
-
-import javax.validation.Valid;
 
 /**
  * Created by rgarcita on 11/02/2017.
@@ -82,7 +78,7 @@ public class SendNotificationsAsync implements Runnable {
 	@Autowired
     private AdminActionsRepository adminActionsRepository;
 
-	private static final Logger _log = LogManager.getLogger(SendNotificationsAsync.class);
+	private static final Logger _log = LoggerFactory.getLogger(SendNotificationsAsync.class);
 
 	private UserDTO userConnected;
 

@@ -1,7 +1,7 @@
 package wifi4eu.wifi4eu.util;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -68,7 +68,7 @@ public class FreezeListAsync implements Runnable {
     @Autowired
     private VoucherAssignmentRepository voucherAssignmentRepository;
 
-    private static final Logger _log = LogManager.getLogger(FreezeListAsync.class);
+    private static final Logger _log = LoggerFactory.getLogger(FreezeListAsync.class);
 
     private UserDTO userConnected;
 
