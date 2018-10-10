@@ -12,6 +12,11 @@ import static org.junit.Assert.*;
 public class XCharacterDecoderTest {
 
     @Test
+    public void testDecodeAbacCharsGreek(){
+        assertEquals("ABAC characters replace", "Libadia Ammokhostou", XCharacterDecoder.decode("Λιβάδια Αμμοχώστου"));
+    }
+
+    @Test
     public void testDecodeAbacChars(){
         assertEquals("ABAC characters replace", "AAAAAAECEEEEIIIIDNOOOOOOUUUUYss", XCharacterDecoder.decode("ÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝß"));
         assertEquals("ABAC characters replace Òdena", "Odena", XCharacterDecoder.decode("Òdena"));

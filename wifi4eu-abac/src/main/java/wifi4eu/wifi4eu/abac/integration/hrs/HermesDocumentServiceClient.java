@@ -116,6 +116,7 @@ public class HermesDocumentServiceClient {
     }
 
 
+    @Deprecated
     public boolean fileDocument(Document document) throws Exception {
         FileDocument fileDocument = new FileDocument();
         fileDocument.setDocumentId(document.getHermesDocumentId());
