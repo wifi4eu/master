@@ -74,7 +74,7 @@ public class DocumentCSVFileParser extends AbstractCSVFileParser {
 			OutputStreamWriter streamWriter = new OutputStreamWriter(stream);
 			BufferedWriter writer = new BufferedWriter(streamWriter);
 
-			CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
+			CSVPrinter csvPrinter = createCSVPrinter(stream, CSVFormat.TDF
 					.withHeader(
 							LegalEntityDocumentCSVColumn.MUNICIPALITY_PORTAL_ID.toString(),
 							LegalEntityDocumentCSVColumn.DOCUMENT_NAME.toString(),
