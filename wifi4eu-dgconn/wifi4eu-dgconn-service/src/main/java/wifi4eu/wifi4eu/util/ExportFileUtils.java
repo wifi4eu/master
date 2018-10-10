@@ -17,8 +17,7 @@ import java.util.zip.ZipOutputStream;
 @Service
 public class ExportFileUtils {
 
-    public static final String SEPARATOR = ",";
-    public static final String QUOTE = "\"";
+    private static final String SEPARATOR = ",";
 
     private final Logger log = LoggerFactory.getLogger(ExportFileUtils.class);
 
