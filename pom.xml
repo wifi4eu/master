@@ -46,7 +46,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        
+
         <!-- DEPENDENCIES VERSIONS -->
 
         <jdk.version>1.7</jdk.version>
@@ -75,9 +75,7 @@
         <mapstruct.version>1.1.0.Final</mapstruct.version>
         <spring.version>4.3.5.RELEASE</spring.version>
         <spring.security.version>3.2.9.RELEASE</spring.security.version>
-        <spring.data.jpa.version>1.11.15.RELEASE</spring.data.jpa.version>
-        <spring.dbunit.version>1.2.0</spring.dbunit.version>
-        <dbunit.version>2.5.1</dbunit.version>
+        <spring.data.jpa.version>1.10.4.RELEASE</spring.data.jpa.version>
         <jackson.version>2.9.5</jackson.version>
         <ecas.client.version>4.22.0</ecas.client.version>
         <swagger.version>1.5.10</swagger.version>
@@ -120,7 +118,7 @@
         <server.test.address>wifi4eu.everisdigitalchannels.com</server.test.address>
         <server.test.port>8080</server.test.port>
         <mail.serv.enable>false</mail.serv.enable>
-        
+
         <!-- DEV environments -->
         <server.azure.dev.address>wifi4eu-dev.everincloud.com</server.azure.dev.address>
         <server.azure.devb.address>wifi4eu-devb.everincloud.com</server.azure.devb.address>
@@ -174,6 +172,8 @@
         <mail.serv.using.cns>true</mail.serv.using.cns>
 
         <!-- CNS -->
+																																					   
+																																								  
         <cns.notification.group.code>WiFi4EU_NOTIF</cns.notification.group.code>
         <cns.client.system.key>KEY-WiFi4EU-HK7hK38a0D</cns.client.system.key>
         <cns.client.system.password>secret</cns.client.system.password>
@@ -221,7 +221,6 @@
         <azure.blob.legal.files.key>
             NvSiZXysA6btQMSI0YtPkChT8wVYV4av2Fx26/TOWm7pTmiIoHlAKK+6MPCkMu8sWvWTHbTObll0uFRddKfL3WWe4n3R9KL835U2kiYfs5TF/ZfeN4w3QFkFNShjTnkFNCGsWDt+JDFAlDWyntnf3eQTReecJNTJBbjzor4LSCEjw8Y6jH+lNsGeexUeTosIUf2jCtCG8VRAuGd35VpWsb3SLezfANrjyKh58v1uCzxg+Bs5fqoBGAvhMZfbmfa9Kzhmk3w8D7mhRpi9v4R7kw==
         </azure.blob.legal.files.key>
-        <azure.blob.legal.files.key.local>GPZGrFGRciB0lpirhg62QFSiZOaqLmOi0srtT4Hit96QYNxiF1ikwAkqfPXQLOhRiuB5NLOVdX4EugpchsimwAhEUs0kIZpdtxD9xTn3JdrTKNh37+CVgkNP7M0qFIH0zGGGiy2tSgAqyd0SMpJqrwFJ4Yxhxw37YkIHRnOH0wkdCkBj2BJwkETstQXRv24uspy7MVMF6KnXflPG08fZNYYxhlu6J+Jk2cqPAVw2q8cewowokCOZnT1nkFl4revvxAYcdrRKZ8dvnsQ7HRSIOuUHhlHX9J5GotGWUOPJMg4=</azure.blob.legal.files.key.local>
         <azure.blob.legal.files.key.dev>
             NvSiZXysA6btQMSI0YtPkChT8wVYV4av2Fx26/TOWm7pTmiIoHlAKK+6MPCkMu8sWvWTHbTObll0uFRddKfL3WWe4n3R9KL835U2kiYfs5TF/ZfeN4w3QFkFNShjTnkFNCGsWDt+JDFAlDWyntnf3eQTReecJNTJBbjzor4LSCEjw8Y6jH+lNsGeexUeTosIUf2jCtCG8VRAuGd35VpWsb3SLezfANrjyKh58v1uCzxg+Bs5fqoBGAvhMZfbmfa9Kzhmk3w8D7mhRpi9v4R7kw==
         </azure.blob.legal.files.key.dev>
@@ -235,6 +234,14 @@
             9GCRl1rzZFa+p3vnZX+rcQvIZExBSry601fDXJ+a1QjrQ1amhTtjNju/aPaOq5vlUrFfMUJ9vQYJfgEtn3ES7w3HYVclvtr8iK1MzizNWsTjlb2YxZjWsnruv4Djw3ksmThnwHbgkVE/3ucgmy6lt/R2dRN7b9mRHFNShVxvU+epRCbq6WS+I/W2EUWjKkzc4S1WAnaycqxYy5U/Ly910iemAXN2DqF1LvzPdSdUwYAQucutNNsTVsfDiBT7PE8dKrz2oFcAgbKPGjLaF0sAFA==
         </azure.blob.legal.files.key.pro>
 
+        <!-- Help desk SERCO -->
+        <serco.helpdesk.endpoint>https://webgate.acceptance.ec.europa.eu/fpfis/webtools/form-tools/process.php</serco.helpdesk.endpoint>
+        <serco.helpdesk.endpoint.acc>https://webgate.acceptance.ec.europa.eu/fpfis/webtools/form-tools/process.php</serco.helpdesk.endpoint.acc>        
+        <serco.helpdesk.endpoint.pro>https://webtools.ec.europa.eu/form-tools/process.php</serco.helpdesk.endpoint.pro>        
+        <serco.helpdesk.formid>1047</serco.helpdesk.formid>
+        <serco.helpdesk.formid.acc>1047</serco.helpdesk.formid.acc>        
+        <serco.helpdesk.formid.pro>1434</serco.helpdesk.formid.pro>
+		
         <!-- RabbitMQ - TODO not in use -->
         <rabbitmq.host>localhost</rabbitmq.host>
         <rabbitmq.username>guest</rabbitmq.username>
@@ -243,8 +250,6 @@
         <!-- Redis -->
         <redis.enabled>false</redis.enabled>
         <redis.sentinel.uris>10.0.2.31,10.0.2.32,10.0.2.33</redis.sentinel.uris>
-
-        <war.plugin.version>3.2.2</war.plugin.version>
 
     </properties>
 
@@ -275,7 +280,7 @@
             </modules>
         </profile>
 
-		<!-- APP PROFILES -->
+        <!-- APP PROFILES -->
 
         <profile>
             <id>wifi4eu-portal</id>
@@ -289,7 +294,7 @@
             </modules>
         </profile>
 
-		<profile>
+        <profile>
             <id>wifi4eu-public-portal</id>
             <modules>
                 <!-- Common modules -->
@@ -301,7 +306,7 @@
             </modules>
         </profile>
 
-		<profile>
+        <profile>
             <id>wifi4eu-dgconn</id>
             <modules>
                 <!-- Common modules -->
@@ -313,7 +318,7 @@
             </modules>
         </profile>
 
-		<profile>
+        <profile>
             <id>wifi4eu-supplier</id>
             <modules>
                 <!-- Common modules -->
@@ -325,7 +330,7 @@
             </modules>
         </profile>
 
-		<profile>
+        <profile>
             <id>wifi4eu-financial</id>
             <modules>
                 <!-- Common modules -->
@@ -338,15 +343,6 @@
         </profile>
 
         <!-- ENVIRONMENT PROFILES -->
-        <profile>
-            <id>VAGRANT</id>
-            <properties>
-                <ng.env>test</ng.env>
-                <server.address>172.30.10.10:8080</server.address>
-                <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
-                <azure.blob.legal.files.key>${azure.blob.legal.files.key.local}</azure.blob.legal.files.key>
-            </properties>
-        </profile>
         <profile>
             <id>TEST</id>
             <properties>
@@ -364,11 +360,13 @@
                 <mail.serv.location>https://wifi4eu.everisdigitalchannels.com:8080/wifi4eu/#/</mail.serv.location>
                 <mail.serv.enable>true</mail.serv.enable>
                 <mail.serv.using.smtp>true</mail.serv.using.smtp>
-                <mail.serv.using.cns>false</mail.serv.using.cns>                
+                <mail.serv.using.cns>false</mail.serv.using.cns>
                 <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
                 <mail.smtp.password>${encrypted.smtp.password}</mail.smtp.password>
+		       	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        
             </properties>
         </profile>
         <profile>
@@ -409,6 +407,8 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        
             </properties>
         </profile>
         <profile>
@@ -448,9 +448,11 @@
                 <redis.sentinel.uris>10.0.2.31,10.0.2.32,10.0.2.33</redis.sentinel.uris>
                 -->
                 <mail.serv.using.smtp>false</mail.serv.using.smtp>
-                <mail.serv.using.cns>true</mail.serv.using.cns>                
+                <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>
             </properties>
         </profile>
         <profile>
@@ -493,12 +495,14 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        																																					 
             </properties>
         </profile>
         <profile>
             <id>AZUREDEV-PG</id>
             <properties>
-                <ng.env>dev-pg</ng.env>
+                <ng.env>dev</ng.env>
                 <schemes>https</schemes>
                 <server.address>${server.azure.devpg.address}</server.address>
                 <server.dgconn.address>${server.azure.devpg.dgconn.address}</server.dgconn.address>
@@ -527,12 +531,16 @@
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
                 <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
+                <!--
                 <redis.enabled>true</redis.enabled>
-                <redis.sentinel.uris>127.0.0.1,127.0.0.1,127.0.0.1</redis.sentinel.uris>
+                <redis.sentinel.uris>10.0.2.31,10.0.2.32,10.0.2.33</redis.sentinel.uris>
+                -->
                 <mail.serv.using.smtp>false</mail.serv.using.smtp>
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        																						   																							 
             </properties>
         </profile>
         <profile>
@@ -575,6 +583,8 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
+				<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>																						   																							 
             </properties>
         </profile>
         <profile>
@@ -617,6 +627,8 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        
             </properties>
         </profile>
         <profile>
@@ -659,7 +671,8 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
-            </properties>
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>                    </properties>
         </profile>
         <profile>
             <id>AZURETEST-BF</id>
@@ -701,6 +714,8 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        
             </properties>
         </profile>
         <profile>
@@ -746,6 +761,8 @@
                 </cns.user.preferences.service.url>
                 <cns.client.system.key>${cns.client.system.key.pro}</cns.client.system.key>
                 <cns.client.system.password>${cns.client.system.password.pro}</cns.client.system.password>                
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        
             </properties>
         </profile>
         <profile>
@@ -786,6 +803,8 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.acc}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.acchf}</azure.blob.legal.files.key>
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        
             </properties>
         </profile>
         <profile>
@@ -830,6 +849,8 @@
                 </cns.user.preferences.service.url>
                 <cns.client.system.key>${cns.client.system.key.pro}</cns.client.system.key>
                 <cns.client.system.password>${cns.client.system.password.pro}</cns.client.system.password>
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.pro}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.pro}</serco.helpdesk.formid>        
             </properties>
         </profile>
     </profiles>
@@ -840,17 +861,24 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
-                <excludes>
-                    <exclude>**/*.ttf</exclude>
-                </excludes>
+						  
+											   
+						   
+					   
+					  
+															   
+											
+						  
+											   
+						   
             </resource>
-            <resource>
-                <directory>src/main/resources/fonts</directory>
-                <filtering>false</filtering>
-                <includes>
-                    <include>**/*.ttf</include>
-                </includes>
-            </resource>
+					  
+															   
+											
+						  
+											   
+						   
+					   
         </resources>
 
         <pluginManagement>
@@ -901,6 +929,13 @@
                 <groupId>net.sf.ehcache</groupId>
                 <artifactId>ehcache-core</artifactId>
                 <version>${ehcache.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
             </dependency>
 
             <dependency>
@@ -1068,13 +1103,6 @@
                 <version>${spring.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>net.sourceforge.jtds</groupId>
-                <artifactId>jtds</artifactId>
-                <version>1.3.1</version>
-                <scope>test</scope>
-            </dependency>
-
             <!--
                         <dependency>
                             <groupId>eu.europa.ec.digit.iam.ecas.client</groupId>
@@ -1127,32 +1155,6 @@
                 <version>${commons-codec.version}</version>
             </dependency>
 
-            <!-- Testing -->
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-test</artifactId>
-                <version>${spring.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.dbunit</groupId>
-                <artifactId>dbunit</artifactId>
-                <version>${dbunit.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.github.springtestdbunit</groupId>
-                <artifactId>spring-test-dbunit</artifactId>
-                <version>${spring.dbunit.version}</version>
-                <scope>test</scope>
-            </dependency>
-
         </dependencies>
     </dependencyManagement>
 
@@ -1168,7 +1170,7 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j-impl</artifactId>
         </dependency>
-        
+
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-jcl</artifactId>
