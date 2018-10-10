@@ -358,4 +358,57 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
             "INNER JOIN calls c ON c.id = va.call WHERE c.id = ?#{[0]} AND va.status = 3))-(SELECT c.end_date FROM calls c WHERE c.id = ?#{[0]}))/86400000)", nativeQuery = true)
     double findDaysBetweenCloseAndNotified(Integer idCall);
 
+    @Query(value = "SELECT COUNT(*) FROM applications a " +
+            "INNER JOIN registrations r ON r.id = a.registration " +
+            "INNER JOIN municipalities m ON m.id = r.municipality " +
+            "INNER JOIN laus l ON l.id = m.lau " +
+            "INNER JOIN nuts n ON l.country_code = n.country_code " +
+            "INNER JOIN grant_agreement ga ON ga.application_id = a.id " +
+            "WHERE a.call_id = ?#{[0]} AND n.level = 0 AND n.id = ?#{[1]} AND ga.date_signature IS NOT NULL", nativeQuery = true)
+    Integer countGrantAgreementsSigned(Integer callId, Integer idNut);
+
+    @Query(value = "SELECT COUNT(*) FROM applications a " +
+            "INNER JOIN grant_agreement ga ON ga.application_id = a.id " +
+            "WHERE a.call_id = ?#{[0]} AND ga.date_signature IS NOT NULL", nativeQuery = true)
+    Integer countGrantAgreementsSigned(Integer callI);
+
+    @Query(value = "SELECT COUNT(*) FROM applications a " +
+            "INNER JOIN registrations r ON r.id = a.registration " +
+            "INNER JOIN municipalities m ON m.id = r.municipality " +
+            "INNER JOIN laus l ON l.id = m.lau " +
+            "INNER JOIN nuts n ON l.country_code = n.country_code " +
+            "INNER JOIN grant_agreement ga ON ga.application_id = a.id " +
+            "WHERE a.call_id = ?#{[0]} AND n.level = 0 AND n.id = ?#{[1]} AND ga.date_signature IS NOT NULL AND ga.date_counter_signature IS NOT NULL", nativeQuery = true)
+    Integer countGrantAgreementsCounterSigned(Integer callId, Integer idNut);
+
+    @Query(value = "SELECT COUNT(*) FROM applications a " +
+            "INNER JOIN grant_agreement ga ON ga.application_id = a.id " +
+            "WHERE a.call_id = ?#{[0]} AND ga.date_signature IS NOT NULL AND ga.date_counter_signature IS NOT NULL", nativeQuery = true)
+    Integer countGrantAgreementsCounterSigned(Integer callI);
+
+    @Query(value = "SELECT COUNT(*) FROM applications a " +
+            "INNER JOIN voucher_simulations vs ON vs.application = a.id " +
+            "INNER JOIN registrations r ON r.id = a.registration " +
+            "INNER JOIN municipalities m ON m.id = r.municipality " +
+            "INNER JOIN laus l ON l.id = m.lau " +
+            "INNER JOIN nuts n ON l.country_code = n.country_code " +
+            "INNER JOIN grant_agreement ga ON ga.application_id = a.id " +
+            "WHERE a.call_id = ?#{[0]} AND n.level = 0 AND n.id = ?#{[1]} AND ga.date_signature IS NOT NULL AND ga.date_counter_signature IS NOT NULL AND vs.selection_status = 1", nativeQuery = true)
+    Integer countGrantAgreementsCounterSignedReserved(Integer callId, Integer idNut);
+
+    @Query(value = "SELECT COUNT(*) FROM applications a " +
+            "INNER JOIN voucher_simulations vs ON vs.application = a.id " +
+            "INNER JOIN grant_agreement ga ON ga.application_id = a.id " +
+            "WHERE a.call_id = ?#{[0]} AND ga.date_signature IS NOT NULL AND ga.date_counter_signature IS NOT NULL AND vs.selection_status = 1", nativeQuery = true)
+    Integer countGrantAgreementsCounterSignedReserved(Integer callId);
+
+
+    @Query(value = "SELECT (((CAST(CONVERT(varchar(8),(SELECT ga.date_counter_signature FROM grant_agreement ga " +
+            "INNER JOIN applications a ON a.id = ga.application_id " +
+            "INNER JOIN voucher_simulations vs ON vs.application = a.id " +
+            "INNER JOIN calls c ON c.id = a.call_id " +
+            "WHERE c.id = ?#{[0]} AND va.status = ?#{[1]}), 112) AS bigint)) - ((SELECT va.notified_date FROM voucher_assignments va " +
+            "INNER JOIN calls c ON c.id = va.call WHERE c.id = ?#{[0]} AND va.status = ?#{[1]})))/86400000)", nativeQuery = true)
+    double findDaysBetweenNotifiedAndSigned(Integer callId, Integer status);
+
 }

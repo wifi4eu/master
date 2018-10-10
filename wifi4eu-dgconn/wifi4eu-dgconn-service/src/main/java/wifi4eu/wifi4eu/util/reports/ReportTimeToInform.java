@@ -40,7 +40,7 @@ public class ReportTimeToInform {
 
     public void generate(HSSFWorkbook workbook) {
         if (Validator.isNotNull(callRepository.findAllCallsClosedNotified())) {
-            HSSFSheet sheet = workbook.createSheet("State of play Report");
+            HSSFSheet sheet = workbook.createSheet("Time to Inform report");
             int numColumn = 0;
             Integer callsClosedNum = callRepository.countCallsClosedNotified();
             List<CallDTO> calls = callMapper.toDTOList(callRepository.findAllCallsClosedNotified());
