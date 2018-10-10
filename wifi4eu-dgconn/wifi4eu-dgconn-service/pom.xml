@@ -121,12 +121,6 @@
             <artifactId>itextpdf</artifactId>
             <version>5.5.13</version>
         </dependency>
-<<<<<<< HEAD
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-csv</artifactId>
-        </dependency>
-=======
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -160,7 +154,6 @@
 	        <version>1.7.1</version>
 	        <scope>test</scope>
 	    </dependency>			  
->>>>>>> EDCC Scheduled process
     </dependencies>
 
     <build>
