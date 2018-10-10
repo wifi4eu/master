@@ -1,6 +1,7 @@
 package wifi4eu.wifi4eu.util;
 
 import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.QuoteMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -45,7 +46,8 @@ public class ExportFileUtils {
     }
 
     public CSVFormat getMunicipalitiesCsvHeaders() {
-        return CSVFormat.EXCEL.withHeader(
+
+        return CSVFormat.TDF.withHeader(
                 LegalEntityCSVColumn.MUNICIPALITY_PORTAL_ID.getValue(),
                 LegalEntityCSVColumn.MUNICIPALITY_NAME.getValue(),
                 LegalEntityCSVColumn.MUNICIPALITY_ABAC_LATIN_NAME.getValue(),
@@ -60,7 +62,7 @@ public class ExportFileUtils {
     }
 
     public CSVFormat getMunicipalitiesDocCsvHeaders() {
-        return CSVFormat.EXCEL.withHeader(
+        return CSVFormat.TDF.withHeader(
                 LegalEntityDocumentCSVColumn.MUNICIPALITY_PORTAL_ID.getValue(),
                 LegalEntityDocumentCSVColumn.DOCUMENT_PORTAL_ID.getValue(),
                 LegalEntityDocumentCSVColumn.DOCUMENT_NAME.getValue(),
