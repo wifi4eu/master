@@ -32,7 +32,7 @@ public class LegalCommitmentCSVFileParser extends AbstractCSVFileParser{
 		try {
 
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-			CSVPrinter csvPrinter = createCSVPrinter(stream, CSVFormat.DEFAULT.withHeader(
+			CSVPrinter csvPrinter = createCSVPrinter(stream, CSVFormat.TDF.withHeader(
 				LegalCommitmentCSVColumn.MUNICIPALITY_PORTAL_ID.toString(),
 				LegalCommitmentCSVColumn.GRANT_AGREEMENT_SIGNATURE_DATE.toString(),
 				LegalCommitmentCSVColumn.GRANT_AGREEMENT_COUNTERSIGNATURE_DATE.toString(),

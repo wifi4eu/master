@@ -53,7 +53,7 @@ public class BudgetaryCommitmentCSVFileParser extends AbstractCSVFileParser {
 		try {
 
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-			CSVPrinter csvPrinter = createCSVPrinter(stream, CSVFormat.DEFAULT.withHeader(
+			CSVPrinter csvPrinter = createCSVPrinter(stream, CSVFormat.TDF.withHeader(
 				BudgetaryCommitmentCSVColumn.MUNICIPALITY_PORTAL_ID.toString(),
 				BudgetaryCommitmentCSVColumn.ABAC_GLOBAL_COMMITMENT_LEVEL1_POSITION_KEY.toString(),
 				BudgetaryCommitmentCSVColumn.ABAC_COMMITMENT_LEVEL2_POSITION.toString(),

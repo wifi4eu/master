@@ -67,7 +67,8 @@ public class LegalEntityCSVFileParser extends AbstractCSVFileParser {
 
 		try {
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-			CSVPrinter csvPrinter = createCSVPrinter(stream, CSVFormat.DEFAULT.withHeader(
+
+			CSVPrinter csvPrinter = createCSVPrinter(stream, CSVFormat.TDF.withHeader(
 				LegalEntityCSVColumn.MUNICIPALITY_PORTAL_ID.toString(),
 				LegalEntityCSVColumn.MUNICIPALITY_NAME.toString(),
 				LegalEntityCSVColumn.MUNICIPALITY_ABAC_LATIN_NAME.toString(),

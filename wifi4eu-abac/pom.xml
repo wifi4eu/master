@@ -25,6 +25,7 @@
 		<java.version>1.8</java.version>
 		<log4j.version>2.8.2</log4j.version>
 		<apache.commons.csv.version>1.5</apache.commons.csv.version>
+		<apache.commons.io.version>2.6</apache.commons.io.version>
 		<ui.folder>src/main/eui</ui.folder>
 		<eris-ext-client.version>5.7</eris-ext-client.version>
 		<weblogic.version>12.1.3-0-0</weblogic.version>
@@ -115,6 +116,12 @@
 		    <groupId>org.apache.commons</groupId>
 		    <artifactId>commons-compress</artifactId>
 		    <version>1.7</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${apache.commons.io.version}</version>
 		</dependency>
 
 		<dependency>

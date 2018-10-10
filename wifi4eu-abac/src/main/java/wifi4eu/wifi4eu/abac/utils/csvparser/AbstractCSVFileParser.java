@@ -3,17 +3,15 @@ package wifi4eu.wifi4eu.abac.utils.csvparser;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.io.ByteOrderMark;
+import org.apache.commons.io.input.BOMInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import weblogic.xml.util.StringInputStream;
 import wifi4eu.wifi4eu.abac.data.dto.FileDTO;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -23,7 +21,9 @@ import java.util.TreeMap;
 @Component
 public abstract class AbstractCSVFileParser {
 
-	public static final String CSV_FILES_ENCODING = "UTF-8";
+	public static final String CSV_FILES_ENCODING = "UTF-16LE";
+	public static final byte[] UTF_8_BOM = {(byte)0xEF, (byte)0xBB, (byte)0xBF};
+	public static final char UTF_16_LE_BOM = '\uFEFF';
 	
 	protected static final String PORTAL_CSV_DATE_FORMAT = "yyyy-MM-dd";
 	protected static final String PORTAL_CSV_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
@@ -33,11 +33,13 @@ public abstract class AbstractCSVFileParser {
 	protected abstract void validateColumns(CSVParser csvParser) throws RuntimeException;
 	protected abstract List<?> mapRowsToEntities(CSVParser csvParser);
 
-	public List<?> parseFile(FileDTO fileDTO) throws RuntimeException {
+	public List<?> parseFile(FileDTO fileDTO) throws RuntimeException{
 
-		Reader reader = new StringReader(new String(fileDTO.getContent(), StandardCharsets.UTF_8));
+		InputStream inputStream = new ByteArrayInputStream(fileDTO.getContent());
+		BOMInputStream bomInput = new BOMInputStream(inputStream, ByteOrderMark.UTF_16LE);
+		Reader reader = new InputStreamReader(bomInput, StandardCharsets.UTF_16LE);
 
-		try (CSVParser csvParser = new org.apache.commons.csv.CSVParser(reader, CSVFormat.DEFAULT
+		try (CSVParser csvParser = new org.apache.commons.csv.CSVParser(reader, CSVFormat.TDF
 				.withFirstRecordAsHeader()
 				.withIgnoreHeaderCase()
 				.withTrim())) {
@@ -62,7 +64,7 @@ public abstract class AbstractCSVFileParser {
 
 		for (Enum mandatoryColumn : mandatoryColumns) {
 
-			Boolean isColumnFound = csvParser.getHeaderMap().containsKey(lowerCaseHeaders.get(mandatoryColumn.toString().toLowerCase()));
+			Boolean isColumnFound = lowerCaseHeaders.containsKey(mandatoryColumn.toString().toLowerCase());
 
 			if(!isColumnFound) {
 				isValid = Boolean.FALSE;
@@ -85,7 +87,7 @@ public abstract class AbstractCSVFileParser {
 	}
 	
 	protected String createCSVFileContent(ByteArrayOutputStream stream) throws UnsupportedEncodingException {
-		//byte[] bytes = {(byte)0xEF, (byte)0xBB, (byte)0xBF};
-		return stream.toString(CSV_FILES_ENCODING);
+		String BOMedString = UTF_16_LE_BOM + stream.toString(CSV_FILES_ENCODING);
+		return BOMedString;
 	}
 }
