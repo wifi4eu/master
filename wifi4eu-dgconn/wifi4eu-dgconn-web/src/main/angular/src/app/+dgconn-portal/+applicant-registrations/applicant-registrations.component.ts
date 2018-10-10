@@ -15,6 +15,9 @@ import * as FileSaver from "file-saver";
 import { Subscription } from "rxjs/Subscription";
 import { DataTable } from "primeng/primeng";
 import { TranslateService } from "ng2-translate/ng2-translate";
+import * as moment from 'moment';
+import 'moment-timezone';
+import{ AppConstants} from '../../shared/constants/AppConstants';
 import { AdminActionsDTO, AdminactionsApi } from "../../shared/swagger";
 import { ReplaySubject } from "rxjs/ReplaySubject";
 import { IntervalObservable } from "rxjs/observable/IntervalObservable";
@@ -381,9 +384,9 @@ export class DgConnApplicantRegistrationsComponent {
                     if (response.success) {
                         if (response.data != null) {
                             let correctionRequest = response.data;
-                            let timestamp = new Date(correctionRequest.date);
-                            this.correctionRequestsEmailDate = ('0' + timestamp.getUTCDate()).slice(-2) + '/' + ('0' + (timestamp.getUTCMonth() + 1)).slice(-2) + "/" + timestamp.getUTCFullYear();
-                            this.correctionRequestsEmailTime = ('0' + (timestamp.getUTCHours() + 2)).slice(-2) + ':' + ('0' + timestamp.getUTCMinutes()).slice(-2);
+                            let timestamp = moment(correctionRequest.date).tz(AppConstants.timezone);
+                            this.correctionRequestsEmailDate = timestamp.format("DD/MM/YYYY");
+                            this.correctionRequestsEmailTime = timestamp.format("HH:mm");
                             this.correctionRequestsEmailCounter = correctionRequest.buttonPressedCounter;
                         }
                         this.applicationApi.checkIfCorrectionRequestEmailIsAvailable(this.currentCall.id).subscribe(
@@ -428,9 +431,9 @@ export class DgConnApplicantRegistrationsComponent {
             this.applicationApi.getLastCorrectionRequestEmail(callId).subscribe(
                 (correctionEmail: CorrectionRequestEmailDTOBase) => {
                     if (correctionEmail != null) {
-                        let timestamp = new Date(correctionEmail.date);
-                        this.correctionRequestsEmailDate = ('0' + timestamp.getUTCDate()).slice(-2) + '/' + ('0' + (timestamp.getUTCMonth() + 1)).slice(-2) + "/" + timestamp.getUTCFullYear();
-                        this.correctionRequestsEmailTime = ('0' + (timestamp.getUTCHours() + 2)).slice(-2) + ':' + ('0' + timestamp.getUTCMinutes()).slice(-2);
+                        let timestamp = moment(correctionEmail.date).tz(AppConstants.timezone);
+                        this.correctionRequestsEmailDate = timestamp.format("DD/MM/YYYY");
+                        this.correctionRequestsEmailTime = timestamp.format("HH:mm");
                         this.correctionRequestsEmailCounter = correctionEmail.buttonPressedCounter;
                     }
                 }

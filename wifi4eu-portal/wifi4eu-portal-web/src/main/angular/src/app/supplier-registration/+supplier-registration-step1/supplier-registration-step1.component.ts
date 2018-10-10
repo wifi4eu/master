@@ -27,9 +27,16 @@ export class SupplierRegistrationStep1Component {
     }
 
     private submit() {
+        this.trimFields();
         this.supplierChange.emit(this.supplier);
         this.logoUrlChange.emit(this.logoUrl);
         this.onNext.emit();
+    }
+
+    private trimFields(){
+        this.supplier.name = this.supplier.name.trim();
+        this.supplier.address = this.supplier.address.trim();
+        this.supplier.vat = this.supplier.vat.trim();
     }
 
     private changeLogo(event) {
@@ -126,12 +133,10 @@ export class SupplierRegistrationStep1Component {
                 setTimeout(()=>{this.supplierForm.controls['bic'].setErrors({'invalid': true});} ,5);
             } */
               //custom vat validator
-              if(this.supplier.vat != null && this.supplier.vat.trim() != ""){
+              if(this.supplier.vat != null && this.supplier.vat.trim() != "" && this.supplier.vat.trim().length > 3){
                 setTimeout(()=>{this.supplierForm.controls['vat'].setErrors(null);} ,5);
             }else {
                 setTimeout(()=>{this.supplierForm.controls['vat'].setErrors({'invalid': true});} ,5);
             }
-
-
     }
 }

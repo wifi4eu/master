@@ -9,8 +9,17 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface LegalFilesMapper {
 
+	@Mappings({
+			@Mapping(source = "entity.registration.id", target = "registration")
+	})
 	LegalFileDTO toDTO(LegalFile entity);
+
+	@Mappings({
+			@Mapping(source = "vo.registration", target = "entity.registration.id")
+	})
 	LegalFile toEntity(LegalFileDTO vo);
+
 	List<LegalFileDTO> toDTOList(List<LegalFile> list);
+
 	List<LegalFile> toEntityList(List<LegalFileDTO> list);
 }

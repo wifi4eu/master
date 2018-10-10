@@ -1,9 +1,13 @@
 package wifi4eu.wifi4eu.entity.municipality;
 
+import wifi4eu.wifi4eu.entity.exportImport.BudgetaryCommitment;
+import wifi4eu.wifi4eu.entity.exportImport.ExportImportRegistrationData;
 import wifi4eu.wifi4eu.entity.location.Lau;
 import wifi4eu.wifi4eu.entity.registration.Registration;
+import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -36,6 +40,16 @@ public class Municipality {
 
     @OneToMany(mappedBy = "municipality")
     private List<Registration> registrations;
+
+    @OneToMany(mappedBy = "municipality")
+    private List<BudgetaryCommitment> budgetaryCommitments;
+
+    @OneToMany(mappedBy = "municipality", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ExportImportRegistrationData> municipalitiesAbac;
+
+    @OneToMany(mappedBy = "municipality")
+    private List<VoucherSimulation> voucherSimulations;
+
 
     public Municipality() {
     }
@@ -113,5 +127,38 @@ public class Municipality {
 
     public void setRegistrations(List<Registration> registrations) {
         this.registrations = registrations;
+    }
+
+    public List<BudgetaryCommitment> getBudgetaryCommitments() {
+        if (budgetaryCommitments == null) {
+            budgetaryCommitments = new ArrayList<>(0);
+        }
+        return budgetaryCommitments;
+    }
+
+    public void setBudgetaryCommitments(List<BudgetaryCommitment> budgetaryCommitments) {
+        this.budgetaryCommitments = budgetaryCommitments;
+    }
+
+    public List<ExportImportRegistrationData> getMunicipalitiesAbac() {
+        if (municipalitiesAbac == null) {
+            municipalitiesAbac = new ArrayList<>(0);
+        }
+        return municipalitiesAbac;
+    }
+
+    public void setMunicipalitiesAbac(List<ExportImportRegistrationData> municipalitiesAbac) {
+        this.municipalitiesAbac = municipalitiesAbac;
+    }
+
+    public List<VoucherSimulation> getVoucherSimulations() {
+        if (voucherSimulations == null) {
+            voucherSimulations = new ArrayList<>(0);
+        }
+        return voucherSimulations;
+    }
+
+    public void setVoucherSimulations(List<VoucherSimulation> voucherSimulations) {
+        this.voucherSimulations = voucherSimulations;
     }
 }

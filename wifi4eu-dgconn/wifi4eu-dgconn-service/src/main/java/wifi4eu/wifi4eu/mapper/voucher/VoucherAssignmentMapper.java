@@ -13,7 +13,7 @@ import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {VoucherSimulationMapper.class})
 public interface VoucherAssignmentMapper {
 
     @Mappings({
@@ -26,19 +26,7 @@ public interface VoucherAssignmentMapper {
             @Mapping(source = "vo.user.id", target = "user.id")
     })
     VoucherAssignment toEntity(VoucherAssignmentDTO vo);
+
     List<VoucherAssignmentDTO> toDTOList(List<VoucherAssignment> list);
     List<VoucherAssignment> toEntityList(List<VoucherAssignmentDTO> list);
-
-    @Mapping(source = "entity.voucherAssignment.id", target = "voucherAssignment", ignore = true)
-    VoucherSimulationDTO voucherSimulationToVoucherSimulationDTO(VoucherSimulation entity);
-    @Mapping(source = "dto.voucherAssignment", target = "voucherAssignment.id")
-    VoucherSimulation voucherSimulationDTOtoVoucherSimulation(VoucherSimulationDTO dto);
-
-    ApplicationDTO applicationToApplicationDTO(Application entity);
-    Application applicationDTOtoApplication(ApplicationDTO dto);
-
-    @Mapping(source = "entity.registrations", target = "registrations", ignore = true)
-    MunicipalityDTO municipalityToMunicipalityDTO(Municipality entity);
-    @Mapping(source = "dto.registrations", target = "registrations", ignore = true)
-    Municipality municipalityDTOtoMunicipality(MunicipalityDTO dto);
 }

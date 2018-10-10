@@ -4,13 +4,17 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import wifi4eu.wifi4eu.common.dto.model.LauDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
@@ -19,6 +23,7 @@ import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.service.location.LauService;
 import wifi4eu.wifi4eu.service.user.UserService;
+import wifi4eu.wifi4eu.web.util.authorisation.DashboardUsersOnly;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -36,13 +41,7 @@ public class LauResource {
     @Autowired
     private UserService userService;
 
-    private final static String GET_LAU_BY_ID = "getLauById: ";
-    private final static String GET_LAU_BY_COUNTRY_CODE_AND_LAU2 = "getLauByCountryCodeAndLau2: ";
-    private final static String GET_LAUS_BY_COUNTRY_CODE = "getLausByCountryCode: ";
-    private final static String GET_LAUS_BY_NUTS3 = "getLausByNuts3: ";
-    private final static String GET_LAUS_BY_COUNTRY_CODE_AND_NAME1_STARTING_WITH_IGNORE_CASE = "getLausByCountryCodeAndName1StartingWithIgnoreCase: ";
-
-    private Logger _log = LogManager.getLogger(LauResource.class);
+    private static final Logger _log = LoggerFactory.getLogger(LauResource.class);
 
     @ApiOperation(value = "Get lau by specific id")
     @ApiImplicitParams({
@@ -97,21 +96,11 @@ public class LauResource {
     @ApiOperation(value = "Update Lau Physical Address")
     @RequestMapping(value = "/physicaladdress", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
+    @DashboardUsersOnly
     public ResponseDTO updatePhysicalAddress(@RequestBody final LauDTO lauDTO, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating Lau physical address");
-        try {
-            if (userService.getUserByUserContext(UserHolder.getUser()).getType() != 5) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-        } catch (AccessDeniedException ade) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to update the physical address", ade.getMessage());
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The physical address cannot been updated", e);
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        }
 
         try {
             LauDTO resLau = lauService.updatePhysicalAddress(lauDTO);

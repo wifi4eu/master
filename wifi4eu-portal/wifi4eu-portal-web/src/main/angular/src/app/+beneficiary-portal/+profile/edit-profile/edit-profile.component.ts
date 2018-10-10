@@ -267,7 +267,13 @@ export class BeneficiaryEditProfileComponent {
                     this.isMunicipalityEditable[municipalityId] = response.data;
                     if (response.data) {
                         //Check if municipality have applied cookie and then disable input fields
-                        var appliedExist = this.registrations.some(registration => this.isVoucherApplied(registration.id) === true);
+                        let appliedExist = false;
+                        this.registrations.forEach(registration => {
+                            if(registration.municipalityId == municipalityId){
+                                appliedExist = this.isVoucherApplied(registration.id)
+                            }
+                            
+                        });
                         this.isMunicipalityEditable[municipalityId] = !appliedExist;
                     }
                 }
@@ -436,6 +442,9 @@ export class BeneficiaryEditProfileComponent {
     }
 
     private editProfile() {
+        if(!this.municipalitiesSelected || !this.emailsMatch || !this.municipalityForm.form.valid || !this.buttonEnabled){
+            return;
+        }
         this.submittingData = true;
         if (this.finalBeneficiary.associationName != this.registrations[0].associationName) {
             this.registrations[0].associationName = this.finalBeneficiary.associationName;

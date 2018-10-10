@@ -154,11 +154,6 @@ public class RegistrationService {
     @Autowired
     LogEmailRepository logEmailRepository;
 
-    public List<RegistrationDTO> getAllRegistrations() {
-        return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
-    }
-
-
     public RegistrationDTO getRegistrationById(int registrationId) {
         Registration registration = registrationRepository.findOne(registrationId);
         RegistrationDTO registrationDTO = registrationMapper.toDTO(registration);
@@ -332,6 +327,10 @@ public class RegistrationService {
 
     public RegistrationDTO getRegistrationByMunicipalityId(int municipalityId) {
         return registrationMapper.toDTO(registrationRepository.findByMunicipalityId(municipalityId));
+    }
+
+    public Integer getRegistrationIdByMunicipalityId(int municipalityId) {
+        return registrationRepository.findIdByMunicipalityId(municipalityId);
     }
 
     public RegistrationDTO getRegistrationByUserAndMunicipality(int userId, int municipalityId) {

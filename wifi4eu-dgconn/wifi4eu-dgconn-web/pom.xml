@@ -153,6 +153,57 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>ng-build-linux</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.5.0</version>
+                        <executions>
+                            <execution>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <!-- make sure to install angular cli gobally for this to work
+                                         sudo npm install -unsafe-perm -g @angular/cli
+                                         (add a second dash before unsafe-perm)-->
+                                    <executable>ng</executable>
+                                    <workingDirectory>src/main/angular</workingDirectory>
+                                    <arguments>
+                                        <argument>build</argument>
+                                        <argument>--base-href</argument>
+                                        <argument>${dgconn.context.name}/</argument>
+                                        <argument>--env=${ng.env}</argument>
+                                        <argument>--prod</argument>
+                                        <argument>--aot</argument>
+                                        <argument>false</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>local-build</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <version>${war.plugin.version}</version>
+                        <configuration>
+                            <outputDirectory>${project.basedir}/../../LocalDevelopment/tomcat/webapps</outputDirectory>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 
     <build>
@@ -203,7 +254,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>${war.plugin.version}</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                     <webResources>

@@ -274,7 +274,7 @@ public class ApplicationService {
 
                 MailData mailData = MailHelper.buildMailCreateApplication(
                         user.getEcasEmail(), MailService.FROM_ADDRESS,
-                        municipality.getId(), "createApplication", locale);
+                        municipality.getId(), municipality.getName(), "createApplication", locale);
                 mailService.sendMail(mailData, true);
                 _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to" + user.getEcasEmail());
             }
@@ -530,7 +530,7 @@ public class ApplicationService {
         }
         return azureBlobConnector.downloadExcelExportApplicants(adminActionsDTO.getData());
     }
-    
+
     public byte[] exportExcelDGConnApplicantsListContainingName(Integer callId, String country, String name) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);

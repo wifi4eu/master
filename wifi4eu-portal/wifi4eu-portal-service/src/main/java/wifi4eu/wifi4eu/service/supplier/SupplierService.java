@@ -126,17 +126,13 @@ public class SupplierService {
     @Transactional
     public SupplierDTO createSupplier(SupplierDTO supplierDTO) throws Exception {
         SupplierDTO finalSupplier = new SupplierDTO();
-        finalSupplier.setName(supplierDTO.getName());
-        finalSupplier.setAddress(supplierDTO.getAddress());
-        finalSupplier.setVat(supplierDTO.getVat());
+        finalSupplier.setName(supplierDTO.getName().trim());
+        finalSupplier.setAddress(supplierDTO.getAddress().trim());
+        finalSupplier.setVat(supplierDTO.getVat().trim());
         finalSupplier.setBic(supplierDTO.getBic());
         finalSupplier.setAccountNumber(supplierDTO.getAccountNumber());
-        if (supplierDTO.getWebsite() != null) {
-            if (!supplierDTO.getWebsite().trim().isEmpty()) {
-                finalSupplier.setWebsite(supplierDTO.getWebsite());
-            } else {
-                finalSupplier.setWebsite(null);
-            }
+        if (supplierDTO.getWebsite() != null && !supplierDTO.getWebsite().trim().isEmpty()) {
+            finalSupplier.setWebsite(supplierDTO.getWebsite().trim());
         } else {
             finalSupplier.setWebsite(null);
         }
@@ -257,9 +253,9 @@ public class SupplierService {
 
         for (UserDTO userSupplier : supplierDTO.getUsers()) {
             if (userSupplier.getId() == userDTO.getId()) {
-                userDTO.setName(userSupplier.getName());
-                userDTO.setSurname(userSupplier.getSurname());
-                userDTO.setEmail(userSupplier.getEmail());
+                userDTO.setName(userSupplier.getName().trim());
+                userDTO.setSurname(userSupplier.getSurname().trim());
+                userDTO.setEmail(userSupplier.getEmail().trim());
                 userDTO.setPhoneNumber(userSupplier.getPhoneNumber());
                 userDTO.setPhonePrefix(userSupplier.getPhonePrefix());
                 userDTO.setCreateDate(new Date().getTime());
@@ -268,10 +264,10 @@ public class SupplierService {
                 userDTO.setLang(supplierDTO.getLang());
                 userDTO.setPhoneNumber(supplierDTO.getContactNumber());
                 userDTO.setPhonePrefix(supplierDTO.getContactPrefix());
-                userDTO.setEmail(supplierDTO.getContactEmail());
+                userDTO.setEmail(supplierDTO.getContactEmail().trim());
                 if (Validator.isNull(userDTO.getEcasEmail()) || userDTO.getEcasEmail().trim().isEmpty()) {
-                    userDTO.setEcasEmail(supplierDTO.getContactEmail());
-                    userDTO.setEmail(supplierDTO.getContactEmail());
+                    userDTO.setEcasEmail(supplierDTO.getContactEmail().trim());
+                    userDTO.setEmail(supplierDTO.getContactEmail().trim());
                 }
                 break;
             }
@@ -279,7 +275,7 @@ public class SupplierService {
         userDTO = userService.saveUserChanges(userDTO);
         supplierDTO = createSupplier(supplierDTO);
 
-        createSupplierUser(supplierDTO.getId(), userDTO.getId(), userDTO.getEmail(), true);
+        createSupplierUser(supplierDTO.getId(), userDTO.getId(), userDTO.getEmail().trim(), true);
         userService.sendSupplierRegistrationEmail(userDTO);
         return supplierDTO;
 

@@ -71,9 +71,9 @@
         </p-column>
         <p-column field="status" [sortable]="true" header="{{ 'dgConn.status' | translate }}" styleClass="text-center">
           <ng-template let-row="rowData" pTemplate="body">
-            <span *ngIf="row.status != 5 && row.status != 6 && row.status != 7">{{ 'dgConn.beneficiariesList.status.selected' | translate }}</span>
-            <span *ngIf="row.status == 5 || (row.dateSignature != null && row.dateCounterSignature == null)">{{ 'dgConn.beneficiariesList.status.signed' | translate }}</span>
-            <span *ngIf="row.status == 6 || (row.dateSignature == null && row.dateCounterSignature != null)">{{ 'dgConn.beneficiariesList.status.counterSigned' | translate }}</span>
+            <span *ngIf="row.status != 5 && row.status != 6 && row.status != 7 && (row.dateSignature == null && row.dateCounterSignature == null)">{{ 'dgConn.beneficiariesList.status.selected' | translate }}</span>
+            <span *ngIf="(row.dateSignature != null && row.dateCounterSignature == null)">{{ 'dgConn.beneficiariesList.status.signed' | translate }}</span>
+            <span *ngIf="(row.dateSignature != null && row.dateCounterSignature != null)">{{ 'dgConn.beneficiariesList.status.counterSigned' | translate }}</span>
             <span *ngIf="row.status == 7">{{ 'dgConn.beneficiariesList.status.cancelled' | translate }}</span>
           </ng-template>
         </p-column>
@@ -104,7 +104,7 @@
                         </a>
                       </div>
                       <div class="row topBetweenDivs">
-                          <a (click)="downloadPdfGrantAgreement(row.registrationId)" class="action-label-list-beneficiaries">
+                          <a (click)="downloadPdfGrantAgreement(row.registrationId)" [class.disabled]="row.dateSignature == null" class="action-label-list-beneficiaries">
                             <div class="col-sm-2">
                               <span class="fa fa-file-pdf-o paddingLeftAlignEye"></span>
                             </div>

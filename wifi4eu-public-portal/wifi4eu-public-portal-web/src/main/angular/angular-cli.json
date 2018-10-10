@@ -28,6 +28,7 @@
             "environmentSource": "environments/environment.ts",
             "environments": {
                 "dev-old": "environments/environment.dev-old.ts",
+                "dev-pg": "environments/environment.dev-pg.ts",
                 "local":"environments/environment.local.ts",
                 "acc": "environments/environment.acc.ts",
                 "acc-hf": "environments/environment.acchf.ts",

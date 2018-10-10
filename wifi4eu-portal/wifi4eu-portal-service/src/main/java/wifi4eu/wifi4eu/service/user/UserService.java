@@ -104,6 +104,9 @@ public class UserService {
     @Value("${server.address}")
     private String serverAddress;
 
+    @Value("${server.schemes}")
+    private String serverSchemes;
+
     @Autowired
     UserMapper userMapper;
 
@@ -649,6 +652,10 @@ public class UserService {
         return serverAddress;
     }
 
+    public String getServerSchemes(){
+        return serverSchemes;
+    }
+
     private void removeTempToken(UserDTO userDTO) {
         for (TempToken tempToken : tempTokenRepository.findByUserId(userDTO.getId())) {
             tempTokenRepository.delete(tempToken);
@@ -676,7 +683,7 @@ public class UserService {
         List<Integer> voucherAwarded = userRepository.getIfUserHasVouchersAwarded(userDTO.getId());
         if (Validator.isNotNull(voucherAwarded)) {
             for (int vouch : voucherAwarded) {
-                if (vouch == 1) {
+                if (vouch >= 1) {
                     return true;
                 }
             }

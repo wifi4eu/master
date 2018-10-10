@@ -473,6 +473,9 @@ public class RegistrationService {
         }
     }
 
+    public void deleteRegistration(int registrationId) {
+        registrationRepository.delete(registrationId);
+    }
 
     public RegistrationDTO invalidateRegistration(int registrationId) {
         RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationId));
@@ -486,6 +489,10 @@ public class RegistrationService {
 
     public RegistrationDTO getRegistrationByMunicipalityId(int municipalityId) {
         return registrationMapper.toDTO(registrationRepository.findByMunicipalityId(municipalityId));
+    }
+
+    public Integer getRegistrationIdByMunicipalityId(int municipalityId) {
+        return registrationRepository.findIdByMunicipalityId(municipalityId);
     }
 
     public RegistrationDTO getRegistrationByUserAndMunicipality(int userId, int municipalityId) {

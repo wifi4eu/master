@@ -17,6 +17,7 @@ import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.service.mail.MailService;
+import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
@@ -55,12 +56,15 @@ public class ApplicationService {
         } else {
             _log.warn("Create Application Emails - The user " + user.getEcasUsername() + " has not specified a language");
         }
-    	MailData mailData = MailHelper.buildMailCreateApplication(user.getEcasEmail(), MailService.FROM_ADDRESS, municipalityId, "createApplication", locale);
-    	mailService.sendMail(mailData, true);
-        application.setSentEmail(true);
-        application.setSentEmailDate(new Date());
-        applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(application)));
-        _log.log(Level.getLevel("BUSINESS"), "Create Application Emails - Email will be sent to " + user.getEcasEmail() + " for the " + "application id: " + application.getId());
+        Municipality municipality = municipalityRepository.findOne(municipalityId);
+        if (Validator.isNotNull(municipality)) {
+            MailData mailData = MailHelper.buildMailCreateApplication(user.getEcasEmail(), MailService.FROM_ADDRESS, municipalityId, municipality.getName(),"createApplication", locale);
+            mailService.sendMail(mailData, true);
+            application.setSentEmail(true);
+            application.setSentEmailDate(new Date());
+            applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(application)));
+            _log.log(Level.getLevel("BUSINESS"), "Create Application Emails - Email will be sent to " + user.getEcasEmail() + " for the " + "application id: " + application.getId());
+        }
     }
 
     public Integer[] sendEmailApplications(Integer callId) throws Exception {
