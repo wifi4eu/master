@@ -65,7 +65,7 @@ public class BankAccountResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting bank accounts of supplier with id " + supplierId);
         try {
-            if (supplierService.getUserIdFromSupplier(supplierId) != userConnected.getId() && userConnected.getType() != 5) {
+            if (supplierService.getUserIdFromSupplier(supplierId) != userConnected.getId() && userConnected.getType() != Constant.ROLE_SUPPLIER) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Supplier retrieved successfully");

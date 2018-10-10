@@ -5,8 +5,11 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 public class BeneficiaryMyInstallationDTO implements Serializable {
+    //application id
     private Integer id;
+    //municipality Name
     private String name;
+    //municipalityCountry
     private String country;
     private Long selectSupplierDate;
     private Integer bankAccountId;

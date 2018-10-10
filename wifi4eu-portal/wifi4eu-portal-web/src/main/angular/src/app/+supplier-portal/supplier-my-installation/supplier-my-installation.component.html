@@ -7,7 +7,7 @@
 
 <div class="container">
     <div class="ui-g-12">
-        <p-dataTable *ngIf="!firstDataDownload" #tableBeneficiaries [value]="beneficiaryList" [responsive]="true">
+        <p-dataTable #tableBeneficiaries [value]="beneficiaryList" [responsive]="true">
             <p-column field="country" sortable="true" header="{{'shared.country.label' | translate}}">
                 <ng-template let-row="rowData" pTemplate="body">
                     <!-- {{ row.country | titlecase }}  -->
@@ -22,8 +22,8 @@
             </p-column>
             <p-column header="{{'supplier.bankAccount' | translate}}">
                 <ng-template let-row="rowData" pTemplate="body">
-                    <button class="btn btn-primary">
-                        {{'supplier.myInstallation.selectBankBtn' | translate}}</button>
+                    <button class="btn btn-primary" [disabled]='!bankAccounts || bankAccounts.length == 0' (click)="selectBankAccount(row, row.bankAccountId)">
+                        {{'supplier.myInstallation.selectBank' | translate}}</button>
                 </ng-template>
             </p-column>
             <p-column header="{{'benef.installationTitle' | translate}}">
@@ -32,6 +32,60 @@
                         | translate}} </button>
                 </ng-template>
             </p-column>
+            <footer>
+                <span *ngIf="firstDataDownload">
+                    {{ 'shared.loading.modal.title' | translate }}
+                    <i [@enterSpinner] class="fa fa-spinner loading-icon"></i>
+                </span>
+            </footer>
         </p-dataTable>
     </div>
 </div>
+
+<p-dialog [(visible)]="displaySelectBankAccount" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
+    [closable]="true">
+    <h1 class="beneficiaryMayorModal">{{'supplier.myInstallation.selectBank' | translate}}</h1>
+    <p class="ModalpConfirmation">{{'supplier.myInstallation.selectBankSubtitle' | translate}}</p>
+    <form #selectBankForm="ngForm" (submit)="confirmAttribute=true; displaySelectBankAccount=false;">
+        <div class="offset-lg-2 modal-body mb-2">
+            <div *ngFor="let iban of bankAccounts">
+                <label for="bankAccount_{{iban.id}}">
+                    <input id="bankAccount_{{iban.id}}" [value]="iban.id" type="radio" name="bankAccounts" [(ngModel)]="selectedBankAccount" />
+                    {{'supplier.bankAccount' | translate}} - {{iban.iban}}
+                </label>
+            </div>
+        </div>
+        <div class="col-sm-12 center">
+            <div class="offset-lg-2 col-sm-6 col-g-6 col-md-6 col-lg-4">
+                <button (click)="closeModal()" type="button" class="btn btn-primary publish-button">{{
+                    'shared.cancel.button' |
+                    translate }} </button>
+            </div>
+            <div class="col-sm-6 col-g-6 col-md-6 col-lg-4">
+                <button type="submit" class="btn btn-primary publish-button" [disabled]="!selectedBankAccount || beneficiaryToModify.bankAccountId == selectedBankAccount">
+                    {{ 'shared.select.text' | translate }}
+                </button>
+            </div>
+        </div>
+    </form>
+</p-dialog>
+
+<p-dialog [(visible)]="confirmAttribute" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
+    [closable]="true">
+    <div class="offset-lg-2 modal-body mb-2">
+        <p>{{'supplier.myInstallation.selectBankConfirmation'|translate}}</p>
+    </div>
+
+    <div class="col-sm-12 center">
+        <div class="offset-lg-2 col-sm-6 col-g-6 col-md-6 col-lg-4">
+            <button (click)="closeModal()" type="button" class="btn btn-primary publish-button">{{
+                'shared.cancel.button' |
+                translate }} </button>
+        </div>
+        <div class="col-sm-6 col-g-6 col-md-6 col-lg-4">
+            <button type="submit" (click)="selectBankAccountSubmit()" class="btn btn-primary publish-button">
+                {{ 'shared.select.text' | translate }}
+            </button>
+        </div>
+    </div>
+</p-dialog>
