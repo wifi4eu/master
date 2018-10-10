@@ -160,37 +160,37 @@ public class ApplicationService {
                 _log.debug("The queue is from the specified call");
                 //check information on the queue is right
                 //if (registrationDTO.getUploadTime() == uploadDocTimestamp) {
-                    _log.debug("All the information of this queue is right");
-                    //check if this application was received previously
-                    ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
-                    if (applicationDTO == null || applicationDTO.getDate() > queueTimestamp) {
-                        //create the application
-                        if (applicationDTO == null) {
-                            applicationDTO = new ApplicationDTO();
-                            applicationDTO.setRegistrationId(registrationDTO.getId());
-                            applicationDTO.setCallId(callDTO.getId());
-                            _log.debug("New application created");
-                        }
-                        applicationDTO.setDate(queueTimestamp);
-                        applicationDTO = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
-                        _log.info("Application " + applicationDTO.getId() + " created successfully");
-                        return applicationDTO;
-                    } else {
-                        _log.error("Trying to register an application existent on the DB, callId: "
-                                + callId + " userId: " + userId + " registrationId: " + registrationId +
-                                " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
-                        return applicationDTO;
+                _log.debug("All the information of this queue is right");
+                //check if this application was received previously
+                ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
+                if (applicationDTO == null || applicationDTO.getDate() > queueTimestamp) {
+                    //create the application
+                    if (applicationDTO == null) {
+                        applicationDTO = new ApplicationDTO();
+                        applicationDTO.setRegistrationId(registrationDTO.getId());
+                        applicationDTO.setCallId(callDTO.getId());
+                        _log.debug("New application created");
                     }
+                    applicationDTO.setDate(queueTimestamp);
+                    applicationDTO = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+                    _log.info("Application " + applicationDTO.getId() + " created successfully");
+                    return applicationDTO;
                 } else {
-                    _log.error("Trying to register an application with incorrect uploadDocTimestamp, callId: "
+                    _log.error("Trying to register an application existent on the DB, callId: "
                             + callId + " userId: " + userId + " registrationId: " + registrationId +
                             " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
+                    return applicationDTO;
                 }
             } else {
-                _log.error("Trying to register an application out of the call period, callId: "
+                _log.error("Trying to register an application with incorrect uploadDocTimestamp, callId: "
                         + callId + " userId: " + userId + " registrationId: " + registrationId +
                         " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
             }
+        } else {
+            _log.error("Trying to register an application out of the call period, callId: "
+                    + callId + " userId: " + userId + " registrationId: " + registrationId +
+                    " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
+        }
 //        } else {
 //            _log.error("The information provided is wrong, callId: "
 //                    + callId + " userId: " + userId + " registrationId: " + registrationId +
@@ -216,8 +216,8 @@ public class ApplicationService {
         if (registration.getAllFilesFlag() == 1) {
             if (applicationDTO.getId() != 0) {
                 _log.warn("Call to a create method with id set, the value has been removed ({})", applicationDTO.getId());
-                applicationDTO.setId(0);    
-            }            
+                applicationDTO.setId(0);
+            }
             ApplicationDTO application = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
             _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Application created");
             return application;
@@ -233,12 +233,12 @@ public class ApplicationService {
         } else {
             _log.warn("SCHEDULED TASK: Create Application Emails - The user " + user.getEcasUsername() + " has not specified a language");
         }
-        
+
         MailData mailData = MailHelper.buildMailCreateApplication(
-        		user.getEcasEmail(), MailService.FROM_ADDRESS, 
-        		municipality.getId(), "createApplication", locale);
-    	mailService.sendMail(mailData, true);
-    	_log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Create Application Emails - Email sent to " + user.getEcasEmail() + " for the " + "application id: " + applicationId);
+                user.getEcasEmail(), MailService.FROM_ADDRESS,
+                municipality.getId(), municipality.getName(), "createApplication", locale);
+        mailService.sendMail(mailData, true);
+        _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Create Application Emails - Email sent to " + user.getEcasEmail() + " for the " + "application id: " + applicationId);
     }
 
     @Transactional
@@ -273,7 +273,7 @@ public class ApplicationService {
         return applicationMapper.toDTO(applicationRepository.findTopByRegistrationIdOrderByDateDesc(registrationId));
     }
 
-    public List<ApplicationDTO> applicationsByListOfMunicipalities(Integer userId){
+    public List<ApplicationDTO> applicationsByListOfMunicipalities(Integer userId) {
         return applicationMapper.toDTOList(applicationRepository.findApplicationsByMunicipalities(userId));
     }
 
@@ -507,10 +507,10 @@ public class ApplicationService {
                 msgBody = MessageFormat.format(msgBody, documentTypes);
                 Registration registration = registrationRepository.findOne(application.getRegistrationId());
                 if (registration != null) {
-                	MailData mailData = new MailData(application.getUserEcasEmail(), MailService.FROM_ADDRESS, 
-                			subject, msgBody, locale, 
-                			registration.getMunicipality().getId(), Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS, true);
-                	mailService.sendMail(mailData, false);
+                    MailData mailData = new MailData(application.getUserEcasEmail(), MailService.FROM_ADDRESS,
+                            subject, msgBody, locale,
+                            registration.getMunicipality().getId(), Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS, true);
+                    mailService.sendMail(mailData, false);
                 }
             }
             correctionRequest = new CorrectionRequestEmailDTO(null, callId, new Date().getTime(), buttonPressedCounter);
