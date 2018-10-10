@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.abac.rest;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ import wifi4eu.wifi4eu.abac.data.enums.NotificationType;
 import wifi4eu.wifi4eu.abac.rest.vo.ResponseVO;
 import wifi4eu.wifi4eu.abac.service.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -86,7 +89,9 @@ public class LegalEntityController {
 		headers.setContentDispositionFormData(fileDTO.getFileName(), fileDTO.getFileName());
 		headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 
-		responseReturn = new ResponseEntity<byte[]>(fileDTO.getContent(), headers, HttpStatus.OK);
+		byte[] bytes = {(byte)0xEF, (byte)0xBB, (byte)0xBF};
+
+		responseReturn = new ResponseEntity<byte[]>(ArrayUtils.addAll(bytes, fileDTO.getContent()), headers, HttpStatus.OK);
 		return responseReturn;
 	}
 }

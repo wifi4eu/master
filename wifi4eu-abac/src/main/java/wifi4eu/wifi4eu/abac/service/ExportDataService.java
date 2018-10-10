@@ -77,7 +77,7 @@ public class ExportDataService {
 	}
 
 	@Transactional
-	public FileDTO exportBudgetaryCommitments() {
+	public FileDTO exportBudgetaryCommitments() throws UnsupportedEncodingException {
 		log.info("exportBudgetaryCommitmentyContent");
 		List<BudgetaryCommitmentPosition> budgetaryCommitmentPositions = (List<BudgetaryCommitmentPosition>) budgetaryCommitmentService.findAllBudgetaryCommitmentPositionsForExport();
 		String csvFile = budgetaryCommitmentCSVFileParser.exportBudgetaryCommitmentToCSV(budgetaryCommitmentPositions);
@@ -89,7 +89,7 @@ public class ExportDataService {
 			budgetaryCommitmentService.save(budgetaryCommitmentPosition.getBudgetaryCommitment());
 		}
 
-		return new FileDTO(BUDGETARY_COMMITMENT_INFORMATION_CSV_FILENAME, csvFile.getBytes());
+		return new FileDTO(BUDGETARY_COMMITMENT_INFORMATION_CSV_FILENAME, csvFile.getBytes("UTF-8"));
 	}
 
 	@Transactional
