@@ -14,8 +14,6 @@ public interface BudgetaryCommitmentRepository extends JpaRepository<BudgetaryCo
 
     BudgetaryCommitment findByMunicipalityIdAndPositionAndAmmount(Integer municipalityId, Integer position, Integer ammount);
 
-    List<BudgetaryCommitment> findByAbacBcKeyIsNotNullAndAbacLcKeyIsNull();
-
     /**
      * Get all budgetary commitment for a single municipality. Usually one result, can be two in case of split ammount and second position.
      *

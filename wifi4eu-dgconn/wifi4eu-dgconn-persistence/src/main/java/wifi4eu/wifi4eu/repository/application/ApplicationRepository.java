@@ -9,6 +9,9 @@ import java.util.List;
 
 public interface ApplicationRepository extends JpaRepository<Application,Integer> {
 
+    @Query(value = "select distinct a from Application a inner join a.registration.municipality.budgetaryCommitments bc where bc.abacBcKey is not null and bc.abacLcKey is null")
+    List<Application> findApplicationBudgetaryCommitmentsForExport();
+
     Application findByCallIdAndRegistrationId(Integer callId, Integer registrationId);
     Iterable<Application> findByRegistrationId(Integer registrationId);
 
