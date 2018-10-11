@@ -1,20 +1,12 @@
 package wifi4eu.wifi4eu.service.exportImport;
 
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
-import org.apache.commons.io.ByteOrderMark;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.io.ByteOrderMark;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BOMInputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -34,19 +26,14 @@ import wifi4eu.wifi4eu.entity.exportImport.ExportImportLegalCommitmentInformatio
 import wifi4eu.wifi4eu.entity.exportImport.ExportImportRegistrationData;
 import wifi4eu.wifi4eu.entity.exportImport.GlobalCommitment;
 import wifi4eu.wifi4eu.entity.grantAgreement.GrantAgreement;
-import wifi4eu.wifi4eu.entity.mayor.Mayor;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.entity.registration.Registration;
-import wifi4eu.wifi4eu.entity.representation.Representation;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.exportImport.BudgetaryCommitmentRepository;
 import wifi4eu.wifi4eu.repository.exportImport.ExportImportRegistrationDataRepository;
 import wifi4eu.wifi4eu.repository.exportImport.GlobalCommitmentRepository;
 import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
-import wifi4eu.wifi4eu.repository.mayor.MayorRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
-import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
-import wifi4eu.wifi4eu.repository.representation.RepresentationRepository;
 import wifi4eu.wifi4eu.util.DateUtils;
 import wifi4eu.wifi4eu.util.ExportFileUtils;
 import wifi4eu.wifi4eu.util.ZipFileReader;
@@ -55,7 +42,13 @@ import wifi4eu.wifi4eu.util.parsing.LegalCommitmentCSVColumn;
 import wifi4eu.wifi4eu.util.parsing.LegalCommitmentDocumentCSVColumn;
 import wifi4eu.wifi4eu.util.parsing.LegalEntityCSVColumn;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -89,15 +82,6 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
 
     @Autowired
     private MunicipalityRepository municipalityRepository;
-
-    @Autowired
-    private MayorRepository mayorRepository;
-
-    @Autowired
-    private RegistrationRepository registrationRepository;
-
-    @Autowired
-    private RepresentationRepository representationRepository;
 
     @Autowired
     private ExportFileUtils exportFileUtilities;
@@ -332,7 +316,7 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
     public boolean importDgBudgList(InputStream inputStream) throws Exception {
         _log.debug("importDgBudgList");
 
-        try (InputStreamReader inputStreamReader = new InputStreamReader(inputStream)) {
+        try (InputStreamReader inputStreamReader = new InputStreamReader(new BOMInputStream(inputStream, ByteOrderMark.UTF_16LE), StandardCharsets.UTF_16LE)) {
 
             CSVParser csvParser = CSVFormat.TDF.withFirstRecordAsHeader().parse(inputStreamReader);
             csvParser.forEach(this::createAbacData);
@@ -468,7 +452,7 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
     public boolean importBudgetaryCommitment(InputStream fileDataStream) throws IOException {
         _log.debug("importBudgetaryCommitment");
 
-        try (InputStreamReader inputStreamReader = new InputStreamReader(fileDataStream)) {
+        try (InputStreamReader inputStreamReader = new InputStreamReader(new BOMInputStream(fileDataStream, ByteOrderMark.UTF_16LE), StandardCharsets.UTF_16LE)) {
             CSVParser csvParser = CSVFormat.TDF.withFirstRecordAsHeader().parse(inputStreamReader);
             csvParser.forEach(csvRecord -> {
                 BudgetaryCommitment budgetaryCommitment = parseBudgetaryCommitment(csvRecord);
@@ -516,7 +500,7 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
         ZipFileReader.ZipFileEntry informationFile = parseEntryFromFile(new ByteArrayInputStream(zipFile), legalCommitmentImportFileName);
 
         try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(informationFile.getContent());
-             InputStreamReader inputStreamReader = new InputStreamReader(byteArrayInputStream)) {
+             InputStreamReader inputStreamReader = new InputStreamReader(new BOMInputStream(byteArrayInputStream, ByteOrderMark.UTF_16LE), StandardCharsets.UTF_16LE)) {
 
             Map<Integer, String> municipalityDocuments = parseLegalCommitmentFileNames(new ByteArrayInputStream(zipFile));
 
@@ -598,7 +582,7 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
         Map<Integer, String> municipalityDocuments = new HashMap<>();
 
         try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(documentFile.getContent());
-             InputStreamReader inputStreamReader = new InputStreamReader(byteArrayInputStream)) {
+             InputStreamReader inputStreamReader = new InputStreamReader(new BOMInputStream(byteArrayInputStream, ByteOrderMark.UTF_16LE), StandardCharsets.UTF_16LE)) {
 
             CSVParser csvParser = CSVFormat.TDF.withFirstRecordAsHeader().parse(inputStreamReader);
             csvParser.forEach(csvRecord -> {
