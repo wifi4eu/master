@@ -11,12 +11,10 @@ import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
 import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.service.mail.MailService;
-import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
-import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.user.UserConstants;
@@ -27,7 +25,7 @@ import java.util.Locale;
 
 @Component
 @Scope("prototype")
-public abstract class ProcessApplicationMailTask implements Runnable {
+public class ProcessApplicationMailTask implements Runnable {
 	private final Logger _log = LogManager.getLogger(ProcessApplicationMailTask.class);
 
 	@Autowired
@@ -45,13 +43,13 @@ public abstract class ProcessApplicationMailTask implements Runnable {
 	@Autowired
 	protected ApplicationRepository applicationRepository;
 
-
 	protected ApplicationDTO application;
 
 	public ProcessApplicationMailTask(ApplicationDTO application) {
 		super();
 		this.application= application;
 	}
+
 	@Override
 	public void run() {
 		_log.debug("Logging email");
