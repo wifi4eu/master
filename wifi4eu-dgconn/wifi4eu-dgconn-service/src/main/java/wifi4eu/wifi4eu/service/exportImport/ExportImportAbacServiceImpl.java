@@ -1,12 +1,21 @@
 package wifi4eu.wifi4eu.service.exportImport;
 
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+import org.apache.commons.io.ByteOrderMark;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
-import org.apache.commons.io.ByteOrderMark;
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.input.BOMInputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -125,9 +134,9 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
     public boolean importLegalEntitiesFromAbac(InputStream fileDataStream) throws IOException {
         _log.debug("importLegalEntityFBCValidate");
 
-        try (InputStreamReader inputStreamReader = new InputStreamReader(fileDataStream)) {
+        try (InputStreamReader inputStreamReader = new InputStreamReader(new BOMInputStream(fileDataStream, ByteOrderMark.UTF_16LE), StandardCharsets.UTF_16LE)) {
 
-            CSVParser csvParser = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(inputStreamReader);
+            CSVParser csvParser = CSVFormat.TDF.withFirstRecordAsHeader().parse(inputStreamReader);
             csvParser.forEach(csvRecord -> {
                 ExportImportRegistrationData validatedLEF = parseValidatedLEF(csvRecord);
                 if (validatedLEF != null) {
