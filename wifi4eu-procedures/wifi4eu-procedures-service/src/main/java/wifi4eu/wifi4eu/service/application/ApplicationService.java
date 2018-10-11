@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.helper.Validator;
+import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.call.CallRepository;
@@ -41,17 +42,19 @@ public class ApplicationService {
             throw new AppException("Call ID " + callId + " does not exist");
         }
         Integer sentEmailsMunicipalities = 0;
-        _log.debug("Create Application Emails - STARTING");
-        List<ApplicationDTO> applicationList = applicationMapper.toDTOList(applicationRepository.findByCreateApplicationEmailNotSent(callId, new Date().getTime()));
-        _log.info("Create Application Emails - There is " + applicationList.size() + " municipalities to be sent the email in this " +
-                "last four hours.");
-        for (ApplicationDTO app : applicationList) {
+        _log.info("Create Application Emails - STARTING");
+        // List<ApplicationDTO> applicationList = applicationMapper.toDTOList(applicationRepository.findByCreateApplicationEmailNotSent(callId, new Date().getTime()));
+        List<Application.ApplicationApplyEmail> applicationList = applicationRepository.findByCreateApplicationEmailNotSentCustom(callId, new Date().getTime());
+        _log.info("Create Application Emails - There is " + applicationList.size() + " municipalities to be sent");
+        for (Application.ApplicationApplyEmail app : applicationList) {
+           //  _log.info("appId : "+app.getId()+" registrationId : "+app.getRegistrationId());
+            /*
             _log.info("Processing application: " + app.getId());
-            //taskExecutor.execute(context.getBean(ProcessApplicationMailTask.class, app));
             taskExecutor.execute(context.getBean(ProcessApplicationMailTask.class, app));
             sentEmailsMunicipalities++;
+            */
         }
-        _log.debug("Create Application Emails - FINISHED");
+        _log.info("Create Application Emails - FINISHED");
         return new Integer[] {sentEmailsMunicipalities};
     }
 

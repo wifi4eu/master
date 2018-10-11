@@ -323,4 +323,9 @@ public class Application {
     public void setGrantAgreements(List<GrantAgreement> grantAgreements) {
         this.grantAgreements = grantAgreements;
     }
+
+    public interface ApplicationApplyEmail {
+        Integer getId();
+    }
+
 }
