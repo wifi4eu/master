@@ -223,7 +223,7 @@ public class MunicipalityService {
 
                 legalFileCorrectionReasonRepository.deleteLegalFileCorrectionByRegistrationId(registration.getId());
 
-                List<LegalFileDTO> legalFileDTOList = legalFilesMapper.toDTOList(legalFilesRepository.findByRegistration(registration.getId()));
+                List<LegalFileDTO> legalFileDTOList = legalFilesMapper.toDTOList(legalFilesRepository.findByRegistrationId(registration.getId()));
                 for (LegalFileDTO legalFileDTO: legalFileDTOList){
                     azureBlobConnector.deleteLegalFile(legalFilesService.getAzureName(legalFileDTO));
                     legalFilesRepository.delete(legalFilesMapper.toEntity(legalFileDTO));

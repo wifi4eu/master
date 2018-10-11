@@ -306,7 +306,7 @@ public class RegistrationService {
             for (ApplicationDTO application : applicationService.getApplicationsByRegistrationId(registrationDTO.getId())) {
                 applicationService.deleteApplication(application.getId(), request);
             }
-            legalFilesRepository.deleteByRegistration(registrationDTO.getId());
+            legalFilesRepository.deleteByRegistrationId(registrationDTO.getId());
             registrationRepository.delete(registrationMapper.toEntity(registrationDTO));
             return registrationDTO;
         } else {
