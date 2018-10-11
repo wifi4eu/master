@@ -9,6 +9,11 @@ module VagrantPlugins
 end
 
 # script to move configuration files and libraries to Tomcat container
+$script_dbLoad = <<-'SCRIPT'
+docker exec -d sql1 /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'SQLserver1' -Q 'RESTORE DATABASE wifi4eu FROM DISK = "/tmp/sql/wifi4eu.bak"'
+SCRIPT
+
+# script to move configuration files and libraries to Tomcat container
 $script_tomcatConfig = <<-SCRIPT
 docker cp /home/bargee/dev/lib/mssql-jdbc-6.4.0.jre8.jar tomcat:/usr/local/tomcat/lib
 docker cp /home/bargee/dev/lib/jtds-1.3.1.jar tomcat:/usr/local/tomcat/lib
@@ -33,15 +38,9 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder "LocalDevelopment/sql", "/home/bargee/dev/sql", :create => true, :owner => "bargee", :group => "bargees", :mount_options  => ["dmode=755","fmode=755"]
 
   config.vm.provision "sqlserver", type: "docker" do |d|
-<<<<<<< HEAD
     d.pull_images "mcr.microsoft.com/mssql/server:2017-latest"
     d.run "sqlserver",
       image: "mcr.microsoft.com/mssql/server:2017-latest",
-=======
-    d.pull_images "microsoft/mssql-server-linux:2017-latest"
-    d.run "sqlserver",
-      image: "microsoft/mssql-server-linux:2017-latest",
->>>>>>> EDCC Scheduled process
       args: "-e \"ACCEPT_EULA=Y\" -e \"SA_PASSWORD=SQLserver1\" -p 1433:1433 --name sql1 --restart always -v /home/bargee/dev/sql:/tmp/sql"
   end
 
@@ -63,12 +62,9 @@ Vagrant.configure("2") do |config|
   # configure tomcat with jdbc driver and ECAS client
   config.vm.provision "tomcat_config", type: "shell", inline: $script_tomcatConfig
 
-<<<<<<< HEAD
   # load wifi4eu schema in db
   config.vm.provision "sqlserver_config", type: "shell", inline: $script_dbLoad
 
-=======
->>>>>>> EDCC Scheduled process
   # local ip setting for the vagrant box
   config.vm.network "private_network", ip: "172.30.10.10"
 
