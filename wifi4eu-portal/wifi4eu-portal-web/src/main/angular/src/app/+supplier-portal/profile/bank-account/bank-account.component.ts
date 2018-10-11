@@ -1,5 +1,5 @@
 import { Component, ViewChild } from "@angular/core";
-import { BankAccountApi } from "../../../shared/swagger/api/BankAccountApi";
+import { BankAccountsApi } from "../../../shared/swagger/api/BankAccountsApi";
 import { SupplierApi } from "../../../shared/swagger/api/SupplierApi";
 import { NutsApi } from "../../../shared/swagger/api/NutsApi";
 import { SharedService } from "../../../shared/shared.service";
@@ -13,7 +13,7 @@ import { NutsDTOBase } from "../../../shared/swagger/model/NutsDTO";
 
 @Component({
     templateUrl: 'bank-account.component.html',
-    providers: [BankAccountApi, SupplierApi, NutsApi]
+    providers: [BankAccountsApi, SupplierApi, NutsApi]
 })
 
 export class BankAccountComponent {
@@ -38,9 +38,8 @@ export class BankAccountComponent {
     private fileURL: String = '/wifi4eu/api/bankAccounts/';
     private emptySpaces : String = ' ';
 
-    constructor(private bankAccountApi: BankAccountApi, private supplierApi: SupplierApi, private nutsApi: NutsApi,private sharedService: SharedService) {
+    constructor(private bankAccountsApi: BankAccountsApi, private supplierApi: SupplierApi, private nutsApi: NutsApi,private sharedService: SharedService) {
         this.findCountries();
-
         if (this.sharedService.user) {
             this.user = this.sharedService.user;
             this.fillSuplierAndBankAccounts(); 
@@ -58,7 +57,7 @@ export class BankAccountComponent {
                 if (supplier != null) {
                     this.supplier = supplier;
 
-                    this.bankAccountApi.getBankAccountsBySupplierId(this.supplier.id).subscribe(
+                    this.bankAccountsApi.getBankAccountsBySupplierId(this.supplier.id).subscribe(
                         (responseDTO: ResponseDTOBase) => {
                             if (responseDTO.success){
                                 this.bankAccountDTOList = responseDTO.data;   
@@ -67,7 +66,7 @@ export class BankAccountComponent {
                                     this.show.push(true);
                                 }
                                 
-                                this.bankAccountApi.getBankAccountDocsBySupplierId(this.supplier.id).subscribe(
+                                this.bankAccountsApi.getBankAccountDocsBySupplierId(this.supplier.id).subscribe(
                                     (responseDTO: ResponseDTOBase) => {
                                         if (responseDTO.success){
                                             let bankAccountDocumentDTOList : BankAccountDocumentDTOBase[] = responseDTO.data;
@@ -133,7 +132,7 @@ export class BankAccountComponent {
     private closeModalOK(){
         this.addOrEditBankAccount = false;
 
-        this.bankAccountApi.saveBankAccount(this.currentBankAccountDTO).subscribe(
+        this.bankAccountsApi.saveBankAccount(this.currentBankAccountDTO).subscribe(
             (responseDTO: ResponseDTOBase) => {
                 if (responseDTO.success){
                     if (this.currentBankAccountDTO.id){ //EDIT
@@ -150,7 +149,7 @@ export class BankAccountComponent {
                         let bankAccountDTO : BankAccountDTOBase = responseDTO.data;
                         this.bankAccountDocumentDTOToUpdate.bankAccountId = bankAccountDTO.id; 
 
-                        this.bankAccountApi.saveBankAccountDocument(this.bankAccountDocumentDTOToUpdate).subscribe(
+                        this.bankAccountsApi.saveBankAccountDocument(this.bankAccountDocumentDTOToUpdate).subscribe(
                             (responseDTO: ResponseDTOBase) => {
                                 if (responseDTO.success){
                                     bankAccountDTO.bankAccountDocumentDTOList.push(responseDTO.data);
