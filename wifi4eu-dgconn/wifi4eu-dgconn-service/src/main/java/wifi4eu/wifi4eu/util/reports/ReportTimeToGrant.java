@@ -188,18 +188,25 @@ public class ReportTimeToGrant {
         double averageGA = 0;
         Integer totalGA = 0;
         Integer totalApplicationsDS = applicationRepository.countAllApplicationsDoubleSigned();
+        _log.info("totalApplicationDS" + totalApplicationsDS);
         for (CallDTO call : calls) {
             Integer totalGACall = countApplicantsDoubleSignedByCall(call.getId());
+            _log.info("totalGACall" + totalGACall);
             Integer totalGACallSelected = applicationRepository.countGrantAgreementsCounterSignedReserved(call.getId());
+            _log.info("totalGACallSelected" + totalGACallSelected);
             Integer totalGACallReserved = applicationRepository.countGrantAgreementsCounterSignedSelected(call.getId());
+            _log.info("totalGACallReserved" + totalGACallReserved);
             if (totalApplicationsDS == 0) {
                 averageMain += 0;
                 averageReserve += 0;
                 averageGA += 0;
             } else {
                 averageMain += (generateCallAverage(call.getId(), SelectionStatus.SELECTED.getValue()) * (totalGACallSelected / totalApplicationsDS));
+                _log.info("averageMain without 0" + averageMain + "on call" + call.getId());
                 averageReserve += (generateCallAverage(call.getId(), SelectionStatus.RESERVE_LIST.getValue()) * (totalGACallReserved / totalApplicationsDS));
+                _log.info("averageReserve without 0" + averageReserve + "on call" + call.getId());
                 averageGA += (generateCallAverage(call.getId(), 0) * (totalGACall / totalApplicationsDS));
+                _log.info("averageGA without 0" + averageGA + "on call" + call.getId());
             }
         }
         DecimalFormat df = new DecimalFormat("#.##");
