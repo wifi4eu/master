@@ -31,7 +31,7 @@ export class BankAccountComponent {
 
     private show : boolean[] = [];
 
-    private fileURL: String = '/wifi4eu/api/bankAccountsw/';
+    private fileURL: String = '/wifi4eu/api/bankAccounts/';
     private emptySpaces : String = ' ';
 
     constructor(private bankAccountApi: BankAccountApi, private supplierApi: SupplierApi, private sharedService: SharedService) {
