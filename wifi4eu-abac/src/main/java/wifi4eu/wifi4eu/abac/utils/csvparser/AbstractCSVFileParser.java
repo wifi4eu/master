@@ -21,8 +21,8 @@ public abstract class AbstractCSVFileParser {
 
 	private final Logger log = LoggerFactory.getLogger(AbstractCSVFileParser.class);
 	
-	protected abstract void validateColumns(CSVParser csvParser) throws RuntimeException;
 	protected abstract List<?> mapRowsToEntities(CSVParser csvParser);
+	protected abstract void validateColumns(CSVParser csvParser) throws RuntimeException;
 
 	public List<?> parseFile(FileDTO fileDTO) throws RuntimeException{
 

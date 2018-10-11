@@ -3,85 +3,76 @@ package wifi4eu.wifi4eu.abac.utils.csvparser;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.springframework.stereotype.Component;
+import org.apache.commons.lang.ArrayUtils;
 import org.springframework.util.StringUtils;
 
 import wifi4eu.wifi4eu.abac.data.Constants;
-import wifi4eu.wifi4eu.abac.data.dto.LegalEntityDocumentCSVRow;
+import wifi4eu.wifi4eu.abac.data.dto.DocumentCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.Document;
 import wifi4eu.wifi4eu.abac.data.enums.DocumentType;
-import wifi4eu.wifi4eu.abac.data.enums.LegalEntityDocumentCSVColumn;
+import wifi4eu.wifi4eu.abac.data.enums.DocumentCSVColumn;
 import wifi4eu.wifi4eu.abac.utils.CSVStringCreator;
 import wifi4eu.wifi4eu.abac.utils.DateTimeUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-@Component
-public class DocumentCSVFileParser extends AbstractCSVFileParser {
+@SuppressWarnings("rawtypes")
+public abstract class DocumentCSVFileParser extends AbstractCSVFileParser {
+	
+	public static final Enum[] DOCUMENT_MANDATORY_FIELDS = {
+		DocumentCSVColumn.DOCUMENT_PORTAL_ID,
+		DocumentCSVColumn.DOCUMENT_NAME,
+		DocumentCSVColumn.DOCUMENT_FILENAME,
+		DocumentCSVColumn.DOCUMENT_MIMETYPE,
+		DocumentCSVColumn.DOCUMENT_DATE,
+		DocumentCSVColumn.DOCUMENT_TYPE,
+		DocumentCSVColumn.ARES_REFERENCE
+	};
+	
+	public static final String[] EXPORT_HEADERS = {
+		DocumentCSVColumn.DOCUMENT_NAME.toString(),
+		DocumentCSVColumn.DOCUMENT_FILENAME.toString(),
+		DocumentCSVColumn.DOCUMENT_MIMETYPE.toString(),
+		DocumentCSVColumn.DOCUMENT_TYPE.toString(),
+		DocumentCSVColumn.ARES_REFERENCE.toString(),
+		DocumentCSVColumn.DATE_EXPORTED.toString(),
+		DocumentCSVColumn.USER_EXPORTED.toString()
+	};
 
+	public abstract Enum[] getMandatoryFields();
+	public abstract String[] getAdditionalExportHeaders();
+	public abstract Object[] getAdditionalExportValues(Document document);
+	
 	@Override
 	protected void validateColumns(CSVParser csvParser) {
-		super.validateColumns(csvParser,
-			LegalEntityDocumentCSVColumn.MUNICIPALITY_PORTAL_ID,
-			LegalEntityDocumentCSVColumn.DOCUMENT_PORTAL_ID,
-			LegalEntityDocumentCSVColumn.DOCUMENT_NAME,
-			LegalEntityDocumentCSVColumn.DOCUMENT_FILENAME,
-			LegalEntityDocumentCSVColumn.DOCUMENT_MIMETYPE,
-			LegalEntityDocumentCSVColumn.DOCUMENT_DATE,
-			LegalEntityDocumentCSVColumn.DOCUMENT_TYPE,
-			LegalEntityDocumentCSVColumn.ARES_REFERENCE);
+		super.validateColumns(csvParser, (Enum[])ArrayUtils.addAll(getMandatoryFields(), DOCUMENT_MANDATORY_FIELDS));
 	}
-
-	@Override
-	protected List<LegalEntityDocumentCSVRow> mapRowsToEntities(CSVParser csvParser) {
-
-		try {
-			List<LegalEntityDocumentCSVRow> documents = new ArrayList<>();
-
-			for (CSVRecord csvRecord : csvParser) {
-				LegalEntityDocumentCSVRow documentCSVRow = new LegalEntityDocumentCSVRow();
-
-				documentCSVRow.setMunicipalityPortalId(StringUtils.isEmpty(csvRecord.get(LegalEntityDocumentCSVColumn.MUNICIPALITY_PORTAL_ID)) ?  null :
-																		Long.parseLong(csvRecord.get(LegalEntityDocumentCSVColumn.MUNICIPALITY_PORTAL_ID)));
-				documentCSVRow.setDocumentPortalId(StringUtils.isEmpty(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_PORTAL_ID)) ?  null :
-																		Long.parseLong(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_PORTAL_ID)));
-				documentCSVRow.setDocumentName(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_NAME));
-				documentCSVRow.setDocumentFileName(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_FILENAME));
-				documentCSVRow.setDocumentMimeType(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_MIMETYPE));
-				documentCSVRow.setDocumentDate(StringUtils.isEmpty(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_DATE)) ? null :
-																		DateTimeUtils.parseDate(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_DATE), Constants.PORTAL_CSV_DATE_FORMAT));
-				documentCSVRow.setDocumentType(StringUtils.isEmpty(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_TYPE)) ? null :
-																		DocumentType.valueOf(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_TYPE)));
-				documentCSVRow.setAresReference(csvRecord.get(LegalEntityDocumentCSVColumn.ARES_REFERENCE));
-				documents.add(documentCSVRow);
-			}
-			return documents;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-
+	
+	protected void mapCSVRowToDocument(DocumentCSVRow documentCSVRow, CSVRecord csvRecord) throws Exception, RuntimeException {
+		documentCSVRow.setDocumentPortalId(StringUtils.isEmpty(
+			csvRecord.get(DocumentCSVColumn.DOCUMENT_PORTAL_ID)) ?  null : Long.parseLong(csvRecord.get(DocumentCSVColumn.DOCUMENT_PORTAL_ID))
+		);
+		documentCSVRow.setDocumentName(csvRecord.get(DocumentCSVColumn.DOCUMENT_NAME));
+		documentCSVRow.setDocumentFileName(csvRecord.get(DocumentCSVColumn.DOCUMENT_FILENAME));
+		documentCSVRow.setDocumentMimeType(csvRecord.get(DocumentCSVColumn.DOCUMENT_MIMETYPE));
+		documentCSVRow.setDocumentDate(StringUtils.isEmpty(
+			csvRecord.get(DocumentCSVColumn.DOCUMENT_DATE)) ? null : DateTimeUtils.parseDate(csvRecord.get(DocumentCSVColumn.DOCUMENT_DATE), Constants.PORTAL_CSV_DATE_FORMAT)
+		);
+		documentCSVRow.setDocumentType(
+			StringUtils.isEmpty(csvRecord.get(DocumentCSVColumn.DOCUMENT_TYPE)) ? null : DocumentType.valueOf(csvRecord.get(DocumentCSVColumn.DOCUMENT_TYPE))
+		);
+		documentCSVRow.setAresReference(csvRecord.get(DocumentCSVColumn.ARES_REFERENCE));
 	}
-
+	
 	public String exportDocumentsToCSV(List<Document> documents) {
 
 		try {
-
-			CSVStringCreator csv = new CSVStringCreator(CSVFormat.TDF.withHeader(
-				LegalEntityDocumentCSVColumn.MUNICIPALITY_PORTAL_ID.toString(),
-				LegalEntityDocumentCSVColumn.DOCUMENT_NAME.toString(),
-				LegalEntityDocumentCSVColumn.DOCUMENT_FILENAME.toString(),
-				LegalEntityDocumentCSVColumn.DOCUMENT_MIMETYPE.toString(),
-				LegalEntityDocumentCSVColumn.DOCUMENT_TYPE.toString(),
-				LegalEntityDocumentCSVColumn.ARES_REFERENCE.toString(),
-				LegalEntityDocumentCSVColumn.DATE_EXPORTED.toString(),
-				LegalEntityDocumentCSVColumn.USER_EXPORTED.toString()
-			));
-			
+			String[] headers = (String[])ArrayUtils.addAll(getAdditionalExportHeaders(), EXPORT_HEADERS);
+			CSVStringCreator csv = new CSVStringCreator(CSVFormat.TDF.withHeader(headers));
+	
 			for (Document document : documents) {
-				csv.printRecord(
-					document.getLegalEntity().getMid(),
+				Object[] values = {
 					document.getName(),
 					document.getFileName(),
 					document.getMimetype(),
@@ -89,9 +80,9 @@ public class DocumentCSVFileParser extends AbstractCSVFileParser {
 					document.getAresReference(),
 					DateTimeUtils.format(document.getDateExported(), Constants.PORTAL_CSV_DATETIME_FORMAT),
 					document.getUserExported()
-				);
+				};
+				csv.printRecord(ArrayUtils.addAll(getAdditionalExportValues(document), values));
 			}
-
 			return csv.closeAndGenerateString();
 
 		} catch (IOException e) {

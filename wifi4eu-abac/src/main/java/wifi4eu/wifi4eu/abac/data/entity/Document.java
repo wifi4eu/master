@@ -29,6 +29,10 @@ public class Document {
 	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
 	@JoinColumn(name="LEGAL_ENTITY_ID")
 	private LegalEntity legalEntity;
+	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+	@JoinColumn(name="BANK_ACCOUNT_ID")
+	private BankAccount bankAccount;
 
 	@Column(name = "name")
 	private String name;
@@ -194,6 +198,14 @@ public class Document {
 
 	public void setLegalEntity(LegalEntity legalEntity) {
 		this.legalEntity = legalEntity;
+	}
+	
+	public BankAccount getBankAccount() {
+		return bankAccount;
+	}
+
+	public void setBankAccount(BankAccount bankAccount) {
+		this.bankAccount = bankAccount;
 	}
 
 	public String getFileName() {

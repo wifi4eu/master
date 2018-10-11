@@ -14,13 +14,17 @@ public class Constants {
 	
 	public static final String IMPORT_LEGAL_ENTITY_INFORMATION_CSV_FILENAME = "portal_exportBeneficiaryInformation.csv";
 	public static final String IMPORT_LEGAL_ENTITY_DOCUMENTS_CSV_FILENAME = "portal_exportBeneficiaryDocuments.csv";
+	public static final String IMPORT_LEGAL_COMMITMENT_DOCUMENTS_CSV_FILENAME = "portal_exportBeneficiaryDocuments.csv";
+	public static final String IMPORT_BANK_ACCOUNT_INFORMATION_CSV_FILENAME = "portal_exportBankAccountInformation.csv";
+	public static final String IMPORT_BANK_ACCOUNT_DOCUMENTS_CSV_FILENAME = "portal_exportBankAccountDocuments.csv";
 	
 	public static final String EXPORT_LEGAL_ENTITY_INFORMATION_CSV_FILENAME = "airgap_exportBeneficiaryInformation.csv";
 	public static final String EXPORT_BUDGETARY_COMMITMENT_INFORMATION_CSV_FILENAME = "airgap_exportBudgetaryCommitmentInformation.csv";
 	public static final String EXPORT_LEGAL_COMMITMENT_INFORMATION_CSV_FILENAME = "airgap_exportLegalCommitmentInformation.csv";
+	public static final String EXPORT_LEGAL_COMMITMENT_DOCUMENTS_CSV_FILENAME = "airgap_exportBeneficiaryDocuments.csv";
 	public static final String EXPORT_LEGAL_COMMITMENT_INFORMATION_ZIP_FILENAME = "airgap_exportLegalCommitments.zip";
-	public static final String EXPORT_LEGAL_ENTITY_DOCUMENTS_CSV_FILENAME = "airgap_exportBeneficiaryDocuments.csv";
-	
+	public static final String EXPORT_BANK_ACCOUNT_INFORMATION_CSV_FILENAME = "airgap_exportBankAccountInformation.csv";
+		
 	public static final String PORTAL_CSV_DATE_FORMAT = "yyyy-MM-dd";
 	public static final String PORTAL_CSV_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	

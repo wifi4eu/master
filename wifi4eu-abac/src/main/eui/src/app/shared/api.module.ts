@@ -40,6 +40,10 @@ export class ApiModule {
     importLegalCommitment(file?: File): Observable<HttpEvent<ResponseDTO>> {
       return this.importFile('legalCommitment/import', file);
     }
+    
+    importBankAccount(file?: File): Observable<HttpEvent<ResponseDTO>> {
+        return this.importFile('bankAccount/import', file);
+    }
 
     getCountries(): Observable<CountryDTO[]> {
         let path = this.basePath + 'monitor/countries';

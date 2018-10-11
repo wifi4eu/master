@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { ApiModule } from '../../../shared/api.module';
 import { ResponseDTO } from '../../../shared/model/DTOs';
-import { UxMessageBoxComponent } from '@eui/ux-commons';
 import { UxService } from '@eui/ux-core';
  
 @Component({
@@ -10,9 +9,9 @@ import { UxService } from '@eui/ux-core';
 })
 export class HomeComponent{
   
-    private errorMessage: string;
-    private errorBatchRef: string;
-    private uploadProgress: number;
+    public errorMessage: string;
+    public errorBatchRef: string;
+    public uploadProgress: number;
   
     constructor(protected api: ApiModule, protected uxService: UxService){
     }
@@ -23,9 +22,6 @@ export class HomeComponent{
             let file: File = event.target.files['0'];
             this.api.importLegalEntity(file).subscribe(
                 uploadEvent => {
-                  
-                    console.log(uploadEvent.type);
-                  
                     if (uploadEvent.type === HttpEventType.UploadProgress) {
                         this.uploadProgress = Math.round(100 * uploadEvent.loaded / uploadEvent.total);
                     } else if (uploadEvent instanceof HttpResponse) {
@@ -37,7 +33,6 @@ export class HomeComponent{
                     this.showError();
                 }
             );
-            
         }
     }
   
@@ -83,7 +78,23 @@ export class HomeComponent{
     }
   
     importBankAccount(event){
-        alert('importBankAccount: Not implemented yet');
+        if (event && event.target && event.target.files && event.target.files.length === 1) {
+            this.showProgress();
+            let file: File = event.target.files['0'];
+            this.api.importBankAccount(file).subscribe(
+                uploadEvent => {
+                    if (uploadEvent.type === HttpEventType.UploadProgress) {
+                        this.uploadProgress = Math.round(100 * uploadEvent.loaded / uploadEvent.total);
+                    } else if (uploadEvent instanceof HttpResponse) {
+                        this.handleResponse(uploadEvent.body);
+                    }
+                },
+                (err) => {
+                    this.hideProgress();
+                    this.showError();
+                }
+            );
+        }
     }
   
     handleResponse(response: ResponseDTO){
@@ -120,9 +131,5 @@ export class HomeComponent{
   
     hideProgress(){
         this.uxService.closeMessageBox('messagebox_upload_progress');
-    }
-  
-    todo(event){
-        alert('Implementation pending...');
     }
 }

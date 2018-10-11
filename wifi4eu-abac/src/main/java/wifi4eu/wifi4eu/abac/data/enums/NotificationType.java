@@ -4,5 +4,6 @@ public enum NotificationType {
 
     LEF_CREATION,
     BC_CREATION,
-    LC_CREATION
+    LC_CREATION,
+    BAF_CREATION
 }

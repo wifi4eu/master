@@ -2,27 +2,30 @@ package wifi4eu.wifi4eu.abac.service;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import wifi4eu.wifi4eu.abac.data.Constants;
 import wifi4eu.wifi4eu.abac.data.dto.FileDTO;
-import wifi4eu.wifi4eu.abac.data.entity.*;
+import wifi4eu.wifi4eu.abac.data.entity.BankAccount;
+import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitmentPosition;
+import wifi4eu.wifi4eu.abac.data.entity.Document;
+import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
+import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.utils.ZipFileWriter;
+import wifi4eu.wifi4eu.abac.utils.csvparser.BankAccountCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.csvparser.BudgetaryCommitmentCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.csvparser.DocumentCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.csvparser.LegalCommitmentCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.csvparser.LegalEntityCSVFileParser;
-
-import javax.transaction.Transactional;
+import wifi4eu.wifi4eu.abac.utils.csvparser.LegalEntityDocumentCSVFileParser;
 
 @Service
 public class ExportDataService {
@@ -35,9 +38,12 @@ public class ExportDataService {
 
 	@Autowired
 	private BudgetaryCommitmentCSVFileParser budgetaryCommitmentCSVFileParser;
+	
+	@Autowired
+	private BankAccountCSVFileParser bankAccountCSVFileParser;
 
 	@Autowired
-	private DocumentCSVFileParser documentCSVFileParser;
+	private LegalEntityDocumentCSVFileParser legalEntityDocumentCSVFileParser;
 
 	@Autowired
 	private LegalEntityService legalEntityService;
@@ -46,16 +52,18 @@ public class ExportDataService {
 	private BudgetaryCommitmentService budgetaryCommitmentService;
 
 	@Autowired
+	private LegalCommitmentService legalCommitmentService;
+	
+	@Autowired
+	private BankAccountService bankAccountService;
+	
+	@Autowired
 	private ECASUserService ecasUserService;
 
-	@Autowired
-	private LegalCommitmentService legalCommitmentService;
-
-	private final Logger log = LoggerFactory.getLogger(ExportDataService.class);
 
 	@Transactional
 	public String exportLegalEntities() throws UnsupportedEncodingException {
-		log.info("exportLegalEntities");
+
 		List<LegalEntity> legalEntities = legalEntityService.getAllLegalEntitiesForExport();
 		String csvFile = legalEntityCSVFileParser.exportLegalEntitiesToCSV(legalEntities);
 
@@ -71,7 +79,7 @@ public class ExportDataService {
 
 	@Transactional
 	public String exportBudgetaryCommitments() throws UnsupportedEncodingException {
-		log.info("exportBudgetaryCommitmentyContent");
+		
 		List<BudgetaryCommitmentPosition> budgetaryCommitmentPositions = (List<BudgetaryCommitmentPosition>) budgetaryCommitmentService.findAllBudgetaryCommitmentPositionsForExport();
 		String csvFile = budgetaryCommitmentCSVFileParser.exportBudgetaryCommitmentToCSV(budgetaryCommitmentPositions);
 
@@ -107,8 +115,8 @@ public class ExportDataService {
 		FileDTO legalCommitmentsCSVFile = new FileDTO(Constants.EXPORT_LEGAL_COMMITMENT_INFORMATION_CSV_FILENAME, legalCommitmentsCSVbytes);
 		zipFileWriter.addFile(legalCommitmentsCSVFile);
 
-		byte[] documentsCSVbytes = documentCSVFileParser.exportDocumentsToCSV(documents).getBytes(Constants.CSV_FILES_ENCODING);
-		FileDTO documentsCSVFile = new FileDTO(Constants.EXPORT_LEGAL_ENTITY_DOCUMENTS_CSV_FILENAME, documentsCSVbytes);
+		byte[] documentsCSVbytes = legalEntityDocumentCSVFileParser.exportDocumentsToCSV(documents).getBytes(Constants.CSV_FILES_ENCODING);
+		FileDTO documentsCSVFile = new FileDTO(Constants.EXPORT_LEGAL_COMMITMENT_DOCUMENTS_CSV_FILENAME, documentsCSVbytes);
 		zipFileWriter.addFile(documentsCSVFile);
 
 		Date now = Calendar.getInstance().getTime();
@@ -122,9 +130,23 @@ public class ExportDataService {
 			}
 
 			legalCommitmentService.saveLegalCommitment(legalCommitment);
-
 		}
 
 		return zipFileWriter.finishAndReturnZipfile();
+	}
+	
+	@Transactional
+	public String exportBankAccounts() throws UnsupportedEncodingException {
+		
+		List<BankAccount> bankAccounts = bankAccountService.getAllBankAccountForExport();
+		String csvFile = bankAccountCSVFileParser.exportBankAccountToCSV(bankAccounts);
+		
+		Date now = Calendar.getInstance().getTime();
+		for (BankAccount bankAccount : bankAccounts) {
+			bankAccount.setDateExported(now);
+			bankAccount.setUserExported(ecasUserService.getCurrentUsername());
+			bankAccountService.saveBankAccount(bankAccount);
+		}
+		return csvFile;
 	}
 }

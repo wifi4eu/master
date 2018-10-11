@@ -65,18 +65,19 @@
 		<div class="row justify-content-center">
 			<div class="col-md-6">
 		    	<ux-dashboard-card
-		    		label="Export BAs to Portal"
-		    		subLabel="This button will export all parameters necessary for the WIFI4EU interface to create the data."
+		    		label="Create BAs in ABAC from WIFI4EU portal file"
+		    		subLabel="This button will import all parameters necessary for the WIFI4EU Interface to create the data and it will create the BAs in ABAC."
 		    		[isClickable]="true"
-		    		(click)="todo($event)"
+		    		(click)="showUpload('baf')"
 		    	></ux-dashboard-card>
+		    	<input type="file" class="abac-upload" id="abac-upload-baf" (change)="importBankAccount($event)" accept=".zip"/>
 		    </div>
 		    <div class="col-md-6">
 		    	<ux-dashboard-card
-		    		label="Import BAF from ABAC interface"
-		    		subLabel="This button will import the ABAC reference numbers into the portal."
+		    		label="Export BAs data"
+		    		subLabel="This button will export a .csv file with data from ABAC for importing into the portal."
 		    		[isClickable]="true"
-		    		(click)="todo($event)"
+		    		urlExternal="bankAccount/export"
 		    	></ux-dashboard-card>
 		    </div>
 		</div>
