@@ -580,7 +580,7 @@ public class ApplicationService {
     @Transactional
     public ResponseDTO changeStatusRegistrationDocuments(Integer applicationId) {
         ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findOne(applicationId));
-        List<LegalFileDTO> legalFileDTOS = legalFilesMapper.toDTOList(legalFilesRepository.findByRegistration(applicationDTO.getRegistrationId()));
+        List<LegalFileDTO> legalFileDTOS = legalFilesMapper.toDTOList(legalFilesRepository.findByRegistrationId(applicationDTO.getRegistrationId()));
         if (!legalFileDTOS.isEmpty()) {
             for (LegalFileDTO legalFileDTO : legalFileDTOS) {
                 if (legalFileDTO.getIsNew() == LegalFileStatus.RECENT.getValue()) {
