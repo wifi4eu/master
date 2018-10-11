@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import wifi4eu.wifi4eu.abac.data.Constants;
 import wifi4eu.wifi4eu.abac.data.dto.MonitoringRow;
 import wifi4eu.wifi4eu.abac.data.entity.Country;
 import wifi4eu.wifi4eu.abac.data.entity.ImportLog;
@@ -28,19 +29,19 @@ public class MonitoringController {
 	}
 
 	@PreAuthorize ("hasRole('ROLE_INEA_OFFICER')")
-	@RequestMapping(value = "data", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "data", method = RequestMethod.GET, produces = Constants.MIME_TYPE_REST_RESPONE)
 	public List<MonitoringRow> data() throws IOException {
 		return monitoringService.getMonitoringData();
 	}
 
 	@PreAuthorize ("hasRole('ROLE_INEA_OFFICER')")
-	@RequestMapping(value = "countries", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "countries", method = RequestMethod.GET, produces = Constants.MIME_TYPE_REST_RESPONE)
 	public List<Country> countries() throws IOException {
 		return  monitoringService.getCountries();
 	}
 	
 	@PreAuthorize ("hasRole('ROLE_INEA_OFFICER')")
-	@RequestMapping(value = "errorLog/{batchRef}", method = RequestMethod.GET, produces = "text/plain")
+	@RequestMapping(value = "errorLog/{batchRef}", method = RequestMethod.GET, produces = Constants.MIME_TYPE_PLAIN_TEXT_RESPONSE)
 	@ResponseBody
 	public String errorLog(@PathVariable String batchRef) throws IOException {
 		String result="";

@@ -1,18 +1,19 @@
 package wifi4eu.wifi4eu.abac.utils.csvparser;
 
+import java.io.IOException;
+import java.util.List;
+
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.lang.NotImplementedException;
 import org.springframework.stereotype.Component;
+
+import wifi4eu.wifi4eu.abac.data.Constants;
 import wifi4eu.wifi4eu.abac.data.dto.LegalCommitmentCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
 import wifi4eu.wifi4eu.abac.data.enums.LegalCommitmentCSVColumn;
+import wifi4eu.wifi4eu.abac.utils.CSVStringCreator;
 import wifi4eu.wifi4eu.abac.utils.DateTimeUtils;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.List;
 
 @Component
 public class LegalCommitmentCSVFileParser extends AbstractCSVFileParser{
@@ -31,8 +32,7 @@ public class LegalCommitmentCSVFileParser extends AbstractCSVFileParser{
 
 		try {
 
-			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-			CSVPrinter csvPrinter = createCSVPrinter(stream, CSVFormat.TDF.withHeader(
+			CSVStringCreator csv = new CSVStringCreator(CSVFormat.TDF.withHeader(
 				LegalCommitmentCSVColumn.MUNICIPALITY_PORTAL_ID.toString(),
 				LegalCommitmentCSVColumn.GRANT_AGREEMENT_SIGNATURE_DATE.toString(),
 				LegalCommitmentCSVColumn.GRANT_AGREEMENT_COUNTERSIGNATURE_DATE.toString(),
@@ -45,22 +45,20 @@ public class LegalCommitmentCSVFileParser extends AbstractCSVFileParser{
 			));
 			
 			for (LegalCommitment legalCommitment : legalCommitments) {
-				csvPrinter.printRecord(
-						legalCommitment.getLegalEntity().getMid(),
-						DateTimeUtils.format(legalCommitment.getGrantAgreementSignatureDate(), PORTAL_CSV_DATE_FORMAT),
-						DateTimeUtils.format(legalCommitment.getGrantAgreementCounterSignatureDate(), PORTAL_CSV_DATE_FORMAT),
-						legalCommitment.getWfStatus(),
-						legalCommitment.getAbacErrorMessage(),
-						legalCommitment.getAbacKey(),
-						DateTimeUtils.format(legalCommitment.getDateExported(), PORTAL_CSV_DATETIME_FORMAT),
-						legalCommitment.getUserExported(),
-						legalCommitment.getBatchRef()
+				csv.printRecord(
+					legalCommitment.getLegalEntity().getMid(),
+					DateTimeUtils.format(legalCommitment.getGrantAgreementSignatureDate(), Constants.PORTAL_CSV_DATE_FORMAT),
+					DateTimeUtils.format(legalCommitment.getGrantAgreementCounterSignatureDate(), Constants.PORTAL_CSV_DATE_FORMAT),
+					legalCommitment.getWfStatus(),
+					legalCommitment.getAbacErrorMessage(),
+					legalCommitment.getAbacKey(),
+					DateTimeUtils.format(legalCommitment.getDateExported(), Constants.PORTAL_CSV_DATETIME_FORMAT),
+					legalCommitment.getUserExported(),
+					legalCommitment.getBatchRef()
 				);
 			}
 
-			csvPrinter.flush();
-			csvPrinter.close();
-			return createCSVFileContent(stream);
+			return csv.closeAndGenerateString();
 
 		} catch (IOException e) {
 			e.printStackTrace();
