@@ -81,7 +81,12 @@ public class HelpdeskIssueResource {
     public ResponseDTO createHelpdeskIssue(@RequestBody final HelpdeskIssueDTO helpdeskIssueDTO, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Creating helpdesk issue");
+        _log.debug("ECAS Username: [{}] - Creating helpdesk issue", userConnected.getEcasUsername());
+        
+        if (helpdeskIssueDTO.getSummary() != null) {
+            _log.debug("Summary size [{}], summary [{}]", helpdeskIssueDTO.getSummary().length(), (helpdeskIssueDTO.getSummary().length() <= 20 ? helpdeskIssueDTO.getSummary() : helpdeskIssueDTO.getSummary().substring(0, 20))); 
+        }
+        
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             if (!userDTO.getEcasEmail().equals(helpdeskIssueDTO.getFromEmail())) {

@@ -4,8 +4,10 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -67,6 +69,12 @@ public class ScheduledTasks {
 
     @Value("${rabbitmq.password}")
     private String rabbitPassword;
+    
+	@Value("${serco.helpdesk.endpoint}")
+	private String sercoHelpdeskEndpoint;
+
+    @Value("${serco.helpdesk.formid}")
+    private String helpdeskFormId;
 
     @Autowired
     private HelpdeskService helpdeskService;
@@ -164,39 +172,65 @@ public class ScheduledTasks {
     }
 
     //-- DGCONN-NOT-NECESSARY @Scheduled(cron = "0 0 9,17 * * MON-FRI")
+    @Scheduled(cron = "0 0 9,17 * * MON-FRI")
     public void scheduleHelpdeskIssues() {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Starting helpdesk issues scheduled");
+    	final String confirmationMessage = "Thank you for your message.";
+    	
+        _log.debug("Running DGConn Scheduled Task - HelpDeskIssues");
+
         List<HelpdeskIssueDTO> helpdeskIssueDTOS = helpdeskService.getAllHelpdeskIssueNoSubmited();
-        for (HelpdeskIssueDTO helpdeskIssue : helpdeskIssueDTOS) {
+        _log.info("helpdeskIssueDTOS.size() [{}]", helpdeskIssueDTOS == null ? "NULL" : helpdeskIssueDTOS.size());
 
-            try {
-                HelpdeskTicketDTO helpdeskTicketDTO = new HelpdeskTicketDTO();
-                helpdeskTicketDTO.setEmailAdress(helpdeskIssue.getFromEmail());
-                helpdeskTicketDTO.setEmailAdressconf(helpdeskTicketDTO.getEmailAdress());
-                helpdeskTicketDTO.setUuid("wifi4eu_" + helpdeskIssue.getId());
-                UserDTO userDTO = userService.getUserByEcasEmail(helpdeskIssue.getFromEmail());
+        if (helpdeskIssueDTOS != null) {
 
-                if (userDTO != null) {
-                    helpdeskTicketDTO.setFirstname(userDTO.getName());
-                    helpdeskTicketDTO.setLastname(userDTO.getSurname());
-                    helpdeskTicketDTO.setTxtsubjext(helpdeskIssue.getTopic());
-                    helpdeskTicketDTO.setQuestion(helpdeskIssue.getSummary());
-                    String result = executePost("https://webtools.ec.europa.eu/form-tools/process.php", helpdeskTicketDTO.toString());
+        	for (HelpdeskIssueDTO helpdeskIssue : helpdeskIssueDTOS) {
+        		_log.info("Processing ticket id[{}]", helpdeskIssue.getId());
 
-                    if (result != null && result.contains("Thankyou.js")) {
-                        helpdeskIssue.setTicket(true);
-                        helpdeskService.createHelpdeskIssue(helpdeskIssue);
-                    } else {
-                        _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The result do not contain the proper text");
-                    }
-                } else {
-                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot retrieve the user for this helpdesk issue");
-                }
-            } catch (Exception e) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot process this helpdesk issue", e);
-            }
+        		try {
+        			HelpdeskTicketDTO helpdeskTicketDTO = new HelpdeskTicketDTO();
+        			helpdeskTicketDTO.setForm_tools_form_id(this.helpdeskFormId);
+        			helpdeskTicketDTO.setEmailAdress(helpdeskIssue.getFromEmail());
+        			helpdeskTicketDTO.setEmailAdressconf(helpdeskTicketDTO.getEmailAdress());
+        			helpdeskTicketDTO.setUuid("wifi4eu_" + helpdeskIssue.getId());
+        			helpdeskTicketDTO.setLang(helpdeskIssue.getLang());
+        			helpdeskTicketDTO.setPref_lg(helpdeskIssue.getLang());
+        			helpdeskTicketDTO.setPref_lg2(helpdeskIssue.getLang());
+        			
+        			UserDTO userDTO = userService.getUserByEcasEmail(helpdeskIssue.getFromEmail());
+    				_log.info("userDTO id[{}]", userDTO == null ? "NULL" : userDTO.getId());
+
+        			if (userDTO != null) {
+        				String escapedFirstName = URLEncoder.encode(userDTO.getName(), "UTF-8");
+        				String escapedLastName = URLEncoder.encode(userDTO.getSurname(), "UTF-8");
+        				String escapedTopic = URLEncoder.encode(helpdeskIssue.getTopic(), "UTF-8");
+        				String escapedQuestion = URLEncoder.encode(helpdeskIssue.getSummary(), "UTF-8");
+        				
+        				helpdeskTicketDTO.setFirstname(escapedFirstName);
+        				helpdeskTicketDTO.setLastname(escapedLastName);
+        				helpdeskTicketDTO.setTxtsubjext(escapedTopic);
+        				helpdeskTicketDTO.setQuestion(escapedQuestion);
+        				
+        				String result = executePost(sercoHelpdeskEndpoint, helpdeskTicketDTO.toString());
+
+        				_log.info("Result posting to queue [{}]", result);
+
+        				if (result != null && result.contains(confirmationMessage)) {
+        					_log.info("Updating Helpdesk issue");
+
+        					helpdeskIssue.setTicket(true);
+        					helpdeskService.createOrUpdateHelpdeskIssue(helpdeskIssue);
+
+        					_log.info("Helpdesk issue updated");
+        				} else {
+        					_log.info("The result do not contain the proper text");
+        				}
+        			} else {
+        				_log.info("Cannot retrieve the user for this helpdesk issue");
+        			}
+        		} catch (Exception e) {
+        			_log.error("Cannot process this helpdesk issue", e);
+        		}
+        	}
         }
     }
 
@@ -231,6 +265,9 @@ public class ScheduledTasks {
 
     public static String executePost(String targetURL, String urlParameters) {
         HttpURLConnection connection = null;
+        
+        _log.info("targetUrl [{}] urlParameters.length[{}], urlParameters[{}]", targetURL, (urlParameters == null ? "NULL" : urlParameters.length()), (urlParameters.length() <= 100 ? urlParameters : urlParameters.substring(0, 100)));
+        
         try {
             URL url = new URL(targetURL);
             connection = (HttpURLConnection) url.openConnection();
@@ -266,7 +303,7 @@ public class ScheduledTasks {
             rd.close();
             return response.toString();
         } catch (Exception e) {
-            _log.error(e.getMessage());
+            _log.error(e.getMessage(), e);
             return null;
         } finally {
             if (connection != null) {

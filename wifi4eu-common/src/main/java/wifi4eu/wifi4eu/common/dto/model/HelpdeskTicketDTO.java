@@ -4,8 +4,9 @@ import wifi4eu.wifi4eu.common.Constant;
 
 public class HelpdeskTicketDTO {
 
-    private final int form_tools_form_id = 1180;
-    private String uuid = "_5qd9hpabh";
+	private String form_tools_form_id;
+	private String uuid = "_5qd9hpabh";
+
     private String lang = Constant.PREF_LANG_DEFAULT;
     private String browser = Constant.BROWSER;
     private String gender = Constant.GENDER_DEFAULT;
@@ -45,7 +46,11 @@ public class HelpdeskTicketDTO {
         this.question = question;
     }
 
-    public int getForm_tools_form_id() {
+	public void setForm_tools_form_id(String form_tools_form_id) {
+		this.form_tools_form_id = form_tools_form_id;
+	}
+
+	public String getForm_tools_form_id() {
         return form_tools_form_id;
     }
 
