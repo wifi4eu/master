@@ -33,7 +33,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*")
 @Controller
-@Api(value = "/bankAccount", description = "Bank accounts of supplier")
+@Api(value = "/bankAccounts", description = "Bank accounts of supplier")
 @RequestMapping("bankAccounts")
 public class BankAccountResource {
 
@@ -94,7 +94,6 @@ public class BankAccountResource {
         try {
 
             BankAccountDTO bankAccount = bankAccountService.save(bankAccountDTO);
-
             _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername
                     () + " - Deleted user information from the database");
             return new ResponseDTO(true, bankAccount, null);
@@ -115,7 +114,6 @@ public class BankAccountResource {
         try {
 
             BankAccountDTO bankAccountDTO = bankAccountService.deleteBankAccount(bankAccountId);
-
             _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername
                     () + " - Deleted user information from the database");
             return new ResponseDTO(true, bankAccountDTO, null);
@@ -245,12 +243,13 @@ public class BankAccountResource {
                     byte[] fileBytes = Base64Utils.decodeFromString(content);
                     response.getOutputStream().write(fileBytes);
                     response.getOutputStream().flush();
-                    response.getOutputStream().close();
                 } catch (Exception ex) {
                     _log.error("ECAS Username: " + userConnected.getEcasUsername()
                             + "- The registration cannot been retrieved", ex);
                     return new ResponseDTO(false, null,
                             new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+                }finally {
+                    response.getOutputStream().close();
                 }
             } else {
                 _log.error("ECAS Username: " + userConnected.getEcasUsername()
