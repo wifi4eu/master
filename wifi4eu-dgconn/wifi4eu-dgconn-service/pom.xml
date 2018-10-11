@@ -121,6 +121,7 @@
             <artifactId>itextpdf</artifactId>
             <version>5.5.13</version>
         </dependency>
+<<<<<<< HEAD
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
@@ -129,6 +130,41 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
         </dependency>
+=======
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+		<dependency>
+            <groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>2.7.1</version>
+			<scope>compile</scope>
+		</dependency>
+        <dependency>
+	        <groupId>org.powermock</groupId>
+	        <artifactId>powermock-api-mockito2</artifactId>
+	        <version>1.7.1</version>
+	        <scope>test</scope>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.powermock</groupId>
+	        <artifactId>powermock-module-junit4</artifactId>
+	        <version>1.7.1</version>
+	        <scope>test</scope>
+	    </dependency>			  
+>>>>>>> da93a0984f4d9c951a39fb3e5bd5cc5681065032
     </dependencies>
     <build>
         <plugins>

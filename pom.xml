@@ -75,9 +75,7 @@
         <mapstruct.version>1.1.0.Final</mapstruct.version>
         <spring.version>4.3.5.RELEASE</spring.version>
         <spring.security.version>3.2.9.RELEASE</spring.security.version>
-        <spring.data.jpa.version>1.11.15.RELEASE</spring.data.jpa.version>
-        <spring.dbunit.version>1.2.0</spring.dbunit.version>
-        <dbunit.version>2.5.1</dbunit.version>
+        <spring.data.jpa.version>1.10.4.RELEASE</spring.data.jpa.version>
         <jackson.version>2.9.5</jackson.version>
         <ecas.client.version>4.22.0</ecas.client.version>
         <swagger.version>1.5.10</swagger.version>
@@ -175,6 +173,8 @@
         <mail.serv.using.cns>true</mail.serv.using.cns>
 
         <!-- CNS -->
+																																					   
+																																								  
         <cns.notification.group.code>WiFi4EU_NOTIF</cns.notification.group.code>
         <cns.client.system.key>KEY-WiFi4EU-HK7hK38a0D</cns.client.system.key>
         <cns.client.system.password>secret</cns.client.system.password>
@@ -222,7 +222,6 @@
         <azure.blob.legal.files.key>
             NvSiZXysA6btQMSI0YtPkChT8wVYV4av2Fx26/TOWm7pTmiIoHlAKK+6MPCkMu8sWvWTHbTObll0uFRddKfL3WWe4n3R9KL835U2kiYfs5TF/ZfeN4w3QFkFNShjTnkFNCGsWDt+JDFAlDWyntnf3eQTReecJNTJBbjzor4LSCEjw8Y6jH+lNsGeexUeTosIUf2jCtCG8VRAuGd35VpWsb3SLezfANrjyKh58v1uCzxg+Bs5fqoBGAvhMZfbmfa9Kzhmk3w8D7mhRpi9v4R7kw==
         </azure.blob.legal.files.key>
-        <azure.blob.legal.files.key.local>GPZGrFGRciB0lpirhg62QFSiZOaqLmOi0srtT4Hit96QYNxiF1ikwAkqfPXQLOhRiuB5NLOVdX4EugpchsimwAhEUs0kIZpdtxD9xTn3JdrTKNh37+CVgkNP7M0qFIH0zGGGiy2tSgAqyd0SMpJqrwFJ4Yxhxw37YkIHRnOH0wkdCkBj2BJwkETstQXRv24uspy7MVMF6KnXflPG08fZNYYxhlu6J+Jk2cqPAVw2q8cewowokCOZnT1nkFl4revvxAYcdrRKZ8dvnsQ7HRSIOuUHhlHX9J5GotGWUOPJMg4=</azure.blob.legal.files.key.local>
         <azure.blob.legal.files.key.dev>
             NvSiZXysA6btQMSI0YtPkChT8wVYV4av2Fx26/TOWm7pTmiIoHlAKK+6MPCkMu8sWvWTHbTObll0uFRddKfL3WWe4n3R9KL835U2kiYfs5TF/ZfeN4w3QFkFNShjTnkFNCGsWDt+JDFAlDWyntnf3eQTReecJNTJBbjzor4LSCEjw8Y6jH+lNsGeexUeTosIUf2jCtCG8VRAuGd35VpWsb3SLezfANrjyKh58v1uCzxg+Bs5fqoBGAvhMZfbmfa9Kzhmk3w8D7mhRpi9v4R7kw==
         </azure.blob.legal.files.key.dev>
@@ -252,8 +251,6 @@
         <!-- Redis -->
         <redis.enabled>false</redis.enabled>
         <redis.sentinel.uris>10.0.2.31,10.0.2.32,10.0.2.33</redis.sentinel.uris>
-
-        <war.plugin.version>3.2.2</war.plugin.version>
 
     </properties>
 
@@ -348,15 +345,6 @@
 
         <!-- ENVIRONMENT PROFILES -->
         <profile>
-            <id>VAGRANT</id>
-            <properties>
-                <ng.env>test</ng.env>
-                <server.address>172.30.10.10:8080</server.address>
-                <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
-                <azure.blob.legal.files.key>${azure.blob.legal.files.key.local}</azure.blob.legal.files.key>
-            </properties>
-        </profile>
-        <profile>
             <id>TEST</id>
             <properties>
                 <ng.env>test</ng.env>
@@ -378,8 +366,13 @@
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
                 <mail.smtp.password>${encrypted.smtp.password}</mail.smtp.password>
+<<<<<<< HEAD
                 <serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
                 <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>
+=======
+		       	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        
+>>>>>>> da93a0984f4d9c951a39fb3e5bd5cc5681065032
             </properties>
         </profile>
         <profile>
@@ -420,8 +413,13 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
+<<<<<<< HEAD
                 <serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
                 <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>
+=======
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        
+>>>>>>> da93a0984f4d9c951a39fb3e5bd5cc5681065032
             </properties>
         </profile>
         <profile>
@@ -464,8 +462,13 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
+<<<<<<< HEAD
                 <serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
                 <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>
+=======
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>
+>>>>>>> da93a0984f4d9c951a39fb3e5bd5cc5681065032
             </properties>
         </profile>
         <profile>
@@ -508,14 +511,19 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
+<<<<<<< HEAD
                 <serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
                 <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>
+=======
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        																																					 
+>>>>>>> da93a0984f4d9c951a39fb3e5bd5cc5681065032
             </properties>
         </profile>
         <profile>
             <id>AZUREDEV-PG</id>
             <properties>
-                <ng.env>dev-pg</ng.env>
+                <ng.env>dev</ng.env>
                 <schemes>https</schemes>
                 <server.address>${server.azure.devpg.address}</server.address>
                 <server.dgconn.address>${server.azure.devpg.dgconn.address}</server.dgconn.address>
@@ -544,14 +552,21 @@
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
                 <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
+                <!--
                 <redis.enabled>true</redis.enabled>
-                <redis.sentinel.uris>127.0.0.1,127.0.0.1,127.0.0.1</redis.sentinel.uris>
+                <redis.sentinel.uris>10.0.2.31,10.0.2.32,10.0.2.33</redis.sentinel.uris>
+                -->
                 <mail.serv.using.smtp>false</mail.serv.using.smtp>
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
+<<<<<<< HEAD
                 <serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
                 <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>
+=======
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        																						   																							 
+>>>>>>> da93a0984f4d9c951a39fb3e5bd5cc5681065032
             </properties>
         </profile>
         <profile>
@@ -594,8 +609,13 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
+<<<<<<< HEAD
                 <serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
                 <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>
+=======
+				<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>																						   																							 
+>>>>>>> da93a0984f4d9c951a39fb3e5bd5cc5681065032
             </properties>
         </profile>
         <profile>
@@ -638,8 +658,13 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
+<<<<<<< HEAD
                 <serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
                 <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>
+=======
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        
+>>>>>>> da93a0984f4d9c951a39fb3e5bd5cc5681065032
             </properties>
         </profile>
         <profile>
@@ -682,9 +707,14 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
+<<<<<<< HEAD
                 <serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
                 <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>
             </properties>
+=======
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>                    </properties>
+>>>>>>> da93a0984f4d9c951a39fb3e5bd5cc5681065032
         </profile>
         <profile>
             <id>AZURETEST-BF</id>
@@ -726,8 +756,13 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
+<<<<<<< HEAD
                 <serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
                 <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>
+=======
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        
+>>>>>>> da93a0984f4d9c951a39fb3e5bd5cc5681065032
             </properties>
         </profile>
         <profile>
@@ -773,8 +808,13 @@
                 </cns.user.preferences.service.url>
                 <cns.client.system.key>${cns.client.system.key.pro}</cns.client.system.key>
                 <cns.client.system.password>${cns.client.system.password.pro}</cns.client.system.password>                
+<<<<<<< HEAD
                 <serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
                 <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>
+=======
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        
+>>>>>>> da93a0984f4d9c951a39fb3e5bd5cc5681065032
             </properties>
         </profile>
         <profile>
@@ -815,8 +855,13 @@
                 <mail.serv.using.cns>true</mail.serv.using.cns>
                 <azure.blob.storage.key>${azure.blob.storage.key.acc}</azure.blob.storage.key>
                 <azure.blob.legal.files.key>${azure.blob.legal.files.key.acchf}</azure.blob.legal.files.key>
+<<<<<<< HEAD
                 <serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
                 <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>
+=======
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.acc}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.acc}</serco.helpdesk.formid>        
+>>>>>>> da93a0984f4d9c951a39fb3e5bd5cc5681065032
             </properties>
         </profile>
         <profile>
@@ -861,8 +906,13 @@
                 </cns.user.preferences.service.url>
                 <cns.client.system.key>${cns.client.system.key.pro}</cns.client.system.key>
                 <cns.client.system.password>${cns.client.system.password.pro}</cns.client.system.password>
+<<<<<<< HEAD
                 <serco.helpdesk.endpoint>${serco.helpdesk.endpoint.pro}</serco.helpdesk.endpoint>
                 <serco.helpdesk.formid>${serco.helpdesk.formid.pro}</serco.helpdesk.formid>
+=======
+	        	<serco.helpdesk.endpoint>${serco.helpdesk.endpoint.pro}</serco.helpdesk.endpoint>
+		        <serco.helpdesk.formid>${serco.helpdesk.formid.pro}</serco.helpdesk.formid>        
+>>>>>>> da93a0984f4d9c951a39fb3e5bd5cc5681065032
             </properties>
         </profile>
     </profiles>
@@ -873,17 +923,24 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
-                <excludes>
-                    <exclude>**/*.ttf</exclude>
-                </excludes>
+						  
+											   
+						   
+					   
+					  
+															   
+											
+						  
+											   
+						   
             </resource>
-            <resource>
-                <directory>src/main/resources/fonts</directory>
-                <filtering>false</filtering>
-                <includes>
-                    <include>**/*.ttf</include>
-                </includes>
-            </resource>
+					  
+															   
+											
+						  
+											   
+						   
+					   
         </resources>
 
         <pluginManagement>
@@ -940,6 +997,13 @@
                 <groupId>net.sf.ehcache</groupId>
                 <artifactId>ehcache-core</artifactId>
                 <version>${ehcache.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
             </dependency>
 
             <dependency>
@@ -1107,13 +1171,6 @@
                 <version>${spring.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>net.sourceforge.jtds</groupId>
-                <artifactId>jtds</artifactId>
-                <version>1.3.1</version>
-                <scope>test</scope>
-            </dependency>
-
             <!--
                         <dependency>
                             <groupId>eu.europa.ec.digit.iam.ecas.client</groupId>
@@ -1164,32 +1221,6 @@
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
                 <version>${commons-codec.version}</version>
-            </dependency>
-
-            <!-- Testing -->
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-test</artifactId>
-                <version>${spring.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.dbunit</groupId>
-                <artifactId>dbunit</artifactId>
-                <version>${dbunit.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.github.springtestdbunit</groupId>
-                <artifactId>spring-test-dbunit</artifactId>
-                <version>${spring.dbunit.version}</version>
-                <scope>test</scope>
             </dependency>
 
         </dependencies>
