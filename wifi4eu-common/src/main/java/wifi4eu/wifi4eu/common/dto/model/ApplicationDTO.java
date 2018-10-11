@@ -9,6 +9,7 @@ public class ApplicationDTO {
     private Integer supplierId;
     private boolean voucherAwarded;
     private long date;
+    private String redisId;
     private long lefExport;
     private long lefImport;
     private int lefStatus;
@@ -30,7 +31,7 @@ public class ApplicationDTO {
     public ApplicationDTO() {
     }
 
-    public ApplicationDTO(int id, int callId, int registrationId, Integer supplierId, boolean voucherAwarded, long date, long lefExport, long lefImport, int lefStatus, long bcExport, long bcImport, int bcStatus, long lcExport, long lcImport, int lcStatus, int status, String invalidateReason, String cancelReason, Boolean preSelectedFlag, Boolean rejected, Integer authorizedPerson, boolean sentEmail, Date sentEmailDate) {
+    public ApplicationDTO(int id, int callId, int registrationId, Integer supplierId, boolean voucherAwarded, long date, long lefExport, long lefImport, int lefStatus, long bcExport, long bcImport, int bcStatus, long lcExport, long lcImport, int lcStatus, int status, String invalidateReason, String cancelReason, Boolean preSelectedFlag, Boolean rejected, Integer authorizedPerson, boolean sentEmail, Date sentEmailDate, String redisId) {
         this.id = id;
         this.callId = callId;
         this.registrationId = registrationId;
@@ -54,6 +55,7 @@ public class ApplicationDTO {
         this.authorizedPerson = authorizedPerson;
         this.sentEmail = sentEmail;
         this.sentEmailDate = sentEmailDate;
+        this.redisId = redisId;
     }
 
     public int getId() {
@@ -234,5 +236,13 @@ public class ApplicationDTO {
 
     public void setSentEmailDate(Date sentEmailDate) {
         this.sentEmailDate = sentEmailDate;
+    }
+
+    public String getRedisId() {
+        return redisId;
+    }
+
+    public void setRedisId(String redisId) {
+        this.redisId = redisId;
     }
 }
