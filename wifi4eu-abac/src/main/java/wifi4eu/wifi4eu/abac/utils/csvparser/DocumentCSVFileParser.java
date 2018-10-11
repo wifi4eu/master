@@ -17,6 +17,7 @@ import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,8 +72,6 @@ public class DocumentCSVFileParser extends AbstractCSVFileParser {
 		try {
 
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-			OutputStreamWriter streamWriter = new OutputStreamWriter(stream);
-			BufferedWriter writer = new BufferedWriter(streamWriter);
 
 			CSVPrinter csvPrinter = createCSVPrinter(stream, CSVFormat.TDF
 					.withHeader(
@@ -100,7 +99,8 @@ public class DocumentCSVFileParser extends AbstractCSVFileParser {
 			}
 
 			csvPrinter.flush();
-			return stream.toString();
+			csvPrinter.close();
+			return createCSVFileContent(stream);
 
 		} catch (IOException e) {
 			e.printStackTrace();

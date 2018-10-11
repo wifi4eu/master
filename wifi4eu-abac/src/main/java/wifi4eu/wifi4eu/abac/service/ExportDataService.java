@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.abac.service;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -111,11 +112,11 @@ public class ExportDataService {
 			}
 		}
 
-		byte[] legalCommitmentsCSVbytes = legalCommitmentCSVFileParser.exportLegalCommitmentToCSV(legalCommitments).getBytes();
+		byte[] legalCommitmentsCSVbytes = legalCommitmentCSVFileParser.exportLegalCommitmentToCSV(legalCommitments).getBytes(StandardCharsets.UTF_16LE);
 		FileDTO legalCommitmentsCSVFile = new FileDTO(LEGAL_COMMITMENT_INFORMATION_CSV_FILENAME, legalCommitmentsCSVbytes);
 		zipFileWriter.addFile(legalCommitmentsCSVFile);
 
-		byte[] documentsCSVbytes = documentCSVFileParser.exportDocumentsToCSV(documents).getBytes();
+		byte[] documentsCSVbytes = documentCSVFileParser.exportDocumentsToCSV(documents).getBytes(StandardCharsets.UTF_16LE);
 		FileDTO documentsCSVFile = new FileDTO(LEGAL_ENTITY_DOCUMENTS_CSV_FILENAME, documentsCSVbytes);
 		zipFileWriter.addFile(documentsCSVFile);
 

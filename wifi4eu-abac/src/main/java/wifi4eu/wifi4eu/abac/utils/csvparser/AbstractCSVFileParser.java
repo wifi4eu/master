@@ -21,7 +21,7 @@ import java.util.TreeMap;
 @Component
 public abstract class AbstractCSVFileParser {
 
-	public static final String CSV_FILES_ENCODING = "UTF-16LE";
+	public static final Charset CSV_FILES_ENCODING = StandardCharsets.UTF_16LE;
 	public static final byte[] UTF_8_BOM = {(byte)0xEF, (byte)0xBB, (byte)0xBF};
 	public static final char UTF_16_LE_BOM = '\uFEFF';
 	
@@ -82,12 +82,12 @@ public abstract class AbstractCSVFileParser {
 	}
 	
 	protected CSVPrinter createCSVPrinter(ByteArrayOutputStream stream, CSVFormat csvFormat) throws IOException{
-		OutputStreamWriter writer = new OutputStreamWriter(stream, Charset.forName(CSV_FILES_ENCODING));
+		OutputStreamWriter writer = new OutputStreamWriter(stream, CSV_FILES_ENCODING);
 		return new CSVPrinter(writer, csvFormat);
 	}
 	
 	protected String createCSVFileContent(ByteArrayOutputStream stream) throws UnsupportedEncodingException {
-		String BOMedString = UTF_16_LE_BOM + stream.toString(CSV_FILES_ENCODING);
+		String BOMedString = UTF_16_LE_BOM + stream.toString(CSV_FILES_ENCODING.name());
 		return BOMedString;
 	}
 }

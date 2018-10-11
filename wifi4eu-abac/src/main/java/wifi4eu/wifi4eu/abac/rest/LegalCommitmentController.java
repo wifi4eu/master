@@ -71,7 +71,7 @@ public class LegalCommitmentController {
 		FileDTO fileDTO = exportDataService.exportLegalCommitments();
 
 		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.parseMediaType("text/csv"));
+		headers.setContentType(MediaType.parseMediaType("application/zip"));
 		headers.setContentDispositionFormData(fileDTO.getFileName(), fileDTO.getFileName());
 		headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 

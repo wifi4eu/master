@@ -64,7 +64,7 @@ public class BudgetaryCommitmentController {
 	}
 
 	@PreAuthorize("hasRole('ROLE_INEA_OFFICER')")
-	@RequestMapping(value = "export", method = RequestMethod.GET, produces = "text/csv;charset=utf-8")
+	@RequestMapping(value = "export", method = RequestMethod.GET, produces = "text/csv;charset=utf-16le")
 	public ResponseEntity<String> exportBudgetaryCommitment(final HttpServletResponse response, Model model) throws Exception {
 		
 		log.info("exportBudgetaryCommitment");
@@ -72,7 +72,7 @@ public class BudgetaryCommitmentController {
 		String responseBody = exportDataService.exportBudgetaryCommitments();
 		
 		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.parseMediaType("text/csv"));
+		headers.setContentType(MediaType.parseMediaType("text/csv;charset=utf-16le"));
 		headers.setContentDispositionFormData(ExportDataService.BUDGETARY_COMMITMENT_INFORMATION_CSV_FILENAME, ExportDataService.BUDGETARY_COMMITMENT_INFORMATION_CSV_FILENAME);
 		headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 
