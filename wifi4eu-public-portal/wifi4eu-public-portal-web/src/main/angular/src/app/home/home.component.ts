@@ -5,6 +5,7 @@ import {CallDTOBase} from "../shared/swagger/model/CallDTO";
 import {LocalStorageService} from "angular-2-local-storage";
 import {ResponseDTOBase} from "../shared/swagger/model/ResponseDTO";
 import {CallcustomApi, CallCustomBase} from "../shared/swagger";
+import { TranslateService } from "ng2-translate";
 
 @Component({
     selector: 'app-home',
@@ -27,7 +28,8 @@ export class HomeComponent {
     private showTimer: boolean = false;
     private callState: number;
 
-    constructor(private municipalityApi: MunicipalityApi, private localStorage: LocalStorageService, private callCustomApi: CallcustomApi) {
+    constructor(private municipalityApi: MunicipalityApi, private localStorage: LocalStorageService, private callCustomApi: CallcustomApi, private translate: TranslateService) {
+
         let u = this.localStorage.get('user');
         this.user = u ? JSON.parse(u.toString()) : null;
         this.currentCall = new CallDTOBase();
@@ -42,6 +44,7 @@ export class HomeComponent {
             }
         );
         this.checkForCalls();
+        this.detectIE();
     }
 
     checkForCalls() {
@@ -73,6 +76,20 @@ export class HomeComponent {
 
     private goToTop() {
         window.scrollTo(0, 0);
+    }
+
+    private detectIE() {
+        let ua = window.navigator.userAgent;
+        let msie = ua.indexOf('MSIE ');
+        let trident = ua.indexOf('Trident/');
+
+        if (msie >0 || trident >0){
+            this.translate.get('shared.ie.alert').subscribe(
+                (translation: any) => {
+                    alert(translation);
+                }
+            )
+        }
     }
 
 }
