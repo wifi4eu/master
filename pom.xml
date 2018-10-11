@@ -29,7 +29,6 @@
         <url>http://ec.europa.eu/</url>
     </organization>
 
-
     <distributionManagement>
         <repository>
             <id>myRepo</id>
@@ -42,7 +41,6 @@
             <url>${project.build.directory}/wifi4eu-dist</url>
         </snapshotRepository>
     </distributionManagement>
-
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -248,7 +246,6 @@
 
     </properties>
 
-
     <profiles>
 
         <!-- By default, include all the modules -->
@@ -261,6 +258,7 @@
             </activation>
             <modules>
                 <!-- Common modules -->
+                <module>wifi4eu-config</module>
                 <module>wifi4eu-common</module>
                 <module>wifi4eu-persistence</module>
                 <module>wifi4eu-common-service</module>
@@ -281,6 +279,7 @@
             <id>wifi4eu-portal</id>
             <modules>
                 <!-- Common modules -->
+                <module>wifi4eu-config</module>
                 <module>wifi4eu-common</module>
                 <module>wifi4eu-persistence</module>
                 <module>wifi4eu-common-service</module>
@@ -293,6 +292,7 @@
             <id>wifi4eu-public-portal</id>
             <modules>
                 <!-- Common modules -->
+                <module>wifi4eu-config</module>
                 <module>wifi4eu-common</module>
                 <module>wifi4eu-persistence</module>
                 <module>wifi4eu-common-service</module>
@@ -305,6 +305,7 @@
             <id>wifi4eu-dgconn</id>
             <modules>
                 <!-- Common modules -->
+                <module>wifi4eu-config</module>
                 <module>wifi4eu-common</module>
                 <module>wifi4eu-persistence</module>
                 <module>wifi4eu-common-service</module>
@@ -317,6 +318,7 @@
             <id>wifi4eu-supplier</id>
             <modules>
                 <!-- Common modules -->
+                <module>wifi4eu-config</module>
                 <module>wifi4eu-common</module>
                 <module>wifi4eu-persistence</module>
                 <module>wifi4eu-common-service</module>
@@ -329,6 +331,7 @@
             <id>wifi4eu-financial</id>
             <modules>
                 <!-- Common modules -->
+                <module>wifi4eu-config</module>
                 <module>wifi4eu-common</module>
                 <module>wifi4eu-persistence</module>
                 <module>wifi4eu-common-service</module>
@@ -1152,7 +1155,11 @@
                 <version>${spring.dbunit.version}</version>
                 <scope>test</scope>
             </dependency>
-
+            <dependency>
+                <groupId>wifi4eu.wifi4eu</groupId>
+                <artifactId>wifi4eu-config</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -1209,6 +1216,8 @@
             <artifactId>amqp-client</artifactId>
             <version>4.1.1</version>
         </dependency>
+
+
 
     </dependencies>
 
