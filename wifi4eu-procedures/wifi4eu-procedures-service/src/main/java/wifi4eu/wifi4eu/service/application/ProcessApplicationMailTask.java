@@ -11,6 +11,7 @@ import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
 import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.service.mail.MailService;
+import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
@@ -43,9 +44,9 @@ public class ProcessApplicationMailTask implements Runnable {
 	@Autowired
 	protected ApplicationRepository applicationRepository;
 
-	protected ApplicationDTO application;
+	protected Application.ApplicationApplyEmail application;
 
-	public ProcessApplicationMailTask(ApplicationDTO application) {
+	public ProcessApplicationMailTask(Application.ApplicationApplyEmail application) {
 		super();
 		this.application= application;
 	}
@@ -74,7 +75,7 @@ public class ProcessApplicationMailTask implements Runnable {
 
 	}
 
-	public void sendCreateApplicationEmail(User user, Integer municipalityId, ApplicationDTO application) {
+	public void sendCreateApplicationEmail(User user, Integer municipalityId, Application.ApplicationApplyEmail application) {
 		Locale locale = new Locale(UserConstants.DEFAULT_LANG);
 		if (Validator.isNotNull(user.getLang())) {
 			locale = new Locale(user.getLang());
@@ -85,9 +86,7 @@ public class ProcessApplicationMailTask implements Runnable {
 		if (Validator.isNotNull(municipality)) {
 			MailData mailData = MailHelper.buildMailCreateApplication(user.getEcasEmail(), MailService.FROM_ADDRESS, municipalityId, municipality.getName(),"createApplication", locale);
 			mailService.sendMail(mailData, true);
-			application.setSentEmail(true);
-			application.setSentEmailDate(new Date());
-			applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(application)));
+			applicationRepository.updateApplicationSetEmailSent(1,new Date(),application.getId());
 			_log.log(Level.getLevel("BUSINESS"), "Create Application Emails - Email will be sent to " + user.getEcasEmail() + " for the " + "application id: " + application.getId());
 		}
 	}

@@ -308,7 +308,10 @@ public class Application {
         this.registration = registration;
     }
 
-    @Deprecated
+    public void setRegistrationId(Integer registrationId){
+        this.registrationId = registrationId;
+    }
+    // @Deprecated
     public Integer getRegistrationId() {
         return registrationId;
     }
@@ -326,6 +329,7 @@ public class Application {
 
     public interface ApplicationApplyEmail {
         Integer getId();
+        Integer getRegistrationId();
     }
 
 }

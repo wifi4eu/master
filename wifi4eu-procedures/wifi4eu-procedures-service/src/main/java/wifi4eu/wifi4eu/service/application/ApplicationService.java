@@ -14,6 +14,7 @@ import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.call.CallRepository;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -44,15 +45,13 @@ public class ApplicationService {
         Integer sentEmailsMunicipalities = 0;
         _log.info("Create Application Emails - STARTING");
         // List<ApplicationDTO> applicationList = applicationMapper.toDTOList(applicationRepository.findByCreateApplicationEmailNotSent(callId, new Date().getTime()));
-        List<Application.ApplicationApplyEmail> applicationList = applicationRepository.findByCreateApplicationEmailNotSentCustom(callId, new Date().getTime());
+        ArrayList<Application.ApplicationApplyEmail> applicationList = applicationRepository.findByCreateApplicationEmailNotSentCustom(callId, new Date().getTime());
         _log.info("Create Application Emails - There is " + applicationList.size() + " municipalities to be sent");
-        for (Application.ApplicationApplyEmail app : applicationList) {
-           //  _log.info("appId : "+app.getId()+" registrationId : "+app.getRegistrationId());
-            /*
-            _log.info("Processing application: " + app.getId());
-            taskExecutor.execute(context.getBean(ProcessApplicationMailTask.class, app));
+        // for (Application.ApplicationApplyEmail app : applicationList) {
+        for (int i = 0; i < applicationList.size(); i++){
+            _log.info("appId : "+applicationList.get(i).getId()+" registrationId : "+applicationList.get(i).getRegistrationId());
+            taskExecutor.execute(context.getBean(ProcessApplicationMailTask.class, applicationList.get(i)));
             sentEmailsMunicipalities++;
-            */
         }
         _log.info("Create Application Emails - FINISHED");
         return new Integer[] {sentEmailsMunicipalities};
