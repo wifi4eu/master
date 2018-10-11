@@ -15,22 +15,5 @@
 	<!-- <import resource="classpath:datasourceContext-hsql-db.xml"/> -->        <!-- HSQL MEM DB WITH SECURITY TABLES -->
 
 	<import resource="classpath:spring-security.xml" />
-<!--
-	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="${mail.smtp.host}" />
-		<property name="port" value="${mail.smtp.port}" />
-		<property name="username" value="${mail.smtp.username}" />
-		<property name="password" value="${mail.smtp.password}" />
-		<property name="defaultEncoding" value="${mail.smtp.defaultEncoding}" />
 
-		<property name="javaMailProperties">
-			<props>
-				<prop key="mail.transport.protocol">smtp</prop>
-				<prop key="mail.smtp.auth">true</prop>
-				<prop key="mail.smtp.starttls.enable">true</prop>
-				<prop key="mail.debug">false</prop>
-				<prop key ="mail.smtp.from">no-reply@wifi4eu.eu</prop>
-			</props>
-		</property>
-	</bean>-->
 </beans>

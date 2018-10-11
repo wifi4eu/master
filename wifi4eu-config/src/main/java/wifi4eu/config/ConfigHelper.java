@@ -24,7 +24,6 @@ public class ConfigHelper {
         }
         Enviroment enumEnviroment = Enviroment.valueOf(enviroment);
         Properties properties = this.readPropertyFromClassPath(enumEnviroment.getPath() + "/");
-        LOGGER.info("Resource: " + properties.get("prueba.test"));
     }
 
     public Properties readPropertyFromClassPath(String path) {
@@ -37,6 +36,10 @@ public class ConfigHelper {
             prop.load(is);
         } catch (IOException e) {
             LOGGER.error("Can not read enviroment file " + configFilePath);
+        }
+
+        for(Object keyProperty : prop.keySet()){
+            LOGGER.info("Property: " + keyProperty.toString() + " value " + prop.getProperty(keyProperty.toString()));
         }
         return prop;
     }

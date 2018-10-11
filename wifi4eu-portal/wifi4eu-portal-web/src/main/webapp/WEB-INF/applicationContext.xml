@@ -6,14 +6,10 @@
 		                   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
     
 	<context:component-scan base-package="wifi4eu.wifi4eu"/>
-	<context:component-scan base-package="wifi4eu.config"/>
-
-	<bean id="configHelper" class="wifi4eu.config.ConfigHelper" />
-
-	<context:property-placeholder location="classpath:mail.properties" />
 
 
 
+	<import resource="classpath:config-context.xml" />
 	<import resource="classpath:datasourceContext.xml" />        <!-- JNDI on ORACLE / WLS -->
 
 	<!--<import resource="classpath:datasourceContext-hsql.xml" /> -->  <!-- HSQL MEM DB WITHOUT TABLE GEN -->
