@@ -25,6 +25,8 @@ public class BankAccountDTO {
     private Integer status;
     private String rejectionCause;
 
+    private boolean sameAddressAsSupplier;
+
     private List<BankAccountDocumentDTO> bankAccountDocumentDTOList = new ArrayList<>();
 
     public BankAccountDTO() {
@@ -156,5 +158,13 @@ public class BankAccountDTO {
 
     public void setBankAccountDocumentDTOList(List<BankAccountDocumentDTO> bankAccountDocumentDTOList) {
         this.bankAccountDocumentDTOList = bankAccountDocumentDTOList;
+    }
+
+    public boolean isSameAddressAsSupplier() {
+        return sameAddressAsSupplier;
+    }
+
+    public void setSameAddressAsSupplier(boolean sameAddressAsSupplier) {
+        this.sameAddressAsSupplier = sameAddressAsSupplier;
     }
 }

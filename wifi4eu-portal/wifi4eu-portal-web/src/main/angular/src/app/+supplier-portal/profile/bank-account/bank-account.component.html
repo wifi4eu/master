@@ -175,74 +175,90 @@
                     
                     <label>{{ 'suppRegistration.bankAccount.accountName' | translate }}</label>
                     <input [id]="accountName" type="text" [name]="accountName" class="form-control"
-                    [(ngModel)]="currentBankAccountDTO.accountName" maxlength="255" required  (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
+                    [(ngModel)]="currentBankAccountDTO.accountName" maxlength="70" required  (ngModelChange)="afterChange()" [ngModelOptions]="{standalone: true}">
 
 
                     <label>{{ 'suppRegistration.bankAccount.iban' | translate }}</label>
                     <input [id]="iban" type="text" [name]="iban" class="form-control"
-                    [(ngModel)]="currentBankAccountDTO.iban" maxlength="255" required  (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
+                    [(ngModel)]="currentBankAccountDTO.iban" maxlength="255" required  (ngModelChange)="afterChange()" [ngModelOptions]="{standalone: true}">
 
                     <br>
                     <p> <b>{{ 'suppRegistration.bankAccount.accountHolderDetails' | translate }}</b></p>
 
-                    
+                    <input type="checkbox" [(ngModel)]="currentBankAccountDTO.sameAddressAsSupplier" (ngModelChange)="fillAccountHolderDetails()" [ngModelOptions]="{standalone: true}">  {{ 'suppRegistration.bankAccount.confirmSameAddres' | translate }}
+
                     <div class="col-sm-9">
                         <label>{{ 'shared.streetName' | translate }}</label>
                         <input [id]="accountName" type="text" [name]="accountName" class="form-control ui-sm-9"
-                        [(ngModel)]="currentBankAccountDTO.accountHolderStreet" maxlength="255" required  (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
+                        [(ngModel)]="currentBankAccountDTO.accountHolderStreet" maxlength="60" required  (ngModelChange)="afterChange()" [ngModelOptions]="{standalone: true}">
                     </div>
 
                     <div class="col-sm-3">
                         <label>{{ 'shared.number.label' | translate }}</label>
-                        <input [id]="accountHolderNumber" type="text" [name]="accountHolderNumber" class="form-control ui-sm-3"
-                            [(ngModel)]="currentBankAccountDTO.accountHolderNumber" maxlength="255" required  (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
+                        <input [id]="accountHolderNumber" type="text" [name]="accountHolderNumber" class="form-control ui-sm-3" [disabled] = "currentBankAccountDTO.sameAddressAsSupplier"
+                            [(ngModel)]="currentBankAccountDTO.accountHolderNumber" maxlength="255" required  (ngModelChange)="afterChange()" [ngModelOptions]="{standalone: true}">
                     </div>
 
                     <div class="col-sm-6">
-                        <label>{{ 'suppRegistration.city.label' | translate }}</label>
-                        <input [id]="accountHolderCity" type="text" [name]="accountHolderCity" class="form-control"
-                            [(ngModel)]="currentBankAccountDTO.accountHolderCity" maxlength="255" required  (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
+                        <label>{{ 'suppRegistration.bankAccount.accountHolderCity' | translate }}</label>
+                        <input [id]="accountHolderCity" type="text" [name]="accountHolderCity" class="form-control" [disabled] = "currentBankAccountDTO.sameAddressAsSupplier"
+                            [(ngModel)]="currentBankAccountDTO.accountHolderCity" maxlength="50" required  (ngModelChange)="afterChange()" [ngModelOptions]="{standalone: true}">
                     </div>
 
                     <div class="col-sm-6">
                         <label>{{ 'shared.country.label' | translate }}</label>
-                        <input [id]="accountHolder" type="text" [name]="accountHolder" class="form-control"
-                            [(ngModel)]="currentBankAccountDTO.accountHolderCountry" maxlength="255" required  (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
+
+                        <select [(ngModel)]="currentBankAccountDTO.accountHolderCountry"  id="country" name="country" class="form-control" ng-options="option.value as option.name for option in typeOptions"
+                        [disabled]="countries.length < 1 || currentBankAccountDTO.sameAddressAsSupplier" (ngModelChange)="afterChange()" [ngModelOptions]="{standalone: true}">
+                            <option disabled selected [ngValue]="null">
+                                {{ 'benefRegistration.registration.selectCountry' | translate }}
+                            </option>
+                            <option *ngFor="let currentCountry of countries" [ngValue]="currentCountry.label">
+                                {{currentCountry.label}}
+                            </option>
+                        </select>
                     </div>
 
                     <p> <b>{{ 'suppRegistration.bankAccount.bankDetails' | translate }}</b></p>
-
-                    <input type="checkbox">  {{ 'suppRegistration.bankAccount.confirmSameAddres' | translate }}     
                     
                     <div class="col-sm-12">
                         <label>{{ 'suppRegistration.bankAccount.bankName' | translate }}</label>
                         <input [id]="bankName" type="text" [name]="bankName" class="form-control"
-                            [(ngModel)]="currentBankAccountDTO.bankName" maxlength="255" required  (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
+                            [(ngModel)]="currentBankAccountDTO.bankName" maxlength="255" required  (ngModelChange)="afterChange()" [ngModelOptions]="{standalone: true}">
                     </div>
 
                     <div class="col-sm-9">
                         <label>{{ 'shared.streetName' | translate }}</label>
                         <input [id]="bankStreet" type="text" [name]="bankStreet" class="form-control ui-sm-9"
-                        [(ngModel)]="currentBankAccountDTO.bankStreet" maxlength="255" required  (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
+                        [(ngModel)]="currentBankAccountDTO.bankStreet" maxlength="120" required  (ngModelChange)="afterChange()" [ngModelOptions]="{standalone: true}">
                     </div>
 
                     <div class="col-sm-3">
                         <label>{{ 'shared.number.label' | translate }}</label>
                         <input [id]="bankNumber" type="text" [name]="bankNumber" class="form-control ui-sm-3"
-                            [(ngModel)]="currentBankAccountDTO.bankNumber" maxlength="255" required  (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
+                            [(ngModel)]="currentBankAccountDTO.bankNumber" maxlength="255" required  (ngModelChange)="afterChange()" [ngModelOptions]="{standalone: true}">
                     </div>
 
                     <div class="col-sm-6">
                         <label>{{ 'suppRegistration.city.label' | translate }}</label>
                         <input [id]="bankCity" type="text" [name]="bankCity" class="form-control"
-                            [(ngModel)]="currentBankAccountDTO.bankCity" maxlength="255" required  (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
+                            [(ngModel)]="currentBankAccountDTO.bankCity" maxlength="50" required  (ngModelChange)="afterChange()" [ngModelOptions]="{standalone: true}">
                     </div>
 
                     <div class="col-sm-6">
                         <label>{{ 'shared.country.label' | translate }}</label>
-                        <input [id]="bankCountry" type="text" [name]="bankCountry" class="form-control"
-                            [(ngModel)]="currentBankAccountDTO.bank" maxlength="255" required  (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
-                    </div>
+
+                        <select [(ngModel)]="currentBankAccountDTO.bankCountry"  id="country" name="country" class="form-control" ng-options="option.value as option.name for option in typeOptions"
+                        [disabled]="countries.length < 1" (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
+                            <option disabled selected [ngValue]="null">
+                                {{ 'benefRegistration.registration.selectCountry' | translate }}
+                            </option>
+                            <option *ngFor="let currentCountry of countries" [ngValue]="currentCountry.label">
+                                {{currentCountry.label}}
+                            </option>
+                        </select>
+
+                </div>
 
                     <br/><br/>
 

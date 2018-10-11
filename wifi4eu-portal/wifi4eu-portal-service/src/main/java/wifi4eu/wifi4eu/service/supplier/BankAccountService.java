@@ -52,6 +52,8 @@ public class BankAccountService {
 
     @Transactional
     public BankAccountDTO save(BankAccountDTO bankAccountDTO) {
+        formatFields(bankAccountDTO);
+
         return bankAccountMapper.toDTO(bankAccountRepository.save(bankAccountMapper.toEntity(bankAccountDTO)));
     }
 
@@ -109,21 +111,21 @@ public class BankAccountService {
         if (Validator.isNotNull(fileData)) {
             String base64 = LegalFilesService.getBase64Data(fileData);
             if(Validator.isNotNull(base64) && Validator.isNotEmpty(base64)) {
-                byte[] byteArray = Base64.getMimeDecoder().decode(base64);
-                String extension = LegalFilesService.getValidFileExtension(fileData);
-                if (byteArray.length > 1024000) {
-                    _log.error("ECAS Username: " + userEcasUserName + " - File size cannot bet greater than 1 MB");
-                    throw new Exception("File size cannot bet greater than 1 MB.");
-                } else if (extension == null) {
-                    _log.error("ECAS Username: " + userEcasUserName + " - File must have a valid extension");
-                    throw new Exception("File must have a valid extension.");
-                } else if (fileName.isEmpty()) {
-                    _log.error("ECAS Username: " + userEcasUserName + " - File doesn't have a name");
-                    throw new Exception("File must have a valid extension.");
-                }
+            byte[] byteArray = Base64.getMimeDecoder().decode(base64);
+            String extension = LegalFilesService.getValidFileExtension(fileData);
+            if (byteArray.length > 1024000) {
+                _log.error("ECAS Username: " + userEcasUserName + " - File size cannot bet greater than 1 MB");
+                throw new Exception("File size cannot bet greater than 1 MB.");
+            } else if (extension == null) {
+                _log.error("ECAS Username: " + userEcasUserName + " - File must have a valid extension");
+                throw new Exception("File must have a valid extension.");
+            } else if (fileName.isEmpty()) {
+                _log.error("ECAS Username: " + userEcasUserName + " - File doesn't have a name");
+                throw new Exception("File must have a valid extension.");
+            }
             } else {
-                _log.error("ECAS Username: " + userEcasUserName + " - Trying to upload a file its data is in incorrect format");
-                throw new Exception("Data is in incorrect format");
+            _log.error("ECAS Username: " + userEcasUserName + " - Trying to upload a file its data is in incorrect format");
+            throw new Exception("Data is in incorrect format");
             }
         } else{
             _log.error("ECAS Username: " + userEcasUserName + " - Trying to upload a file that is empty");
@@ -151,5 +153,72 @@ public class BankAccountService {
         return bankAccountDocumentDTO.getSupplierId() == supplierId;
     }
 
+    private void formatFields(BankAccountDTO bankAccountDTO){
+        bankAccountDTO.setAccountName(getStringTruncated(replaceNonAsciiCharacters(bankAccountDTO.getAccountName()), 70));
 
+        bankAccountDTO.setBankName(getStringTruncated(replaceNonAsciiCharacters(bankAccountDTO.getBankName()),120));
+        bankAccountDTO.setBankCity(getStringTruncated(replaceNonAsciiCharacters(bankAccountDTO.getBankCity()), 50));
+        bankAccountDTO.setBankStreet(getStringTruncated(replaceNonAsciiCharacters(bankAccountDTO.getBankStreet()), 120));
+        bankAccountDTO.setBankNumber(replaceNonAsciiCharacters(bankAccountDTO.getBankNumber()));
+
+        bankAccountDTO.setAccountHolderCity(getStringTruncated(replaceNonAsciiCharacters(bankAccountDTO.getAccountHolderCity()),50));
+        bankAccountDTO.setAccountHolderStreet(getStringTruncated(replaceNonAsciiCharacters(bankAccountDTO.getAccountHolderStreet()),60));
+        bankAccountDTO.setAccountHolderNumber(replaceNonAsciiCharacters(bankAccountDTO.getAccountHolderNumber()));
+    }
+
+    private String replaceNonAsciiCharacters(String s){
+        s = s.replaceAll("[óòöðôõøő]","o")
+            .replaceAll("[ÒÓÖÔÕØŐ]","O")
+            .replaceAll("[ñńňņ]","n")
+            .replaceAll("[ÑŃŇŅ]","N")
+            .replaceAll("[èéêëęėěē]","e")
+            .replaceAll("[ÈÉÊËĘĖĚĒ]","E")
+            .replaceAll("[áãâàäåæąăā]","a")
+            .replaceAll("[Æ]","AE")
+            .replaceAll("[ÀÁÂÃÅÄĄĂĀ]","A")
+            .replaceAll("[ùúûüµųūůű]","u")
+            .replaceAll("[ÙÚÛÜŲŪŮŰ]","U")
+            .replaceAll("[ÝŸ]","Y")
+            .replaceAll("[ÿý]","y")
+            .replaceAll("[œ]","oe")
+            .replaceAll("[çčćċ]","c")
+            .replaceAll("[Œ]","OE")
+            .replaceAll("[ÇČĆĊ]","C")
+            .replaceAll("[ìíîïįī]","i")
+            .replaceAll("[ÌÍÎÏĮĪ]","I")
+            .replaceAll("[Þ]","Th")
+            .replaceAll("[ĐĎ]","D")
+            .replaceAll("[ďđ]","d")
+            .replaceAll("[ß]","ss")
+            .replaceAll("[ŠŚŞ]","S")
+            .replaceAll("[šśş]","s")
+            .replaceAll("[β]","b")
+            .replaceAll("[łļľ]","l")
+            .replaceAll("[ŁĽ]","D")
+            .replaceAll("[ŁĽ]","D")
+            .replaceAll("[ŽŻŹ]","Z")
+            .replaceAll("[žżź]","z")
+            .replaceAll("[ŢŤ]","T")
+            .replaceAll("[ţť]","t")
+            .replaceAll("[Ý]","Y")
+            .replaceAll("[ý]","y")
+            .replaceAll("[Ř]","R")
+            .replaceAll("[řŕ]","r")
+            .replaceAll("[Ħ]","H")
+            .replaceAll("[ħ]","h")
+            .replaceAll("[Ġ]","G")
+            .replaceAll("[ġ]","g")
+            .replaceAll("[þ]","th")
+            .replaceAll("[ķ]","k")
+            .replaceAll("[Ķ]","K")
+            .replaceAll("[_]","-");
+
+        return s;
+    }
+
+    private String getStringTruncated(String s, int maxLenght){
+        if (s.length() <= maxLenght) return s;
+
+        return s.substring(0,maxLenght);
+    }
 }

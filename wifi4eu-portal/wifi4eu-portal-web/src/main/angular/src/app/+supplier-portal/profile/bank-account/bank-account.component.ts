@@ -1,6 +1,7 @@
 import { Component, ViewChild } from "@angular/core";
 import { BankAccountApi } from "../../../shared/swagger/api/BankAccountApi";
 import { SupplierApi } from "../../../shared/swagger/api/SupplierApi";
+import { NutsApi } from "../../../shared/swagger/api/NutsApi";
 import { SharedService } from "../../../shared/shared.service";
 import { BankAccountDTOBase } from "../../../shared/swagger/model/BankAccountDTO";
 import { BankAccountDocumentDTOBase } from "../../../shared/swagger/model/BankAccountDocumentDTO";
@@ -8,13 +9,16 @@ import { SupplierDTOBase, SupplierDTO } from "../../../shared/swagger/model/Supp
 import { UserDTOBase } from "../../../shared/swagger/model/UserDTO";
 import { ResponseDTOBase } from "../../../shared/swagger/model/ResponseDTO";
 import { Observable } from "rxjs/Observable";
+import { NutsDTOBase } from "../../../shared/swagger/model/NutsDTO";
 
 @Component({
     templateUrl: 'bank-account.component.html',
-    providers: [BankAccountApi, SupplierApi]
+    providers: [BankAccountApi, SupplierApi, NutsApi]
 })
 
 export class BankAccountComponent {
+
+    private countries: NutsDTOBase[] = [];
 
     private currentBankAccountDTO : BankAccountDTOBase = new BankAccountDTOBase();
     private bankAccountDTOList : BankAccountDTOBase[] = [];
@@ -31,10 +35,12 @@ export class BankAccountComponent {
 
     private show : boolean[] = [];
 
-    private fileURL: String = '/wifi4eu/api/bankAccountsw/';
+    private fileURL: String = '/wifi4eu/api/bankAccounts/';
     private emptySpaces : String = ' ';
 
-    constructor(private bankAccountApi: BankAccountApi, private supplierApi: SupplierApi, private sharedService: SharedService) {
+    constructor(private bankAccountApi: BankAccountApi, private supplierApi: SupplierApi, private nutsApi: NutsApi,private sharedService: SharedService) {
+        this.findCountries();
+
         if (this.sharedService.user) {
             this.user = this.sharedService.user;
             this.fillSuplierAndBankAccounts(); 
@@ -254,4 +260,103 @@ export class BankAccountComponent {
     private checkShow(index: number) : boolean{
         return this.show[index];
     }
+
+    private findCountries() : void{
+        this.nutsApi.getNutsByLevel(0).subscribe(
+            (nuts: NutsDTOBase[]) => {
+                this.countries = nuts;
+            }, error => {
+                console.log(error);
+            }
+        );
+    }
+
+    private fillAccountHolderDetails() : void{
+        if (this.currentBankAccountDTO.sameAddressAsSupplier){
+
+                let userOfSupplierrDTO : UserDTOBase = this.getUserMainOfSUpplier();
+
+                this.currentBankAccountDTO.accountHolderNumber = userOfSupplierrDTO.addressNum;
+                this.currentBankAccountDTO.accountHolderStreet = userOfSupplierrDTO.address;
+                this.currentBankAccountDTO.accountHolderCity = userOfSupplierrDTO.city;
+                this.currentBankAccountDTO.accountHolderCountry = userOfSupplierrDTO.country;
+        }
+    }
+
+    /*
+        Now we don't have contacts, but when we have, we will have to search the main user od the supplier, so this method will change
+    */
+
+    private getUserMainOfSUpplier() : UserDTOBase {
+        return this.user;
+    }
+
+    private afterChange(){
+        this.formatFields();
+        this.enableButtonConfirm();
+    }
+
+    private formatFields() : void{
+        this.currentBankAccountDTO.accountName =  this.replaceNonAsciiCharacters(this.currentBankAccountDTO.accountName);
+
+        this.currentBankAccountDTO.bankName = this.replaceNonAsciiCharacters(this.currentBankAccountDTO.bankName);
+        this.currentBankAccountDTO.bankCity = this.replaceNonAsciiCharacters(this.currentBankAccountDTO.bankCity);
+        this.currentBankAccountDTO.bankStreet = this.replaceNonAsciiCharacters(this.currentBankAccountDTO.bankStreet);
+        this.currentBankAccountDTO.bankNumber = this.replaceNonAsciiCharacters(this.currentBankAccountDTO.bankNumber);
+
+        this.currentBankAccountDTO.accountHolderCity = this.replaceNonAsciiCharacters(this.currentBankAccountDTO.accountHolderCity);
+        this.currentBankAccountDTO.accountHolderStreet = this.replaceNonAsciiCharacters(this.currentBankAccountDTO.accountHolderStreet);
+        this.currentBankAccountDTO.accountHolderNumber = this.replaceNonAsciiCharacters(this.currentBankAccountDTO.accountHolderNumber);
+    }
+
+    private replaceNonAsciiCharacters(s : string) :string{
+        s = s.replace(new RegExp("[óòöðôõøő]"),"o")
+            .replace(new RegExp("[ÒÓÖÔÕØŐ]"),"O")
+            .replace(new RegExp("[ñńňņ]"),"n")
+            .replace(new RegExp("[ÑŃŇŅ]"),"N")
+            .replace(new RegExp("[èéêëęėěē]"),"e")
+            .replace(new RegExp("[ÈÉÊËĘĖĚĒ]"),"E")
+            .replace(new RegExp("[áãâàäåæąăā]"),"a")
+            .replace(new RegExp("[Æ]"),"AE")
+            .replace(new RegExp("[ÀÁÂÃÅÄĄĂĀ]"),"A")
+            .replace(new RegExp("[ùúûüµųūůű]"),"u")
+            .replace(new RegExp("[ÙÚÛÜŲŪŮŰ]"),"U")
+            .replace(new RegExp("[ÝŸ]"),"Y")
+            .replace(new RegExp("[ÿý]"),"y")
+            .replace(new RegExp("[œ]"),"oe")
+            .replace(new RegExp("[çčćċ]"),"c")
+            .replace(new RegExp("[Œ]"),"OE")
+            .replace(new RegExp("[ÇČĆĊ]"),"C")
+            .replace(new RegExp("[ìíîïįī]"),"i")
+            .replace(new RegExp("[ÌÍÎÏĮĪ]"),"I")
+            .replace(new RegExp("[Þ]"),"Th")
+            .replace(new RegExp("[ĐĎ]"),"D")
+            .replace(new RegExp("[ďđ]"),"d")
+            .replace(new RegExp("[ß]"),"ss")
+            .replace(new RegExp("[ŠŚŞ]"),"S")
+            .replace(new RegExp("[šśş]"),"s")
+            .replace(new RegExp("[β]"),"b")
+            .replace(new RegExp("[łļľ]"),"l")
+            .replace(new RegExp("[ŁĽ]"),"D")
+            .replace(new RegExp("[ŁĽ]"),"D")
+            .replace(new RegExp("[ŽŻŹ]"),"Z")
+            .replace(new RegExp("[žżź]"),"z")
+            .replace(new RegExp("[ŢŤ]"),"T")
+            .replace(new RegExp("[ţť]"),"t")
+            .replace(new RegExp("[Ý]"),"Y")
+            .replace(new RegExp("[ý]"),"y")
+            .replace(new RegExp("[Ř]"),"R")
+            .replace(new RegExp("[řŕ]"),"r")
+            .replace(new RegExp("[Ħ]"),"H")
+            .replace(new RegExp("[ħ]"),"h")
+            .replace(new RegExp("[Ġ]"),"G")
+            .replace(new RegExp("[ġ]"),"g")
+            .replace(new RegExp("[þ]"),"th")
+            .replace(new RegExp("[ķ]"),"k")
+            .replace(new RegExp("[Ķ]"),"K")
+            .replace(new RegExp("[_]"),"-");
+
+        return s;
+    }
+
 }
