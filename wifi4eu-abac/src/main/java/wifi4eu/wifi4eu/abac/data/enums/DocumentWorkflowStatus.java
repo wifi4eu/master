@@ -3,6 +3,7 @@ package wifi4eu.wifi4eu.abac.data.enums;
 public enum DocumentWorkflowStatus {
 
 	IMPORTED("IMPORTED", "Imported"),
+	READY_FOR_ARES("READY_FOR_ARES", "Ready For ARES"),
 	COUNTERSIGNATURE_REQUESTED("COUNTERSIGNATURE_REQUESTED", "Counter Signature Requested"),
 	COUNTERSIGNED("COUNTERSIGNED", "Counter Signed"),
 	ARCHIVED_IN_ARES("ARCHIVED_IN_ARES", "Created and registered in ARES"),
