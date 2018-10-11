@@ -235,8 +235,11 @@ public class ReportTimeToGrant {
                 }
             }
         }
-        average = average / applications.size();
-        if (Validator.isNull(average)) average = 0;
+        if (Validator.isNull(average)){
+            average = 0;
+        }else{
+            average = average / applications.size();
+        }
         return average;
     }
 
