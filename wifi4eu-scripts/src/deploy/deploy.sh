@@ -136,7 +136,11 @@ then
         ssh -i $PEM_BO_CERT_PATH -o StrictHostKeyChecking=no $BO_TOMCAT "uname -a;
 		if [ -f "$REMOTE_COPYFOLDER/dashboard.war" ]
         then
-        sudo rm -fR $FO_TOMCAT_PATH/webapps/dashboard;
+        sudo rm -fR $BO_TOMCAT_PATH/webapps/dashboard;
+        fi
+		if [ -f "$REMOTE_COPYFOLDER/wifi4eu.war" ]
+        then
+        sudo rm -fR $BO_TOMCAT_PATH/webapps/wifi4eu;
         fi
         sudo cp $REMOTE_COPYFOLDER/*.war $BO_TOMCAT_PATH/webapps;
         sudo rm -fR $REMOTE_COPYFOLDER/*;"</dev/null
