@@ -1,19 +1,21 @@
 package wifi4eu.wifi4eu.abac.utils.csvparser;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+
+import wifi4eu.wifi4eu.abac.data.Constants;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityInformationCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.enums.LegalEntityCSVColumn;
+import wifi4eu.wifi4eu.abac.utils.CSVStringCreator;
 import wifi4eu.wifi4eu.abac.utils.DateTimeUtils;
-
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class LegalEntityCSVFileParser extends AbstractCSVFileParser {
@@ -66,9 +68,8 @@ public class LegalEntityCSVFileParser extends AbstractCSVFileParser {
 	public String exportLegalEntitiesToCSV(List<LegalEntity> legalEntities) {
 
 		try {
-			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
-			CSVPrinter csvPrinter = createCSVPrinter(stream, CSVFormat.TDF.withHeader(
+			
+			CSVStringCreator csv = new CSVStringCreator(CSVFormat.TDF.withHeader(
 				LegalEntityCSVColumn.MUNICIPALITY_PORTAL_ID.toString(),
 				LegalEntityCSVColumn.MUNICIPALITY_NAME.toString(),
 				LegalEntityCSVColumn.MUNICIPALITY_ABAC_LATIN_NAME.toString(),
@@ -88,7 +89,7 @@ public class LegalEntityCSVFileParser extends AbstractCSVFileParser {
 			));
 			
 			for (LegalEntity legalEntity : legalEntities) {
-				csvPrinter.printRecord(
+				csv.printRecord(
 					legalEntity.getMid(),
 					legalEntity.getOfficialName(),
 					legalEntity.getAbacLatinName(),
@@ -102,14 +103,12 @@ public class LegalEntityCSVFileParser extends AbstractCSVFileParser {
 					legalEntity.getCallNumber(),
 					legalEntity.getWfStatus(),
 					legalEntity.getRejectionReason() != null ? legalEntity.getRejectionReason() : legalEntity.getAbacErrorMessage(),
-					DateTimeUtils.format(legalEntity.getDateExported(), PORTAL_CSV_DATETIME_FORMAT),
+					DateTimeUtils.format(legalEntity.getDateExported(), Constants.PORTAL_CSV_DATETIME_FORMAT),
 					legalEntity.getUserExported(),
 					legalEntity.getBatchRef()
 				);
 			}
-			csvPrinter.flush();
-			csvPrinter.close();
-			return createCSVFileContent(stream);
+			return csv.closeAndGenerateString();
 
 		} catch (IOException e) {
 			e.printStackTrace();

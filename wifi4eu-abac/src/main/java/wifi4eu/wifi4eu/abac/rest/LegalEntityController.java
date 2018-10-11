@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import wifi4eu.wifi4eu.abac.data.Constants;
 import wifi4eu.wifi4eu.abac.rest.vo.ResponseVO;
 import wifi4eu.wifi4eu.abac.service.ExportDataService;
 import wifi4eu.wifi4eu.abac.service.ImportDataService;
@@ -40,12 +40,11 @@ public class LegalEntityController {
 	private ImportLogService importLogService;
 
 	@PreAuthorize("hasRole('ROLE_INEA_OFFICER')")
-	@RequestMapping(value = "import", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "import", method = RequestMethod.POST, produces = Constants.MIME_TYPE_REST_RESPONE)
 	public ResponseVO importLegalEntity(@RequestParam("file") MultipartFile file) {
 		log.info("Started importing legal entities");
 		ResponseVO result = new ResponseVO();
 
-		//generate a unique batch file ID
 		String batchRef = UUID.randomUUID().toString();
 
 		String errors = new String();
@@ -63,15 +62,13 @@ public class LegalEntityController {
 	}
 
 	@PreAuthorize ("hasRole('ROLE_INEA_OFFICER')")
-	@RequestMapping(value = "export", method = RequestMethod.GET, produces = "text/csv;charset=utf-16le")
+	@RequestMapping(value = "export", method = RequestMethod.GET, produces = Constants.MIME_TYPE_EXPORTED_DATA_FILES)
 	public ResponseEntity<String> exportLegalEntity(final HttpServletResponse response, Model model) throws Exception {
-		log.info("exportLegalEntity");
 
 		String responseBody = exportDataService.exportLegalEntities();
 
 		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.parseMediaType("text/csv;charset=utf-16le"));
-		headers.setContentDispositionFormData(ExportDataService.LEGAL_ENTITY_INFORMATION_CSV_FILENAME, ExportDataService.LEGAL_ENTITY_INFORMATION_CSV_FILENAME);
+		headers.setContentDispositionFormData(Constants.EXPORT_LEGAL_ENTITY_INFORMATION_CSV_FILENAME, Constants.EXPORT_LEGAL_ENTITY_INFORMATION_CSV_FILENAME);
 		headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 
 		return new ResponseEntity<String>(responseBody, headers, HttpStatus.OK);

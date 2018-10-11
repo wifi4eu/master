@@ -2,32 +2,23 @@ package wifi4eu.wifi4eu.abac.utils.csvparser;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVPrinter;
-import org.apache.commons.io.ByteOrderMark;
 import org.apache.commons.io.input.BOMInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import weblogic.xml.util.StringInputStream;
+
+import wifi4eu.wifi4eu.abac.data.Constants;
 import wifi4eu.wifi4eu.abac.data.dto.FileDTO;
 
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+@SuppressWarnings("rawtypes")
 @Component
 public abstract class AbstractCSVFileParser {
 
-	public static final Charset CSV_FILES_ENCODING = StandardCharsets.UTF_16LE;
-	public static final byte[] UTF_8_BOM = {(byte)0xEF, (byte)0xBB, (byte)0xBF};
-	public static final char UTF_16_LE_BOM = '\uFEFF';
-	
-	protected static final String PORTAL_CSV_DATE_FORMAT = "yyyy-MM-dd";
-	protected static final String PORTAL_CSV_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
-	
 	private final Logger log = LoggerFactory.getLogger(AbstractCSVFileParser.class);
 	
 	protected abstract void validateColumns(CSVParser csvParser) throws RuntimeException;
@@ -36,8 +27,8 @@ public abstract class AbstractCSVFileParser {
 	public List<?> parseFile(FileDTO fileDTO) throws RuntimeException{
 
 		InputStream inputStream = new ByteArrayInputStream(fileDTO.getContent());
-		BOMInputStream bomInput = new BOMInputStream(inputStream, ByteOrderMark.UTF_16LE);
-		Reader reader = new InputStreamReader(bomInput, StandardCharsets.UTF_16LE);
+		BOMInputStream bomInput = new BOMInputStream(inputStream, Constants.CSV_FILES_BOM);
+		Reader reader = new InputStreamReader(bomInput, Constants.CSV_FILES_ENCODING);
 
 		try (CSVParser csvParser = new org.apache.commons.csv.CSVParser(reader, CSVFormat.TDF
 				.withFirstRecordAsHeader()
@@ -79,15 +70,5 @@ public abstract class AbstractCSVFileParser {
 			log.error(error);
 			throw new RuntimeException(error);
 		}
-	}
-	
-	protected CSVPrinter createCSVPrinter(ByteArrayOutputStream stream, CSVFormat csvFormat) throws IOException{
-		OutputStreamWriter writer = new OutputStreamWriter(stream, CSV_FILES_ENCODING);
-		return new CSVPrinter(writer, csvFormat);
-	}
-	
-	protected String createCSVFileContent(ByteArrayOutputStream stream) throws UnsupportedEncodingException {
-		String BOMedString = UTF_16_LE_BOM + stream.toString(CSV_FILES_ENCODING.name());
-		return BOMedString;
 	}
 }

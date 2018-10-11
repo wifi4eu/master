@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import wifi4eu.wifi4eu.abac.data.Constants;
 import wifi4eu.wifi4eu.abac.data.dto.FileDTO;
 import wifi4eu.wifi4eu.abac.data.entity.*;
 import wifi4eu.wifi4eu.abac.utils.ZipFileWriter;
@@ -50,12 +51,6 @@ public class ExportDataService {
 	@Autowired
 	private LegalCommitmentService legalCommitmentService;
 
-	public static final String LEGAL_ENTITY_INFORMATION_CSV_FILENAME = "airgap_exportBeneficiaryInformation.csv";
-	public static final String BUDGETARY_COMMITMENT_INFORMATION_CSV_FILENAME = "airgap_exportBudgetaryCommitmentInformation.csv";
-	public static final String LEGAL_COMMITMENT_INFORMATION_CSV_FILENAME = "airgap_exportLegalCommitmentInformation.csv";
-	public static final String LEGAL_COMMITMENT_INFORMATION_ZIP_FILENAME = "airgap_exportLegalCommitments.zip";
-	public static final String LEGAL_ENTITY_DOCUMENTS_CSV_FILENAME = "airgap_exportBeneficiaryDocuments.csv";
-
 	private final Logger log = LoggerFactory.getLogger(ExportDataService.class);
 
 	@Transactional
@@ -72,8 +67,6 @@ public class ExportDataService {
 		}
 		
 		return csvFile;
-		
-		//return new FileDTO(LEGAL_ENTITY_INFORMATION_CSV_FILENAME, csvFile.getBytes(StandardCharsets.UTF_8));
 	}
 
 	@Transactional
@@ -90,13 +83,11 @@ public class ExportDataService {
 		}
 
 		return csvFile;
-		
-		//return new FileDTO(BUDGETARY_COMMITMENT_INFORMATION_CSV_FILENAME, csvFile.getBytes("UTF-8"));
 	}
 
 	@Transactional
 	public FileDTO exportLegalCommitments() throws IOException {
-		ZipFileWriter zipFileWriter = new ZipFileWriter(LEGAL_COMMITMENT_INFORMATION_ZIP_FILENAME);
+		ZipFileWriter zipFileWriter = new ZipFileWriter(Constants.EXPORT_LEGAL_COMMITMENT_INFORMATION_ZIP_FILENAME);
 
 		List<LegalCommitment> legalCommitments = legalCommitmentService.getAllLegalCommitmentsForExport();
 		List<Document> documents = new ArrayList<>();
@@ -112,12 +103,12 @@ public class ExportDataService {
 			}
 		}
 
-		byte[] legalCommitmentsCSVbytes = legalCommitmentCSVFileParser.exportLegalCommitmentToCSV(legalCommitments).getBytes(StandardCharsets.UTF_16LE);
-		FileDTO legalCommitmentsCSVFile = new FileDTO(LEGAL_COMMITMENT_INFORMATION_CSV_FILENAME, legalCommitmentsCSVbytes);
+		byte[] legalCommitmentsCSVbytes = legalCommitmentCSVFileParser.exportLegalCommitmentToCSV(legalCommitments).getBytes(Constants.CSV_FILES_ENCODING);
+		FileDTO legalCommitmentsCSVFile = new FileDTO(Constants.EXPORT_LEGAL_COMMITMENT_INFORMATION_CSV_FILENAME, legalCommitmentsCSVbytes);
 		zipFileWriter.addFile(legalCommitmentsCSVFile);
 
-		byte[] documentsCSVbytes = documentCSVFileParser.exportDocumentsToCSV(documents).getBytes(StandardCharsets.UTF_16LE);
-		FileDTO documentsCSVFile = new FileDTO(LEGAL_ENTITY_DOCUMENTS_CSV_FILENAME, documentsCSVbytes);
+		byte[] documentsCSVbytes = documentCSVFileParser.exportDocumentsToCSV(documents).getBytes(Constants.CSV_FILES_ENCODING);
+		FileDTO documentsCSVFile = new FileDTO(Constants.EXPORT_LEGAL_ENTITY_DOCUMENTS_CSV_FILENAME, documentsCSVbytes);
 		zipFileWriter.addFile(documentsCSVFile);
 
 		Date now = Calendar.getInstance().getTime();

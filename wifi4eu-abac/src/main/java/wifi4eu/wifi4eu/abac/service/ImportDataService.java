@@ -1,6 +1,5 @@
 package wifi4eu.wifi4eu.abac.service;
 
-
 import org.apache.commons.lang.text.StrBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,13 +8,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+
+import wifi4eu.wifi4eu.abac.data.Constants;
 import wifi4eu.wifi4eu.abac.data.dto.BudgetaryCommitmentCSVRow;
 import wifi4eu.wifi4eu.abac.data.dto.FileDTO;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityDocumentCSVRow;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityInformationCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitmentPosition;
 import wifi4eu.wifi4eu.abac.data.entity.Document;
-import wifi4eu.wifi4eu.abac.data.entity.ImportLog;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 import wifi4eu.wifi4eu.abac.data.enums.DocumentType;
@@ -27,6 +27,7 @@ import wifi4eu.wifi4eu.abac.utils.csvparser.LegalEntityCSVFileParser;
 
 import java.util.*;
 
+@SuppressWarnings("unchecked")
 @Service
 public class ImportDataService {
 
@@ -56,9 +57,6 @@ public class ImportDataService {
 	
 	@Autowired
 	ECASUserService ecasUserService;
-
-	static final String LEGAL_ENTITY_INFORMATION_CSV_FILENAME = "portal_exportBeneficiaryInformation.csv";
-	static final String LEGAL_ENTITY_DOCUMENTS_CSV_FILENAME = "portal_exportBeneficiaryDocuments.csv";
 
 	private final Logger log = LoggerFactory.getLogger(ImportDataService.class);
 
@@ -135,11 +133,11 @@ public class ImportDataService {
 			log.info("Processing file {}", fileDTO.getFileName());
 
 			switch (fileDTO.getFileName()) {
-				case LEGAL_ENTITY_INFORMATION_CSV_FILENAME:
+				case Constants.IMPORT_LEGAL_ENTITY_INFORMATION_CSV_FILENAME:
 					fileDTO.setFileType(FileDTO.FileType.LEGAL_ENTITY_INFORMATION_CSV);
 					errors.append(processLegalEntityInformationFile(fileDTO, batchRef));
 					break;
-				case LEGAL_ENTITY_DOCUMENTS_CSV_FILENAME:
+				case Constants.IMPORT_LEGAL_ENTITY_DOCUMENTS_CSV_FILENAME:
 					fileDTO.setFileType(FileDTO.FileType.LEGAL_ENTITY_DOCUMENTS_CSV);
 					addDocumentsCSVIndexFile(fileDTO);
 					break;
