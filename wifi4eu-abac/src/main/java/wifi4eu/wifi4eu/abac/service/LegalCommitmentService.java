@@ -94,16 +94,6 @@ public class LegalCommitmentService {
 		return currentEcasUser;
 	}
 
-	public void createLegalCommitments(String batchRef) {
-		List<Document> grantAgreements = documentService.getDocumentsByTypeAndStatus(DocumentType.GRANT_AGREEMENT, DocumentWorkflowStatus.IMPORTED);
-
-		for (Document grantAgreement : grantAgreements) {
-			if (grantAgreement.getLegalEntity().getLegalCommitment() == null) {
-				createLegalCommitment(grantAgreement, batchRef);
-			}
-		}
-	}
-
 	public void createLegalCommitment(Document grantAgreement, String batchRef) {
 		LegalCommitment legalCommitment = new LegalCommitment();
 		legalCommitment.setLegalEntity(grantAgreement.getLegalEntity());

@@ -2,18 +2,17 @@ package wifi4eu.wifi4eu.abac.utils.csvparser;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Component;
+
+import wifi4eu.wifi4eu.abac.data.Constants;
 import wifi4eu.wifi4eu.abac.data.dto.BudgetaryCommitmentCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitmentPosition;
 import wifi4eu.wifi4eu.abac.data.enums.BudgetaryCommitmentCSVColumn;
+import wifi4eu.wifi4eu.abac.utils.CSVStringCreator;
 import wifi4eu.wifi4eu.abac.utils.DateTimeUtils;
 
-import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +23,11 @@ public class BudgetaryCommitmentCSVFileParser extends AbstractCSVFileParser {
 	@Override
 	protected void validateColumns(CSVParser csvParser) {
 		super.validateColumns(csvParser,
-					BudgetaryCommitmentCSVColumn.MUNICIPALITY_PORTAL_ID,
-					BudgetaryCommitmentCSVColumn.ABAC_GLOBAL_COMMITMENT_LEVEL1_POSITION_KEY,
-					BudgetaryCommitmentCSVColumn.ABAC_COMMITMENT_LEVEL2_POSITION,
-					BudgetaryCommitmentCSVColumn.ABAC_COMMITMENT_LEVEL2_POSITION_AMOUNT);
+			BudgetaryCommitmentCSVColumn.MUNICIPALITY_PORTAL_ID,
+			BudgetaryCommitmentCSVColumn.ABAC_GLOBAL_COMMITMENT_LEVEL1_POSITION_KEY,
+			BudgetaryCommitmentCSVColumn.ABAC_COMMITMENT_LEVEL2_POSITION,
+			BudgetaryCommitmentCSVColumn.ABAC_COMMITMENT_LEVEL2_POSITION_AMOUNT
+		);
 	}
 
 	@Override
@@ -53,41 +53,35 @@ public class BudgetaryCommitmentCSVFileParser extends AbstractCSVFileParser {
 
 		try {
 
-			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-			OutputStreamWriter streamWriter = new OutputStreamWriter(stream);
-			BufferedWriter writer = new BufferedWriter(streamWriter);
-
-			CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
-					.withHeader(
-							BudgetaryCommitmentCSVColumn.MUNICIPALITY_PORTAL_ID.toString(),
-							BudgetaryCommitmentCSVColumn.ABAC_GLOBAL_COMMITMENT_LEVEL1_POSITION_KEY.toString(),
-							BudgetaryCommitmentCSVColumn.ABAC_COMMITMENT_LEVEL2_POSITION.toString(),
-							BudgetaryCommitmentCSVColumn.ABAC_COMMITMENT_LEVEL2_POSITION_AMOUNT.toString(),
-							BudgetaryCommitmentCSVColumn.ABAC_STATUS.toString(),
-							BudgetaryCommitmentCSVColumn.ABAC_MESSAGE.toString(),
-							BudgetaryCommitmentCSVColumn.ABAC_COMMITMENT_LEVEL2_KEY.toString(),
-							BudgetaryCommitmentCSVColumn.DATE_EXPORTED.toString(),
-							BudgetaryCommitmentCSVColumn.USER_EXPORTED.toString(),
-							BudgetaryCommitmentCSVColumn.BATCH_REFERENCE.toString()
-					));
-
+			CSVStringCreator csv = new CSVStringCreator(CSVFormat.TDF.withHeader(
+				BudgetaryCommitmentCSVColumn.MUNICIPALITY_PORTAL_ID.toString(),
+				BudgetaryCommitmentCSVColumn.ABAC_GLOBAL_COMMITMENT_LEVEL1_POSITION_KEY.toString(),
+				BudgetaryCommitmentCSVColumn.ABAC_COMMITMENT_LEVEL2_POSITION.toString(),
+				BudgetaryCommitmentCSVColumn.ABAC_COMMITMENT_LEVEL2_POSITION_AMOUNT.toString(),
+				BudgetaryCommitmentCSVColumn.ABAC_STATUS.toString(),
+				BudgetaryCommitmentCSVColumn.ABAC_MESSAGE.toString(),
+				BudgetaryCommitmentCSVColumn.ABAC_COMMITMENT_LEVEL2_KEY.toString(),
+				BudgetaryCommitmentCSVColumn.DATE_EXPORTED.toString(),
+				BudgetaryCommitmentCSVColumn.USER_EXPORTED.toString(),
+				BudgetaryCommitmentCSVColumn.BATCH_REFERENCE.toString()
+			));
+			
 			for (BudgetaryCommitmentPosition budgetaryCommitmentPosition : budgetaryCommitments) {
-				csvPrinter.printRecord(
-						budgetaryCommitmentPosition.getBudgetaryCommitment().getLegalEntity().getMid(),
-						budgetaryCommitmentPosition.getGlobalCommitmentLevel1PositionKey(),
-						budgetaryCommitmentPosition.getCommitmentLevel2Position(),
-						budgetaryCommitmentPosition.getCommitmentLevel2Amount(),
-						budgetaryCommitmentPosition.getBudgetaryCommitment().getWfStatus(),
-						budgetaryCommitmentPosition.getBudgetaryCommitment().getAbacErrorMessage(),
-						budgetaryCommitmentPosition.getBudgetaryCommitment().getCommitmentLevel2Key(),
-						DateTimeUtils.format(budgetaryCommitmentPosition.getBudgetaryCommitment().getDateExported(), PORTAL_CSV_DATETIME_FORMAT),
-						budgetaryCommitmentPosition.getBudgetaryCommitment().getUserExported(),
-						budgetaryCommitmentPosition.getBudgetaryCommitment().getBatchRef()
+				csv.printRecord(
+					budgetaryCommitmentPosition.getBudgetaryCommitment().getLegalEntity().getMid(),
+					budgetaryCommitmentPosition.getGlobalCommitmentLevel1PositionKey(),
+					budgetaryCommitmentPosition.getCommitmentLevel2Position(),
+					budgetaryCommitmentPosition.getCommitmentLevel2Amount(),
+					budgetaryCommitmentPosition.getBudgetaryCommitment().getWfStatus(),
+					budgetaryCommitmentPosition.getBudgetaryCommitment().getAbacErrorMessage(),
+					budgetaryCommitmentPosition.getBudgetaryCommitment().getCommitmentLevel2Key(),
+					DateTimeUtils.format(budgetaryCommitmentPosition.getBudgetaryCommitment().getDateExported(), Constants.PORTAL_CSV_DATETIME_FORMAT),
+					budgetaryCommitmentPosition.getBudgetaryCommitment().getUserExported(),
+					budgetaryCommitmentPosition.getBudgetaryCommitment().getBatchRef()
 				);
 			}
 
-			csvPrinter.flush();
-			return stream.toString();
+			return csv.closeAndGenerateString();
 
 		} catch (IOException e) {
 			e.printStackTrace();

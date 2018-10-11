@@ -1,24 +1,24 @@
 package wifi4eu.wifi4eu.abac.data.enums;
 
 public enum DocumentType {
-	GRANT_AGREEMENT("GRANT_AGREEMENT", "Signed Grant Agreement"),
-	COUNTERSIGNED_GRANT_AGREEMENT("COUNTERSIGNED_GRANT_AGREEMENT", "Countersigned Grant Agreement"),
-	IDENTIFICATION_FORM("IDENTIFICATION_FORM", "Identification Form");
+	GRANT_AGREEMENT("GRANT_AGREEMENT", "Grant agreement n° %s/Wifi4EU/Call n° %d - 2018/identifying n° %d/%s/%s"),
+	COUNTERSIGNED_GRANT_AGREEMENT("COUNTERSIGNED_GRANT_AGREEMENT", "Grant agreement n° %s/Wifi4EU/Call n° %d - 2018/identifying n° %d/%s/%s"),
+	IDENTIFICATION_FORM("IDENTIFICATION_FORM", "LEF supporting document for Wifi4EU grant agreement n° %s/Wifi4EU/Call n° %d - 2018/identifying n° %d/%s/%s");
 
 	private String value;
-	private String userInterfaceTitle;
+	private String userInterfacePattern;
 
-	DocumentType(String value, String userInterfaceTitle) {
+	DocumentType(String value, String userInterfacePattern) {
 		this.value = value;
-		this.userInterfaceTitle = userInterfaceTitle;
+		this.userInterfacePattern = userInterfacePattern;
 	}
 
 	public String getValue() {
 		return value;
 	}
 
-	public String getUserInterfaceTitle() {
-		return userInterfaceTitle;
+	public String getUserInterfacePattern() {
+		return userInterfacePattern;
 	}
 
 	@Override

@@ -91,7 +91,7 @@ public class BatchSchedulerConfig {
     public void uploadDocumentsInAres() {
 
         Pageable pageable = PageRequest.of(0, MAX_RECORDS);
-        List<Document> documents = documentService.getDocumentsByStatus(DocumentWorkflowStatus.IMPORTED, pageable);
+        List<Document> documents = documentService.getDocumentsByStatus(DocumentWorkflowStatus.READY_FOR_ARES, pageable);
 
         if (!documents.isEmpty()) {
             log.info("Found {} documents ready to be sent to ARES...", documents.size());

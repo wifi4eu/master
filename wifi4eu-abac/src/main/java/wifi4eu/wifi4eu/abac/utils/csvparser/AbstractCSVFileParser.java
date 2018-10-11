@@ -2,32 +2,35 @@ package wifi4eu.wifi4eu.abac.utils.csvparser;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.apache.commons.io.input.BOMInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import wifi4eu.wifi4eu.abac.data.Constants;
 import wifi4eu.wifi4eu.abac.data.dto.FileDTO;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.nio.charset.StandardCharsets;
+import java.io.*;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+@SuppressWarnings("rawtypes")
 @Component
 public abstract class AbstractCSVFileParser {
 
-	protected static final String PORTAL_CSV_DATE_FORMAT = "yyyy-MM-dd";
-	protected static final String PORTAL_CSV_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
-
 	private final Logger log = LoggerFactory.getLogger(AbstractCSVFileParser.class);
+	
+	protected abstract void validateColumns(CSVParser csvParser) throws RuntimeException;
+	protected abstract List<?> mapRowsToEntities(CSVParser csvParser);
 
-	public List<?> parseFile(FileDTO fileDTO) throws RuntimeException {
+	public List<?> parseFile(FileDTO fileDTO) throws RuntimeException{
 
-		Reader reader = new StringReader(new String(fileDTO.getContent(), StandardCharsets.UTF_8));
+		InputStream inputStream = new ByteArrayInputStream(fileDTO.getContent());
+		BOMInputStream bomInput = new BOMInputStream(inputStream, Constants.CSV_FILES_BOM);
+		Reader reader = new InputStreamReader(bomInput, Constants.CSV_FILES_ENCODING);
 
-		try (CSVParser csvParser = new org.apache.commons.csv.CSVParser(reader, CSVFormat.DEFAULT
+		try (CSVParser csvParser = new org.apache.commons.csv.CSVParser(reader, CSVFormat.TDF
 				.withFirstRecordAsHeader()
 				.withIgnoreHeaderCase()
 				.withTrim())) {
@@ -41,8 +44,6 @@ public abstract class AbstractCSVFileParser {
 		}
 	}
 
-	protected abstract void validateColumns(CSVParser csvParser) throws RuntimeException;
-
 	protected void validateColumns(CSVParser csvParser, Enum ...mandatoryColumns) throws RuntimeException {
 
 		StringBuilder columnsNotFound = new StringBuilder();
@@ -54,7 +55,7 @@ public abstract class AbstractCSVFileParser {
 
 		for (Enum mandatoryColumn : mandatoryColumns) {
 
-			Boolean isColumnFound = csvParser.getHeaderMap().containsKey(lowerCaseHeaders.get(mandatoryColumn.toString().toLowerCase()));
+			Boolean isColumnFound = lowerCaseHeaders.containsKey(mandatoryColumn.toString().toLowerCase());
 
 			if(!isColumnFound) {
 				isValid = Boolean.FALSE;
@@ -70,7 +71,4 @@ public abstract class AbstractCSVFileParser {
 			throw new RuntimeException(error);
 		}
 	}
-
-	protected abstract List<?> mapRowsToEntities(CSVParser csvParser);
-
 }

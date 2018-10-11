@@ -2,21 +2,19 @@ package wifi4eu.wifi4eu.abac.utils.csvparser;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+
+import wifi4eu.wifi4eu.abac.data.Constants;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityDocumentCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.Document;
 import wifi4eu.wifi4eu.abac.data.enums.DocumentType;
-import wifi4eu.wifi4eu.abac.data.enums.LegalCommitmentCSVColumn;
 import wifi4eu.wifi4eu.abac.data.enums.LegalEntityDocumentCSVColumn;
+import wifi4eu.wifi4eu.abac.utils.CSVStringCreator;
 import wifi4eu.wifi4eu.abac.utils.DateTimeUtils;
 
-import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +51,7 @@ public class DocumentCSVFileParser extends AbstractCSVFileParser {
 				documentCSVRow.setDocumentFileName(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_FILENAME));
 				documentCSVRow.setDocumentMimeType(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_MIMETYPE));
 				documentCSVRow.setDocumentDate(StringUtils.isEmpty(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_DATE)) ? null :
-																		DateTimeUtils.parseDate(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_DATE), PORTAL_CSV_DATE_FORMAT));
+																		DateTimeUtils.parseDate(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_DATE), Constants.PORTAL_CSV_DATE_FORMAT));
 				documentCSVRow.setDocumentType(StringUtils.isEmpty(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_TYPE)) ? null :
 																		DocumentType.valueOf(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_TYPE)));
 				documentCSVRow.setAresReference(csvRecord.get(LegalEntityDocumentCSVColumn.ARES_REFERENCE));
@@ -70,37 +68,31 @@ public class DocumentCSVFileParser extends AbstractCSVFileParser {
 
 		try {
 
-			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-			OutputStreamWriter streamWriter = new OutputStreamWriter(stream);
-			BufferedWriter writer = new BufferedWriter(streamWriter);
-
-			CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
-					.withHeader(
-							LegalEntityDocumentCSVColumn.MUNICIPALITY_PORTAL_ID.toString(),
-							LegalEntityDocumentCSVColumn.DOCUMENT_NAME.toString(),
-							LegalEntityDocumentCSVColumn.DOCUMENT_FILENAME.toString(),
-							LegalEntityDocumentCSVColumn.DOCUMENT_MIMETYPE.toString(),
-							LegalEntityDocumentCSVColumn.DOCUMENT_TYPE.toString(),
-							LegalEntityDocumentCSVColumn.ARES_REFERENCE.toString(),
-							LegalEntityDocumentCSVColumn.DATE_EXPORTED.toString(),
-							LegalEntityDocumentCSVColumn.USER_EXPORTED.toString()
-					));
-
+			CSVStringCreator csv = new CSVStringCreator(CSVFormat.TDF.withHeader(
+				LegalEntityDocumentCSVColumn.MUNICIPALITY_PORTAL_ID.toString(),
+				LegalEntityDocumentCSVColumn.DOCUMENT_NAME.toString(),
+				LegalEntityDocumentCSVColumn.DOCUMENT_FILENAME.toString(),
+				LegalEntityDocumentCSVColumn.DOCUMENT_MIMETYPE.toString(),
+				LegalEntityDocumentCSVColumn.DOCUMENT_TYPE.toString(),
+				LegalEntityDocumentCSVColumn.ARES_REFERENCE.toString(),
+				LegalEntityDocumentCSVColumn.DATE_EXPORTED.toString(),
+				LegalEntityDocumentCSVColumn.USER_EXPORTED.toString()
+			));
+			
 			for (Document document : documents) {
-				csvPrinter.printRecord(
-						document.getLegalEntity().getMid(),
-						document.getName(),
-						document.getFileName(),
-						document.getMimetype(),
-						document.getType(),
-						document.getAresReference(),
-						DateTimeUtils.format(document.getDateExported(), PORTAL_CSV_DATETIME_FORMAT),
-						document.getUserExported()
+				csv.printRecord(
+					document.getLegalEntity().getMid(),
+					document.getName(),
+					document.getFileName(),
+					document.getMimetype(),
+					document.getType(),
+					document.getAresReference(),
+					DateTimeUtils.format(document.getDateExported(), Constants.PORTAL_CSV_DATETIME_FORMAT),
+					document.getUserExported()
 				);
 			}
 
-			csvPrinter.flush();
-			return stream.toString();
+			return csv.closeAndGenerateString();
 
 		} catch (IOException e) {
 			e.printStackTrace();

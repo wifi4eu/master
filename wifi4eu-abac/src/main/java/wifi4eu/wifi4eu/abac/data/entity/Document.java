@@ -91,7 +91,13 @@ public class Document {
 	@PrePersist
 	protected void onCreate() {
 		this.dateCreated = Calendar.getInstance().getTime();
-		this.wfStatus = DocumentWorkflowStatus.IMPORTED;
+
+		//Only these Types of documents should be sent to ARES
+		if (DocumentType.IDENTIFICATION_FORM.equals(this.type) || DocumentType.COUNTERSIGNED_GRANT_AGREEMENT.equals(this.type)) {
+			this.wfStatus = DocumentWorkflowStatus.READY_FOR_ARES;
+		} else {
+			this.wfStatus = DocumentWorkflowStatus.IMPORTED;
+		}
 	}
 
 	public Long getId() {
