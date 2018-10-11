@@ -85,7 +85,8 @@ public class HermesDocumentServiceClient {
         request.setTitle(documentName);
         request.setDocumentDate(getGregorianDate(document.getDateCreated()));
         request.setSecurityClassification(SecurityClassification.NORMAL);
-        request.setSenders(createIneaSender());
+        request.setSenders(createSender("inea"));
+        //request.setRecipients(createRecipient("inea")); this is failing
 
         ItemsToAdd items = new ItemsToAdd();
         UploadedItemToAdd uploadedItemToAdd = new UploadedItemToAdd();
@@ -202,12 +203,21 @@ public class HermesDocumentServiceClient {
         return document;
     }
 
-    private SendersToAdd createIneaSender() {
+    private SendersToAdd createSender(String organisationName) {
         SendersToAdd senders = new SendersToAdd();
         CurrentEntityToAdd sender = new CurrentEntityToAdd();
-        sender.setCurrentInternalEntitySearchExpression("isOrganisation=true AND organisationName='inea'");
+        sender.setCurrentInternalEntitySearchExpression(String.format("isOrganisation=true AND organisationName=\'%s\'", organisationName));
         senders.getSender().add(sender);
+
         return senders;
+    }
+
+    private RecipientsToAdd createRecipient(String organisationName) {
+        RecipientsToAdd recipients = new RecipientsToAdd();
+        RecipientToAdd recipient = new RecipientToAdd();
+        recipient.setCurrentInternalEntitySearchExpression(String.format("isOrganisation=true AND organisationName=\'%s\'", organisationName));
+        recipients.getRecipient().add(recipient);
+        return recipients;
     }
 
     private XMLGregorianCalendar getGregorianDate(Date date)throws Exception {
