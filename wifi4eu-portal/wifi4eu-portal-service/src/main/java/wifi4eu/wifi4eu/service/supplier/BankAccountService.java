@@ -167,6 +167,8 @@ public class BankAccountService {
     }
 
     private String replaceNonAsciiCharacters(String s){
+        if (s ==  null) return null;
+
         s = s.replaceAll("[óòöðôõøő]","o")
             .replaceAll("[ÒÓÖÔÕØŐ]","O")
             .replaceAll("[ñńňņ]","n")

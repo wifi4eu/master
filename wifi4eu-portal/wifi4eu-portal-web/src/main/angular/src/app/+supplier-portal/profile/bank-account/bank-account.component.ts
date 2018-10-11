@@ -309,6 +309,8 @@ export class BankAccountComponent {
     }
 
     private replaceNonAsciiCharacters(s : string) :string{
+        if (s == null) return null;
+        
         s = s.replace(new RegExp("[óòöðôõøő]"),"o")
             .replace(new RegExp("[ÒÓÖÔÕØŐ]"),"O")
             .replace(new RegExp("[ñńňņ]"),"n")
