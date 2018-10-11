@@ -27,7 +27,6 @@ import wifi4eu.wifi4eu.entity.exportImport.ExportImportRegistrationData;
 import wifi4eu.wifi4eu.entity.exportImport.GlobalCommitment;
 import wifi4eu.wifi4eu.entity.grantAgreement.GrantAgreement;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
-import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.exportImport.BudgetaryCommitmentRepository;
 import wifi4eu.wifi4eu.repository.exportImport.ExportImportRegistrationDataRepository;
@@ -62,7 +61,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -674,21 +672,7 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
     private List<ExportImportLegalCommitmentInformation> searchLegalCommitments() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-        List<BudgetaryCommitment> listBudgetaryCommitment = budgetaryCommitmentRepository.findByAbacBcKeyIsNotNullAndAbacLcKeyIsNull();
-        this._log.debug("listBudgetaryCommitment.size [{}]", listBudgetaryCommitment.size());
-        List<Application> listApplications = new ArrayList<>();
-
-        // TODO Change this query logic
-        for (BudgetaryCommitment budgetaryCommitment : listBudgetaryCommitment) {
-            Municipality municipality = budgetaryCommitment.getMunicipality();
-            List<Registration> listRegistrations = municipality.getRegistrations();
-
-            List<Integer> registrationIds = listRegistrations.stream().map(Registration::getId).collect(Collectors.toList());
-            List<Application> applications = applicationRepository.findByRegistrationIdIn(registrationIds);
-            if (CollectionUtils.isNotEmpty(applications)) {
-                listApplications.addAll(applications);
-            }
-        }
+        List<Application> listApplications = applicationRepository.findApplicationBudgetaryCommitmentsForExport();
 
         int listApplicationsSize = listApplications.size();
         this._log.debug("Applications.size [{}]", listApplicationsSize);
