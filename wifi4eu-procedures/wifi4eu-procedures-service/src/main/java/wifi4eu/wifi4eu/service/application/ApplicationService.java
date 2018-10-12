@@ -1,33 +1,20 @@
 package wifi4eu.wifi4eu.service.application;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
-
-import wifi4eu.wifi4eu.common.dto.mail.MailData;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.helper.Validator;
-import wifi4eu.wifi4eu.common.mail.MailHelper;
-import wifi4eu.wifi4eu.common.service.mail.MailService;
-import wifi4eu.wifi4eu.common.service.mail.SendMailBySMTPTask;
-import wifi4eu.wifi4eu.entity.municipality.Municipality;
-import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.common.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.call.CallRepository;
-import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
-import wifi4eu.wifi4eu.repository.user.UserRepository;
-import wifi4eu.wifi4eu.service.user.UserConstants;
+
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class ApplicationService {
