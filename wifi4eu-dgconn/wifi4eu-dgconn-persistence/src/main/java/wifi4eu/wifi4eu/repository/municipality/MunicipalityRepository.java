@@ -12,9 +12,6 @@ public interface MunicipalityRepository extends JpaRepository<Municipality, Inte
 
     List<Municipality> findByLauId(Integer lauId);
 
-    @Query(value = "SELECT COUNT(id),lau FROM municipalities GROUP BY lau", nativeQuery = true)
-    Iterable<Object> findMunicipalitiesCountGroupedByLauId();
-
     @Query(
             value = "SELECT COUNT(DISTINCT(m.lau)) FROM municipalities m",
             nativeQuery = true)
@@ -34,8 +31,6 @@ public interface MunicipalityRepository extends JpaRepository<Municipality, Inte
             nativeQuery = true
     )
     Integer countDistinctMunicipalitiesThatAppliedCallContainingName(Integer callId, String country, String name);
-
-    Long countMunicipalitiesById(Integer id);
 
     @Query(value = "SELECT m.* FROM registrations r " +
             // "INNER JOIN users u ON r._user = u.id " +

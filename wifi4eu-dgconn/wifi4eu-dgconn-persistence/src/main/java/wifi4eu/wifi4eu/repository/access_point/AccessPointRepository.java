@@ -4,9 +4,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import wifi4eu.wifi4eu.entity.access_point.AccessPoint;
 
-public interface AccessPointRepository extends PagingAndSortingRepository<AccessPoint, Integer>, AccessPointRepositoryCustom{
-
-    AccessPoint findAccessPointByIdAndIdInstallationSite(Integer id, Integer idInstallationSite);
+public interface AccessPointRepository extends PagingAndSortingRepository<AccessPoint, Integer> {
 
     @Query(value = "SELECT count(a.id) FROM access_points a " +
             "INNER JOIN installation_site i ON a.id_installation_site = i.id " +

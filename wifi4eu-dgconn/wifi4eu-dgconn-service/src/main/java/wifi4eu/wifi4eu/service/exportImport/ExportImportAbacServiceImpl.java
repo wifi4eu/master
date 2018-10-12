@@ -271,25 +271,14 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
 
         try {
 
-            byte[] fileData = null;
-
-            /*
-            if (StringUtils.isNotEmpty(beneficiaryInformation.getAzureUri())) {
-                String base64FileData = azureBlobConnector.downloadLegalFile(beneficiaryInformation.getAzureUri());
-                if (StringUtils.isNotEmpty(base64FileData)) {
-                    fileData = Base64Utils.decodeFromString(base64FileData);
-                }
-            }
-            */
+            byte[] fileData;
 
             String fileName = "lef_supporting_document-" + beneficiaryInformation.getMun_id() + ".pdf";
 
-            //if (fileData == null) {
-                //generate a new pdf file
-                ByteArrayOutputStream os = new ByteArrayOutputStream();
-                lefDocumentGeneratorService.generateLefPdf(municipalityRepository.getOne(beneficiaryInformation.getMun_id()), os);
-                fileData = os.toByteArray();
-            //}
+            //generate a new pdf file
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            lefDocumentGeneratorService.generateLefPdf(municipalityRepository.getOne(beneficiaryInformation.getMun_id()), os);
+            fileData = os.toByteArray();
 
             ExportFile exportFile = new ExportFile(fileName, fileData);
             exportFiles.add(exportFile);

@@ -5,7 +5,5 @@ import wifi4eu.wifi4eu.entity.thread.UserThreads;
 
 
 public interface UserThreadsRepository extends CrudRepository<UserThreads, Integer> {
-    Iterable<UserThreads> findByUserId(Integer userId);
-    Iterable<UserThreads> findByThreadId(Integer threadId);
     UserThreads findByUserIdAndThreadId(Integer userId, Integer threadId);
 }

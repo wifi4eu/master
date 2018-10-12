@@ -19,8 +19,6 @@ public interface ApplicationRepository extends JpaRepository<Application,Integer
 
     List<Application> findByCallIdOrderByDateAsc(Integer callId);
 
-    List<Application> findByRegistrationIdIn(List<Integer> ids);
-
     @Query(value = "SELECT count(*) FROM applications ap WHERE ap._status != 1 AND ap.call_id = ?1", nativeQuery = true)
     Integer findApplicationsNotInvalidated(int callId);
 
