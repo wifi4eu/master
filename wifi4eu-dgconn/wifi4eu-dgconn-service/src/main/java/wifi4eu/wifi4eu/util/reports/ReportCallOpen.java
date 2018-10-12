@@ -13,12 +13,15 @@ import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.utils.Utils;
 import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.entity.location.NutCallCustom;
+import wifi4eu.wifi4eu.entity.warnings.WarningsNumber;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.call.CallRepository;
 import wifi4eu.wifi4eu.repository.location.NutCallCustomRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.repository.warning.RegistrationWarningRepository;
+import wifi4eu.wifi4eu.repository.warning.WarningsNumberRepository;
 import wifi4eu.wifi4eu.util.reporting.ReportingUtils;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +46,9 @@ public class ReportCallOpen {
     @Autowired
     RegistrationWarningRepository registrationWarningRepository;
 
+    @Autowired
+    WarningsNumberRepository warningsNumberRepository;
+
     private static final Logger _log = LogManager.getLogger(ReportCallOpen.class);
 
     private Integer idCurrentCall = 0,
@@ -53,7 +59,7 @@ public class ReportCallOpen {
             warning2Applicant = 0,
             warning3Applicant = 0;
 
-    static String[] fields = {"Number of applicants for the current call up to date", "Number of applicants with 1 warning (NO MATTER WHICH WARNING)", "Number of applicants with 2 warnings (NO MATTER WHICH WARNING)", "Number of applicants with 3 warnings (NO MATTER WHICH WARNING)", "Number of applicants with warning 1 (may have more than 1 warning)", "Number of applicants with warning 2 (may have more than 1 warning)", "Number of applicants with warning 3 (may have more than 1 warning)", "Number of duplicates", "Number of duplicates invalidated", "Number of invalidated for reason 1: After the follow-up request, the application provided a document which was corrupt/impossible to open in the format supplied", "Number of invalidated for reason 2: After the follow-up request, the applicant provided the same document(s) as originally supplied with the application", "Number of invalidated for reason 3: After the follow-up request, the applicant provided a document which was unreadable", "Number of invalidated for reason 4: After the follow-up request, the applicant provided a document which was incomplete", "Number of invalidated for reason 5: After the follow-up request, the applicant provided a document which was incorrect/did not correspond to the required document (or still contained incorrect information)", "Number of invalidated for reason 6: After the follow-up request, the applicant provided a document which was missing a signature", "Number of invalidated for reason 7: The deadline for the request of correction of the required supporting documents passed without compliance by the applicant", "Number of invalidated for reason 8: The application included a merged municipality","Number of invalidated for reason 9: Due to irregularities found in the application, it was invalidated"};
+    static String[] fields = {"Number of applicants for the current call up to date", "Number of applicants with 1 warning (NO MATTER WHICH WARNING)", "Number of applicants with 2 warnings (NO MATTER WHICH WARNING)", "Number of applicants with 3 warnings (NO MATTER WHICH WARNING)", "Number of applicants with warning 1 (may have more than 1 warning)", "Number of applicants with warning 2 (may have more than 1 warning)", "Number of applicants with warning 3 (may have more than 1 warning)", "Number of duplicates", "Number of duplicates invalidated", "Number of invalidated for reason 1: After the follow-up request, the application provided a document which was corrupt/impossible to open in the format supplied", "Number of invalidated for reason 2: After the follow-up request, the applicant provided the same document(s) as originally supplied with the application", "Number of invalidated for reason 3: After the follow-up request, the applicant provided a document which was unreadable", "Number of invalidated for reason 4: After the follow-up request, the applicant provided a document which was incomplete", "Number of invalidated for reason 5: After the follow-up request, the applicant provided a document which was incorrect/did not correspond to the required document (or still contained incorrect information)", "Number of invalidated for reason 6: After the follow-up request, the applicant provided a document which was missing a signature", "Number of invalidated for reason 7: The deadline for the request of correction of the required supporting documents passed without compliance by the applicant", "Number of invalidated for reason 8: The application included a merged municipality", "Number of invalidated for reason 9: Due to irregularities found in the application, it was invalidated"};
     static String[] totalValues = {"callApplicants", "warning1Applicant", "warning2Applicant", "warning3Applicant", "warningsType1", "warningsType2", "warningsType3", "numberDuplicates", "numberDuplicatesInvalidated", "reason1", "reason2", "reason3", "reason4", "reason5", "reason6", "reason7", "reason8", "reason9"};
 
     public void generate(HSSFWorkbook workbook) {
@@ -144,7 +150,7 @@ public class ReportCallOpen {
     private boolean registrationHasWarning(Integer registrationId, Integer warningType) {
         boolean warning = false;
         if (Validator.isNotNull(registrationId) && Validator.isNotNull(warningType)) {
-            warning = registrationWarningRepository.countByRegistrationAndWarning(registrationId,warningType) > 0;
+            warning = registrationWarningRepository.countByRegistrationAndWarning(registrationId, warningType) > 0;
         }
         return warning;
     }
@@ -221,7 +227,7 @@ public class ReportCallOpen {
         int reason8 = getNumberInvalidatedByReason(8, idNut);
         int reason9 = getNumberInvalidatedByReason(9, idNut);
         DecimalFormat df = new DecimalFormat("#.##");
-        mapResult.put("callApplicantsPercent", df.format((callApplicants * 100.0f) / callApplicants));
+        mapResult.put("callApplicantsPercent", "-");
         mapResult.put("warning1ApplicantPercent", df.format((warning1Applicant * 100.0f) / callApplicants));
         mapResult.put("warning2ApplicantPercent", df.format((warning2Applicant * 100.0f) / callApplicants));
         mapResult.put("warning3ApplicantPercent", df.format((warning3Applicant * 100.0f) / callApplicants));
@@ -230,7 +236,7 @@ public class ReportCallOpen {
         mapResult.put("warningsType3Percent", df.format((warningsType3 * 100.0f) / callApplicants));
         mapResult.put("numberDuplicatesPercent", df.format((numberDuplicates * 100.0f) / callApplicants));
         mapResult.put("numberDuplicatesInvalidatedPercent", df.format((numberDuplicatesInvalidated * 100.0f) / callApplicants));
-        if (callApplicantsInvalidated > 0){
+        if (callApplicantsInvalidated > 0) {
             mapResult.put("reason1Percent", df.format((reason1 * 100.0f) / callApplicantsInvalidated));
             mapResult.put("reason2Percent", df.format((reason2 * 100.0f) / callApplicantsInvalidated));
             mapResult.put("reason3Percent", df.format((reason3 * 100.0f) / callApplicantsInvalidated));
@@ -255,12 +261,12 @@ public class ReportCallOpen {
     }
 
     @Transactional
-    private int getNumberInvalidatedByReason(int reason, int idNut){
+    private int getNumberInvalidatedByReason(int reason, int idNut) {
         int numberInvalidatedByReason;
-        if (idNut != 0){
+        if (idNut != 0) {
             numberInvalidatedByReason = applicationRepository.findApplicationsInvalidatedByCallAndReasonAndNut(idCurrentCall, reason, idNut);
         } else {
-            numberInvalidatedByReason = applicationRepository.findApplicationInvalidatedByCallAndReason(idCurrentCall,reason);
+            numberInvalidatedByReason = applicationRepository.findApplicationInvalidatedByCallAndReason(idCurrentCall, reason);
         }
         return numberInvalidatedByReason;
     }
@@ -277,7 +283,7 @@ public class ReportCallOpen {
         if (Validator.isNotNull(allApplicants)) {
             for (int i = 0; i < allApplicants.size(); i++) {
                 counterWarnings = getCountRegistrationWarnings(allApplicants.get(i).getRegistrationId());
-                switch (counterWarnings){
+                switch (counterWarnings) {
                     case 1:
                         warning1Applicant++;
                         break;
@@ -301,20 +307,11 @@ public class ReportCallOpen {
             allApplicants = Lists.newArrayList(applicationRepository.findApplicationsByCallId(idCurrentCall));
         }
         if (Validator.isNotNull(allApplicants)) {
-            for (int i = 0; i < allApplicants.size(); i++) {
-                // TODO - Implement custom query to retrieve all the counts with one query - Need Entity / DTO
-                // SELECT (select count(*) from registration_warnings where warning = 1 and registration_id = 22758) as warning1,
-                //(select count(*) as warning1 from registration_warnings where warning = 2 and registration_id = 22758) as warning2,
-                //(select count(*) as warning1 from registration_warnings where warning = 3 and registration_id = 22758) as warning3
-                if (registrationHasWarning(allApplicants.get(i).getRegistrationId(), 1)) {
-                    warningsType1++;
-                }
-                if (registrationHasWarning(allApplicants.get(i).getRegistrationId(), 2)) {
-                    warningsType2++;
-                }
-                if (registrationHasWarning(allApplicants.get(i).getRegistrationId(), 2)) {
-                    warningsType3++;
-                }
+            for (Application application : allApplicants) {
+                WarningsNumber wn = warningsNumberRepository.countWarningsNumberByRegistration(application.getRegistrationId());
+                warningsType1 += wn.getWarning1();
+                warningsType2 += wn.getWarning2();
+                warningsType3 += wn.getWarning3();
             }
         }
     }

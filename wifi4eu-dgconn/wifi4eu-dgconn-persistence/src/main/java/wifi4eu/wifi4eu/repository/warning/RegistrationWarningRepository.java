@@ -3,7 +3,9 @@ package wifi4eu.wifi4eu.repository.warning;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import wifi4eu.wifi4eu.entity.warnings.RegistrationWarning;
+import wifi4eu.wifi4eu.entity.warnings.WarningsNumber;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface RegistrationWarningRepository extends CrudRepository<RegistrationWarning, Integer> {
@@ -16,4 +18,5 @@ public interface RegistrationWarningRepository extends CrudRepository<Registrati
     Integer countByRegistrationAndWarning(Integer registration, Integer warning);
 
     Integer countByRegistration(Integer registration);
+
 }
