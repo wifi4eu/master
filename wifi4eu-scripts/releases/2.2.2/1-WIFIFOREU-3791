@@ -1,0 +1,2 @@
+-- 2018-10-11 bugfix/WIFIFOREU-3791 - Column data to store redis_id on application
+alter table [dbo].[applications] ADD redis_id nvarchar(50);
