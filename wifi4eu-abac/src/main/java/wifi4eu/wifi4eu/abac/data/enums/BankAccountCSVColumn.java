@@ -7,14 +7,19 @@ public enum BankAccountCSVColumn {
 	BANK_ACCOUNT_ADDRESS("baf_address"),
 	BANK_ACCOUNT_CITY("baf_city"),
 	BANK_ACCOUNT_COUNTRY_CODE("baf_countryCodeISO"),
-	BANK_ACCOUNT_POSTAL_CODE("mun_postalCode"),
+	BANK_ACCOUNT_POSTAL_CODE("baf_postalCode"),
 	BANK_ACCOUNT_BANK_NAME("baf_bank_name"),
+	BANK_ACCOUNT_BANK_ADDRESS("baf_bank_address"),
+	BANK_ACCOUNT_BANK_CITY("baf_bank_city"),
+	BANK_ACCOUNT_BANK_COUNTRY_CODE("baf_bank_countryCodeISO"),
+	BANK_ACCOUNT_BANK_POSTAL_CODE("baf_bank_postalCode"),
 	BANK_ACCOUNT_IBAN("baf_iban"),
-	BANK_ACCOUNT_ABAC_REFERENCE("mun_abacReference"),
-	BANK_ACCOUNT_ABAC_STATUS("mun_abacStatus"),
-	BANK_ACCOUNT_DATE_EXPORTED("mun_lastDateExported"),
-	BANK_ACCOUNT_USER_EXPORTED("mun_lastUserExported"),
-	BANK_ACCOUNT_BATCH_REFERENCE("mun_importBatchReference");
+	BANK_ACCOUNT_SWIFT_CODE("baf_swiftCode"),
+	BANK_ACCOUNT_ABAC_REFERENCE("baf_abacReference"),
+	BANK_ACCOUNT_ABAC_STATUS("baf_abacStatus"),
+	BANK_ACCOUNT_DATE_EXPORTED("baf_lastDateExported"),
+	BANK_ACCOUNT_USER_EXPORTED("baf_lastUserExported"),
+	BANK_ACCOUNT_BATCH_REFERENCE("baf_importBatchReference");
 	
 	private String value;
 

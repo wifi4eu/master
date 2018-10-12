@@ -29,24 +29,28 @@ public class BankAccountService {
 	//TODO This should be refactored to use javax validation.
 	private void validate(BankAccount bankAccount) {
 		if (StringUtils.isEmpty(bankAccount.getAccountName())) throw new RuntimeException("Account Name is empty");
+		if (StringUtils.isEmpty(bankAccount.getAddress())) throw new RuntimeException("Account Address is empty");
+		if (StringUtils.isEmpty(bankAccount.getCity())) throw new RuntimeException("Account City is empty");
+		if (bankAccount.getPostalCode() != null && bankAccount.getPostalCode().length() > 10) throw new RuntimeException("Account Postal Code should be up to 10 digits");
+		if (bankAccount.getCountry() == null) throw new RuntimeException("Account Country is empty or invalid");
 		if (StringUtils.isEmpty(bankAccount.getBankName())) throw new RuntimeException("Bank Name is empty");
-		if (StringUtils.isEmpty(bankAccount.getAddress())) throw new RuntimeException("Address is empty");
-		if (StringUtils.isEmpty(bankAccount.getCity())) throw new RuntimeException("City is empty");
-		if (bankAccount.getCountry() == null) throw new RuntimeException("Country is empty or invalid");
+		if (StringUtils.isEmpty(bankAccount.getBankAddress())) throw new RuntimeException("Bank Address is empty");
+		if (StringUtils.isEmpty(bankAccount.getBankCity())) throw new RuntimeException("Bank City is empty");
+		if (bankAccount.getBankPostalCode() != null && bankAccount.getBankPostalCode().length() > 10) throw new RuntimeException("Bank Postal Code should be up to 10 digits");
+		if (bankAccount.getBankCountry() == null) throw new RuntimeException("Bank Country is empty or invalid");
 		if (StringUtils.isEmpty(bankAccount.getIban())) throw new RuntimeException("IBAN is empty");
-		if (bankAccount.getPostalCode() != null && bankAccount.getPostalCode().length() > 10) throw new RuntimeException("Postal code should be up to 10 digits");
+		if (StringUtils.isEmpty(bankAccount.getSwiftCode())) throw new RuntimeException("Swift code is empty");
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public BankAccount saveBankAccount(BankAccount bankAccount) {
-
 		validate(bankAccount);
-
-		if(StringUtils.isEmpty(bankAccount.getAbacLatinName())){
-			bankAccount.setAbacLatinName(XCharacterDecoder.decode(bankAccount.getAccountName()));
-		}
+		bankAccount.setAbacLatinName(XCharacterDecoder.decode(bankAccount.getAccountName()));
 		bankAccount.setAbacLatinAddress(XCharacterDecoder.decode(bankAccount.getAddress()));
-
+		bankAccount.setAbacLatinCity(XCharacterDecoder.decode(bankAccount.getCity()));
+		bankAccount.setAbacLatinBankName(XCharacterDecoder.decode(bankAccount.getBankName()));
+		bankAccount.setAbacLatinBankAddress(XCharacterDecoder.decode(bankAccount.getBankAddress()));
+		bankAccount.setAbacLatinBankCity(XCharacterDecoder.decode(bankAccount.getBankCity()));
 		return bankAccountRepository.save(bankAccount);
 	}
 	
@@ -55,14 +59,19 @@ public class BankAccountService {
 		
 		bankAccount.setBafId(bankAccountInformationCSVRow.getBafId());
 		bankAccount.setAccountName(bankAccountInformationCSVRow.getAccountName());
-		bankAccount.setBankName(bankAccountInformationCSVRow.getBankName());
 		bankAccount.setAddress(bankAccountInformationCSVRow.getAddress());
 		bankAccount.setCity(bankAccountInformationCSVRow.getCity());
-		bankAccount.setIban(bankAccountInformationCSVRow.getIban());
 		bankAccount.setPostalCode(bankAccountInformationCSVRow.getPostalCode());
 		Country country = countryService.getCountryByISOCode(bankAccountInformationCSVRow.getCountryCode());
 		bankAccount.setCountry(country);
-
+		bankAccount.setBankName(bankAccountInformationCSVRow.getBankName());
+		bankAccount.setBankAddress(bankAccountInformationCSVRow.getBankAddress());
+		bankAccount.setBankCity(bankAccountInformationCSVRow.getBankCity());
+		bankAccount.setBankPostalCode(bankAccountInformationCSVRow.getBankPostalCode());
+		Country bankCountry = countryService.getCountryByISOCode(bankAccountInformationCSVRow.getBankCountryCode());
+		bankAccount.setBankCountry(bankCountry);
+		bankAccount.setIban(bankAccountInformationCSVRow.getIban());
+		bankAccount.setSwiftCode(bankAccountInformationCSVRow.getSwiftCode());
 		return bankAccount;
 	}
 	

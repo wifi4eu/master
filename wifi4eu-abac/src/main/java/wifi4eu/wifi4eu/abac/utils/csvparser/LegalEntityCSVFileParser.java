@@ -96,7 +96,7 @@ public class LegalEntityCSVFileParser extends AbstractCSVFileParser {
 					legalEntity.getOfficialAddress(),
 					legalEntity.getPostalCode(),
 					legalEntity.getCity(),
-					legalEntity.getCountry().getIso3Code(),
+					legalEntity.getCountry().getIso2Code(),
 					legalEntity.getLanguageCode(),
 					legalEntity.getRegistrationNumber(),
 					legalEntity.getAbacFelId(),

@@ -39,9 +39,6 @@ public class BankAccount {
 	@Column(name = "account_name", length = 70)
 	private String accountName;
 	
-	@Column(name = "bank_name", length = 120)
-	private String bankName;
-	
 	@Column(name = "address", length = 120)
 	private String address;
 	
@@ -54,9 +51,28 @@ public class BankAccount {
 	
 	@Column(name = "postal_code", length = 10)
 	private String postalCode;
+
+	@Column(name = "bank_name", length = 120)
+	private String bankName;
+	
+	@Column(name = "bank_address", length = 120)
+	private String bankAddress;
+	
+	@Column(name = "bank_city", length = 50)
+	private String bankCity;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "bank_country_code")
+	private Country bankCountry;
+	
+	@Column(name = "bank_postal_code", length = 10)
+	private String bankPostalCode;
 	
 	@Column(name = "iban", length = 50)
 	private String iban;
+	
+	@Column(name = "swift_code", length = 50)
+	private String swiftCode;
 	
 	@Column(name = "abac_ref", length = 50)
 	private String abacRef;
@@ -81,6 +97,18 @@ public class BankAccount {
 
 	@Column(name = "ABAC_LATIN_ADDRESS")
 	private String abacLatinAddress;
+	
+	@Column(name = "ABAC_LATIN_CITY")
+	private String abacLatinCity;
+
+	@Column(name = "ABAC_LATIN_BANK_NAME")
+	private String abacLatinBankName;
+	
+	@Column(name = "ABAC_LATIN_BANK_ADDRESS")
+	private String abacLatinBankAddress;
+	
+	@Column(name = "ABAC_LATIN_BANK_CITY")
+	private String abacLatinBankCity;
 	
 	@Column(name = "BATCH_REF", length = 50)
 	private String batchRef;
@@ -242,13 +270,89 @@ public class BankAccount {
 		this.userExported = userExported;
 	}
 
+	public String getBankAddress() {
+		return bankAddress;
+	}
+
+	public void setBankAddress(String bankAddress) {
+		this.bankAddress = bankAddress;
+	}
+
+	public String getBankCity() {
+		return bankCity;
+	}
+
+	public void setBankCity(String bankCity) {
+		this.bankCity = bankCity;
+	}
+
+	public Country getBankCountry() {
+		return bankCountry;
+	}
+
+	public void setBankCountry(Country bankCountry) {
+		this.bankCountry = bankCountry;
+	}
+
+	public String getBankPostalCode() {
+		return bankPostalCode;
+	}
+
+	public void setBankPostalCode(String bankPostalCode) {
+		this.bankPostalCode = bankPostalCode;
+	}
+
+	public String getSwiftCode() {
+		return swiftCode;
+	}
+
+	public void setSwiftCode(String swiftCode) {
+		this.swiftCode = swiftCode;
+	}
+	
+	public String getAbacLatinCity() {
+		return abacLatinCity;
+	}
+
+	public void setAbacLatinCity(String abacLatinCity) {
+		this.abacLatinCity = abacLatinCity;
+	}
+
+	public String getAbacLatinBankName() {
+		return abacLatinBankName;
+	}
+
+	public void setAbacLatinBankName(String abacLatinBankName) {
+		this.abacLatinBankName = abacLatinBankName;
+	}
+
+	public String getAbacLatinBankAddress() {
+		return abacLatinBankAddress;
+	}
+
+	public void setAbacLatinBankAddress(String abacLatinBankAddress) {
+		this.abacLatinBankAddress = abacLatinBankAddress;
+	}
+
+	public String getAbacLatinBankCity() {
+		return abacLatinBankCity;
+	}
+
+	public void setAbacLatinBankCity(String abacLatinBankCity) {
+		this.abacLatinBankCity = abacLatinBankCity;
+	}
+
 	@Override
 	public String toString() {
 		return "BankAccount [id=" + id + ", bafId=" + bafId + ", wfStatus=" + wfStatus + ", accountName=" + accountName
-				+ ", bankName=" + bankName + ", address=" + address + ", city=" + city + ", country=" + country
-				+ ", postalCode=" + postalCode + ", iban=" + iban + ", abacRef=" + abacRef + ", dateCreated="
-				+ dateCreated + ", dateUpdated=" + dateUpdated + ", userImported=" + userImported + ", dateExported="
-				+ dateExported + ", userExported=" + userExported + ", abacLatinName=" + abacLatinName
-				+ ", abacLatinAddress=" + abacLatinAddress + ", batchRef=" + batchRef + "]";
+				+ ", address=" + address + ", city=" + city + ", country=" + country + ", postalCode=" + postalCode
+				+ ", bankName=" + bankName + ", bankAddress=" + bankAddress + ", bankCity=" + bankCity
+				+ ", bankCountry=" + bankCountry + ", bankPostalCode=" + bankPostalCode + ", iban=" + iban
+				+ ", swiftCode=" + swiftCode + ", abacRef=" + abacRef + ", dateCreated=" + dateCreated
+				+ ", dateUpdated=" + dateUpdated + ", userImported=" + userImported + ", dateExported=" + dateExported
+				+ ", userExported=" + userExported + ", abacLatinName=" + abacLatinName + ", abacLatinAddress="
+				+ abacLatinAddress + ", abacLatinCity=" + abacLatinCity + ", abacLatinBankName=" + abacLatinBankName
+				+ ", abacLatinBankAddress=" + abacLatinBankAddress + ", abacLatinBankCity=" + abacLatinBankCity
+				+ ", batchRef=" + batchRef + "]";
 	}
 }
