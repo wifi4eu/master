@@ -334,7 +334,6 @@ public class LegalEntity {
 		this.dateCreated = Calendar.getInstance().getTime();
 	}
 
-
 	@Override
 	public String toString() {
 		return "LegalEntity [id=" + id + ", mid=" + mid + ", officialName=" + officialName + ", languageCode="
@@ -344,5 +343,4 @@ public class LegalEntity {
 				+ ", dateUpdated=" + dateUpdated + ", signatureDate=" + signatureDate + ", userImported=" + userImported
 				+ "]";
 	}
-
 }

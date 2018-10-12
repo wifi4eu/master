@@ -1,5 +1,6 @@
 package wifi4eu.wifi4eu.abac.data.entity;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -12,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -82,6 +84,11 @@ public class BankAccount {
 	
 	@Column(name = "BATCH_REF", length = 50)
 	private String batchRef;
+	
+	@PrePersist
+	protected void onCreate() {
+		this.dateCreated = Calendar.getInstance().getTime();
+	}
 	
 	public Long getId() {
 		return id;
@@ -233,5 +240,15 @@ public class BankAccount {
 
 	public void setUserExported(String userExported) {
 		this.userExported = userExported;
+	}
+
+	@Override
+	public String toString() {
+		return "BankAccount [id=" + id + ", bafId=" + bafId + ", wfStatus=" + wfStatus + ", accountName=" + accountName
+				+ ", bankName=" + bankName + ", address=" + address + ", city=" + city + ", country=" + country
+				+ ", postalCode=" + postalCode + ", iban=" + iban + ", abacRef=" + abacRef + ", dateCreated="
+				+ dateCreated + ", dateUpdated=" + dateUpdated + ", userImported=" + userImported + ", dateExported="
+				+ dateExported + ", userExported=" + userExported + ", abacLatinName=" + abacLatinName
+				+ ", abacLatinAddress=" + abacLatinAddress + ", batchRef=" + batchRef + "]";
 	}
 }
