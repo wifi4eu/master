@@ -40,7 +40,7 @@ public class ReportTimeToInform {
 
     public void generate(HSSFWorkbook workbook) {
         if (Validator.isNotNull(callRepository.findAllCallsClosedNotified())) {
-            HSSFSheet sheet = workbook.createSheet("State of play Report");
+            HSSFSheet sheet = workbook.createSheet("Time to Inform report");
             int numColumn = 0;
             Integer callsClosedNum = callRepository.countCallsClosedNotified();
             List<CallDTO> calls = callMapper.toDTOList(callRepository.findAllCallsClosedNotified());
@@ -81,7 +81,8 @@ public class ReportTimeToInform {
                 int takeNumber = 0;
                 for (int i = 1; i <= totalValues.length; i++) {
                     row = sheet.getRow(i);
-                    String valueSet = "" + allValues.get(callValues[takeNumber]);
+                    DecimalFormat df = new DecimalFormat("#.##");
+                    String valueSet = "" + df.format(allValues.get(callValues[takeNumber]));
                     row.createCell(numColumn).setCellValue(valueSet);
                     takeNumber++;
                 }
@@ -102,7 +103,8 @@ public class ReportTimeToInform {
         }
         average = average / calls.size();
         if (Validator.isNull(average)) average = 0;
-        String valueSet = "" + average;
+        DecimalFormat df = new DecimalFormat("#.##");
+        String valueSet = "" + df.format(average);
         row.createCell(column).setCellValue(valueSet);
         row.createCell(column +1).setCellValue("-");
     }
@@ -113,11 +115,13 @@ public class ReportTimeToInform {
         HSSFRow row = sheet.getRow(2);
         List<CallDTO> calls = callMapper.toDTOList(callRepository.findAllCallsClosedNotified());
         for (CallDTO call : calls) {
-            weightedAverage += applicationRepository.countApplicationsForCallId(call.getId())/totalNotified;
+            int res = applicationRepository.countApplicationsForCallId(call.getId()).intValue();
+            weightedAverage += res * (res/totalNotified);
         }
         weightedAverage = weightedAverage / calls.size();
         if (Validator.isNull(weightedAverage)) weightedAverage = 0;
-        String valueSet = "" + weightedAverage;
+        DecimalFormat df = new DecimalFormat("#.##");
+        String valueSet = "" + df.format(weightedAverage);
         row.createCell(column).setCellValue(valueSet);
         row.createCell(column -1).setCellValue("-");
     }
