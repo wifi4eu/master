@@ -3,6 +3,21 @@ package wifi4eu.wifi4eu.service.application;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.ByteArrayOutputStream;
+import java.text.MessageFormat;
+import java.time.DateTimeException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -663,7 +678,7 @@ public class ApplicationService {
     @Transactional
     public ResponseDTO changeStatusRegistrationDocuments(Integer applicationId) {
         ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findOne(applicationId));
-        List<LegalFileDTO> legalFileDTOS = legalFilesMapper.toDTOList(legalFilesRepository.findByRegistration(applicationDTO.getRegistrationId()));
+        List<LegalFileDTO> legalFileDTOS = legalFilesMapper.toDTOList(legalFilesRepository.findByRegistrationId(applicationDTO.getRegistrationId()));
         if (!legalFileDTOS.isEmpty()) {
             for (LegalFileDTO legalFileDTO : legalFileDTOS) {
                 if (legalFileDTO.getIsNew() == LegalFileStatus.RECENT.getValue() && legalFilesRepository.checkIfNewFile(legalFileDTO.getFileType(), legalFileDTO.getRegistration()) != 0) {
