@@ -13,6 +13,8 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { MayorApi } from "../../shared/swagger/api/MayorApi";
 import { MayorDTOBase } from "../../shared/swagger/model/MayorDTO";
 import { LegalFileDTOBase, LegalFilesViewDTOBase } from "../../shared/swagger";
+import { Location } from "@angular/common";
+import { NgForm } from "@angular/forms";
 
 
 @Component({
@@ -34,21 +36,23 @@ export class AdditionalInfoComponent {
     private reader: FileReader = new FileReader();
     private filesUploaded: boolean = false;
     private isMayor: boolean = false;
+    @ViewChild('legalForm') fileForm: NgForm;
     @ViewChild('document1') private document1: any;
     @ViewChild('document2') private document2: any;
     @ViewChild('document3') private document3: any;
     @ViewChild('document4') private document4: any;
     private displayConfirmingData: boolean = false;
-    private displayConfirmClose: boolean = false;
     private displayConfirmDelete: boolean = false;
     private removingFile: number;
     private changedDocs: number;
+    dirty: boolean = false;
 
     private fileURL: string = '/wifi4eu/api/registration/getDocument/';
 
-    constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private localStorageService: LocalStorageService, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private sharedService: SharedService, private router: Router) {
+    constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private localStorageService: LocalStorageService, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private sharedService: SharedService, private router: Router, private location: Location ) {
         let storedUser = this.localStorageService.get('user');
         this.changedDocs = 0;
+
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
             let municipalityId;
@@ -61,28 +65,28 @@ export class AdditionalInfoComponent {
                             (registration: RegistrationDTOBase) => {
                                 this.registration = registration;
                                 this.filesUploaded = this.registration.allFilesFlag == 1 ? true : false;
-                                this.registrationApi.getHistoryForType(this.registration.id, 1).subscribe(
+                                this.registrationApi.getHistoryForType(this.registration.id, 1, new Date().getTime()).subscribe(
                                     (response: ResponseDTOBase) => {
                                         this.documentFilesType1 = response.data;
                                     }, error => {
 
                                     }
                                 );
-                                this.registrationApi.getHistoryForType(this.registration.id, 2).subscribe(
+                                this.registrationApi.getHistoryForType(this.registration.id, 2, new Date().getTime()).subscribe(
                                     (response: ResponseDTOBase) => {
                                         this.documentFilesType2 = response.data;
                                     }, error => {
 
                                     }
                                 );
-                                this.registrationApi.getHistoryForType(this.registration.id, 3).subscribe(
+                                this.registrationApi.getHistoryForType(this.registration.id, 3, new Date().getTime()).subscribe(
                                     (response: ResponseDTOBase) => {
                                         this.documentFilesType3 = response.data;
                                     }, error => {
 
                                     }
                                 );
-                                this.registrationApi.getHistoryForType(this.registration.id, 4).subscribe(
+                                this.registrationApi.getHistoryForType(this.registration.id, 4, new Date().getTime()).subscribe(
                                     (response: ResponseDTOBase) => {
                                         this.documentFilesType4 = response.data;
                                     }, error => {
@@ -116,7 +120,6 @@ export class AdditionalInfoComponent {
                         }
                     }
                 );
-
             }
 
         } else {
@@ -146,6 +149,9 @@ export class AdditionalInfoComponent {
             } else {
                 this.filesUploaded = false;
             }
+        }
+        if (this.legalFilesToUpload.length <= 0 || this.changedDocs <= 0) {
+            this.dirty = false;
         }
     }
 
@@ -210,20 +216,26 @@ export class AdditionalInfoComponent {
                                 file.fileName = event.target.files[0].name;
                                 file.fileSize = event.target.files[0].size;
                                 file.registration = this.registration.id;
+                                file.status = 0;
+                                file.isNew = 2;
                                 this.legalFilesToUpload.push(file);
                                 this.checkDocuments();
                                 switch (type) {
                                     case 1:
                                         this.documentFilesType1.push(file);
+                                        this.dirty = true;
                                         break;
                                     case 2:
                                         this.documentFilesType2.push(file);
+                                        this.dirty = true;
                                         break;
                                     case 3:
                                         this.documentFilesType3.push(file);
+                                        this.dirty = true;
                                         break;
                                     case 4:
                                         this.documentFilesType4.push(file);
+                                        this.dirty = true;
                                         break;
                                     default:
                                         break;
@@ -235,11 +247,11 @@ export class AdditionalInfoComponent {
                     );
                 }).catch(() => {
                     this.sharedService.growlTranslation('Please, select a valid file.', 'shared.incorrectFormat', 'warn');
-                    this.filesUploaded = false;
+                    this.checkDocuments();
                 });
             } else {
                 this.sharedService.growlTranslation('Please, select a valid file.', 'shared.incorrectFormat', 'warn');
-                this.filesUploaded = false;
+                this.checkDocuments();
             }
         } else {
             this.cleanFile(type);
@@ -315,6 +327,7 @@ export class AdditionalInfoComponent {
             this.registrationApi.uploadRegistrationDocuments(this.registration.id, sendObject).subscribe(
                 (response: ResponseDTOBase) => {
                     if (response.success) {
+                        this.dirty = false;
                         this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
                         this.registration = response.data;
                         this.router.navigateByUrl('/beneficiary-portal/voucher');
@@ -332,17 +345,20 @@ export class AdditionalInfoComponent {
         }
     }
 
-    confirmClose() {
-        this.displayConfirmClose = true;
-    }
-
     cancelBack() {
-        this.displayConfirmClose = false;
         this.displayConfirmDelete = false;
         this.removingFile = null;
     }
 
-    goBack(){
-        window.history.back();
+    goBack() {
+        if (this.legalFilesToUpload.length > 0 || this.changedDocs > 0) {
+            this.dirty = true;
+            this.displayConfirmDelete = false;
+            this.location.back();
+        } else {
+            this.displayConfirmDelete = false;
+            this.location.back();
+        }
     }
+
 }

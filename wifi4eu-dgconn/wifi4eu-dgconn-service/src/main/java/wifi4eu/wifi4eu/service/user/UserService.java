@@ -162,7 +162,7 @@ public class UserService {
         if (userContext == null) {
             throw new AppException("User context not defined", HttpStatus.SC_FORBIDDEN, "");
         }
-        _log.debug("User Email: " + userContext.getEmail() + " and User PerId: " + userContext.getPerId());
+        _log.debug("User Email: {} and User PerId: {}", userContext.getEmail(), userContext.getPerId());
 
         UserDTO userDTO = userMapper.toDTO(userRepository.findByEcasUsername(userContext.getUsername()));
         if (userDTO == null) {

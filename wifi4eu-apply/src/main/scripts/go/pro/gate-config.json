@@ -1,0 +1,11 @@
+{
+    
+    "dbUserName" : "taqof2g1aamcdvf",
+    "dbPassword" : "6=[Mvn-R27-u-N7?_b!ps2[4{gSw-{>,u",
+    "dbHost"     : "wifi4eu-dbserver.database.windows.net",
+    "dbPort"     : 1433,
+    "dbName"     : "W4EPRDdatabase",
+    
+    "haproxyUri"   : "127.0.0.1:8000",
+    "sentinelUris" : ["10.0.2.70:5000", "10.0.2.71:5000", "10.0.2.72:5000"]
+}

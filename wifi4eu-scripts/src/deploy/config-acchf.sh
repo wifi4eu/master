@@ -4,6 +4,7 @@ LOCAL_SOURCECODE=.
 REMOTE_COPYFOLDER=/home/client-acc-dev/deploy/auto
 FO_WAR1_FOLDER=/wifi4eu-portal/wifi4eu-portal-web/target/*.war
 FO_WAR2_FOLDER=/wifi4eu-public-portal/wifi4eu-public-portal-web/target/*.war
+FO_WAR3_FOLDER=/wifi4eu-supplier/wifi4eu-supplier-web/target/*.war
 FO_TOMCAT_1_CRED=client-acc-dev@202.3.1.11
 FO_TOMCAT_2_CRED=client-acc-dev@202.3.1.12
 FO_TOMCAT_3_CRED=client-acc-dev@202.3.1.13

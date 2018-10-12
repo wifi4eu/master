@@ -12,7 +12,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "m.name AS name, " +
             "l.country_code AS countryCode, " +
             "a.registration AS registrationId, " +
-            "cast (CASE WHEN a.authorized_person IS NULL THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
+            "cast (CASE WHEN (SELECT COUNT(*) FROM authorized_person_application where application_id = a.id) = 0 THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
             "ga.date_signature AS dateSignature, " +
             "ga.date_counter_signature AS dateCounterSignature," +
             "l.id as lauId, " +
@@ -37,7 +37,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "m.name AS name, " +
             "l.country_code AS countryCode, " +
             "a.registration AS registrationId, " +
-            "cast (CASE WHEN a.authorized_person IS NULL THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
+            "cast (CASE WHEN (SELECT COUNT(*) FROM authorized_person_application where application_id = a.id) = 0 THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
             "ga.date_signature AS dateSignature, " +
             "ga.date_counter_signature AS dateCounterSignature," +
             "l.id as lauId, " +
@@ -58,7 +58,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "m.name AS name, " +
             "l.country_code AS countryCode, " +
             "a.registration AS registrationId, " +
-            "cast (CASE WHEN a.authorized_person IS NULL THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
+            "cast (CASE WHEN (SELECT COUNT(*) FROM authorized_person_application where application_id = a.id) = 0 THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
             "ga.date_signature AS dateSignature, " +
             "ga.date_counter_signature AS dateCounterSignature," +
             "l.id as lauId, " +
@@ -79,7 +79,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "m.name AS name, " +
             "l.country_code AS countryCode, " +
             "a.registration AS registrationId, " +
-            "cast (CASE WHEN a.authorized_person IS NULL THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
+            "cast (CASE WHEN (SELECT COUNT(*) FROM authorized_person_application where application_id = a.id) = 0 THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
             "ga.date_signature AS dateSignature, " +
             "ga.date_counter_signature AS dateCounterSignature," +
             "l.id as lauId, " +
@@ -100,7 +100,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "m.name AS name, " +
             "l.country_code AS countryCode, " +
             "a.registration AS registrationId, " +
-            "cast (CASE WHEN a.authorized_person IS NULL THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
+            "cast (CASE WHEN (SELECT COUNT(*) FROM authorized_person_application where application_id = a.id) = 0 THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
             "ga.date_signature AS dateSignature, " +
             "ga.date_counter_signature AS dateCounterSignature," +
             "l.id as lauId, " +
@@ -121,7 +121,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "m.name AS name, " +
             "l.country_code AS countryCode, " +
             "a.registration AS registrationId, " +
-            "cast (CASE WHEN a.authorized_person IS NULL THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
+            "cast (CASE WHEN (SELECT COUNT(*) FROM authorized_person_application where application_id = a.id) = 0 THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
             "ga.date_signature AS dateSignature, " +
             "ga.date_counter_signature AS dateCounterSignature," +
             "l.id as lauId, " +
@@ -142,7 +142,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "m.name AS name, " +
             "l.country_code AS countryCode, " +
             "a.registration AS registrationId, " +
-            "cast (CASE WHEN a.authorized_person IS NULL THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
+            "cast (CASE WHEN (SELECT COUNT(*) FROM authorized_person_application where application_id = a.id) = 0 THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
             "ga.date_signature AS dateSignature, " +
             "ga.date_counter_signature AS dateCounterSignature," +
             "l.id as lauId, " +
@@ -163,7 +163,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "m.name AS name, " +
             "l.country_code AS countryCode, " +
             "a.registration AS registrationId, " +
-            "cast (CASE WHEN a.authorized_person IS NULL THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
+            "cast (CASE WHEN (SELECT COUNT(*) FROM authorized_person_application where application_id = a.id) = 0 THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
             "ga.date_signature AS dateSignature, " +
             "ga.date_counter_signature AS dateCounterSignature," +
             "l.id as lauId, " +
@@ -184,7 +184,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "m.name AS name, " +
             "l.country_code AS countryCode, " +
             "a.registration AS registrationId, " +
-            "cast (CASE WHEN a.authorized_person IS NULL THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
+            "cast (CASE WHEN (SELECT COUNT(*) FROM authorized_person_application where application_id = a.id) = 0 THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
             "ga.date_signature AS dateSignature, " +
             "ga.date_counter_signature AS dateCounterSignature," +
             "l.id as lauId, " +
@@ -205,7 +205,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "m.name AS name, " +
             "l.country_code AS countryCode, " +
             "a.registration AS registrationId, " +
-            "cast (CASE WHEN a.authorized_person IS NULL THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
+            "cast (CASE WHEN (SELECT COUNT(*) FROM authorized_person_application where application_id = a.id) = 0 THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
             "ga.date_signature AS dateSignature, " +
             "ga.date_counter_signature AS dateCounterSignature," +
             "l.id as lauId, " +
@@ -226,7 +226,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "m.name AS name, " +
             "l.country_code AS countryCode, " +
             "a.registration AS registrationId, " +
-            "cast (CASE WHEN a.authorized_person IS NULL THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
+            "cast (CASE WHEN (SELECT COUNT(*) FROM authorized_person_application where application_id = a.id) = 0 THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
             "ga.date_signature AS dateSignature, " +
             "ga.date_counter_signature AS dateCounterSignature," +
             "l.id as lauId, " +
@@ -247,7 +247,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "m.name AS name, " +
             "l.country_code AS countryCode, " +
             "a.registration AS registrationId, " +
-            "cast (CASE WHEN a.authorized_person IS NULL THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
+            "cast (CASE WHEN (SELECT COUNT(*) FROM authorized_person_application where application_id = a.id) = 0 THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
             "ga.date_signature AS dateSignature, " +
             "ga.date_counter_signature AS dateCounterSignature," +
             "l.id as lauId, " +
@@ -269,7 +269,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "m.name AS name, " +
             "l.country_code AS countryCode, " +
             "a.registration AS registrationId, " +
-            "cast (CASE WHEN a.authorized_person IS NULL THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
+            "cast (CASE WHEN (SELECT COUNT(*) FROM authorized_person_application where application_id = a.id) = 0 THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
             "ga.date_signature AS dateSignature, " +
             "ga.date_counter_signature AS dateCounterSignature," +
             "l.id as lauId, " +
@@ -290,7 +290,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "m.name AS name, " +
             "l.country_code AS countryCode, " +
             "a.registration AS registrationId, " +
-            "cast (CASE WHEN a.authorized_person IS NULL THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
+            "cast (CASE WHEN (SELECT COUNT(*) FROM authorized_person_application where application_id = a.id) = 0 THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
             "a.date_signature AS dateSignature, " +
             "a.date_counter_signature AS dateCounterSignature," +
             "l.id as lauId, " +
@@ -312,7 +312,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "m.name AS name, " +
             "l.country_code AS countryCode, " +
             "a.registration AS registrationId, " +
-            "cast (CASE WHEN a.authorized_person IS NULL THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
+            "cast (CASE WHEN (SELECT COUNT(*) FROM authorized_person_application where application_id = a.id) = 0 THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
             "a.date_signature AS dateSignature, " +
             "a.date_counter_signature AS dateCounterSignature," +
             "l.id as lauId, " +

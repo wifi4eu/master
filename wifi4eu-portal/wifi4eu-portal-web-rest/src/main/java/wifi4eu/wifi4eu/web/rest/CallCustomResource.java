@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import wifi4eu.wifi4eu.common.dto.model.CallDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.entity.call.CallCustom;
 import wifi4eu.wifi4eu.service.call.CallCustomService;
@@ -22,8 +21,13 @@ public class CallCustomResource {
     @ApiOperation(value = "Get the call to apply")
     @RequestMapping(value = "/applyvoucher", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public CallCustom getCallForApply() {
-        return callCustomService.getCallForApply();
+    public ResponseDTO getCallForApply() {
+        try {
+            CallCustom callCustom = callCustomService.getCallForApply();
+            return new ResponseDTO(true, callCustom, null);
+        }catch (Exception ex){
+            return new ResponseDTO(false, null, null);
+        }
     }
 
     @ApiOperation(value = "Edit CallCustom")

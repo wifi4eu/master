@@ -7,12 +7,12 @@ public class GlobalCommitmentDTO implements Serializable{
     private Integer id;
     private Integer call;
     private String globalCommitment;
-    private String ammount;
+    private Integer ammount;
     private Integer priority;
 
     public GlobalCommitmentDTO() {}
 
-    public GlobalCommitmentDTO(Integer id, Integer call, String globalCommitment, String ammount, Integer priority) {
+    public GlobalCommitmentDTO(Integer id, Integer call, String globalCommitment, Integer ammount, Integer priority) {
         this.id = id;
         this.call = call;
         this.globalCommitment = globalCommitment;
@@ -44,11 +44,11 @@ public class GlobalCommitmentDTO implements Serializable{
         this.globalCommitment = globalCommitment;
     }
 
-    public String getAmmount() {
+    public Integer getAmmount() {
         return ammount;
     }
 
-    public void setAmmount(String ammount) {
+    public void setAmmount(Integer ammount) {
         this.ammount = ammount;
     }
 

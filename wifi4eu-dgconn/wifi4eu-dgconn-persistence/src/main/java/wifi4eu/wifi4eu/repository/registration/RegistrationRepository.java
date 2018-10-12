@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.repository.registration;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 
 public interface RegistrationRepository extends CrudRepository<Registration, Integer> {
@@ -9,6 +10,9 @@ public interface RegistrationRepository extends CrudRepository<Registration, Int
     Iterable<Registration> findByUserId(Integer userId);
 
     Registration findByMunicipalityId(Integer municipalityId);
+
+    @Query(value = "select r.id from Registration r where r.municipality.id = :municipalityId")
+    Integer findIdByMunicipalityId(@Param("municipalityId") Integer municipalityId);
 
     @Query(value = "SELECT r.* FROM registrations r INNER JOIN registration_users ru ON ru.registration = r.id WHERE ru._user = ?#{[0]} AND r.municipality = ?#{[1]}", nativeQuery = true)
     Registration findByUserIdAndMunicipalityId(Integer userId, Integer municipalityId);
