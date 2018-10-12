@@ -196,7 +196,7 @@ public class ReportTimeToGrant {
             _log.info("totalGACallSelected" + totalGACallSelected);
             Integer totalGACallReserved = applicationRepository.countGrantAgreementsCounterSignedSelected(call.getId());
             _log.info("totalGACallReserved" + totalGACallReserved);
-            if (totalApplicationsDS == 0) {
+            if (totalApplicationsDS == 0 || totalApplicationsDS == null) {
                 averageMain += 0;
                 averageReserve += 0;
                 averageGA += 0;
