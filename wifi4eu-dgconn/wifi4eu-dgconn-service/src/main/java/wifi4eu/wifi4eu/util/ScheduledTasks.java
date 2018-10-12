@@ -1,5 +1,41 @@
 package wifi4eu.wifi4eu.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.Envelope;
+import com.rabbitmq.client.GetResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Controller;
+import wifi4eu.wifi4eu.common.dto.model.AdminActionsDTO;
+import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
+import wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO;
+import wifi4eu.wifi4eu.common.dto.model.HelpdeskTicketDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.helper.Validator;
+import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
+import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
+import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
+import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentRepository;
+import wifi4eu.wifi4eu.repository.voucher.VoucherSimulationRepository;
+import wifi4eu.wifi4eu.service.admin.AdminActionsService;
+import wifi4eu.wifi4eu.service.application.ApplicationService;
+import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
+import wifi4eu.wifi4eu.service.user.UserService;
+
+import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStream;
@@ -11,43 +47,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Controller;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.Envelope;
-import com.rabbitmq.client.GetResponse;
-
-import wifi4eu.wifi4eu.common.dto.model.*;
-import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.helper.Validator;
-import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
-import wifi4eu.wifi4eu.entity.admin.AdminActions;
-import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
-import wifi4eu.wifi4eu.repository.admin.AdminActionsRepository;
-import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
-import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
-import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentRepository;
-import wifi4eu.wifi4eu.repository.voucher.VoucherSimulationRepository;
-import wifi4eu.wifi4eu.service.admin.AdminActionsService;
-import wifi4eu.wifi4eu.service.application.ApplicationService;
-import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
-import wifi4eu.wifi4eu.service.user.UserService;
 
 @Configuration
 @PropertySource("classpath:env.properties")
@@ -278,15 +277,15 @@ public class ScheduledTasks {
     @Scheduled(cron = "0 0 4 * * *", zone = "Europe/Madrid")
     public void sendMessageNotSigned() {
         _log.debug("SCHEDULED TASK: Reminder email for users who haven't signed after 7 or 14 days before the notification date - START");
-        ArrayList<VoucherAssignment.VoucherAssignmentGetIdAndNotificationDate> voucherAssignment = voucherAssignmentRepository.findByNotifiedDateNotNull();
+        List<VoucherAssignment.VoucherAssignmentGetIdAndNotificationDate> voucherAssignments = voucherAssignmentRepository.findByNotifiedDateIsNotNull();
         LocalDate localCurrentDate = dateUtils.getLocalTimeFromDate(new Date());
         LocalDate notifiedDate;
-        for (int i = 0; i < voucherAssignment.size(); i++) {
-            notifiedDate = dateUtils.getLocalTimeFromDate(new Date(voucherAssignment.get(i).getNotifiedDate()));
+        for (VoucherAssignment.VoucherAssignmentGetIdAndNotificationDate voucherAssignment : voucherAssignments) {
+            notifiedDate = dateUtils.getLocalTimeFromDate(new Date(voucherAssignment.getNotifiedDate()));
             long days = ChronoUnit.DAYS.between(localCurrentDate, notifiedDate);
             if (days == -7 || days == -14) {
-                ArrayList<Integer> applicationIds = null;
-                applicationIds = voucherSimulationRepository.findApplicationIdsFromVoucherAssignmentAndSelectionStatus(voucherAssignment.get(i).getId());
+                ArrayList<Integer> applicationIds;
+                applicationIds = voucherSimulationRepository.findApplicationIdsFromVoucherAssignmentAndSelectionStatus(voucherAssignment.getId());
                 if (applicationIds != null) {
                     for (int j = 0; j < applicationIds.size(); j++) {
                         if (grantAgreementRepository.countByApplicationId(applicationIds.get(j)) <= 0) {

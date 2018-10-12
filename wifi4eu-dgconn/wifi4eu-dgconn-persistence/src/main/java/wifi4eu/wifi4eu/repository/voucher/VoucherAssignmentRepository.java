@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface VoucherAssignmentRepository extends JpaRepository<VoucherAssignment, Integer> {
 
@@ -13,7 +13,6 @@ public interface VoucherAssignmentRepository extends JpaRepository<VoucherAssign
 
     VoucherAssignment findByCallIdAndStatusEquals(int callId, int status);
 
-    @Query(value = "SELECT id, notified_date FROM voucher_assignments where notified_date IS NOT NULL", nativeQuery = true)
-    ArrayList<VoucherAssignment.VoucherAssignmentGetIdAndNotificationDate> findByNotifiedDateNotNull();
+    List<VoucherAssignment.VoucherAssignmentGetIdAndNotificationDate> findByNotifiedDateIsNotNull();
 
 }
