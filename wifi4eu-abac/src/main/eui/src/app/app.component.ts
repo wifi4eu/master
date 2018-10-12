@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Observable';
-import { ApiModule } from './shared/api.module';
-
 import { UxLanguage } from '@eui/ux-commons';
-import { UserState, UxLink } from '@eui/ux-core';
+import { UxLink } from '@eui/ux-core';
+import { ApiModule } from './shared/api.module';
+import { UserDetailsDTO } from './shared/model/DTOs';
 
 @Component({
     selector: 'app-root',
@@ -12,16 +11,16 @@ import { UserState, UxLink } from '@eui/ux-core';
 })
 export class AppComponent implements OnInit {
   
-    userState: UserState;
+    userDetails: UserDetailsDTO;
     menuLinks: UxLink[] = [];
 
     constructor(private translateService: TranslateService, protected api: ApiModule) {
     }
 
     ngOnInit() {
-        this._createMenuLinks();
-        this.api.getUserDetails().subscribe(userState => {
-            this.userState = userState;
+        this.api.getUserDetails().subscribe(userDetails => {
+            this.userDetails = userDetails;
+            this._createMenuLinks();
         });
     }
 
@@ -30,8 +29,8 @@ export class AppComponent implements OnInit {
     }
   
     renderLoginInfo(){
-        if (this.userState !== undefined && this.userState !== null){
-            return this.userState.fullName + ' (' + this.userState.userId + ')';
+        if (this.userDetails !== undefined && this.userDetails !== null){
+            return this.userDetails.fullName + ' (' + this.userDetails.userId + ')';
         }else{
             return 'Login unknown';
         }
@@ -42,5 +41,8 @@ export class AppComponent implements OnInit {
             new UxLink({ label: 'HOME', url: '/screen/home', isHome: true }),
             new UxLink({ label: 'Monitoring', url: '/screen/monitoring' }), 
         ];
+        if (this.userDetails && this.userDetails.roles.length > 0 && this.userDetails.roles.includes('ROLE_DEVELOPER')) {
+            this.menuLinks.push( new UxLink({ label: 'Bank Accounts', url: '/screen/bafMonitoring' }) );
+        }
     }
 }

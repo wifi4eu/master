@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import wifi4eu.wifi4eu.abac.data.dto.BAFMonitoringRow;
 import wifi4eu.wifi4eu.abac.data.entity.BankAccount;
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 
@@ -22,5 +23,7 @@ public interface BankAccountRepository  extends CrudRepository<BankAccount, Inte
 	List<BankAccount> findAllByWfStatusEquals(AbacWorkflowStatus wfStatus);
 
     List<BankAccount> findAllByWfStatusIn(List<AbacWorkflowStatus> wfStatuses);
-
+    
+    @Query(value = "SELECT new wifi4eu.wifi4eu.abac.data.dto.BAFMonitoringRow(baf.id, baf.country, baf.accountName, baf.wfStatus) FROM BankAccount baf")
+	List<BAFMonitoringRow> findMonitoringData();
 }

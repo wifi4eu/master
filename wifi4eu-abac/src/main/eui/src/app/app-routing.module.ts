@@ -6,6 +6,7 @@ const routes: Routes = [
     { path: 'index.jsp', redirectTo: 'screen/home' },
     { path: 'screen/home', loadChildren: './features/home/home.module#HomeModule' },
     { path: 'screen/monitoring', loadChildren: './features/monitoring/monitoring.module#MonitoringModule' },
+    { path: 'screen/bafMonitoring', loadChildren: './features/monitoring-baf/monitoring-baf.module#BAFMonitoringModule' },
 ];
 
 @NgModule({

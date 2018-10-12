@@ -1,0 +1,44 @@
+<div class="page-userInterfaceTitle">Bank Accounts monitoring</div>
+<p>Here you can find an overview of the Bank Accounts, and check their status in ABAC</p>
+
+<ux-panel [hasNoHeader]="true">
+    <div class="row">
+        <div class="col-md-3">
+            <select class="form-control" [(ngModel)]="filterCountry" (change)="applyFilters()">
+                <option [value]="undefined" selected>Search by country...</option>
+                <option *ngFor="let country of countries" [value]="country.iso2Code">{{country.name}}</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <input class="form-control" placeholder="Search by name..." type="text" [(ngModel)]="filterName" (input)="applyFilters()">
+        </div>
+        <div class="col-md-3">
+            <select class="form-control" [(ngModel)]="filterBAFStatus" (change)="applyFilters()">
+                <option [value]="undefined" selected>Search by BAF status...</option>
+                <option *ngFor="let status of bafStatuses" [value]="status">{{status}}</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <button type='button' (click)="clearFilters()" class="btn btn-light btn-block">Clear filters</button>
+        </div>
+    </div>
+</ux-panel>
+
+<ux-panel label="List of Bank Accounts" [hasNoContentPadding]="true">
+    <p-table #monitoring [value]="rows" [paginator]="true" [rows]="20" sortMode="multiple" autoLayout="true">
+        <ng-template pTemplate="header">
+            <tr>
+                <ng-container *ngFor="let col of cols">
+                    <th [pSortableColumn]="col.field"><span [innerHTML]="col.header"></span><p-sortIcon [field]="col.field"></p-sortIcon></th>
+                </ng-container>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row>
+            <tr>
+                <ng-container *ngFor="let col of cols">
+                    <td>{{row[col.field]}}</td>
+                </ng-container>
+            </tr>
+        </ng-template>
+    </p-table>
+</ux-panel>

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import wifi4eu.wifi4eu.abac.data.Constants;
+import wifi4eu.wifi4eu.abac.data.dto.BAFMonitoringRow;
 import wifi4eu.wifi4eu.abac.data.dto.MonitoringRow;
 import wifi4eu.wifi4eu.abac.data.entity.Country;
 import wifi4eu.wifi4eu.abac.data.entity.ImportLog;
@@ -32,6 +33,12 @@ public class MonitoringController {
 	@RequestMapping(value = "data", method = RequestMethod.GET, produces = Constants.MIME_TYPE_REST_RESPONE)
 	public List<MonitoringRow> data() throws IOException {
 		return monitoringService.getMonitoringData();
+	}
+	
+	@PreAuthorize ("hasRole('ROLE_INEA_OFFICER')")
+	@RequestMapping(value = "bafData", method = RequestMethod.GET, produces = Constants.MIME_TYPE_REST_RESPONE)
+	public List<BAFMonitoringRow> bafData() throws IOException {
+		return monitoringService.getBAFMonitoringData();
 	}
 
 	@PreAuthorize ("hasRole('ROLE_INEA_OFFICER')")

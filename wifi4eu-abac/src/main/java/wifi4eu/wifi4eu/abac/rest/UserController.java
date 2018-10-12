@@ -16,13 +16,9 @@ import wifi4eu.wifi4eu.abac.service.ECASUserService;
 @RequestMapping(path = "user")
 public class UserController {
 
-	private ECASUserService ecasUserService;
-	
 	@Autowired
-	public UserController(ECASUserService ecasUserService) {
-		this.ecasUserService = ecasUserService;
-	}
-	
+	private ECASUserService ecasUserService;
+		
 	@PreAuthorize("hasRole('ROLE_INEA_OFFICER')")
 	@RequestMapping(value = "details", method = RequestMethod.GET, produces = Constants.MIME_TYPE_REST_RESPONE)
 	public UserDetailsVO details() throws IOException {

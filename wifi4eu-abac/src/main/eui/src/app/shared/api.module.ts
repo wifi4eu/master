@@ -1,12 +1,9 @@
 import { NgModule, Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpRequest, HttpEvent } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { UxAllModule } from '@eui/ux-commons';
-import { UserState } from '@eui/ux-core';
 import { Observable } from 'rxjs/Observable';
-import { deserialize, classToPlain } from 'class-transformer';
-import { ResponseDTO, MonitoringRowDTO, CountryDTO } from './model/DTOs';
+import { ResponseDTO, MonitoringRowDTO, BAFMonitoringRowDTO, CountryDTO, UserDetailsDTO } from './model/DTOs';
 
 @NgModule({
     imports: [
@@ -54,10 +51,15 @@ export class ApiModule {
         let path = this.basePath + 'monitor/data';
         return this.httpClient.get<MonitoringRowDTO[]>(path);
     }
+
+    getBAFMonitoringData(): Observable<BAFMonitoringRowDTO[]> {
+        let path = this.basePath + 'monitor/bafData';
+        return this.httpClient.get<BAFMonitoringRowDTO[]>(path);
+    }
   
-    getUserDetails(): Observable<UserState> {
+    getUserDetails(): Observable<UserDetailsDTO> {
         let path = this.basePath + 'user/details';
-        return this.httpClient.get<UserState>(path);
+        return this.httpClient.get<UserDetailsDTO>(path);
     }
 
     counterSignGrantAgreements(legalEntityIds): Observable<HttpEvent<ResponseDTO>> {

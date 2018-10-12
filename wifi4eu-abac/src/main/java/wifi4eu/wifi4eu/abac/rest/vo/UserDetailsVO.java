@@ -1,5 +1,7 @@
 package wifi4eu.wifi4eu.abac.rest.vo;
 
+import java.util.List;
+
 public class UserDetailsVO {
 
 	private String userId;
@@ -7,8 +9,9 @@ public class UserDetailsVO {
 	private String firstName;
 	private String lastName;
 	private String fullName;
+	private List<String> roles;
 	
-	public UserDetailsVO(String userId, String firstName, String lastName, String email) {
+	public UserDetailsVO(String userId, String firstName, String lastName, String email, List<String> roles) {
 		super();
 		this.userId = userId;
 		this.email = email;
@@ -17,6 +20,7 @@ public class UserDetailsVO {
 		if(firstName != null && lastName != null){
 			this.fullName = firstName + " " + lastName;
 		}
+		this.roles = roles;
 	}
 	
 	public String getUserId() {
@@ -57,5 +61,13 @@ public class UserDetailsVO {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public List<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
 	}
 }

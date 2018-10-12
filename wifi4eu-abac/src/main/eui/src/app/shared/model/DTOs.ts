@@ -22,8 +22,24 @@ export interface MonitoringRowDTO {
     isSelected?: Boolean;
 }
 
+export interface BAFMonitoringRowDTO {
+    id?: number;
+    countryCode?: string;
+    accountName?: string;
+    bafStatus?: string;
+}
+
 export interface ResponseDTO {
     success?: boolean;
     message?: any;
     batchRef?: string;
+}
+
+export interface UserDetailsDTO {
+    userId?: string;
+    email?: string;
+    firstName?: string;
+    lastName?: string;
+    fullName?: string;
+    roles?: string[];
 }
