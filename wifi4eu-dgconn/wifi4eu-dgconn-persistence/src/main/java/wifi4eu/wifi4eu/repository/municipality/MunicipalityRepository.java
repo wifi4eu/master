@@ -65,4 +65,13 @@ public interface MunicipalityRepository extends CrudRepository<Municipality, Int
             "INNER JOIN calls c ON c.id = a.call_id " +
             "WHERE c.id = ?1 AND n.id = ?2 GROUP BY m.name", nativeQuery = true)
     List<String> findAllMunicipalitiesByCountryAndCallId(int callId, int idNut);
+
+    @Query(value = "SELECT DISTINCT m.lau FROM municipalities m " +
+            "INNER JOIN laus l ON l.id = m.lau " +
+            "INNER JOIN nuts n ON n.country_code = l.country_code " +
+            "INNER JOIN registrations r ON r.municipality = m.id " +
+            "INNER JOIN applications a ON a.registration = r.id " +
+            "INNER JOIN calls c ON c.id = a.call_id " +
+            "WHERE c.id = ?1 AND n.id = ?2 GROUP BY m.lau", nativeQuery = true)
+    List<Integer> findAllMunicipalitiesLauByCountryAndCallId(int callId, int idNut);
 }

@@ -338,7 +338,7 @@ public class ReportCallOpen {
     private int getNumberDuplicates(int idNut) {
         int numberDuplicates = 0;
         long municipalityDuplicates;
-        ArrayList<String> allMunicipalities = null;
+        List<Integer> allMunicipalitiesLau = null;
         if (idNut == 0) {
             List<Integer> countListed = Lists.newArrayList(applicationRepository.countAplicationsDuplicatedForCallId(idCurrentCall));
             for (Integer i : countListed) {
@@ -347,13 +347,14 @@ public class ReportCallOpen {
                 }
             }
         } else {
-            allMunicipalities = Lists.newArrayList(municipalityRepository.findAllMunicipalitiesByCountryAndCallId(idCurrentCall, idNut));
+            allMunicipalitiesLau = municipalityRepository.findAllMunicipalitiesLauByCountryAndCallId(idCurrentCall, idNut);
         }
         if (idNut != 0) {
-            for (String m : allMunicipalities) {
-                municipalityDuplicates = applicationRepository.countApplicationsForMunicipalityByCountryAndCallId(idCurrentCall, idNut, m);
-                if (municipalityDuplicates != 0) {
-                    numberDuplicates += (int) municipalityDuplicates - 1;
+
+            for(Integer lau: allMunicipalitiesLau){
+                municipalityDuplicates = applicationRepository.countApplicationsForMunicipalityLauByCountryAndCallId(idCurrentCall, idNut, lau);
+                if(municipalityDuplicates != 0){
+                    numberDuplicates += (int) municipalityDuplicates -1;
                 }
             }
         }
@@ -364,7 +365,7 @@ public class ReportCallOpen {
     private int getNumberDuplicatesInvalidated(int idNut) {
         int numberDuplicatesInvalidated = 0;
         long municipalityDuplicates;
-        ArrayList<String> allMunicipalities = null;
+        List<Integer> allMunicipalitiesLau = null;
         if (idNut == 0) {
             List<Integer> countListed = Lists.newArrayList(applicationRepository.countAplicationsDuplicatedByCallIdInvalidated(idCurrentCall));
             for (Integer i : countListed) {
@@ -373,13 +374,13 @@ public class ReportCallOpen {
                 }
             }
         } else {
-            allMunicipalities = Lists.newArrayList(municipalityRepository.findAllMunicipalitiesByCountryAndCallId(idCurrentCall, idNut));
+            allMunicipalitiesLau = municipalityRepository.findAllMunicipalitiesLauByCountryAndCallId(idCurrentCall, idNut);
         }
         if (idNut != 0) {
-            for (String m : allMunicipalities) {
-                municipalityDuplicates = applicationRepository.countApplicationsForMunicipalityByCountryInvalidated(idCurrentCall, idNut, m);
-                if (municipalityDuplicates != 0) {
-                    numberDuplicatesInvalidated += (int) municipalityDuplicates - 1;
+            for(Integer lau: allMunicipalitiesLau){
+                municipalityDuplicates = applicationRepository.countApplicationsForMunicipalityLauByCountryAndCallId(idCurrentCall, idNut, lau);
+                if(municipalityDuplicates != 0){
+                    numberDuplicatesInvalidated += (int) municipalityDuplicates -1;
                 }
             }
         }

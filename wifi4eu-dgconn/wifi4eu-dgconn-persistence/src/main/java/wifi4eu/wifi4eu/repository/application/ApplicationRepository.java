@@ -238,4 +238,13 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
 
     @Query(value = "SELECT count(*) FROM applications ap WHERE ap._status = 2 AND ap.call_id = ?1", nativeQuery = true)
     Integer countValidatedApplicationsByCall(Integer callId);
+
+    @Query(value = "SELECT COUNT(1) FROM applications a " +
+            "INNER JOIN calls c ON c.id = a.call_id " +
+            "INNER JOIN registrations r ON r.id = a.registration " +
+            "INNER JOIN municipalities m ON m.id = r.municipality " +
+            "INNER JOIN laus l ON l.id = m.lau " +
+            "INNER JOIN nuts n ON n.country_code = l.country_code " +
+            "WHERE c.id = ?1 AND n.id = ?2 AND m.lau = ?3", nativeQuery = true)
+    Long countApplicationsForMunicipalityLauByCountryAndCallId(int callId, int idNut, Integer lau);
 }
