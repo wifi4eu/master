@@ -5,12 +5,13 @@
     </div>
 </div>
 
-<div class="container">
+<div class="container panel-dg pt-2">
     <div class="ui-g-12">
-        <p-dataTable #tableBeneficiaries [value]="beneficiaryList" [responsive]="true">
+        <p-dataTable #tableBeneficiaries [value]="beneficiaryList" [responsive]="true" [rows]="rowsSelected"
+            [paginator]="true" [rowsPerPageOptions]="rowsPerOptions" [totalRecords]="totalResults" [first]="page"
+            [lazy]="true" (onLazyLoad)="onPage($event)">
             <p-column field="country" sortable="true" header="{{'shared.country.label' | translate}}">
                 <ng-template let-row="rowData" pTemplate="body">
-                    <!-- {{ row.country | titlecase }}  -->
                     {{ row.country | slice:0:1 | uppercase }}{{row.country | slice:1:row.country.length | lowercase }}
                 </ng-template>
             </p-column>
@@ -33,10 +34,15 @@
                 </ng-template>
             </p-column>
             <footer>
-                <span *ngIf="firstDataDownload">
-                    {{ 'shared.loading.modal.title' | translate }}
-                    <i [@enterSpinner] class="fa fa-spinner loading-icon"></i>
-                </span>
+                <div style="position: absolute; bottom: 25px; left: 20px;">
+                    <span *ngIf="!firstDataDownload">
+                        {{ 'shared.totalRecords' | translate }}: {{totalResults}}
+                    </span>
+                    <span *ngIf="firstDataDownload">
+                        {{ 'shared.loading.modal.title' | translate }}
+                        <i [@enterSpinner] class="fa fa-spinner loading-icon"></i>
+                    </span>
+                </div>
             </footer>
         </p-dataTable>
     </div>
@@ -48,10 +54,11 @@
     <p class="ModalpConfirmation">{{'supplier.myInstallation.selectBankSubtitle' | translate}}</p>
     <form #selectBankForm="ngForm" (submit)="confirmAttribute=true; displaySelectBankAccount=false;">
         <div class="offset-lg-2 modal-body mb-2">
-            <div *ngFor="let iban of bankAccounts">
+            <div *ngFor="let iban of bankAccounts; let i = index">
                 <label for="bankAccount_{{iban.id}}">
                     <input id="bankAccount_{{iban.id}}" [value]="iban.id" type="radio" name="bankAccounts" [(ngModel)]="selectedBankAccount" />
-                    {{'suppRegistration.bankAccount.bankAccount' | translate}} - {{iban.iban}}
+                    {{'suppRegistration.bankAccount.bankAccount' | translate}} {{i}} - {{iban.accountName}}:
+                    {{iban.iban}}
                 </label>
             </div>
         </div>

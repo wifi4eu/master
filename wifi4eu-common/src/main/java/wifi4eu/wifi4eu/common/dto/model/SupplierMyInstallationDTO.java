@@ -30,4 +30,5 @@ public class SupplierMyInstallationDTO {
     public void setBankAccountDTOList(List<BankAccountDTO> bankAccountDTOList) {
         this.bankAccountDTOList = bankAccountDTOList;
     }
+
 }

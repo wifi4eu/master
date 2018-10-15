@@ -41,6 +41,14 @@ export class SupplierMyInstallationComponent {
     private beneficiaryToModify: BeneficiaryMyInstallationDTOBase = null;
     private selectedBankAccount: number = null;
 
+    //search paramenters
+    private rowsSelected: number = 5;
+    private rowsPerOptions: number[] = [5, 10, 20];
+    private totalResults: number = 3;
+    private page: number = 0;
+    private fieldOrder: string = 'id';
+    private order: string = "asc";
+
     constructor(private sharedService: SharedService, private beneficiaryApi: BeneficiaryApi) {
         this.firstDataDownload = true;
         if (this.sharedService.user) {
@@ -55,10 +63,13 @@ export class SupplierMyInstallationComponent {
     }
 
     private loadData() {
-        this.beneficiaryApi.getMyInstallationData().subscribe((response: ResponseDTO) => {
+        this.beneficiaryApi.getMyInstallationData(this.firstDataDownload, this.fieldOrder, this.order, this.page, this.rowsSelected).subscribe((response: ResponseDTO) => {
             if (response.success) {
                 this.beneficiaryList = response.data.beneficiaryMyInstallationDTOList;
-                this.bankAccounts = response.data.bankAccountDTOList;
+                if (this.firstDataDownload) {
+                    this.bankAccounts = response.data.bankAccountDTOList;
+                }
+                this.totalResults = response.xtotalCount;
             } else {
                 this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later.', 'shared.error.api.generic', 'error');
             }
@@ -84,6 +95,7 @@ export class SupplierMyInstallationComponent {
         this.beneficiaryToModify = null;
         this.selectedBankAccount = null;
     }
+
     private selectBankAccountSubmit() {
         if (this.beneficiaryToModify && this.selectedBankAccount) {
             this.beneficiaryApi.attributeBankAccountToBeneficiary(this.beneficiaryToModify.id, this.selectedBankAccount).subscribe((response: ResponseDTO) => {
@@ -99,6 +111,17 @@ export class SupplierMyInstallationComponent {
                 console.log(error);
                 this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later.', 'shared.error.api.generic', 'error');
             });
+        }
+    }
+
+    private onPage(event: any) {
+        console.log(event);
+        if (!this.firstDataDownload) {
+            this.rowsSelected = event.rows;
+            this.page = event.first;
+            this.fieldOrder = event.sortField ? event.sortField : "id";
+            this.order = event.sortOrder > 0 ? "asc" : "desc";
+            this.loadData();
         }
     }
 
