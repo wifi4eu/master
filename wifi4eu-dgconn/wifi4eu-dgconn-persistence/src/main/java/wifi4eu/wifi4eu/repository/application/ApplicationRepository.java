@@ -121,8 +121,8 @@ public interface ApplicationRepository extends JpaRepository<Application,Integer
 
     @Query(value = "SELECT a.* FROM applications a " +
             "INNER JOIN calls c ON c.id = a.call_id " +
-            "WHERE cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000 BETWEEN start_date AND end_date", nativeQuery = true)
-    List<Application> findApplicationsForCurrentCall();
+            "WHERE c.id = ?1", nativeQuery = true)
+    List<Application> findApplicationsByCallId(int idCall);
 
     @Query(value = "SELECT a.* FROM applications a " +
             "INNER JOIN calls c ON c.id = a.call_id " +
@@ -130,13 +130,13 @@ public interface ApplicationRepository extends JpaRepository<Application,Integer
             "INNER JOIN municipalities m ON m.id = r.municipality " +
             "INNER JOIN laus l ON l.id = m.lau " +
             "INNER JOIN nuts n ON l.country_code = n.country_code " +
-            "WHERE cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000 BETWEEN start_date AND end_date AND n.level = 0 AND n.id = ?1", nativeQuery = true)
-    List<Application> findApplicationsForCurrentCall(int idNut);
+            "WHERE c.id = ?1 AND n.level = 0 AND n.id = ?2", nativeQuery = true)
+    List<Application> findApplicationsByCallId(int idCall, int idNut);
 
     @Query(value = "SELECT count(a.id) FROM applications a " +
             "INNER JOIN calls c ON c.id = a.call_id " +
-            "WHERE cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000 BETWEEN start_date AND end_date", nativeQuery = true)
-    long countApplicationsForCurrentCall();
+            "WHERE c.id = ?1", nativeQuery = true)
+    long countApplicationsForCurrentCall(int callId);
 
     @Query(value = "SELECT count(a.id) FROM applications a " +
             "INNER JOIN calls c ON c.id = a.call_id " +
@@ -144,8 +144,8 @@ public interface ApplicationRepository extends JpaRepository<Application,Integer
             "INNER JOIN municipalities m ON m.id = r.municipality " +
             "INNER JOIN laus l ON l.id = m.lau " +
             "INNER JOIN nuts n ON l.country_code = n.country_code " +
-            "WHERE cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000 BETWEEN start_date AND end_date AND n.level = 0 AND n.id = ?1", nativeQuery = true)
-    long countApplicationsForCurrentCall(int idNut);
+            "WHERE c.id = ?1 AND n.level = 0 AND n.id = ?2", nativeQuery = true)
+    long countApplicationsByCallId(int callId, int idNut);
 
     @Query(value = "SELECT count(a.id) FROM applications a WHERE a.call_id = ?#{[0]}", nativeQuery = true)
     Integer countApplicationsForSelectedCall(Integer callId);
@@ -164,8 +164,8 @@ public interface ApplicationRepository extends JpaRepository<Application,Integer
             "INNER JOIN municipalities m ON m.id = r.municipality " +
             "INNER JOIN laus l ON l.id = m.lau " +
             "INNER JOIN nuts n ON l.country_code = n.country_code " +
-            "WHERE cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000 BETWEEN start_date AND end_date AND n.level = 0 AND n.id = ?1 AND a._status = 1", nativeQuery = true)
-    long countApplicationsForCurrentCallInvalidated(int idNut);
+            "WHERE c.id = ?1 AND n.level = 0 AND n.id = ?2 AND a._status = 1", nativeQuery = true)
+    long countApplicationsByCallIdInvalidated(int callId, int idNut);
 
     @Query(value = "SELECT count(a.id) FROM applications a " +
             "INNER JOIN calls c ON c.id = a.call_id " +
@@ -173,15 +173,15 @@ public interface ApplicationRepository extends JpaRepository<Application,Integer
             "INNER JOIN municipalities m ON m.id = r.municipality " +
             "INNER JOIN laus l ON l.id = m.lau " +
             "INNER JOIN nuts n ON l.country_code = n.country_code " +
-            "WHERE cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000 BETWEEN start_date AND end_date AND n.level = 0 AND a._status = 1", nativeQuery = true)
-    long countApplicationsForCurrentCallInvalidated();
+            "WHERE c.id = ?1 AND n.level = 0 AND a._status = 1", nativeQuery = true)
+    long countApplicationsByCallIdInvalidated(int callId);
 
     @Query(value = "SELECT count (a.id) FROM applications a " +
             "INNER JOIN calls c ON c.id = a.call_id " +
             "INNER JOIN registrations r ON r.id = a.registration " +
             "INNER JOIN municipalities m ON m.id = r.municipality " +
-            "WHERE cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000 BETWEEN start_date AND end_date GROUP BY m.name HAVING COUNT(*) > 1", nativeQuery = true)
-    List<Integer> countAplicationsDuplicatedForCall();
+            "WHERE c.id = ?1 GROUP BY m.name HAVING COUNT(*) > 1", nativeQuery = true)
+    List<Integer> countAplicationsDuplicatedForCallId(int callId);
 
     @Query(value = "SELECT count (a.id) FROM applications a " +
             "INNER JOIN calls c ON c.id = a.call_id " +
@@ -189,16 +189,16 @@ public interface ApplicationRepository extends JpaRepository<Application,Integer
             "INNER JOIN municipalities m ON m.id = r.municipality " +
             "INNER JOIN laus l ON l.id = m.lau " +
             "INNER JOIN nuts n ON n.country_code = l.country_code " +
-            "WHERE cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000 BETWEEN start_date AND end_date AND n.id = ?1 AND m.name = ?2", nativeQuery = true)
-    Long countApplicationsForMunicipalityByCountry(int idNut, String munName);
+            "WHERE c.id = ?1 AND n.id = ?2 AND m.name = ?3", nativeQuery = true)
+    Long countApplicationsForMunicipalityByCountryAndCallId(int callId, int idNut, String munName);
 
     @Query(value = "SELECT count (a.id) FROM applications a " +
             "INNER JOIN calls c ON c.id = a.call_id " +
             "INNER JOIN registrations r ON r.id = a.registration " +
             "INNER JOIN municipalities m ON m.id = r.municipality " +
-            "WHERE cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000 BETWEEN start_date AND end_date " +
+            "WHERE c.id = ?1 " +
             "AND a._status = 1 GROUP BY m.name HAVING COUNT(*) > 1", nativeQuery = true)
-    List<Integer> countAplicationsDuplicatedForCallInvalidated();
+    List<Integer> countAplicationsDuplicatedByCallIdInvalidated(int callId);
 
     @Query(value = "SELECT count (a.id) FROM applications a " +
             "INNER JOIN calls c ON c.id = a.call_id " +
@@ -206,9 +206,9 @@ public interface ApplicationRepository extends JpaRepository<Application,Integer
             "INNER JOIN municipalities m ON m.id = r.municipality " +
             "INNER JOIN laus l ON l.id = m.lau " +
             "INNER JOIN nuts n ON n.country_code = l.country_code " +
-            "WHERE cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000 BETWEEN start_date AND end_date " +
-            "AND n.id = ?1 AND m.name = ?2 AND a._status = 1", nativeQuery = true)
-    Long countApplicationsForMunicipalityByCountryInvalidated(int idNut, String munName);
+            "WHERE c.id = ?1 " +
+            "AND n.id = ?2 AND m.name = ?3 AND a._status = 1", nativeQuery = true)
+    Long countApplicationsForMunicipalityByCountryInvalidated(int callId, int idNut, String munName);
 
     @Query(value = "SELECT count(air.id) FROM application_invalidate_reason air " +
             "INNER JOIN applications a ON a.id = air.application_id " +
@@ -335,4 +335,13 @@ public interface ApplicationRepository extends JpaRepository<Application,Integer
             "INNER JOIN calls c ON c.id = va.call WHERE c.id = ?#{[0]} AND va.status = 3))-(SELECT c.end_date FROM calls c WHERE c.id = ?#{[0]}))/86400000)", nativeQuery = true)
     double findDaysBetweenCloseAndNotified(Integer idCall);
 
+
+    @Query(value = "SELECT COUNT(1) FROM applications a " +
+            "INNER JOIN calls c ON c.id = a.call_id " +
+            "INNER JOIN registrations r ON r.id = a.registration " +
+            "INNER JOIN municipalities m ON m.id = r.municipality " +
+            "INNER JOIN laus l ON l.id = m.lau " +
+            "INNER JOIN nuts n ON n.country_code = l.country_code " +
+            "WHERE c.id = ?1 AND n.id = ?2 AND m.lau = ?3", nativeQuery = true)
+    Long countApplicationsForMunicipalityLauByCountryAndCallId(int callId, int idNut, Integer lau);
 }

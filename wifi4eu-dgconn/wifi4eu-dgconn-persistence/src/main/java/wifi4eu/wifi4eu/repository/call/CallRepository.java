@@ -14,8 +14,8 @@ public interface CallRepository extends CrudRepository<Call,Integer> {
             "cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000 BETWEEN start_date AND end_date", nativeQuery = true)
     ArrayList<Call> findCallsIncludeCurrent();
 
-    @Query(value = "SELECT event FROM calls WHERE cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000 BETWEEN start_date AND end_date", nativeQuery = true)
-    String getNameCurrentCall();
+    @Query(value = "SELECT event FROM calls WHERE id = ?1", nativeQuery = true)
+    String getNameByCallId(int callId);
 
     @Query(value = "SELECT id FROM calls WHERE cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000 BETWEEN start_date AND end_date", nativeQuery = true)
     Integer getIdCurrentCall();

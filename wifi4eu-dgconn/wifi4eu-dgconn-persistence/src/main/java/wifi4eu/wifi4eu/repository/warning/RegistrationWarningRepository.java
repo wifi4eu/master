@@ -3,7 +3,9 @@ package wifi4eu.wifi4eu.repository.warning;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import wifi4eu.wifi4eu.entity.warnings.RegistrationWarning;
+import wifi4eu.wifi4eu.entity.warnings.WarningsNumber;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface RegistrationWarningRepository extends CrudRepository<RegistrationWarning, Integer> {
@@ -12,4 +14,9 @@ public interface RegistrationWarningRepository extends CrudRepository<Registrati
 
     @Query(value = "SELECT distinct(rw.warning) FROM registration_warnings rw inner join registrations r on r.id = rw.registration_id inner join municipalities m on r.municipality = m.id where m.lau = ?1", nativeQuery = true)
     List<Integer> findAllByLauId(Integer registrationId);
+
+    Integer countByRegistrationAndWarning(Integer registration, Integer warning);
+
+    Integer countByRegistration(Integer registration);
+
 }

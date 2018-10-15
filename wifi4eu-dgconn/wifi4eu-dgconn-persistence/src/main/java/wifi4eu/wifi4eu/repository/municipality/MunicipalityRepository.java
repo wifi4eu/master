@@ -66,12 +66,21 @@ public interface MunicipalityRepository extends JpaRepository<Municipality, Inte
             "INNER JOIN registrations r ON r.municipality = m.id " +
             "INNER JOIN applications a ON a.registration = r.id " +
             "INNER JOIN calls c ON c.id = a.call_id " +
-            "WHERE cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000 BETWEEN start_date AND end_date AND n.id = ?1 GROUP BY m.name", nativeQuery = true)
-    List<String> findAllMunicipalitiesByCountry(int idNut);
+            "WHERE c.id = ?1 AND n.id = ?2 GROUP BY m.name", nativeQuery = true)
+    List<String> findAllMunicipalitiesByCountryAndCallId(int callId, int idNut);
+
+    @Query(value = "SELECT DISTINCT m.lau FROM municipalities m " +
+            "INNER JOIN laus l ON l.id = m.lau " +
+            "INNER JOIN nuts n ON n.country_code = l.country_code " +
+            "INNER JOIN registrations r ON r.municipality = m.id " +
+            "INNER JOIN applications a ON a.registration = r.id " +
+            "INNER JOIN calls c ON c.id = a.call_id " +
+            "WHERE c.id = ?1 AND n.id = ?2 GROUP BY m.lau", nativeQuery = true)
+    List<Integer> findAllMunicipalitiesLauByCountryAndCallId(int callId, int idNut);
 
     @Query(value = "select new wifi4eu.wifi4eu.entity.exportImport.BeneficiaryInformation(" +
             "m.id, m.name, m.address, m.addressNum, m.postalCode, " +
-            "m.lau.name2, m.lau.countryCode, r.id, " +
+            "m.lau.abacName, m.lau.countryCode, r.id, " +
             "lf.id, lf.fileName, lf.fileName, lf.fileMime, lf.uploadTime, lf.fileType, lf.azureUri, " +
             "ma.abacReference, ma.abacStandarName, va.call.id, " +
             "u.lang" +
