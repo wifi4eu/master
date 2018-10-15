@@ -1,6 +1,15 @@
 package wifi4eu.wifi4eu.entity.exportImport;
 
-import javax.persistence.*;
+import wifi4eu.wifi4eu.entity.municipality.Municipality;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "municipalities_abac")
@@ -35,22 +44,11 @@ public class ExportImportRegistrationData {
     @Column(name = "abacStandarName")
     private String abacStandarName;
 
-    @Column(name = "municipality")
-    private Integer municipality;
+    @ManyToOne
+    @JoinColumn(name = "municipality")
+    private Municipality municipality;
 
-    public ExportImportRegistrationData() {}
-
-    public ExportImportRegistrationData(Integer id, Integer euRank, Integer countryRank, String countryName, String municipalityName, String issue, Integer numberOfRegistrations, String abacReference, String abacStandarName, Integer municipality) {
-        this.id = id;
-        this.euRank = euRank;
-        this.countryRank = countryRank;
-        this.countryName = countryName;
-        this.municipalityName = municipalityName;
-        this.issue = issue;
-        this.numberOfRegistrations = numberOfRegistrations;
-        this.abacReference = abacReference;
-        this.abacStandarName = abacStandarName;
-        this.municipality = municipality;
+    public ExportImportRegistrationData() {
     }
 
     public Integer getId() {
@@ -125,11 +123,12 @@ public class ExportImportRegistrationData {
         this.abacStandarName = abacStandarName;
     }
 
-    public Integer getMunicipality() {
+    public Municipality getMunicipality() {
         return municipality;
     }
 
-    public void setMunicipality(Integer municipality) {
+    public void setMunicipality(Municipality municipality) {
         this.municipality = municipality;
     }
+
 }

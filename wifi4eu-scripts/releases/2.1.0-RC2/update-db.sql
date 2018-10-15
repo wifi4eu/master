@@ -300,6 +300,7 @@ UPDATE laus
     FROM laus l2 WHERE id = l2.id
 
 
+--WIFIFOREU-3278
 -- Add new columns on legal files
 ALTER TABLE legal_files ADD status int;
 ALTER TABLE legal_files ADD new int;

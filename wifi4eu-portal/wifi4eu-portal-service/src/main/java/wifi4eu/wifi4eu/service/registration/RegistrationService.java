@@ -22,7 +22,6 @@ import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.entity.registration.LegalFile;
-import wifi4eu.wifi4eu.entity.registration.LegalFileCorrectionReason;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.supplier.Supplier;
@@ -465,7 +464,7 @@ public class RegistrationService {
             for (ApplicationDTO application : applicationService.getApplicationsByRegistrationId(registrationDTO.getId())) {
                 applicationService.deleteApplication(application.getId(), request);
             }
-            legalFilesRepository.deleteByRegistration(registrationDTO.getId());
+            legalFilesRepository.deleteByRegistrationId(registrationDTO.getId());
             registrationRepository.delete(registrationMapper.toEntity(registrationDTO));
             return registrationDTO;
         } else {
@@ -473,6 +472,9 @@ public class RegistrationService {
         }
     }
 
+    public void deleteRegistration(int registrationId) {
+        registrationRepository.delete(registrationId);
+    }
 
     public RegistrationDTO invalidateRegistration(int registrationId) {
         RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationId));
@@ -486,6 +488,10 @@ public class RegistrationService {
 
     public RegistrationDTO getRegistrationByMunicipalityId(int municipalityId) {
         return registrationMapper.toDTO(registrationRepository.findByMunicipalityId(municipalityId));
+    }
+
+    public Integer getRegistrationIdByMunicipalityId(int municipalityId) {
+        return registrationRepository.findIdByMunicipalityId(municipalityId);
     }
 
     public RegistrationDTO getRegistrationByUserAndMunicipality(int userId, int municipalityId) {

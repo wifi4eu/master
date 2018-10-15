@@ -28,7 +28,7 @@ public class LegalFilesService {
 	RegistrationService registrationService;
 
 	public LegalFileDTO getLegalFileByRegistrationIdFileType(Integer registrationId, Integer fileType) {
-		return legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationId, fileType));
+		return legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationIdAndFileType(registrationId, fileType));
 	}
 
 	public static String getBase64Data(String base64String) {

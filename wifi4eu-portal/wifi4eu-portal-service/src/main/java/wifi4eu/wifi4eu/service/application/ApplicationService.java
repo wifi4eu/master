@@ -264,14 +264,6 @@ public class ApplicationService {
         return applicationMapper.toDTO(applicationRepository.findVoucherApplicationByCallIdAndRegistrationId(callId, registrationId));
     }
 
-    public ApplicationDTO getApplicationByCallIdAndMunicipalityId(int callId, int municipalityId) {
-        if (municipalityId != 0 && callId != 0) {
-            int registrationId = registrationRepository.findByMunicipalityId(municipalityId).getId();
-            return applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
-        }
-        return null;
-    }
-
     public List<ApplicationDTO> getApplicationsByRegistrationId(int registrationId) {
         return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByRegistrationId(registrationId)));
     }
@@ -588,7 +580,7 @@ public class ApplicationService {
     @Transactional
     public ResponseDTO changeStatusRegistrationDocuments(Integer applicationId) {
         ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findOne(applicationId));
-        List<LegalFileDTO> legalFileDTOS = legalFilesMapper.toDTOList(legalFilesRepository.findByRegistration(applicationDTO.getRegistrationId()));
+        List<LegalFileDTO> legalFileDTOS = legalFilesMapper.toDTOList(legalFilesRepository.findByRegistrationId(applicationDTO.getRegistrationId()));
         if (!legalFileDTOS.isEmpty()) {
             for (LegalFileDTO legalFileDTO : legalFileDTOS) {
                 if (legalFileDTO.getIsNew() == LegalFileStatus.RECENT.getValue()) {

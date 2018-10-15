@@ -30,7 +30,7 @@ export class AdditionalInfoComponent {
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
             if (this.user.type == 1) {
-                this.supplierApi.getSupplierByUserId(this.user.id).subscribe(
+                this.supplierApi.getSupplierByUserId(this.user.id, new Date().getTime()).subscribe(
                     (supplier: SupplierDTOBase) => {
                         this.supplier = supplier;
                     }

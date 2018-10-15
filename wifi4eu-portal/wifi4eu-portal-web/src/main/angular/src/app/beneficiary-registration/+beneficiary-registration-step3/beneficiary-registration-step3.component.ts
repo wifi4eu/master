@@ -47,6 +47,7 @@ export class BeneficiaryRegistrationStep3Component {
         this.sharedService.cleanEmitter.subscribe(() => {
             if (!this.imMayor) {
                 this.repeatEmail = '';
+                this.sameDetails = false;
             }
         });
         this.storedUser = this.localStorage.get('user');
@@ -164,6 +165,10 @@ export class BeneficiaryRegistrationStep3Component {
                 return true;
             }
         }
+
+        this.sameDetails = false;
         return false;
     }
+
+    
 }

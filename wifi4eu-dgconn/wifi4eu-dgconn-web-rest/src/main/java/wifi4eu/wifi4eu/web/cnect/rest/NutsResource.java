@@ -4,8 +4,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +18,7 @@ import java.util.List;
 @RequestMapping("nuts")
 public class NutsResource {
     @Autowired
-    NutsService nutsService;
-
-    Logger _log = LogManager.getLogger(NutsResource.class);
+    private NutsService nutsService;
 
     @ApiOperation(value = "Get all nuts")
     @ApiImplicitParams({

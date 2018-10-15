@@ -1027,6 +1027,7 @@
   "discussionForum.discussionForum.discussion.growl": "The Commission does not provide a mediation service.",
   "supplierPortal.profile.addNewContact.empty": "Please, complete the email field to add a new contact",
   "benefPortal.voucher.applied.callEnded": "Applied on {{date}} at {{hour}}",
+  "benefPortal.grantAgreement.lefImport" : "You cannot sign the grant agreement until the lef import has been done",
   "suppRegistration.uploadLogo.info": "Please upload your logo, ensuring that the files you upload are in a suitable file format (.png or .jpg).",
   "dgConn.voucherAssignment.password": "Password",
   "dgConn.voucherAssignment.error.incorrectPassword": "The password entered is not correct",

@@ -3,10 +3,6 @@ package wifi4eu.wifi4eu.service.application;
 import com.google.common.collect.Lists;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.Files;
 import java.text.MessageFormat;
 import java.time.DateTimeException;
 import java.util.ArrayList;
@@ -41,7 +37,6 @@ import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
 import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
-import wifi4eu.wifi4eu.entity.admin.AdminActions;
 import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
 import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
 import wifi4eu.wifi4eu.entity.registration.Registration;
@@ -70,14 +65,7 @@ import wifi4eu.wifi4eu.service.security.INEAPermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.voucher.VoucherService;
-import wifi4eu.wifi4eu.util.ExcelExportGenerator;
 import wifi4eu.wifi4eu.util.ExcelExportGeneratorAsync;
-import wifi4eu.wifi4eu.util.SendNotificationsAsync;
-
-import javax.servlet.http.HttpServletRequest;
-import java.text.MessageFormat;
-import java.time.DateTimeException;
-import java.util.*;
 
 @Service
 public class ApplicationService {
@@ -700,7 +688,7 @@ public class ApplicationService {
     @Transactional
     public ResponseDTO changeStatusRegistrationDocuments(Integer applicationId) {
         ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findOne(applicationId));
-        List<LegalFileDTO> legalFileDTOS = legalFilesMapper.toDTOList(legalFilesRepository.findByRegistration(applicationDTO.getRegistrationId()));
+        List<LegalFileDTO> legalFileDTOS = legalFilesMapper.toDTOList(legalFilesRepository.findByRegistrationId(applicationDTO.getRegistrationId()));
         if (!legalFileDTOS.isEmpty()) {
             for (LegalFileDTO legalFileDTO : legalFileDTOS) {
                 if (legalFileDTO.getIsNew() == LegalFileStatus.RECENT.getValue() && legalFilesRepository.checkIfNewFile(legalFileDTO.getFileType(), legalFileDTO.getRegistration()) != 0) {

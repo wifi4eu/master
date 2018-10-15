@@ -46,15 +46,17 @@ public class ApplicationResource {
                 Integer[] sentEmails = applicationService.sendEmailApplications(callId);
                 if (Validator.isNotNull(sentEmails)) {
                     Map<String, Long> response = new HashMap<>();
-                    response.put("sentEmailsUsers", sentEmails[0].longValue());
-                    response.put("sentEmailsMunicipalities", sentEmails[1].longValue());
+                    response.put("sentEmailsMunicipalities", sentEmails[0].longValue());
+                    // response.put("sentEmailsMunicipalities", sentEmails[1].longValue());
                     return new ResponseDTO(true, response, null);
                 } else {
                     throw new Exception("ERROR - Could not create application emails");
                 }
             } catch (AccessDeniedException ade) {
+                _log.error("Access denied processing the mail sending", ade);
                 return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
             } catch (Exception e) {
+                _log.error("Error processing the mail sending", e);
                 return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
             }
         } else {

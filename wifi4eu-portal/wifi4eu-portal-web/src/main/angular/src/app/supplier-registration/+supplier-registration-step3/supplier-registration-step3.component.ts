@@ -43,8 +43,8 @@ export class SupplierRegistrationStep3Component {
         } else {
             this.supplier.contactEmail = this.user.ecasEmail;
         }
-        this.user.name = this.supplier['contactName'];
-        this.user.surname = this.supplier['contactSurname'];
+        this.user.name = this.supplier['contactName'].trim();
+        this.user.surname = this.supplier['contactSurname'].trim();
         this.supplier.contactPrefix = this.supplier['contactPhonePrefix'];
         this.supplier.contactNumber = this.supplier['contactPhoneNumber'];
         this.supplier['users'] = []
@@ -77,7 +77,20 @@ export class SupplierRegistrationStep3Component {
               && this.supplier['contactSurname'].trim() != "" && this.supplier['contactName'].trim() != "" && this.supplier['contactPhoneNumber'].trim() != "" && this.supplier['contactPhonePrefix'].trim() != ""){
                  this.buttonEnabled = true;
         }
+        // custom name validator
+       if(this.supplier['contactName'] != null && this.supplier['contactName'].trim() != ""){
+        setTimeout(()=>{this.supplierForm.controls['contactName'].setErrors(null);} ,5);
+        } else {
+            setTimeout(()=>{this.supplierForm.controls['contactName'].setErrors({'invalid': true});} ,5);
+        }
+        // custom surname validator
+        if(this.supplier['contactSurname'] != null && this.supplier['contactSurname'].trim() != ""){
+            setTimeout(()=>{this.supplierForm.controls['contactSurname'].setErrors(null);} ,5);
+        } else {
+            setTimeout(()=>{this.supplierForm.controls['contactSurname'].setErrors({'invalid': true});} ,5);
+        }
     }
+    
 
     private isButtonEnabled() {
         return this.checkFieldAreFilled() && this.checkPrefixAndNumberRegex();

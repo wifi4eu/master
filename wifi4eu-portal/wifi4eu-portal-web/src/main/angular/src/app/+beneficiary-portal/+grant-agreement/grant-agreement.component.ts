@@ -8,6 +8,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { UserDTOBase, RegistrationApi, RegistrationDTOBase, MayorApi, MayorDTOBase, CallApi, CallDTOBase, MunicipalityApi, MunicipalityDTOBase, ApplicationDTOBase, ApplicationApi, GrantAgreementApi, GrantAgreementDTOBase, GrantAgreementDTO, ResponseDTO } from "../../shared/swagger";
 import { HAMMER_GESTURE_CONFIG } from "@angular/platform-browser";
 import { SharedService } from "../../shared/shared.service";
+import * as FileSaver from 'file-saver';
 
 @Component ({
     selector: 'grant-agreement.component.ts',
@@ -101,17 +102,26 @@ export class MyVoucherComponent {
                             for(let i = 0; i < registrations.length; i++) {
                                 this.applicationApi.getVoucherApplicationByCallIdAndRegistrationId(this.calls[(this.calls.length)-1].id, registrations[i].id).subscribe(
                                     (response : ResponseDTO) => {
-                                        if (response.data.id != 0) {
-                                            
+                                        if (response.data != null && response.data.id != 0) {
                                             this.municipalityApi.getMunicipalityById(registrations[i].municipalityId).subscribe(
                                                 (municipality : MunicipalityDTOBase) => {
                                                     this.applications.push(response.data);
-                                                    this.grantAgreementApi.getGrantAgreementByApplicationId(response.data.id).subscribe(
+                                                    this.grantAgreementApi.getGrantAgreementByApplicationId(response.data.id).map((grantAgreement: GrantAgreementDTOBase) => {
+                                                      if(grantAgreement != null){
+                                                        if(grantAgreement.dateSignature != null){
+                                                          grantAgreement.dateSignature = new Date(grantAgreement.dateSignature);
+                                                          grantAgreement['formattedDateSignature'] = ('0' + grantAgreement.dateSignature.getUTCDate()).slice(-2) + "/" + ('0' + ( grantAgreement.dateSignature.getUTCMonth() + 1)).slice(-2) + "/" +  grantAgreement.dateSignature.getUTCFullYear();
+                                                        }
+                                                        if(grantAgreement.dateCounterSignature != null){
+                                                          grantAgreement.dateCounterSignature = new Date(grantAgreement.dateCounterSignature);
+                                                          grantAgreement['formattedDateCounterSignature'] = ('0' + grantAgreement.dateCounterSignature.getUTCDate()).slice(-2) + "/" + ('0' + ( grantAgreement.dateCounterSignature.getUTCMonth() + 1)).slice(-2) + "/" +  grantAgreement.dateCounterSignature.getUTCFullYear();
+                                                        }
+                                                      }
+                                                      return grantAgreement;
+                                                    }).subscribe(
                                                         (grantAgreement: GrantAgreementDTOBase)=>{
-                                                          if(grantAgreement != null && grantAgreement.dateSignature != null){
-                                                              grantAgreement.dateSignature = new Date(grantAgreement.dateSignature);
+                                                          if(grantAgreement != null){
                                                               this.hasSigned.push(grantAgreement);
-                                                              this.date[i] = ('0' + grantAgreement.dateSignature.getUTCDate()).slice(-2) + "/" + ('0' + ( grantAgreement.dateSignature.getUTCMonth() + 1)).slice(-2) + "/" +  grantAgreement.dateSignature.getUTCFullYear();
                                                           } else {
                                                               this.hasSigned.push(null);
                                                           }
@@ -125,7 +135,7 @@ export class MyVoucherComponent {
                                             );
                                         }
                                     }
-                                );
+                                ); 
                             }
                         }
                     );
@@ -188,5 +198,22 @@ export class MyVoucherComponent {
 
     private closeModal() {
         this.showPermissionsModal = false;
+    }
+
+    private requestCounterSignedDocument(index) {
+        if(this.hasSigned[index].dateCounterSignature != null) {
+            this.grantAgreementApi.downloadGrantAgreementCounterSigned(this.applications[index].id).subscribe((response) => {
+              console.log(response['size']);
+              if(response != null && response['size'] > 0) {
+                let blob = new Blob([response], {type: response['type'] ? response['type'] : 'application/pdf'});
+                FileSaver.saveAs(blob, `grant_agreement_${this.applications[index].id}_countersigned.pdf`);
+                this.sharedService.growlTranslation("Your file have been exported correctly!", "dgconn.dashboard.card.messageExport", "success");              
+              }else{
+                this.sharedService.growlTranslation("An error occurred while trying to retrieve the data from the server. Please, try again later.", "shared.error.api.generic", "warn");
+              }
+            }, error =>{
+                this.sharedService.growlTranslation("An error occurred while trying to retrieve the data from the server. Please, try again later.", "shared.error.api.generic", "error");
+            })
+        }
     }
 }

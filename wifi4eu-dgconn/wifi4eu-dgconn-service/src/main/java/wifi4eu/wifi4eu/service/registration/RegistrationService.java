@@ -154,11 +154,6 @@ public class RegistrationService {
     @Autowired
     LogEmailRepository logEmailRepository;
 
-    public List<RegistrationDTO> getAllRegistrations() {
-        return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
-    }
-
-
     public RegistrationDTO getRegistrationById(int registrationId) {
         Registration registration = registrationRepository.findOne(registrationId);
         RegistrationDTO registrationDTO = registrationMapper.toDTO(registration);
@@ -311,7 +306,7 @@ public class RegistrationService {
             for (ApplicationDTO application : applicationService.getApplicationsByRegistrationId(registrationDTO.getId())) {
                 applicationService.deleteApplication(application.getId(), request);
             }
-            legalFilesRepository.deleteByRegistration(registrationDTO.getId());
+            legalFilesRepository.deleteByRegistrationId(registrationDTO.getId());
             registrationRepository.delete(registrationMapper.toEntity(registrationDTO));
             return registrationDTO;
         } else {
@@ -332,6 +327,10 @@ public class RegistrationService {
 
     public RegistrationDTO getRegistrationByMunicipalityId(int municipalityId) {
         return registrationMapper.toDTO(registrationRepository.findByMunicipalityId(municipalityId));
+    }
+
+    public Integer getRegistrationIdByMunicipalityId(int municipalityId) {
+        return registrationRepository.findIdByMunicipalityId(municipalityId);
     }
 
     public RegistrationDTO getRegistrationByUserAndMunicipality(int userId, int municipalityId) {
