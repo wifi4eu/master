@@ -522,7 +522,8 @@ public class SupplierResource {
     public List<SupplierDTO> getValidatedSuppliersListByMunicipalityId(@PathVariable("municipalityId") final int municipalityId,
                                                                        @RequestParam("registrationId") final int registrationId,
                                                                        @RequestParam("callId") final int callId,
-                                                                       @RequestParam("applicationId") final int applicationId, HttpServletResponse response) throws IOException {
+                                                                       @RequestParam("applicationId") final int applicationId,
+                                                                       @RequestParam("date") final Long timestamp, HttpServletResponse response) throws IOException {
         List<SupplierDTO> suppliersList = new ArrayList<>();
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
