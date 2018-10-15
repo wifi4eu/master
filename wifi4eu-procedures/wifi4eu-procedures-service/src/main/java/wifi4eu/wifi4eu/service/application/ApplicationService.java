@@ -44,10 +44,8 @@ public class ApplicationService {
         }
         Integer sentEmailsMunicipalities = 0;
         _log.info("Create Application Emails - STARTING");
-        // List<ApplicationDTO> applicationList = applicationMapper.toDTOList(applicationRepository.findByCreateApplicationEmailNotSent(callId, new Date().getTime()));
         ArrayList<Application.ApplicationApplyEmail> applicationList = applicationRepository.findByCreateApplicationEmailNotSentCustom(callId, new Date().getTime());
         _log.info("Create Application Emails - There is " + applicationList.size() + " municipalities to be sent");
-        // for (Application.ApplicationApplyEmail app : applicationList) {
         for (int i = 0; i < applicationList.size(); i++){
             _log.info("appId : "+applicationList.get(i).getId()+" registrationId : "+applicationList.get(i).getRegistrationId());
             taskExecutor.execute(context.getBean(ProcessApplicationMailTask.class, applicationList.get(i)));

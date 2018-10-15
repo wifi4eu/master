@@ -46,6 +46,8 @@ public class ProcessApplicationMailTask implements Runnable {
 
 	protected Application.ApplicationApplyEmail application;
 
+	final static int TRUE_VALUE = 1;
+
 	public ProcessApplicationMailTask(Application.ApplicationApplyEmail application) {
 		super();
 		this.application= application;
@@ -86,7 +88,7 @@ public class ProcessApplicationMailTask implements Runnable {
 		if (Validator.isNotNull(municipality)) {
 			MailData mailData = MailHelper.buildMailCreateApplication(user.getEcasEmail(), MailService.FROM_ADDRESS, municipalityId, municipality.getName(),"createApplication", locale);
 			mailService.sendMail(mailData, true);
-			applicationRepository.updateApplicationSetEmailSent(1,new Date(),application.getId());
+			applicationRepository.updateApplicationSetEmailSent(TRUE_VALUE,new Date(),application.getId());
 			_log.log(Level.getLevel("BUSINESS"), "Create Application Emails - Email will be sent to " + user.getEcasEmail() + " for the " + "application id: " + application.getId());
 		}
 	}

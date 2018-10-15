@@ -833,7 +833,7 @@
             </properties>
         </profile>
         <profile>
-            <id>Procedures-PROD</id>
+            <id>CNS-PROD</id>
             <properties>
                 <cns.notification.service.url>${cns.notification.service.url.pro}</cns.notification.service.url>
                 <cns.user.preferences.service.url>${cns.user.preferences.service.url.pro}</cns.user.preferences.service.url>
