@@ -31,7 +31,8 @@ export class BankAccountComponent {
 
     private show: boolean[] = [];
 
-    private fileURL: string = '/wifi4eu/api/bankAccount/getDocument/';
+    private fileURL: String = '/wifi4eu/api/bankAccounts/';
+    private emptySpaces : String = ' ';
 
     private cannotDeleteIbanPopUp: boolean = false;
 

@@ -90,7 +90,7 @@ public class BankAccountResource {
     }
 
     @ApiOperation(value = "Save Bank Account")
-    @RequestMapping(value = "/saveBankAccount", method = RequestMethod.POST)
+    @RequestMapping(value = "/bankAccount", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO saveBankAccount(@RequestBody final BankAccountDTO bankAccountDTO, HttpServletResponse response, HttpServletRequest request)
@@ -101,7 +101,6 @@ public class BankAccountResource {
         try {
 
             BankAccountDTO bankAccount = bankAccountService.save(bankAccountDTO);
-
             _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername
                     () + " - Deleted user information from the database");
             return new ResponseDTO(true, bankAccount, null);
@@ -148,7 +147,7 @@ public class BankAccountResource {
      */
 
     @ApiOperation(value = "Add Bank Dummy method")
-    @RequestMapping(value = "/returnBankAccount", method = RequestMethod.POST)
+    @RequestMapping(value = "/bankAccountDummy", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public BankAccountDTO returnBankAccount(@RequestBody final BankAccountDTO bankAccountDTO) {
@@ -186,7 +185,7 @@ public class BankAccountResource {
     }
 
     @ApiOperation(value = "Save Bank AccountDcoument")
-    @RequestMapping(value = "/saveBankAccountDocument", method = RequestMethod.POST)
+    @RequestMapping(value = "/bankAccountDocument", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO saveBankAccountDocument(@RequestBody final BankAccountDocumentDTO bankAccountDocumentDTO, HttpServletResponse response,
@@ -213,7 +212,7 @@ public class BankAccountResource {
      */
 
     @ApiOperation(value = "Add Bank Document Dummy method")
-    @RequestMapping(value = "/returnBankAccountDocument", method = RequestMethod.POST)
+    @RequestMapping(value = "/bankAccountDocumentDummy", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public BankAccountDocumentDTO returnBankAccountDocument(@RequestBody final BankAccountDocumentDTO bankAccountDocumentDTO) {
@@ -221,36 +220,38 @@ public class BankAccountResource {
     }
 
     @ApiOperation(value = "Get registration by specific userThread id")
-    @RequestMapping(value = "/getDocument/{supplierId}/{fileId}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/{supplierId}/document/{documentId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ResponseDTO getBankAccountDocument(@PathVariable("supplierId") final Integer supplierId, @PathVariable("fileId") final Integer fileId,
-                                              HttpServletResponse response, HttpServletRequest request) throws IOException {
+    public ResponseDTO getBankAccountDocument(@PathVariable("supplierId") final Integer supplierId,
+                                         @PathVariable("documentId") final Integer documentId, HttpServletResponse response, HttpServletRequest request)
+            throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting supplier by id " + supplierId + " and file id " + fileId);
-       /* try {
-            if (registrationId == null
-                    || (!legalFilesService.hasUserPermissionForLegalFile(registrationId, userConnected.getId(), fileId)
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting supplier by id "
+                + supplierId + " and file id " + documentId);
+       try {
+            if (supplierId == null
+                    || (!bankAccountService.hasUserPermissionForDocument(supplierId, userConnected.getId(), documentId)
                     && userConnected.getType() != 5)) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            permissionChecker.check(userConnected, RightConstants.SUP + registrationId);
 
-        } catch (AccessDeniedException ade) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername()
-                    + "- You have no permissions to retrieve this registration", ade.getMessage());
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            return null;
-        }*/
 
-        BankAccountDocumentDTO bankAccountDocumentDTO = bankAccountService.getBankAccountDocumentById(fileId); // if file doesnt exist user doesnt
-        // have permission
+       } catch (AccessDeniedException ade) {
+           _log.error("ECAS Username: " + userConnected.getEcasUsername()
+                   + "- You have no permissions to retrieve this registration", ade.getMessage());
+           response.sendError(HttpStatus.NOT_FOUND.value());
+           return null;
+       }
+
+        BankAccountDocumentDTO bankAccountDocumentDTO = bankAccountService.getBankAccountDocumentById(documentId); // if file doesnt exist user doesnt have permission
         String fileName = bankAccountDocumentDTO.getFileName();
         String fileMime = bankAccountDocumentDTO.getFileMime();
         String fileExtension = legalFilesService.getExtensionFromMime(fileMime);
 
         // if fileMime is null or has lenght 0 fileExtension is null
-        if (!Validator.isEmpty(fileName) && !Validator.isEmpty(bankAccountDocumentDTO.getAzureUri()) && !Validator.isEmpty(fileExtension)) {
+        if (!Validator.isEmpty(fileName) && !Validator.isEmpty(bankAccountDocumentDTO.getAzureUri())
+                && !Validator.isEmpty(fileExtension)) {
             // Recover the data from Azure, the database field only stores the url of the file
             String content = bankAccountService.downloadLegalFile(bankAccountDocumentDTO.getAzureUri());
 
@@ -262,21 +263,28 @@ public class BankAccountResource {
                     byte[] fileBytes = Base64Utils.decodeFromString(content);
                     response.getOutputStream().write(fileBytes);
                     response.getOutputStream().flush();
-                    response.getOutputStream().close();
                 } catch (Exception ex) {
-                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The registration cannot been retrieved", ex);
-                    return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername()
+                            + "- The registration cannot been retrieved", ex);
+                    return new ResponseDTO(false, null,
+                            new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+                }finally {
+                    response.getOutputStream().close();
                 }
             } else {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The File cannot been retrieved, file id : " + fileId);
-                return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+                _log.error("ECAS Username: " + userConnected.getEcasUsername()
+                        + "- The File cannot been retrieved, file id : " + documentId);
+                return new ResponseDTO(false, null,
+                        new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
             }
         } else {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The File cannot been retrieved, file id : " + fileId);
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+            _log.error("ECAS Username: " + userConnected.getEcasUsername()
+                    + "- The File cannot been retrieved, file id : " + documentId);
+            return new ResponseDTO(false, null,
+                    new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
-        _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() +
-                "- Legal files retrieved successfully, id: " + fileId);
+        _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: "
+                + userConnected.getEcasUsername() + "- Legal files retrieved successfully, id: " + documentId);
         return new ResponseDTO(true, null, null);
     }
 }

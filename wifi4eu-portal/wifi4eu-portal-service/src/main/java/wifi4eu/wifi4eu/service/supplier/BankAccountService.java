@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.BankAccountDTO;
 import wifi4eu.wifi4eu.common.dto.model.BankAccountDocumentDTO;
+import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
@@ -49,6 +50,9 @@ public class BankAccountService {
     @Autowired
     AzureBlobConnector azureBlobConnector;
 
+    @Autowired
+    SupplierService supplierService;
+
     public List<BankAccountDTO> getBankAccountsBySupplierId(Integer supplierId) {
         return bankAccountMapper.toDTOList(bankAccountRepository.findBySupplierId(supplierId));
     }
@@ -83,38 +87,25 @@ public class BankAccountService {
     public BankAccountDocumentDTO save(BankAccountDocumentDTO bankAccountDocumentDTO, UserDTO userConnected, String ip) throws Exception {
         String bankAccountDocumentDTOToUpload = bankAccountDocumentDTO.getFileData();
 
-        if (Validator.isNotNull(bankAccountDocumentDTOToUpload)) {
-            String base64 = LegalFilesService.getBase64Data(bankAccountDocumentDTOToUpload);
-            if (Validator.isNotNull(base64) && Validator.isNotEmpty(base64)) {
-                byte[] byteArray = Base64.getMimeDecoder().decode(base64);
-                String extension = LegalFilesService.getValidFileExtension(bankAccountDocumentDTOToUpload);
-                if (byteArray.length > 1024000) {
-                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File size cannot bet greater than 1 MB");
-                    throw new Exception("File size cannot bet greater than 1 MB.");
-                } else if (extension == null) {
-                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File must have a valid extension");
-                    throw new Exception("File must have a valid extension.");
-                } else if (bankAccountDocumentDTO.getFileName().isEmpty()) {
-                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File doesn't have a name");
-                    throw new Exception("File must have a valid extension.");
-                } else {
+        validateFile(bankAccountDocumentDTOToUpload, bankAccountDocumentDTO.getFileName(), userConnected.getEcasUsername());
+
                     long uploadTimeUTC = System.currentTimeMillis();
                     MessageDigest msdDigest = MessageDigest.getInstance("SHA-1");
                     msdDigest.update(bankAccountDocumentDTO.getFileName().getBytes("UTF-8"), 0, bankAccountDocumentDTO.getFileName().length());
                     String codeName = DatatypeConverter.printHexBinary(msdDigest.digest());
                     String azureFileName = String.valueOf(bankAccountDocumentDTO.getSupplierId()) + "_" + codeName + "_" + uploadTimeUTC;
 
+        String base64 = LegalFilesService.getBase64Data(bankAccountDocumentDTOToUpload);
                     String uri = azureBlobConnector.uploadLegalFile(azureFileName, base64);
                     boolean docUploaded = !Validator.isEmpty(uri);
                     bankAccountDocumentDTO.setAzureUri(uri);
 
                     if (docUploaded) {
 
-                        //legalFile.setFileData(LegalFilesService.getBase64Data(legalFileToUpload));
                         bankAccountDocumentDTO.setFileData("");
                         bankAccountDocumentDTO.setUploadTime(uploadTimeUTC);
                         bankAccountDocumentDTO.setFileMime(LegalFilesService.getMimeType(bankAccountDocumentDTOToUpload));
-                        bankAccountDocumentDTO.setFileSize(byteArray.length);
+            bankAccountDocumentDTO.setFileSize(Base64.getMimeDecoder().decode(base64).length);
                         bankAccountDocumentDTO.setUserId(userConnected.getId());
 
                         bankAccountDocumentDTO = bankAccountDocumentMapper.toDTO(bankAccountDocumentRepository.save(bankAccountDocumentMapper
@@ -125,17 +116,34 @@ public class BankAccountService {
 
                         return bankAccountDocumentDTO;
                     }
+
+        return null;
+                }
+
+    private void validateFile(String fileData, String fileName, String userEcasUserName) throws Exception {
+        if (Validator.isNotNull(fileData)) {
+            String base64 = LegalFilesService.getBase64Data(fileData);
+            if(Validator.isNotNull(base64) && Validator.isNotEmpty(base64)) {
+                byte[] byteArray = Base64.getMimeDecoder().decode(base64);
+                String extension = LegalFilesService.getValidFileExtension(fileData);
+                if (byteArray.length > 1024000) {
+                    _log.error("ECAS Username: " + userEcasUserName + " - File size cannot bet greater than 1 MB");
+                    throw new Exception("File size cannot bet greater than 1 MB.");
+                } else if (extension == null) {
+                    _log.error("ECAS Username: " + userEcasUserName + " - File must have a valid extension");
+                    throw new Exception("File must have a valid extension.");
+                } else if (fileName.isEmpty()) {
+                    _log.error("ECAS Username: " + userEcasUserName + " - File doesn't have a name");
+                    throw new Exception("File must have a valid extension.");
                 }
             } else {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Trying to upload a file its data is in incorrect format");
+                _log.error("ECAS Username: " + userEcasUserName + " - Trying to upload a file its data is in incorrect format");
                 throw new Exception("Data is in incorrect format");
             }
         } else {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Trying to upload a file that is empty");
+            _log.error("ECAS Username: " + userEcasUserName + " - Trying to upload a file that is empty");
             throw new Exception("File is empty");
         }
-
-        return null;
     }
 
     public BankAccountDocumentDTO getBankAccountDocumentById(int id) {
@@ -145,4 +153,18 @@ public class BankAccountService {
     public String downloadLegalFile(String url) {
         return azureBlobConnector.downloadLegalFile(url);
     }
+
+    public boolean hasUserPermissionForDocument(Integer supplierId, Integer userId, Integer documentId) {
+        //Check if the user is the supplier or one of his contacts
+
+        SupplierDTO supplierDTO = this.supplierService.getSupplierByUserId(userId);
+        if (supplierDTO.getId() != supplierId) return false;
+
+        //Check if the document is owned by the sipplier
+
+        BankAccountDocumentDTO bankAccountDocumentDTO = getBankAccountDocumentById(documentId);
+        return bankAccountDocumentDTO.getSupplierId() == supplierId;
+    }
+
+
 }
