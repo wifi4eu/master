@@ -275,7 +275,7 @@ public class GrantAgreementService {
     }
 
     public boolean checkIfGrantAgreementCounterSignature(int applicationId) {
-        return Validator.isNotNull(agreementRepository.findByApplicationId(applicationId));
+        return Validator.isNotNull(agreementRepository.findByApplicationId(applicationId).getDateCounterSignature());
     }
 
 }
