@@ -71,7 +71,7 @@ public interface MunicipalityRepository extends JpaRepository<Municipality, Inte
 
     @Query(value = "select new wifi4eu.wifi4eu.entity.exportImport.BeneficiaryInformation(" +
             "m.id, m.name, m.address, m.addressNum, m.postalCode, " +
-            "m.lau.name2, m.lau.countryCode, r.id, " +
+            "m.lau.abacName, m.lau.countryCode, r.id, " +
             "lf.id, lf.fileName, lf.fileName, lf.fileMime, lf.uploadTime, lf.fileType, lf.azureUri, " +
             "ma.abacReference, ma.abacStandarName, va.call.id, " +
             "u.lang" +
