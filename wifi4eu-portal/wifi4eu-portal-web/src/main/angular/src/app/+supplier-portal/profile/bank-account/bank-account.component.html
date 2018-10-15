@@ -1,22 +1,35 @@
 <div class="container">
+
     <div class="ui-g-12" style="padding-bottom: 0;">
-        <div class="ui-g-8 ui-lg-8 ui-md-12 ui-sm-12" style="margin-top: 1em;">
-            <p class="beneficiaryTitle">
+        <div class="ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">
+
+            <br/><br/>
+            <a class="link-label" routerLink=".." routerLinkActive="active">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i> {{'shared.back.button' | translate}}
+            </a>
+
+            <br/><br/><br/><br/>
+            
+            <p class="beneficiaryTitle"  style="padding-bottom: 0;margin-bottom: 0;">
                 <span>{{ 'suppPortal.bankAccount.title' | translate }}</span>
             </p>
-            <div class="ui-g-10">
-                <p>{{ 'suppPortal.bankAccount.label' | translate }}</p>
-            </div>
+            
         </div>
+
+        <div class="ui-g-12 ">
+            <p>{{ 'suppPortal.bankAccount.label' | translate }}</p>
+        </div>
+        <br/><br/>
     </div>
 
+  
 
     <div *ngFor="let  bankAccountDTO of bankAccountDTOList; let i = index">
 
         <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12 col-sm-4">
             <span class="beneficiaryTitle">{{ 'suppRegistration.bankAccount.bankAccount' | translate }} {{i + 1}}</span>
             <span *ngIf="!checkShow(i)" class="link-label right editRegistrationsLabel" (click)="changeShow(i)">
-                {{'shared.hide.label' | translate}} <i class="fa fa-angle-down" aria-hidden="true"></i> 
+                {{'shared.expand.label' | translate}} <i class="fa fa-angle-down" aria-hidden="true"></i> 
             </span>
             <span *ngIf="checkShow(i)" class="link-label right editRegistrationsLabel" (click)="changeShow(i)">
                 {{'shared.hide.label' | translate}} <i class="fa fa-angle-up" aria-hidden="true"></i> 
@@ -24,11 +37,11 @@
 
             <span class="link-label right editRegistrationsLabel" (click)="delete(i)">
                 <i class="fa fa-trash" aria-hidden="true"></i> {{'suppRegistration.bankAccount.delete' | translate}}
-                <label>{{emptySpaces}} </label> <label> {{emptySpaces}}</label>
+                <label>{{emptySpaces}} </label> <label> {{emptySpaces}}</label> <label>{{emptySpaces}} </label> <label> {{emptySpaces}}</label>
             </span>
             <span class="link-label right editRegistrationsLabel" (click)="editBankAccount(i)">
                 <i class="fa fa-pencil" aria-hidden="true"></i> {{'suppRegistration.bankAccount.edit' | translate}} 
-                <label>{{emptySpaces}} </label> <label> {{emptySpaces}}</label>
+                <label>{{emptySpaces}} </label> <label> {{emptySpaces}}</label> <label>{{emptySpaces}} </label> <label> {{emptySpaces}}</label>
             </span>
         </div>
 
@@ -38,9 +51,10 @@
             <div class="col-sm-12"> <hr class="registrationHr"> </div>
         </div>
 
-        <div class="col-sm-8">
+        <div class="col-sm-6" style="padding-left: 7.5px;">
         <div cla ss="ui-g-12" style="padding-top: 0;">
-            <div class="ui-g-8 ui-lg-8 ui-md-12 ui-sm-12" style="margin-top: 1em;">
+            <div>
+            <!--<div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">-->
                 <p class="beneficiaryMayor">{{ 'suppRegistration.bankAccount.accountDetails' | translate }}</p>
                 <div class="ui-g-12 whitePanel">
                     <div class="ui-g-12">
@@ -117,13 +131,13 @@
         <p class="beneficiaryMayor">{{ 'suppRegistration.bankAccount.supportingDocuments' | translate }}</p>
 
         <div class="ui-g-12 whitePanel" style="padding-top: 0;">
-            <div class="ui-g-8 ui-lg-8 ui-md-12 ui-sm-12" style="margin-top: 1em;">
+            <div class="ui-g-8 ui-md-12 ui-sm-12" style="margin-top: 1em;">
                 <div *ngFor="let bankAccountDocumentDTO of bankAccountDTO.bankAccountDocumentDTOList; let j = index">
                     <div class="ui-g-12">
-                        <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bankAccount.document' | translate }} {{j + 1}}</span>
-                        <span class="ui-g-4 ui-sm-12"> <b>{{ bankAccountDocumentDTO.fileName }} </b> </span>
+                        <span class="ui-g-3 ui-sm-12">{{ 'suppRegistration.bankAccount.document' | translate }} {{j + 1}}</span>
+                        <span class="ui-g-6 ui-sm-12"> <b>{{ bankAccountDocumentDTO.fileName }} </b> </span>
 
-                        <span class="ui-g-4 ui-sm-12">
+                        <span class="ui-g-3 ui-sm-12">
                             <a class="link-label"  href="{{fileURL}}{{supplier.id}}/document/{{bankAccountDocumentDTO.id}}"target="_blank">
                                 <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }} 
                             </a>
@@ -136,18 +150,29 @@
         </div>
 
         </div>
+        <div class = "col-sm-2"></div>
         <div class = "col-sm-4">
-            <br/><br/><br/><br/>
-            <ux-alert class="documents-info" iconClass="fa fa-exclamation-circle alert-icon">
-                {{ 'shared.statusLabel' | translate}} {{ 'shared.statusUploadDocs' | translate}}
-            </ux-alert>
+            <br/><br/><br/>
+            <div class="ui-g-12 whitePanel customPanel" style="margin-top: 5px;">
+                <div class="ui-md-12 ui-sm-12">
+                    <div class="col-sm-1 noPaddingLeft">
+                        <i class="fa fa-exclamation-circle alert-icon" aria-hidden="true"></i>
+                    </div> 
+
+                    <div class="col-sm-11 noPaddingLeft">
+                        {{ 'shared.statusLabel' | translate}} {{ 'shared.statusUploadDocs' | translate}}
+                    </div>
+                </div>
+            </div>
+
+
+
+
         </div>
 
    
         </div>
-        <br/><br/>
-
-        
+        <br/><br/><br/><br/><br/>
     </div>
 
     <div class="row">
@@ -158,6 +183,8 @@
         <i class="fa fa-plus" aria-hidden="true"></i> {{'suppRegistration.bankAccount.add' | translate}}
     </span>
     
+    <br/><br/><br/><br/><br/><br/><br/><br/>
+
     <p-dialog [(visible)]="addOrEditBankAccount" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
     [closeOnEscape]="false" (onAfterHide)="closeModalCancel()">
     <form>
@@ -165,42 +192,51 @@
             <div>
 
                 <div style="padding: 2em; padding-top: 0em;" class="center">
-                    <h2 class="beneficiaryMayor">{{ 'suppRegistration.bankAccount.add.title' | translate }}</h2>
+                    <p class="beneficiaryTitle">{{ 'suppRegistration.bankAccount.add.title' | translate }}</p>
                     <p [innerHTML]="'suppRegistration.bankAccount.add.desc' | translate"></p>
                 </div>
 
                 <div class="ui-g-12 col-sm-12">
 
-                    <p> <b>{{ 'suppRegistration.bankAccount.bankDetails' | translate }}</b></p>
+                    <p> <b>{{ 'suppRegistration.bankAccount.bankAccountDetails' | translate }}</b></p>
                     
                     <label>{{ 'suppRegistration.bankAccount.accountName' | translate }}</label>
                     <input [id]="accountName" type="text" [name]="accountName" class="form-control"
                     [(ngModel)]="currentBankAccountDTO.accountName" maxlength="70" required  (ngModelChange)="afterChange()" [ngModelOptions]="{standalone: true}">
+
+                    <br/>
 
 
                     <label>{{ 'suppRegistration.bankAccount.iban' | translate }}</label>
                     <input [id]="iban" type="text" [name]="iban" class="form-control"
                     [(ngModel)]="currentBankAccountDTO.iban" maxlength="255" required  (ngModelChange)="afterChange()" [ngModelOptions]="{standalone: true}">
 
-                    <br>
+                    <br/>
                     <p> <b>{{ 'suppRegistration.bankAccount.accountHolderDetails' | translate }}</b></p>
 
-                    <input type="checkbox" [(ngModel)]="currentBankAccountDTO.sameAddressAsSupplier" (ngModelChange)="fillAccountHolderDetails()" [ngModelOptions]="{standalone: true}">  {{ 'suppRegistration.bankAccount.confirmSameAddres' | translate }}
+                   
+                    <div class="col-sm-12 noPaddingLeft">
+                        <input type="checkbox" [(ngModel)]="currentBankAccountDTO.sameAddressAsSupplier" (ngModelChange)="fillAccountHolderDetails()" [ngModelOptions]="{standalone: true}">  {{ 'suppRegistration.bankAccount.confirmSameAddres' | translate }}
+                    </div>
 
-                    <div class="col-sm-9">
+                    <br/><br/>
+
+                    <div class="col-sm-9 noPaddingLeft">
                         <label>{{ 'shared.streetName' | translate }}</label>
                         <input [id]="accountName" type="text" [name]="accountName" class="form-control ui-sm-9"
                         [(ngModel)]="currentBankAccountDTO.accountHolderStreet" maxlength="60" required  (ngModelChange)="afterChange()" [ngModelOptions]="{standalone: true}">
                     </div>
 
-                    <div class="col-sm-3">
+                    <div class="col-sm-3 noPaddingLeft">
                         <label>{{ 'shared.number.label' | translate }}</label>
                         <input [id]="accountHolderNumber" type="text" [name]="accountHolderNumber" class="form-control ui-sm-3" [disabled] = "currentBankAccountDTO.sameAddressAsSupplier"
                             [(ngModel)]="currentBankAccountDTO.accountHolderNumber" maxlength="255" required  (ngModelChange)="afterChange()" [ngModelOptions]="{standalone: true}">
                     </div>
+                    
+                    <br/><br/>
 
-                    <div class="col-sm-6">
-                        <label>{{ 'suppRegistration.bankAccount.accountHolderCity' | translate }}</label>
+                    <div class="col-sm-6 noPaddingLeft">
+                        <label>{{ 'suppRegistration.city.label' | translate }}</label>
                         <input [id]="accountHolderCity" type="text" [name]="accountHolderCity" class="form-control" [disabled] = "currentBankAccountDTO.sameAddressAsSupplier"
                             [(ngModel)]="currentBankAccountDTO.accountHolderCity" maxlength="50" required  (ngModelChange)="afterChange()" [ngModelOptions]="{standalone: true}">
                     </div>
@@ -209,7 +245,7 @@
                         <label>{{ 'shared.country.label' | translate }}</label>
 
                         <select [(ngModel)]="currentBankAccountDTO.accountHolderCountry"  id="country" name="country" class="form-control" ng-options="option.value as option.name for option in typeOptions"
-                        [disabled]="countries.length < 1 || currentBankAccountDTO.sameAddressAsSupplier" (ngModelChange)="afterChange()" [ngModelOptions]="{standalone: true}">
+                        [disabled]="countries.length < 1 || currentBankAccountDTO.sameAddressAsSupplier" (ngModelChange)="afterChange()" [ngModelOptions]="{standalone: true}" required>
                             <option disabled selected [ngValue]="null">
                                 {{ 'benefRegistration.registration.selectCountry' | translate }}
                             </option>
@@ -218,16 +254,20 @@
                             </option>
                         </select>
                     </div>
+                   
+                    <br/> <br/>
 
                     <p> <b>{{ 'suppRegistration.bankAccount.bankDetails' | translate }}</b></p>
                     
-                    <div class="col-sm-12">
+                    <div class="col-sm-12 noPaddingLeft">
                         <label>{{ 'suppRegistration.bankAccount.bankName' | translate }}</label>
                         <input [id]="bankName" type="text" [name]="bankName" class="form-control"
                             [(ngModel)]="currentBankAccountDTO.bankName" maxlength="255" required  (ngModelChange)="afterChange()" [ngModelOptions]="{standalone: true}">
                     </div>
 
-                    <div class="col-sm-9">
+                    <br/><br/>
+
+                    <div class="col-sm-9 noPaddingLeft">
                         <label>{{ 'shared.streetName' | translate }}</label>
                         <input [id]="bankStreet" type="text" [name]="bankStreet" class="form-control ui-sm-9"
                         [(ngModel)]="currentBankAccountDTO.bankStreet" maxlength="120" required  (ngModelChange)="afterChange()" [ngModelOptions]="{standalone: true}">
@@ -239,7 +279,9 @@
                             [(ngModel)]="currentBankAccountDTO.bankNumber" maxlength="255" required  (ngModelChange)="afterChange()" [ngModelOptions]="{standalone: true}">
                     </div>
 
-                    <div class="col-sm-6">
+                    <br/><br/>
+
+                    <div class="col-sm-6 noPaddingLeft">
                         <label>{{ 'suppRegistration.city.label' | translate }}</label>
                         <input [id]="bankCity" type="text" [name]="bankCity" class="form-control"
                             [(ngModel)]="currentBankAccountDTO.bankCity" maxlength="50" required  (ngModelChange)="afterChange()" [ngModelOptions]="{standalone: true}">
@@ -249,7 +291,7 @@
                         <label>{{ 'shared.country.label' | translate }}</label>
 
                         <select [(ngModel)]="currentBankAccountDTO.bankCountry"  id="country" name="country" class="form-control" ng-options="option.value as option.name for option in typeOptions"
-                        [disabled]="countries.length < 1" (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}">
+                        [disabled]="countries.length < 1" (ngModelChange)="enableButtonConfirm()" [ngModelOptions]="{standalone: true}" required>
                             <option disabled selected [ngValue]="null">
                                 {{ 'benefRegistration.registration.selectCountry' | translate }}
                             </option>

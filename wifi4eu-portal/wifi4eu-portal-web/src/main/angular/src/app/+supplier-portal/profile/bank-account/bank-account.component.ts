@@ -13,6 +13,7 @@ import { NutsDTOBase } from "../../../shared/swagger/model/NutsDTO";
 
 @Component({
     templateUrl: 'bank-account.component.html',
+    styleUrls: ['bank-account.component.scss'],
     providers: [BankAccountsApi, SupplierApi, NutsApi]
 })
 
