@@ -146,10 +146,10 @@
     </div>   -->
     <div class="col-sm-12">
         <br><br>
-        <select name="" (change)="updateLanguage($event.target.value)" id="">
-            <option *ngFor="let lang of languagesArray" value="{{lang.code}}" [ngValue]="lang.code">
-                {{lang.label}}
-            </option>
+            <select name="" (change)="updateLanguage($event.target.value)" id="">
+                <option *ngFor="let lang of languagesArray" value="{{lang.code}}" [ngValue]="lang.code" [selected]="user.lang ===  lang.code">
+                    {{lang.label}}
+                </option>
         </select>
         <br><br>
     </div>

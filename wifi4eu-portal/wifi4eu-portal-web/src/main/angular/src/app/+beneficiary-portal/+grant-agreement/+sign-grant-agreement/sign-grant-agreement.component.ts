@@ -78,7 +78,7 @@ export class SignGrantAgreementComponent {
                                                     (user: UserDTOBase) => {
                                                         this.authorizedUser = user;
                                                         this.inputGrantAgreement.applicationId = this.application.id;
-                                                        this.inputGrantAgreement.documentLanguage = "en";
+                                                        this.inputGrantAgreement.documentLanguage = this.user.lang;
                                                         this.grantAgreementApi.createGrantAgreement(this.inputGrantAgreement).subscribe(
                                                             (grantAgreement: GrantAgreementDTOBase) =>{
                                                                 this.inputGrantAgreement = grantAgreement;
