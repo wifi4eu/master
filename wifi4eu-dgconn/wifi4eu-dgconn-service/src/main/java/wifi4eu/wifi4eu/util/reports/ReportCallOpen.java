@@ -63,8 +63,11 @@ public class ReportCallOpen {
     @Autowired
     NutCallCustomRepository nutCallCustomRepository;
 
-    static String[] fields = {"Number of applicants for the current call up to date", "Number of applicants with 1 warning (NO MATTER WHICH WARNING)", "Number of applicants with 2 warnings (NO MATTER WHICH WARNING)", "Number of applicants with 3 warnings (NO MATTER WHICH WARNING)", "Number of applicants with warning 1 (may have more than 1 warning)", "Number of applicants with warning 2 (may have more than 1 warning)", "Number of applicants with warning 3 (may have more than 1 warning)", "Number of duplicates", "Number of duplicates invalidated", "Number of invalidated for reason 1: After the follow-up request, the application provided a document which was corrupt/impossible to open in the format supplied", "Number of invalidated for reason 2: After the follow-up request, the applicant provided the same document(s) as originally supplied with the application", "Number of invalidated for reason 3: After the follow-up request, the applicant provided a document which was unreadable", "Number of invalidated for reason 4: After the follow-up request, the applicant provided a document which was incomplete", "Number of invalidated for reason 5: After the follow-up request, the applicant provided a document which was incorrect/did not correspond to the required document (or still contained incorrect information)", "Number of invalidated for reason 6: After the follow-up request, the applicant provided a document which was missing a signature", "Number of invalidated for reason 7: The deadline for the request of correction of the required supporting documents passed without compliance by the applicant", "Number of invalidated for reason 8: The application included a merged municipality","Number of invalidated for reason 9: Due to irregularities found in the application, it was invalidated"};
-    static String[] totalValues = {"callApplicants", "warning1Applicant", "warning2Applicant", "warning3Applicant", "warningsType1", "warningsType2", "warningsType3", "numberDuplicates", "numberDuplicatesInvalidated", "reason1", "reason2", "reason3", "reason4", "reason5", "reason6", "reason7", "reason8", "reason9"};
+
+
+    final static String[] fields = {"Number of applicants for the current call up to date", "Number of applicants with 1 warning (NO MATTER WHICH WARNING)", "Number of applicants with 2 warnings (NO MATTER WHICH WARNING)", "Number of applicants with 3 warnings (NO MATTER WHICH WARNING)", "Number of applicants with warning 1 (may have more than 1 warning)", "Number of applicants with warning 2 (may have more than 1 warning)", "Number of applicants with warning 3 (may have more than 1 warning)", "Number of duplicates", "Number of duplicates invalidated", "Number of invalidated for reason 1: After the follow-up request, the application provided a document which was corrupt/impossible to open in the format supplied", "Number of invalidated for reason 2: After the follow-up request, the applicant provided the same document(s) as originally supplied with the application", "Number of invalidated for reason 3: After the follow-up request, the applicant provided a document which was unreadable", "Number of invalidated for reason 4: After the follow-up request, the applicant provided a document which was incomplete", "Number of invalidated for reason 5: After the follow-up request, the applicant provided a document which was incorrect/did not correspond to the required document (or still contained incorrect information)", "Number of invalidated for reason 6: After the follow-up request, the applicant provided a document which was missing a signature", "Number of invalidated for reason 7: The deadline for the request of correction of the required supporting documents passed without compliance by the applicant", "Number of invalidated for reason 8: The application included a merged municipality","Number of invalidated for reason 9: Due to irregularities found in the application, it was invalidated"};
+    final static String[] totalValues = {"callApplicants", "warning1Applicant", "warning2Applicant", "warning3Applicant", "warningsType1", "warningsType2", "warningsType3", "numberDuplicates", "numberDuplicatesInvalidated", "reason1", "reason2", "reason3", "reason4", "reason5", "reason6", "reason7", "reason8", "reason9"};
+    final static String[] totalValuesPercent = {"callApplicantsPercent", "warning1ApplicantPercent", "warning2ApplicantPercent", "warning3ApplicantPercent", "warningsType1Percent", "warningsType2Percent", "warningsType3Percent", "numberDuplicatesPercent", "numberDuplicatesInvalidatedPercent", "reason1Percent", "reason2Percent", "reason3Percent", "reason4Percent", "reason5Percent", "reason6Percent", "reason7Percent", "reason8Percent", "reason9Percent"};
 
     public void generate(HSSFWorkbook workbook) {
         if (Validator.isNotNull(callRepository.getIdCurrentCall())) {
@@ -99,7 +102,6 @@ public class ReportCallOpen {
             if (!Utils.contains(passedNuts, nut.getId())) {
                 row.createCell(numColumn).setCellValue(nut.getLabel());
                 Map<String, Object> allValues = getAllValues(nut.id);
-                String[] totalValues = {"callApplicants", "warning1Applicant", "warning2Applicant", "warning3Applicant", "warningsType1", "warningsType2", "warningsType3", "numberDuplicates", "numberDuplicatesInvalidated", "reason1", "reason2", "reason3", "reason4", "reason5", "reason6", "reason7", "reason8", "reason9"};
                 int takeNumber = 0;
                 for (int i = 1; i <= totalValues.length; i++) {
                     row = sheet.getRow(i);
@@ -133,11 +135,10 @@ public class ReportCallOpen {
         int column = 2;
         Map<String, Object> allValues = getAllPercentages(idNut);
         HSSFRow row;
-        String[] totalValues = {"callApplicantsPercent", "warning1ApplicantPercent", "warning2ApplicantPercent", "warning3ApplicantPercent", "warningsType1Percent", "warningsType2Percent", "warningsType3Percent", "numberDuplicatesPercent", "numberDuplicatesInvalidatedPercent", "reason1Percent", "reason2Percent", "reason3Percent", "reason4Percent", "reason5Percent", "reason6Percent", "reason7Percent", "reason8Percent", "reason9Percent"};
         int takeNumber = 0;
-        for (int i = 1; i <= totalValues.length; i++) {
+        for (int i = 1; i <= totalValuesPercent.length; i++) {
             row = sheet.getRow(i);
-            String valueSet = (String) allValues.get(totalValues[takeNumber]);
+            String valueSet = (String) allValues.get(totalValuesPercent[takeNumber]);
             if (Validator.isNull(valueSet)) valueSet = "0";
             row.createCell(column).setCellValue(valueSet);
             takeNumber++;
@@ -606,24 +607,24 @@ public class ReportCallOpen {
         int reason7 = getNumberInvalidatedByReason(7, idNut);
         int reason8 = getNumberInvalidatedByReason(8, idNut);
         int reason9 = getNumberInvalidatedByReason(9, idNut);
-        mapResult.put("callApplicants", callApplicants);
-        mapResult.put("warning1Applicant", warning1Applicant);
-        mapResult.put("warning2Applicant", warning2Applicant);
-        mapResult.put("warning3Applicant", warning3Applicant);
-        mapResult.put("warningsType1", warningsType1);
-        mapResult.put("warningsType2", warningsType2);
-        mapResult.put("warningsType3", warningsType3);
-        mapResult.put("numberDuplicates", numberDuplicates);
-        mapResult.put("numberDuplicatesInvalidated", numberDuplicatesInvalidated);
-        mapResult.put("reason1", reason1);
-        mapResult.put("reason2", reason2);
-        mapResult.put("reason3", reason3);
-        mapResult.put("reason4", reason4);
-        mapResult.put("reason5", reason5);
-        mapResult.put("reason6", reason6);
-        mapResult.put("reason7", reason7);
-        mapResult.put("reason8", reason8);
-        mapResult.put("reason9", reason9);
+        mapResult.put(totalValues[0], callApplicants);
+        mapResult.put(totalValues[1], warning1Applicant);
+        mapResult.put(totalValues[2], warning2Applicant);
+        mapResult.put(totalValues[3], warning3Applicant);
+        mapResult.put(totalValues[4], warningsType1);
+        mapResult.put(totalValues[5], warningsType2);
+        mapResult.put(totalValues[6], warningsType3);
+        mapResult.put(totalValues[7], numberDuplicates);
+        mapResult.put(totalValues[8], numberDuplicatesInvalidated);
+        mapResult.put(totalValues[9], reason1);
+        mapResult.put(totalValues[10], reason2);
+        mapResult.put(totalValues[11], reason3);
+        mapResult.put(totalValues[12], reason4);
+        mapResult.put(totalValues[13], reason5);
+        mapResult.put(totalValues[14], reason6);
+        mapResult.put(totalValues[15], reason7);
+        mapResult.put(totalValues[16], reason8);
+        mapResult.put(totalValues[17], reason9);
         return mapResult;
     }
 
@@ -650,35 +651,36 @@ public class ReportCallOpen {
         int reason8 = getNumberInvalidatedByReason(8, idNut);
         int reason9 = getNumberInvalidatedByReason(9, idNut);
         DecimalFormat df = new DecimalFormat("#.##");
-        mapResult.put("callApplicantsPercent", df.format((callApplicants * 100.0f) / callApplicants));
-        mapResult.put("warning1ApplicantPercent", df.format((warning1Applicant * 100.0f) / callApplicants));
-        mapResult.put("warning2ApplicantPercent", df.format((warning2Applicant * 100.0f) / callApplicants));
-        mapResult.put("warning3ApplicantPercent", df.format((warning3Applicant * 100.0f) / callApplicants));
-        mapResult.put("warningsType1Percent", df.format((warningsType1 * 100.0f) / callApplicants));
-        mapResult.put("warningsType2Percent", df.format((warningsType2 * 100.0f) / callApplicants));
-        mapResult.put("warningsType3Percent", df.format((warningsType3 * 100.0f) / callApplicants));
-        mapResult.put("numberDuplicatesPercent", df.format((numberDuplicates * 100.0f) / callApplicants));
-        mapResult.put("numberDuplicatesInvalidatedPercent", df.format((numberDuplicatesInvalidated * 100.0f) / callApplicants));
+
+        mapResult.put(totalValuesPercent[0], df.format((callApplicants * 100.0f) / callApplicants));
+        mapResult.put(totalValuesPercent[1], df.format((warning1Applicant * 100.0f) / callApplicants));
+        mapResult.put(totalValuesPercent[2], df.format((warning2Applicant * 100.0f) / callApplicants));
+        mapResult.put(totalValuesPercent[3], df.format((warning3Applicant * 100.0f) / callApplicants));
+        mapResult.put(totalValuesPercent[4], df.format((warningsType1 * 100.0f) / callApplicants));
+        mapResult.put(totalValuesPercent[5], df.format((warningsType2 * 100.0f) / callApplicants));
+        mapResult.put(totalValuesPercent[6], df.format((warningsType3 * 100.0f) / callApplicants));
+        mapResult.put(totalValuesPercent[7], df.format((numberDuplicates * 100.0f) / callApplicants));
+        mapResult.put(totalValuesPercent[8], df.format((numberDuplicatesInvalidated * 100.0f) / callApplicants));
         if (callApplicantsInvalidated > 0){
-            mapResult.put("reason1Percent", df.format((reason1 * 100.0f) / callApplicantsInvalidated));
-            mapResult.put("reason2Percent", df.format((reason2 * 100.0f) / callApplicantsInvalidated));
-            mapResult.put("reason3Percent", df.format((reason3 * 100.0f) / callApplicantsInvalidated));
-            mapResult.put("reason4Percent", df.format((reason4 * 100.0f) / callApplicantsInvalidated));
-            mapResult.put("reason5Percent", df.format((reason5 * 100.0f) / callApplicantsInvalidated));
-            mapResult.put("reason6Percent", df.format((reason6 * 100.0f) / callApplicantsInvalidated));
-            mapResult.put("reason7Percent", df.format((reason7 * 100.0f) / callApplicantsInvalidated));
-            mapResult.put("reason8Percent", df.format((reason8 * 100.0f) / callApplicantsInvalidated));
-            mapResult.put("reason9Percent", df.format((reason9 * 100.0f) / callApplicantsInvalidated));
+            mapResult.put(totalValuesPercent[9], df.format((reason1 * 100.0f) / callApplicantsInvalidated));
+            mapResult.put(totalValuesPercent[10], df.format((reason2 * 100.0f) / callApplicantsInvalidated));
+            mapResult.put(totalValuesPercent[11], df.format((reason3 * 100.0f) / callApplicantsInvalidated));
+            mapResult.put(totalValuesPercent[12], df.format((reason4 * 100.0f) / callApplicantsInvalidated));
+            mapResult.put(totalValuesPercent[13], df.format((reason5 * 100.0f) / callApplicantsInvalidated));
+            mapResult.put(totalValuesPercent[14], df.format((reason6 * 100.0f) / callApplicantsInvalidated));
+            mapResult.put(totalValuesPercent[15], df.format((reason7 * 100.0f) / callApplicantsInvalidated));
+            mapResult.put(totalValuesPercent[16], df.format((reason8 * 100.0f) / callApplicantsInvalidated));
+            mapResult.put(totalValuesPercent[17], df.format((reason9 * 100.0f) / callApplicantsInvalidated));
         } else {
-            mapResult.put("reason1Percent", df.format(0.00));
-            mapResult.put("reason2Percent", df.format(0.00));
-            mapResult.put("reason3Percent", df.format(0.00));
-            mapResult.put("reason4Percent", df.format(0.00));
-            mapResult.put("reason5Percent", df.format(0.00));
-            mapResult.put("reason6Percent", df.format(0.00));
-            mapResult.put("reason7Percent", df.format(0.00));
-            mapResult.put("reason8Percent", df.format(0.00));
-            mapResult.put("reason9Percent", df.format(0.00));
+            mapResult.put(totalValuesPercent[9], df.format(0.00));
+            mapResult.put(totalValuesPercent[10], df.format(0.00));
+            mapResult.put(totalValuesPercent[11], df.format(0.00));
+            mapResult.put(totalValuesPercent[12], df.format(0.00));
+            mapResult.put(totalValuesPercent[13], df.format(0.00));
+            mapResult.put(totalValuesPercent[14], df.format(0.00));
+            mapResult.put(totalValuesPercent[15], df.format(0.00));
+            mapResult.put(totalValuesPercent[16], df.format(0.00));
+            mapResult.put(totalValuesPercent[17], df.format(0.00));
         }
         return mapResult;
     }

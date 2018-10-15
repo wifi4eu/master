@@ -32,8 +32,8 @@ public class ReportPreSelection {
     NutCallCustomRepository nutCallCustomRepository;
 
 
-    static String[] fields = {"Number of applicants", "Number of pre-selected applicants", "Number of applicants in reserve list", "Number of unsuccessful applicants (not in the pre-selection list, not in the reserve list)", "Number of duplicates", "Number of duplicates invalidated", "Number of follow-up (supporting documents)", "Number of invalidated for reason 1: After the follow-up request, the applicant provided a document which was corrupt/impossible to open in the format supplied.", "Number of invalidated for reason 2: After the follow-up request, the applicant provided the same document(s) as originally supplied with the application.", "Number of invalidated for reason 3: After the follow-up request, the applicant provided a document which was unreadable.", "Number of invalidated for reason 4: After the follow-up request, the applicant provided a document which was incomplete", "Number of invalidated for reason 5: After the follow-up request, the applicant provided a document which was incorrect/did not correspond to the required document (or still contained incorrect information).", "Number of invalidated for reason 6: After the follow-up request, the applicant provided a document which was missing a signature.", "Number of invalidated for reason 7: The deadline for the request of correction of the required supporting documents passed without compliance by the applicant.", "Number of invalidated for reason 8: The application included a merged municipality.", "Number of invalidated for reason 9: Due to irregularities found in the application, it was invalidated."};
-    static String[] totalValues = {"applicants", "preSelectedApplicants", "reservedApplicants", "unsuccessfulApplicants", "duplicates", "duplicatesInvalidated", "followUp", "invalidatedReason1", "invalidatedReason2", "invalidatedReason3", "invalidatedReason4", "invalidatedReason5", "invalidatedReason6", "invalidatedReason7", "invalidatedReason8", "invalidatedReason9"};
+    final static String[] fields = {"Number of applicants", "Number of pre-selected applicants", "Number of applicants in reserve list", "Number of unsuccessful applicants (not in the pre-selection list, not in the reserve list)", "Number of duplicates", "Number of duplicates invalidated", "Number of follow-up (supporting documents)", "Number of invalidated for reason 1: After the follow-up request, the applicant provided a document which was corrupt/impossible to open in the format supplied.", "Number of invalidated for reason 2: After the follow-up request, the applicant provided the same document(s) as originally supplied with the application.", "Number of invalidated for reason 3: After the follow-up request, the applicant provided a document which was unreadable.", "Number of invalidated for reason 4: After the follow-up request, the applicant provided a document which was incomplete", "Number of invalidated for reason 5: After the follow-up request, the applicant provided a document which was incorrect/did not correspond to the required document (or still contained incorrect information).", "Number of invalidated for reason 6: After the follow-up request, the applicant provided a document which was missing a signature.", "Number of invalidated for reason 7: The deadline for the request of correction of the required supporting documents passed without compliance by the applicant.", "Number of invalidated for reason 8: The application included a merged municipality.", "Number of invalidated for reason 9: Due to irregularities found in the application, it was invalidated."};
+    final static String[] totalValues = {"applicants", "preSelectedApplicants", "reservedApplicants", "unsuccessfulApplicants", "duplicates", "duplicatesInvalidated", "followUp", "invalidatedReason1", "invalidatedReason2", "invalidatedReason3", "invalidatedReason4", "invalidatedReason5", "invalidatedReason6", "invalidatedReason7", "invalidatedReason8", "invalidatedReason9"};
 
     public void generate(HSSFWorkbook workbook, Integer callId) {
         if (Validator.isNotNull(callRepository.findAllCallsClosedPreSelected())) {
@@ -81,7 +81,6 @@ public class ReportPreSelection {
             if (!Utils.contains(passedNuts, nut.getId())) {
                 row.createCell(numColumn).setCellValue(nut.getLabel());
                 Map<String, Object> allValues = getAllValues(callId, nut.id);
-                String[] totalValues = {"applicants", "preSelectedApplicants", "reservedApplicants", "unsuccessfulApplicants", "duplicates", "duplicatesInvalidated", "followUp", "invalidatedReason1", "invalidatedReason2", "invalidatedReason3", "invalidatedReason4", "invalidatedReason5", "invalidatedReason6", "invalidatedReason7", "invalidatedReason8", "invalidatedReason9"};
                 int takeNumber = 0;
                 for (int i = 1; i <= totalValues.length; i++) {
                     row = sheet.getRow(i);
@@ -116,22 +115,22 @@ public class ReportPreSelection {
         Integer invalidatedReason7 = getInvalidatedReason(callId, idNut, 7);
         Integer invalidatedReason8 = getInvalidatedReason(callId, idNut, 8);
         Integer invalidatedReason9 = getInvalidatedReason(callId, idNut, 9);
-        mapResult.put("applicants", applicants);
-        mapResult.put("preSelectedApplicants", preselectedApplicants);
-        mapResult.put("reservedApplicants", reservedApplicants);
-        mapResult.put("unsuccessfulApplicants", unsuccessfulApplicants);
-        mapResult.put("duplicates", duplicates);
-        mapResult.put("duplicatesInvalidated", duplicatesInvalidated);
-        mapResult.put("followUp", followUp);
-        mapResult.put("invalidatedReason1", invalidatedReason1);
-        mapResult.put("invalidatedReason2", invalidatedReason2);
-        mapResult.put("invalidatedReason3", invalidatedReason3);
-        mapResult.put("invalidatedReason4", invalidatedReason4);
-        mapResult.put("invalidatedReason5", invalidatedReason5);
-        mapResult.put("invalidatedReason6", invalidatedReason6);
-        mapResult.put("invalidatedReason7", invalidatedReason7);
-        mapResult.put("invalidatedReason8", invalidatedReason8);
-        mapResult.put("invalidatedReason9", invalidatedReason9);
+        mapResult.put(totalValues[0], applicants);
+        mapResult.put(totalValues[1], preselectedApplicants);
+        mapResult.put(totalValues[2], reservedApplicants);
+        mapResult.put(totalValues[3], unsuccessfulApplicants);
+        mapResult.put(totalValues[4], duplicates);
+        mapResult.put(totalValues[5], duplicatesInvalidated);
+        mapResult.put(totalValues[6], followUp);
+        mapResult.put(totalValues[7], invalidatedReason1);
+        mapResult.put(totalValues[8], invalidatedReason2);
+        mapResult.put(totalValues[9], invalidatedReason3);
+        mapResult.put(totalValues[10], invalidatedReason4);
+        mapResult.put(totalValues[11], invalidatedReason5);
+        mapResult.put(totalValues[12], invalidatedReason6);
+        mapResult.put(totalValues[13], invalidatedReason7);
+        mapResult.put(totalValues[14], invalidatedReason8);
+        mapResult.put(totalValues[15], invalidatedReason9);
         return mapResult;
     }
 

@@ -35,8 +35,8 @@ public class ReportTimeToInform {
     @Autowired
     ApplicationRepository applicationRepository;
 
-    static String[] fields = {"Number of days between the closure of the call until button Send notifications to all applicants is pressed", "Number of applicants"};
-    static String[] totalValues = {"daysNumber", "applicants"};
+    final static String[] fields = {"Number of days between the closure of the call until button Send notifications to all applicants is pressed", "Number of applicants"};
+    final static String[] totalValues = {"daysNumber", "applicants"};
 
     public void generate(HSSFWorkbook workbook) {
         if (Validator.isNotNull(callRepository.findAllCallsClosedNotified())) {
@@ -131,8 +131,8 @@ public class ReportTimeToInform {
         Map<String, Object> mapResult = new HashMap<>();
         double daysNumber = getDaysNumberByCall(callId);
         Integer applicants = getApplicantsByCall(callId);
-        mapResult.put("daysNumber", daysNumber);
-        mapResult.put("applicants", applicants);
+        mapResult.put(totalValues[0], daysNumber);
+        mapResult.put(totalValues[1], applicants);
         return mapResult;
     }
 
