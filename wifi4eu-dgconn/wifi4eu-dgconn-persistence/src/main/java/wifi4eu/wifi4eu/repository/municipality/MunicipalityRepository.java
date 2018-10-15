@@ -1,14 +1,17 @@
 package wifi4eu.wifi4eu.repository.municipality;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import wifi4eu.wifi4eu.entity.exportImport.BeneficiaryInformation;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public interface MunicipalityRepository extends CrudRepository<Municipality, Integer> {
-    Iterable<Municipality> findByLauId(Integer lauId);
+public interface MunicipalityRepository extends JpaRepository<Municipality, Integer> {
+
+    List<Municipality> findByLauId(Integer lauId);
+
     @Query(value = "SELECT COUNT(id),lau FROM municipalities GROUP BY lau", nativeQuery = true)
     Iterable<Object> findMunicipalitiesCountGroupedByLauId();
 
@@ -74,4 +77,21 @@ public interface MunicipalityRepository extends CrudRepository<Municipality, Int
             "INNER JOIN calls c ON c.id = a.call_id " +
             "WHERE c.id = ?1 AND n.id = ?2 GROUP BY m.lau", nativeQuery = true)
     List<Integer> findAllMunicipalitiesLauByCountryAndCallId(int callId, int idNut);
+
+    @Query(value = "select new wifi4eu.wifi4eu.entity.exportImport.BeneficiaryInformation(" +
+            "m.id, m.name, m.address, m.addressNum, m.postalCode, " +
+            "m.lau.abacName, m.lau.countryCode, r.id, " +
+            "lf.id, lf.fileName, lf.fileName, lf.fileMime, lf.uploadTime, lf.fileType, lf.azureUri, " +
+            "ma.abacReference, ma.abacStandarName, va.call.id, " +
+            "u.lang" +
+            ") from Municipality m " +
+            "inner join m.registrations r " +
+            "inner join r.applications a " +
+            "inner join r.legalFiles lf on lf.fileType = 1 " +
+            "inner join m.voucherSimulations vs on (vs.selectionStatus = 1 or vs.selectionStatus = 3) " +
+            "inner join vs.voucherAssignment va on va.status = 3 " +
+            "left join m.municipalitiesAbac ma " +
+            "left join r.users u " +
+            "where m.name is not null and (m.municipalitiesAbac is empty or ma.abacReference is null)")
+    List<BeneficiaryInformation> findBeneficiaryInformation();
 }

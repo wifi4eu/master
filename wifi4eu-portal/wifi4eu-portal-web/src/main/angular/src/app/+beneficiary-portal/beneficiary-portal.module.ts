@@ -16,11 +16,12 @@ import { MyHistoryComponent } from "./my-history/my-history.component";
 import { MyVoucherComponent } from "./+grant-agreement/grant-agreement.component";
 import { SignGrantAgreementComponent } from "./+grant-agreement/+sign-grant-agreement/sign-grant-agreement.component";
 import { BeneficiaryUserComponent } from "./+profile/beneficiary-user/beneficiary-user.component";
+import { ConfirmDialogModule } from "primeng/primeng";
 
 // import {SelectSupplierComponent} from "./+voucher/select-supplier/select-supplier.component";
 
 @NgModule({
-  imports: [SharedModule, BeneficiaryPortalRoutingModule, HttpModule],
+  imports: [SharedModule, BeneficiaryPortalRoutingModule, HttpModule, ConfirmDialogModule],
     declarations: [
         VoucherComponent,
         DiscussionComponent,
@@ -34,7 +35,7 @@ import { BeneficiaryUserComponent } from "./+profile/beneficiary-user/beneficiar
         MyHistoryComponent,
         MyVoucherComponent,
         SignGrantAgreementComponent,
-        BeneficiaryUserComponent
+        BeneficiaryUserComponent,
         // SelectSupplierComponent
     ], providers: [
         BeneficiaryService

@@ -287,3 +287,32 @@ DROP TABLE IF EXISTS dbo.VALIDATED_BC;
 DROP TABLE IF EXISTS dbo.NUTCALLCUSTOM;
 DROP TABLE IF EXISTS dbo.USERAUTHORIZEDPERSON;
 DROP TABLE IF EXISTS dbo.USERCONTACTDETAILS;
+
+-- Add new column for laus
+ALTER TABLE laus ADD name_national nvarchar(255) NULL;
+ALTER TABLE laus ADD name_latin nvarchar(255) NULL;
+ALTER TABLE laus ADD abac_name nvarchar(255) NULL;
+ALTER TABLE laus ADD display_name nvarchar(255) NULL;
+
+-- Place name1 and name2 to name_latin,name_national,abac_name,display_name for testing
+UPDATE laus
+    SET name_latin=l2.name2, name_national=l2.name1, abac_name=l2.name2, display_name=l2.name2
+    FROM laus l2 WHERE id = l2.id
+
+
+--WIFIFOREU-3278
+-- Add new columns on legal files
+ALTER TABLE legal_files ADD status int;
+ALTER TABLE legal_files ADD new int;
+
+-- Update existing files with information on the new columns
+UPDATE legal_files SET status = 0
+UPDATE l SET l.status = 2 FROM legal_files l INNER JOIN applications a ON l.registration = a.registration WHERE a._status = 2;
+UPDATE l SET l.status = 1 FROM legal_files l INNER JOIN applications a ON l.registration = a.registration WHERE a._status = 1;
+UPDATE legal_files SET new = 0;
+UPDATE r SET r.new = 1 FROM legal_files r inner join (select l1.* from legal_files l1 inner join (select registration, max(upload_time) as ut from legal_files l2 inner join (select type from legal_files group by type)l3 on l3.type = l2.type group by registration) l2 on l2.registration = l1.registration and l1.upload_time = l2.ut) l4 on l4.id = r.id  where r.status = 0
+UPDATE r SET r.new = 2 FROM legal_files r inner join (select l1.* from legal_files l1 inner join (select registration, max(upload_time) as ut from legal_files l2 inner join (select type from legal_files group by type)l3 on l3.type = l2.type group by registration) l2 on l2.registration = l1.registration and l1.upload_time = l2.ut) l4 on l4.id = r.id where r.status != 0;
+
+-- 2018-09-27 bugfix/WIFIFOREU-3553 - Column data to store reference of exported file on applications list
+ALTER TABLE dbo.admin_actions ADD data nvarchar(255);
+

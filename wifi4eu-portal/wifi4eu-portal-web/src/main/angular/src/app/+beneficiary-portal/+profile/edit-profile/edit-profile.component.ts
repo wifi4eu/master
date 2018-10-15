@@ -96,7 +96,7 @@ export class BeneficiaryEditProfileComponent {
     private organizationId: number = 0;
     private isOrganisation: boolean = false;
     private currentCall: CallDTOBase;
-    private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
+    private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])$");
     private newUserEmail: string = '';
     private registrationIndex: number = null;
     private registration: RegistrationDTOBase;
@@ -267,7 +267,13 @@ export class BeneficiaryEditProfileComponent {
                     this.isMunicipalityEditable[municipalityId] = response.data;
                     if (response.data) {
                         //Check if municipality have applied cookie and then disable input fields
-                        var appliedExist = this.registrations.some(registration => this.isVoucherApplied(registration.id) === true);
+                        let appliedExist = false;
+                        this.registrations.forEach(registration => {
+                            if(registration.municipalityId == municipalityId){
+                                appliedExist = this.isVoucherApplied(registration.id)
+                            }
+                            
+                        });
                         this.isMunicipalityEditable[municipalityId] = !appliedExist;
                     }
                 }
@@ -436,6 +442,9 @@ export class BeneficiaryEditProfileComponent {
     }
 
     private editProfile() {
+        if(!this.municipalitiesSelected || !this.emailsMatch || !this.municipalityForm.form.valid || !this.buttonEnabled){
+            return;
+        }
         this.submittingData = true;
         if (this.finalBeneficiary.associationName != this.registrations[0].associationName) {
             this.registrations[0].associationName = this.finalBeneficiary.associationName;

@@ -108,9 +108,11 @@ public class RegistrationResource {
 			_log.error("ECAS Username: " + userConnected.getEcasUsername()
 					+ "- You have no permissions to retrieve this registration", ade.getMessage());
 			response.sendError(HttpStatus.NOT_FOUND.value());
+			return null;
 		} catch (Exception e) {
 			_log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This registration cannot been retrieved", e);
 			response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			return null;
 		}
 		return registrationService.getRegistrationById(registrationId);
 	}
@@ -337,7 +339,7 @@ public class RegistrationResource {
 	@RequestMapping(value = "/getHistory/{registrationId}/{type}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public ResponseDTO getHistoryForType(@PathVariable("registrationId") final Integer registrationId,
-			@PathVariable("type") final Integer type, HttpServletResponse response, HttpServletRequest request)
+			@PathVariable("type") final Integer type, @RequestParam("date") final Long timestamp, HttpServletResponse response, HttpServletRequest request)
 			throws IOException {
 		UserContext userContext = UserHolder.getUser();
 		UserDTO userConnected = userService.getUserByUserContext(userContext);

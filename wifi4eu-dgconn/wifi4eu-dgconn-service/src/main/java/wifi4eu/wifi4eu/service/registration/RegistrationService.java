@@ -31,6 +31,8 @@ import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.enums.LegalFileStatus;
+import wifi4eu.wifi4eu.common.enums.LegalFileValidationStatus;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
 import wifi4eu.wifi4eu.common.mail.MailHelper;
@@ -151,11 +153,6 @@ public class RegistrationService {
 
     @Autowired
     LogEmailRepository logEmailRepository;
-
-    public List<RegistrationDTO> getAllRegistrations() {
-        return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
-    }
-
 
     public RegistrationDTO getRegistrationById(int registrationId) {
         Registration registration = registrationRepository.findOne(registrationId);
@@ -309,7 +306,7 @@ public class RegistrationService {
             for (ApplicationDTO application : applicationService.getApplicationsByRegistrationId(registrationDTO.getId())) {
                 applicationService.deleteApplication(application.getId(), request);
             }
-            legalFilesRepository.deleteByRegistration(registrationDTO.getId());
+            legalFilesRepository.deleteByRegistrationId(registrationDTO.getId());
             registrationRepository.delete(registrationMapper.toEntity(registrationDTO));
             return registrationDTO;
         } else {
@@ -330,6 +327,10 @@ public class RegistrationService {
 
     public RegistrationDTO getRegistrationByMunicipalityId(int municipalityId) {
         return registrationMapper.toDTO(registrationRepository.findByMunicipalityId(municipalityId));
+    }
+
+    public Integer getRegistrationIdByMunicipalityId(int municipalityId) {
+        return registrationRepository.findIdByMunicipalityId(municipalityId);
     }
 
     public RegistrationDTO getRegistrationByUserAndMunicipality(int userId, int municipalityId) {
@@ -425,10 +426,13 @@ public class RegistrationService {
     @Transactional
     public LegalFileCorrectionReasonDTO saveLegalFile(LegalFileCorrectionReasonDTO legalFileDTO) throws Exception {
         legalFileDTO.setRequestCorrectionDate(new Date().getTime());
+        LegalFileDTO legalFile = legalFilesMapper.toDTO(legalFilesRepository.findOne(legalFileDTO.getLegalFile()));
+        legalFile.setStatus(LegalFileValidationStatus.INVALID.getValue());
+        legalFile.setIsNew(LegalFileStatus.RECENT.getValue());
         if (legalFileDTO.getCorrectionReason() == null) {
             legalFileDTO.setRequestCorrection(false);
         }
-
+        legalFilesRepository.save(legalFilesMapper.toEntity(legalFile));
         return legalFileCorrectionReasonMapper.toDTO(legalFileCorrectionReasonRepository.save(legalFileCorrectionReasonMapper.toEntity(legalFileDTO)));
     }
 

@@ -17,8 +17,8 @@
 
 		<jndi.datasource.name>jdbc/Wifi4euAbacDataSource</jndi.datasource.name>
 		<eclipselink.logging.level>WARNING</eclipselink.logging.level>
-		<eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
-	        <eclipselink.logging.parameters>true</eclipselink.logging.parameters>			
+        <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
+        <eclipselink.logging.parameters>true</eclipselink.logging.parameters>
 	</properties>
 
 	<profiles>
@@ -137,7 +137,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>${war.plugin.version}</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                     <webResources>

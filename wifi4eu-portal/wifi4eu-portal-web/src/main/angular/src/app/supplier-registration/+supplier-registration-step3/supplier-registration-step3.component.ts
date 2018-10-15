@@ -15,7 +15,7 @@ export class SupplierRegistrationStep3Component {
     @Output() private onBack: EventEmitter<number>;
     @ViewChild('supplierForm') private supplierForm: NgForm;
     private confirmEmailField: string = '';
-    private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
+    private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])$");
     private css_class_email: string = 'notValid';
     private buttonEnabled: boolean = false;
     private userForSUpplier: UserDTO;
@@ -43,8 +43,8 @@ export class SupplierRegistrationStep3Component {
         } else {
             this.supplier.contactEmail = this.user.ecasEmail;
         }
-        this.user.name = this.supplier['contactName'];
-        this.user.surname = this.supplier['contactSurname'];
+        this.user.name = this.supplier['contactName'].trim();
+        this.user.surname = this.supplier['contactSurname'].trim();
         this.supplier.contactPrefix = this.supplier['contactPhonePrefix'];
         this.supplier.contactNumber = this.supplier['contactPhoneNumber'];
         this.supplier['users'] = []
@@ -77,7 +77,20 @@ export class SupplierRegistrationStep3Component {
               && this.supplier['contactSurname'].trim() != "" && this.supplier['contactName'].trim() != "" && this.supplier['contactPhoneNumber'].trim() != "" && this.supplier['contactPhonePrefix'].trim() != ""){
                  this.buttonEnabled = true;
         }
+        // custom name validator
+       if(this.supplier['contactName'] != null && this.supplier['contactName'].trim() != ""){
+        setTimeout(()=>{this.supplierForm.controls['contactName'].setErrors(null);} ,5);
+        } else {
+            setTimeout(()=>{this.supplierForm.controls['contactName'].setErrors({'invalid': true});} ,5);
+        }
+        // custom surname validator
+        if(this.supplier['contactSurname'] != null && this.supplier['contactSurname'].trim() != ""){
+            setTimeout(()=>{this.supplierForm.controls['contactSurname'].setErrors(null);} ,5);
+        } else {
+            setTimeout(()=>{this.supplierForm.controls['contactSurname'].setErrors({'invalid': true});} ,5);
+        }
     }
+    
 
     private isButtonEnabled() {
         return this.checkFieldAreFilled() && this.checkPrefixAndNumberRegex();

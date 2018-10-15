@@ -7,12 +7,12 @@ import wifi4eu.wifi4eu.entity.registration.*;
 import java.util.List;
 
 public interface LegalFilesRepository extends CrudRepository<LegalFile, Integer> {
-	List<LegalFile> findAllByRegistration(Integer registrationId);
-	List<LegalFile> findByRegistration(Integer registrationId);
-	LegalFile findByRegistrationAndFileType(Integer registrationId, Integer fileType);
-	void deleteByRegistration(Integer registrationId);
-	void deleteByRegistrationAndFileType(Integer registrationId, Integer fileType);
-	LegalFile findByIdAndUserId(Integer registrationId, Integer userId);
+
+    List<LegalFile> findByRegistrationId(Integer registrationId);
+
+    LegalFile findByRegistrationIdAndFileType(Integer registrationId, Integer fileType);
+
+    void deleteByRegistrationId(Integer registrationId);
 
 	@Query(value = "select id, registration, type, upload_time, id_user, file_size, file_mime, file_name from legal_files where registration = ?1 order by type, upload_time desc", nativeQuery = true)
 	List<LegalFile> findHistoryAll(Integer registrationId);
@@ -57,5 +57,11 @@ public interface LegalFilesRepository extends CrudRepository<LegalFile, Integer>
 			"inner join applications a on r.id = a.registration\n" +
 			"where l.country_code = ?#{[0]} and r.legal_file1_mime = ?#{[1]})")
 	List<LegalFile> getAllFilesForCountryTop30RegistrationsF1F3(String countryCode, String fileType);*/
+
+    @Query(value = "SELECT COUNT(id) from legal_files where new = 2 and type = ?#{[0]} and registration = ?#{[1]}", nativeQuery = true)
+    Integer checkIfNewFile(Integer type, Integer registrationId);
+
+    @Query(value = "SELECT id, data, type, registration, id_user, file_size, file_mime, file_name, upload_time, status, new, azure_uri from legal_files where new = 2 and type = ?#{[0]} and registration = ?#{[1]}", nativeQuery = true)
+    List<LegalFile> findAllTheNewFiles(Integer type, Integer registrationId);
 
 }

@@ -38,12 +38,9 @@ public class UserResource {
     private UserService userService;
 
     @Autowired
-    private RegistrationService registrationService;
-
-    @Autowired
     private PermissionChecker permissionChecker;
 
-    Logger _log = LogManager.getLogger(UserResource.class);
+    private static final Logger _log = LogManager.getLogger(UserResource.class);
 
 /*    @ApiOperation(value = "Get all the users")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")

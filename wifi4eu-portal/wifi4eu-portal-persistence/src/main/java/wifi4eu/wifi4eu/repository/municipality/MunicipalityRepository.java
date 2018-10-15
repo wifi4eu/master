@@ -4,8 +4,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 
+import java.util.List;
+
 public interface MunicipalityRepository extends CrudRepository<Municipality, Integer> {
-    Iterable<Municipality> findByLauId(Integer lauId);
+
+    List<Municipality> findByLauId(Integer lauId);
 
     @Query(value = "SELECT COUNT(id),lau FROM municipalities GROUP BY lau", nativeQuery = true)
     Iterable<Object> findMunicipalitiesCountGroupedByLauId();
@@ -55,5 +58,8 @@ public interface MunicipalityRepository extends CrudRepository<Municipality, Int
     /*
     SELECT CASE WHEN EXISTS(SELECT a.id FROM applications a INNER JOIN registrations r ON a.registration = r.id INNER JOIN municipalities m ON r.municipality = m.id INNER JOIN calls c ON a.call_id = c.id INNER JOIN voucher_simulations va ON va.municipality = m.id WHERE (CONVERT(bigint, getdate(), 121) > c.end_date) AND m.id = ?1)THEN 1 ELSE 0 END
      */
+
+    @Query(value = "SELECT count(*) FROM municipalities_abac WHERE municipality = ?1", nativeQuery = true)
+    Integer countMunicipalityAbacFromMunicipalityId(int idMunicipality);
 
 }
