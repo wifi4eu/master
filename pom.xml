@@ -833,6 +833,15 @@
                 <cns.client.system.password>${cns.client.system.password.pro}</cns.client.system.password>
             </properties>
         </profile>
+        <profile>
+            <id>CNS-PROD</id>
+            <properties>
+                <cns.notification.service.url>${cns.notification.service.url.pro}</cns.notification.service.url>
+                <cns.user.preferences.service.url>${cns.user.preferences.service.url.pro}</cns.user.preferences.service.url>
+                <cns.client.system.key>${cns.client.system.key.pro}</cns.client.system.key>
+                <cns.client.system.password>${cns.client.system.password.pro}</cns.client.system.password>
+            </properties>
+        </profile>
     </profiles>
 
     <build>
