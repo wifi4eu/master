@@ -104,9 +104,15 @@
                 <p-column header="{{ 'benefPortal.myVoucher.datatable.action3' | translate }}" styleClass="text-center">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
                         <div>
-                            <button class="btn btn-primary text-adjust align-self-center confirm-network-button" id="voucherButton" (click)="confirmInstallation(i)" [disabled]="!registrations[i].installationSiteSubmission || registrations[i].installationSiteConfirmation || !grantAgreementDates[i]">
-                                {{ 'benefPortal.myVoucher.datatable.confirmInstallation' | translate }}
-                            </button>
+                            <div *ngIf="!registrations[i].installationSiteConfirmation">
+                                <button class="btn btn-primary text-adjust align-self-center confirm-network-button" id="voucherButton" (click)="confirmInstallation(i)" [disabled]="!registrations[i].installationSiteSubmission || registrations[i].installationSiteConfirmation || !grantAgreementDates[i]">
+                                    {{ 'benefPortal.myVoucher.datatable.confirmInstallation' | translate }}
+                                </button>
+                            </div>
+                            <div *ngIf="registrations[i].installationSiteConfirmation" class="align-self-center ui-g-12 ui-md-10 ui-lg-11">
+                                <span>{{ 'benefPortal.selectSupplier.feedback.installationReport' | translate }} {{ registrations[i].installationSiteConfirmation | date:'dd-MM-yyyy' }}.</span>
+                                <span><a (click)="installationSiteDetails(i)" class="municipality-name">{{ 'shared.link.seeDetails' | translate }}</a></span>
+                            </div>
                         </div>
                     </template>
                 </p-column>

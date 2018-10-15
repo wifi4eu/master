@@ -104,7 +104,7 @@ export class MyVoucherComponent {
                                         if (response.data != null && response.data.id != 0) {
                                             this.municipalityApi.getMunicipalityById(registrations[i].municipalityId).subscribe(
                                                 (municipality : MunicipalityDTOBase) => {
-                                                    this.grantAgreementApi.getGrantAgreementByApplicationId(response.data.id).subscribe(
+                                                    this.grantAgreementApi.getGrantAgreementByApplicationId(response.data.id, new Date().getTime()).subscribe(
                                                         (res: ResponseDTO )=>{                                                    
                                                             let grantAgreement = res.data;
                                                             if(grantAgreement != null && grantAgreement.dateSignature != null){
@@ -157,7 +157,7 @@ export class MyVoucherComponent {
 
     /* Confirm and send email to network installation company */ 
     private confirmInstallation(i) {
-        this.router.navigate(['/beneficiary-portal/installations/', this.municipalities[i].id]);
+        this.router.navigate(['/beneficiary-portal/installations/', this.registrations[i].municipalityId]);
     }
     
     /* Redirect to selected supplier details */
@@ -188,4 +188,8 @@ export class MyVoucherComponent {
         this.showPermissionsModal = false;
     }
 
+    /* Navigate to installation sites details */
+    installationSiteDetails(i) {
+        this.router.navigate(['beneficiary-portal/installations/' + this.registrations[i].municipalityId]);
+    }
 }
