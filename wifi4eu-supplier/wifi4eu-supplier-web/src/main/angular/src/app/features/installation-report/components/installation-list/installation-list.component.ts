@@ -81,8 +81,7 @@ export class InstallationListComponent implements OnInit {
 
     onSearch() {
         this.totalResults = 0;
-
-        this.installationSiteApi.getInstallationSiteListByBeneficiary(this.searchParametersService.parameters).subscribe((response: ResponseDTOBase) => {
+        this.installationSiteApi.getInstallationSiteListByBeneficiary(new Data().getTime(), this.searchParametersService.parameters).subscribe((response: ResponseDTOBase) => {
             if (response.success) {
                 this.installationSites = response.data.data;
                 this.totalResults = response.data.count;

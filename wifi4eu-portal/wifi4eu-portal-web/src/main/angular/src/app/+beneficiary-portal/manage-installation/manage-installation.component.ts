@@ -88,7 +88,7 @@ export class ManageInstallationComponent {
 
     onSearch() {
         this.totalResults = 0;
-        this.installationsiteApi.getInstallationSiteListByBeneficiary(this.searchParametersService.parameters).subscribe((response: ResponseDTOBase) => {
+        this.installationsiteApi.getInstallationSiteListByBeneficiary(new Date().getTime(), this.searchParametersService.parameters).subscribe((response: ResponseDTOBase) => {
             if (response.success) {
                 this.installationSites = response.data.data;
                 this.totalResults = response.data.count;

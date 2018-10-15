@@ -107,7 +107,8 @@ public class GrantAgreementResource {
     @ApiOperation(value = "Get grant agreement by applicationId")
     @RequestMapping(value = "/getGrantAgreementByApplicationId/{applicationId}", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseDTO getGrantAgreementByApplicationId(@PathVariable("applicationId") Integer applicationId, HttpServletResponse response) throws IOException {
+    public ResponseDTO getGrantAgreementByApplicationId(@PathVariable("applicationId") Integer applicationId,
+                                                        @RequestParam("date") final Long timestamp, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         ResponseDTO responseDTO = new ResponseDTO();

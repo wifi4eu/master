@@ -31,7 +31,8 @@ public class InstallationSiteResource {
     @ApiOperation(value="Get all installation sites by beneficiary")
     @RequestMapping(value="/list", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public ResponseDTO getInstallationSiteListByBeneficiary(@RequestBody final Map<String, Object> installationText){
+    public ResponseDTO getInstallationSiteListByBeneficiary(@RequestBody final Map<String, Object> installationText,
+                                                            @RequestParam("date") final Long timestamp){
         return installationSiteService.findInstallationSitesByBeneficiariesOrdered(installationText);
     }
 
