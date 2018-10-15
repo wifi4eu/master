@@ -1,17 +1,16 @@
 package wifi4eu.wifi4eu.common.ecas;
 
-import wifi4eu.wifi4eu.common.exception.AppException;
-import wifi4eu.wifi4eu.common.security.UserContext;
-import org.apache.commons.lang.StringUtils;
-
 import eu.cec.digit.ecas.client.jaas.DetailedUser;
 import eu.cec.digit.ecas.client.jaas.SubjectNotFoundException;
 import eu.cec.digit.ecas.client.jaas.SubjectUtil;
+import org.apache.commons.lang.StringUtils;
+import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.security.UserContext;
 
 
 public class UserHolder {
 
-    private static final ThreadLocal<UserContext> userHolder = new ThreadLocal<UserContext>();
+    private static final ThreadLocal<UserContext> userHolder = new ThreadLocal<>();
 
     public static void clearUser() {
         userHolder.remove();

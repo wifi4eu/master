@@ -153,7 +153,7 @@ public class QueueConsumer implements Runnable {
     private List<StreamMessage<String, String>> readQueue(String fromMessageId) throws Exception {
         logger.debug("[I] readQueueSince");
 
-        List<StreamMessage<String, String>> messages = streamCommands.xread(StreamOffset.from(cfgQueueName, fromMessageId));
+        List<StreamMessage<String, String>> messages = streamCommands.<StreamMessage<String, String>>xread(StreamOffset.from(cfgQueueName, fromMessageId));
 
         if (messages.size() > 0) {
             logger.info("READ " + messages.size() + " items from " + cfgQueueName);

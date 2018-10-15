@@ -1,6 +1,15 @@
 package wifi4eu.wifi4eu.service.application;
 
-import com.google.common.collect.Lists;
+import java.text.MessageFormat;
+import java.time.DateTimeException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -8,12 +17,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.collect.Lists;
+
 import wifi4eu.wifi4eu.common.Constant;
+import wifi4eu.wifi4eu.common.dto.mail.MailData;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
+import wifi4eu.wifi4eu.common.enums.LegalFileStatus;
+import wifi4eu.wifi4eu.common.enums.LegalFileValidationStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
@@ -23,6 +41,7 @@ import wifi4eu.wifi4eu.mapper.application.ApplicantListItemMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.application.CorrectionRequestEmailMapper;
 import wifi4eu.wifi4eu.mapper.municipality.MunicipalityMapper;
+import wifi4eu.wifi4eu.mapper.registration.legal_files.LegalFilesMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
@@ -31,6 +50,7 @@ import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
+import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.repository.warning.RegistrationWarningRepository;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
@@ -41,15 +61,11 @@ import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.voucher.VoucherService;
 import wifi4eu.wifi4eu.util.ExcelExportGenerator;
-import wifi4eu.wifi4eu.util.MailService;
-
-import javax.servlet.http.HttpServletRequest;
-import java.text.MessageFormat;
-import java.time.DateTimeException;
-import java.util.*;
 
 @Service
 public class ApplicationService {
+    private static final Logger _log = LogManager.getLogger(ApplicationService.class);
+
     @Value("${mail.server.location}")
     private String baseUrl;
 
@@ -95,8 +111,6 @@ public class ApplicationService {
     @Autowired
     MunicipalityRepository municipalityRepository;
 
-    private static final Logger _log = LogManager.getLogger(ApplicationService.class);
-
     @Autowired
     BeneficiaryService beneficiaryService;
 
@@ -117,6 +131,12 @@ public class ApplicationService {
 
     @Autowired
     RegistrationRepository registrationRepository;
+
+    @Autowired
+    LegalFilesRepository legalFilesRepository;
+
+    @Autowired
+    LegalFilesMapper legalFilesMapper;
 
     public ApplicationDTO getApplicationById(int applicationId) {
         return applicationMapper.toDTO(applicationRepository.findOne(applicationId));
@@ -140,37 +160,37 @@ public class ApplicationService {
                 _log.debug("The queue is from the specified call");
                 //check information on the queue is right
                 //if (registrationDTO.getUploadTime() == uploadDocTimestamp) {
-                    _log.debug("All the information of this queue is right");
-                    //check if this application was received previously
-                    ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
-                    if (applicationDTO == null || applicationDTO.getDate() > queueTimestamp) {
-                        //create the application
-                        if (applicationDTO == null) {
-                            applicationDTO = new ApplicationDTO();
-                            applicationDTO.setRegistrationId(registrationDTO.getId());
-                            applicationDTO.setCallId(callDTO.getId());
-                            _log.debug("New application created");
-                        }
-                        applicationDTO.setDate(queueTimestamp);
-                        applicationDTO = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
-                        _log.info("Application " + applicationDTO.getId() + " created successfully");
-                        return applicationDTO;
-                    } else {
-                        _log.error("Trying to register an application existent on the DB, callId: "
-                                + callId + " userId: " + userId + " registrationId: " + registrationId +
-                                " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
-                        return applicationDTO;
+                _log.debug("All the information of this queue is right");
+                //check if this application was received previously
+                ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
+                if (applicationDTO == null || applicationDTO.getDate() > queueTimestamp) {
+                    //create the application
+                    if (applicationDTO == null) {
+                        applicationDTO = new ApplicationDTO();
+                        applicationDTO.setRegistrationId(registrationDTO.getId());
+                        applicationDTO.setCallId(callDTO.getId());
+                        _log.debug("New application created");
                     }
+                    applicationDTO.setDate(queueTimestamp);
+                    applicationDTO = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+                    _log.info("Application " + applicationDTO.getId() + " created successfully");
+                    return applicationDTO;
                 } else {
-                    _log.error("Trying to register an application with incorrect uploadDocTimestamp, callId: "
+                    _log.error("Trying to register an application existent on the DB, callId: "
                             + callId + " userId: " + userId + " registrationId: " + registrationId +
                             " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
+                    return applicationDTO;
                 }
             } else {
-                _log.error("Trying to register an application out of the call period, callId: "
+                _log.error("Trying to register an application with incorrect uploadDocTimestamp, callId: "
                         + callId + " userId: " + userId + " registrationId: " + registrationId +
                         " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
             }
+        } else {
+            _log.error("Trying to register an application out of the call period, callId: "
+                    + callId + " userId: " + userId + " registrationId: " + registrationId +
+                    " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
+        }
 //        } else {
 //            _log.error("The information provided is wrong, callId: "
 //                    + callId + " userId: " + userId + " registrationId: " + registrationId +
@@ -196,8 +216,8 @@ public class ApplicationService {
         if (registration.getAllFilesFlag() == 1) {
             if (applicationDTO.getId() != 0) {
                 _log.warn("Call to a create method with id set, the value has been removed ({})", applicationDTO.getId());
-                applicationDTO.setId(0);    
-            }            
+                applicationDTO.setId(0);
+            }
             ApplicationDTO application = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
             _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Application created");
             return application;
@@ -213,13 +233,12 @@ public class ApplicationService {
         } else {
             _log.warn("SCHEDULED TASK: Create Application Emails - The user " + user.getEcasUsername() + " has not specified a language");
         }
-        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-        String subject = bundle.getString("mail.voucherApply.subject");
-        String msgBody = bundle.getString("mail.voucherApply.body");
-        if (!userService.isLocalHost()) {
-            mailService.sendEmailAsync(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipality.getId(), "createApplication");
-            _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Create Application Emails - Email sent to " + user.getEcasEmail() + " for the " + "application id: " + applicationId);
-        }
+
+        MailData mailData = MailHelper.buildMailCreateApplication(
+                user.getEcasEmail(), MailService.FROM_ADDRESS,
+                municipality.getId(), municipality.getName(), "createApplication", locale);
+        mailService.sendMail(mailData, true);
+        _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Create Application Emails - Email sent to " + user.getEcasEmail() + " for the " + "application id: " + applicationId);
     }
 
     @Transactional
@@ -241,12 +260,8 @@ public class ApplicationService {
         return applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
     }
 
-    public ApplicationDTO getApplicationByCallIdAndMunicipalityId(int callId, int municipalityId) {
-        if (municipalityId != 0 && callId != 0) {
-            int registrationId = registrationRepository.findByMunicipalityId(municipalityId).getId();
-            return applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
-        }
-        return null;
+    public ApplicationDTO getVoucherApplicationByCallIdAndRegistrationId(int callId, int registrationId) {
+        return applicationMapper.toDTO(applicationRepository.findVoucherApplicationByCallIdAndRegistrationId(callId, registrationId));
     }
 
     public List<ApplicationDTO> getApplicationsByRegistrationId(int registrationId) {
@@ -256,6 +271,10 @@ public class ApplicationService {
 
     public ApplicationDTO getApplicationByRegistrationId(int registrationId) {
         return applicationMapper.toDTO(applicationRepository.findTopByRegistrationIdOrderByDateDesc(registrationId));
+    }
+
+    public List<ApplicationDTO> applicationsByListOfMunicipalities(Integer userId) {
+        return applicationMapper.toDTOList(applicationRepository.findApplicationsByMunicipalities(userId));
     }
 
     public List<ApplicationVoucherInfoDTO> getApplicationsVoucherInfoByCall(int callId) {
@@ -450,6 +469,8 @@ public class ApplicationService {
                 if (application.getUserLang() != null) {
                     locale = new Locale(application.getUserLang());
                 }
+
+                // TODO move this logic to MailHelper.java
                 ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
                 String subject = bundle.getString("mail.correctionRequestEmail.subject");
                 String msgBody = bundle.getString("mail.correctionRequestEmail.body");
@@ -486,7 +507,10 @@ public class ApplicationService {
                 msgBody = MessageFormat.format(msgBody, documentTypes);
                 Registration registration = registrationRepository.findOne(application.getRegistrationId());
                 if (registration != null) {
-                    mailService.sendEmail(application.getUserEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, registration.getMunicipality().getId(), Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS);
+                    MailData mailData = new MailData(application.getUserEcasEmail(), MailService.FROM_ADDRESS,
+                            subject, msgBody, locale,
+                            registration.getMunicipality().getId(), Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS, true);
+                    mailService.sendMail(mailData, false);
                 }
             }
             correctionRequest = new CorrectionRequestEmailDTO(null, callId, new Date().getTime(), buttonPressedCounter);
@@ -550,6 +574,30 @@ public class ApplicationService {
 
         applicationDTO.setRejected(false);
         return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+    }
+
+
+    @Transactional
+    public ResponseDTO changeStatusRegistrationDocuments(Integer applicationId) {
+        ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findOne(applicationId));
+        List<LegalFileDTO> legalFileDTOS = legalFilesMapper.toDTOList(legalFilesRepository.findByRegistrationId(applicationDTO.getRegistrationId()));
+        if (!legalFileDTOS.isEmpty()) {
+            for (LegalFileDTO legalFileDTO : legalFileDTOS) {
+                if (legalFileDTO.getIsNew() == LegalFileStatus.RECENT.getValue()) {
+                    legalFileDTO.setIsNew(LegalFileStatus.OLD.getValue());
+                }
+                if (legalFileDTO.getIsNew() == LegalFileStatus.NEW.getValue()) {
+                    if (applicationDTO.getStatus() == ApplicationStatus.KO.getValue()) {
+                        legalFileDTO.setStatus(LegalFileValidationStatus.INVALID.getValue());
+                    } else if (applicationDTO.getStatus() == ApplicationStatus.OK.getValue()) {
+                        legalFileDTO.setStatus(LegalFileValidationStatus.VALID.getValue());
+                    }
+                    legalFileDTO.setIsNew(LegalFileStatus.RECENT.getValue());
+                }
+                legalFilesRepository.save(legalFilesMapper.toEntity(legalFileDTO));
+            }
+        }
+        return new ResponseDTO(true, "success", null);
     }
 
 }

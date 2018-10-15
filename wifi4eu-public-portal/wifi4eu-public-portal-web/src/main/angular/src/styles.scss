@@ -239,14 +239,16 @@ body {
 .video-button {
   background-color: $darkish-blue;
   width: 56%;
-  height: 58px;
+  height: 40%;
   font-family: Verdana;
   font-size: 20px;
   font-weight: bold;
   line-height: 1.5;
   color: #ffffff;
   display: block;
-  margin: 0 auto;
+  margin: 1em auto;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .mayor {
@@ -256,7 +258,7 @@ body {
 .apply {
 
   font-family: Verdana;
-  font-size: 52px;
+  font-size: 45px;
   font-weight: bold;
   line-height: 1.15;
   color: $darkish-blue;
@@ -467,7 +469,7 @@ body {
 
 .changePassword {
   margin-top: 0.5em;
-  width: 71%;
+  width: 90%;
   padding-top: 15px;
   padding-bottom: 15px;
   font-size: 1.2em;
@@ -1227,7 +1229,12 @@ discussion-component .expanded .content, discussion-component .expanded .header,
 }
 
 .benefLandingList {
-  list-style: circle;
+  list-style: square;
+  color: $darkish-blue;
+
+  span {
+    color: black;
+  }
 }
 
 .timelineBenefLanding {

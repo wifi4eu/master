@@ -161,16 +161,16 @@
             </div>
             <div class="col-sm-8">
                 <p class="profileData">{{ 'benefPortal.grantAgreement.document' | translate}}</p>
-                <p class="smallCharacters">{{ 'benefPortal.grantAgreement.documentDownload' | translate}}</p>
-                <a class="smallCharacters" (click)="downladPDF()"><i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download.grantAgreementPDF' | translate}} {{language}}</a> 
+                <p style="font-size: 0.75em;">{{ 'benefPortal.grantAgreement.documentDownload' | translate}}</p>
+                <a style="padding-bottom: 5px;display: block;font-size: 0.8em;" (click)="downladPDF()"><i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate}} {{language}}</a>
             </div>   
         </div>
     </div>
     <div class="col-sm-12">
-        <p class="smallCharacters">{{ 'benefPortal.grantAgreement.downloadText' | translate}}</p>
-        <p class="smallCharacters"><input type="checkbox" (click)="enableButton()">{{ 'benefPortal.grantAgreement.confirmCheckbox' | translate}}</p>
+        <p style="font-size: 14px;">{{ 'shared.download.grantAgreementPDF' | translate}}</p>
+        <p style="font-size: 14px;"><input type="checkbox" style="margin-right: 3px;" (click)="enableButton()">{{ 'benefPortal.grantAgreement.confirmCheckbox' | translate}}</p>
         <br>
-        <button class="btn btn-primary smallCharacters" (click)="openModal()" [disabled]="!enableButtonFront || inputGrantAgreement?.dateSignature">{{ 'benefPortal.myVoucher.datatable.signGrantAgreement' | translate}}</button>
+        <button class="btn btn-primary" style="font-size: 14px;" (click)="openModal()" [disabled]="!enableButtonFront || inputGrantAgreement?.dateSignature">{{ 'benefPortal.myVoucher.datatable.signGrantAgreement' | translate}}</button>
     </div>
 
 </div>

@@ -1,33 +1,43 @@
 package wifi4eu.wifi4eu.util;
 
-import com.microsoft.azure.storage.blob.SharedAccessBlobPermissions;
-import com.microsoft.azure.storage.blob.SharedAccessBlobPolicy;
-import eu.cec.digit.ecas.client.constants.RequestConstant;
-import eu.cec.digit.ecas.client.signature.*;
+import java.io.ByteArrayOutputStream;
+import java.util.Base64;
+import java.util.Date;
+import java.util.EnumSet;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import wifi4eu.wifi4eu.common.azureblobstorage.AzureBlobStorage;
-import wifi4eu.wifi4eu.common.azureblobstorage.AzureBlobStorageUtils;
+
+import com.microsoft.azure.storage.blob.SharedAccessBlobPermissions;
+import com.microsoft.azure.storage.blob.SharedAccessBlobPolicy;
+
+import eu.cec.digit.ecas.client.constants.RequestConstant;
+import eu.cec.digit.ecas.client.signature.Message;
+import eu.cec.digit.ecas.client.signature.SignatureClient;
+import eu.cec.digit.ecas.client.signature.SignatureInfo;
+import eu.cec.digit.ecas.client.signature.SimpleTextMessage;
+import eu.cec.digit.ecas.client.signature.UserCommentPresence;
+import eu.cec.digit.ecas.client.signature.UserConfirmationMessage;
+import eu.cec.digit.ecas.client.signature.UserConfirmationSignatureRequest;
+import eu.cec.digit.ecas.client.signature.UserConfirmationSignatureRequestImpl;
+import eu.cec.digit.ecas.client.signature.VerifiedUserConfirmationMessage;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
 import wifi4eu.wifi4eu.common.dto.model.GrantAgreementDTO;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
-import wifi4eu.wifi4eu.entity.grantAgreement.GrantAgreement;
+import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
+import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobStorage;
+import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobStorageUtils;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.grantAgreement.GrantAgreementService;
-import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.*;
-import java.util.Date;
-import java.util.EnumSet;
 
 @Service
 public class EcasSignatureUtil {
@@ -52,6 +62,9 @@ public class EcasSignatureUtil {
     @Autowired
     ApplicationService applicationService;
 
+    @Autowired
+    AzureBlobConnector azureBlobConnector;
+
     /**
      * Sample Snippets to interact with the EU Login Signature Service.
      * <p>
@@ -64,9 +77,12 @@ public class EcasSignatureUtil {
      **/
 
     public String constructSignatureHDSCallbackUrl(HttpServletRequest request, String documentToBeSigned) {
-        //String url = userService.getBaseUrl().substring(0, userService.getBaseUrl().indexOf("#"));
-        String url = "https://wifi4eu-dev.everincloud.com/wifi4eu/";
-        url += "api/signature/handleSignature/" + documentToBeSigned;
+        // TODO for local testing use:
+    	// String url = "http://localhost:8080/wifi4eu/";
+    	// TODO this should not be environment dependent, right now is hardcoded pointing to dev
+    	//String url = "https://wifi4eu-dev.everincloud.com/wifi4eu/";
+    	String url = userService.getServerSchemes().concat("://").concat(userService.getServerAddress()).concat("/wifi4eu/");
+        url = url.concat("api/signature/handleSignature/").concat(documentToBeSigned);
         System.out.println("URL: "+  url);
         return url;
     }
@@ -137,15 +153,9 @@ public class EcasSignatureUtil {
         return buff.toString();
     }
 
-    public GrantAgreementDTO writeSignature(String signatureId, HttpServletRequest request, String grantAgreementID) {
+    public GrantAgreementDTO writeSignature(String signatureId, HttpServletRequest request, String grantAgreementID, GrantAgreementDTO grantAgreement ) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-
-        GrantAgreementDTO grantAgreement = grantAgreementService.getGrantAgreementById(Integer.parseInt(grantAgreementID));
-
-        if(!permissionChecker.checkIfAuthorizedGrantAgreement(grantAgreement.getApplicationId())){
-            throw new AccessDeniedException("The user is not authorized to sign grant agreement");
-        }
 
         try {
             grantAgreement.setSignatureId(signatureId);
@@ -171,9 +181,7 @@ public class EcasSignatureUtil {
 
             byte[] data = outputStream.toByteArray();
 
-            SharedAccessBlobPolicy policy = azureBlobStorageUtils.createSharedAccessPolicy(EnumSet.of(SharedAccessBlobPermissions.READ), 20);
-
-            String downloadURL = azureBlobStorage.getDocumentWithTokenAzureStorage("grant_agreement_" + grantAgreementID + "_signed.pdf", data, policy);
+            String downloadURL = azureBlobConnector.uploadByteArray("wifi4eu", "grant_agreement_" + grantAgreement.getApplicationId() + "_signed.pdf", data);
 
             grantAgreement.setDocumentLocation(downloadURL);
             grantAgreement.setDateSignature(new Date());

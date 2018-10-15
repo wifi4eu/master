@@ -17,8 +17,7 @@ import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.entity.application.ApplicationInvalidateReason;
-import wifi4eu.wifi4eu.entity.registration.LegalFileCorrectionReason;
-import wifi4eu.wifi4eu.entity.voucher.SimpleMunicipality;
+import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
 import wifi4eu.wifi4eu.mapper.application.ApplicantAuthorizedPersonMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationInvalidateReasonMapper;
@@ -27,6 +26,7 @@ import wifi4eu.wifi4eu.repository.application.ApplicationAuthorizedPersonReposit
 import wifi4eu.wifi4eu.repository.application.ApplicationInvalidateReasonRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
+import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
 import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
 import wifi4eu.wifi4eu.repository.voucher.SimpleMunicipalityRepository;
@@ -42,6 +42,9 @@ import java.util.*;
 public class ApplicationInvalidateReasonService {
 
     private static final Logger _log = LogManager.getLogger(ApplicationInvalidateReasonService.class);
+
+    //requirement: after a request for correction is sent, cannot validate or invalidate for 2 days
+    private static final Integer UPLOAD_DOCUMENT_CORRECTION_DEADLINE = 2;
 
     @Autowired
     ApplicationInvalidateReasonRepository applicationInvalidateReasonRepository;
@@ -87,6 +90,9 @@ public class ApplicationInvalidateReasonService {
 
     @Autowired
     ApplicationAuthorizedPersonRepository application_authorizedPersonRepository;
+
+    @Autowired
+    LogEmailRepository logEmailRepository;
 
     public List<ApplicationInvalidateReasonDTO> getInvalidateReasonByApplicationId(Integer applicationId) {
         return applicationInvalidateReasonMapper.toDTOList(applicationInvalidateReasonRepository.findAllByApplicationIdOrderByReason(applicationId));
@@ -168,6 +174,7 @@ public class ApplicationInvalidateReasonService {
         applicationDTO.setStatus(ApplicationStatus.KO.getValue());
         legalFileCorrectionReasonRepository.deleteLegalFileCorrectionByRegistrationId(applicationDTO.getRegistrationId());
         applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+        applicationService.changeStatusRegistrationDocuments(applicationDTO.getId());
 
         updateVoucherSimulationNumDuplicates(applicationDTO);
 
@@ -222,6 +229,7 @@ public class ApplicationInvalidateReasonService {
         }
         legalFileCorrectionReasonRepository.deleteLegalFileCorrectionByRegistrationId(applicationDBO.getRegistrationId());
         ApplicationDTO validatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDBO)));
+        applicationService.changeStatusRegistrationDocuments(applicationDTO.getId());
         /* TODO: The emails are not sent as of the time of this comment, but they will be enabled in the near future.
         updateVoucherSimulationNumDuplicates(applicationDTO);
         RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
@@ -257,10 +265,12 @@ public class ApplicationInvalidateReasonService {
         Map<String, Boolean> checks = new HashMap<>();
         boolean valid = false;
         // Has the municipality been notified by email of request for changes
-        if (applicationDTO.isSentEmail()) {
+        // If user has uploaded all the requested documents and it's before the deadline, disable buttons
+        LogEmail logEmail = logEmailRepository.findLastEmailsSendCorrectionNotUploadedYet(applicationDTO.getId(), Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS);
+        if (logEmail != null) {
             Calendar deadline = Calendar.getInstance();
-            deadline.setTime(applicationDTO.getSentEmailDate());
-            deadline.add(Calendar.DATE, 7);
+            deadline.setTime(new Date(logEmail.getSentDate()));
+            deadline.add(Calendar.DATE, UPLOAD_DOCUMENT_CORRECTION_DEADLINE);
             Date currentTime = Calendar.getInstance().getTime();
             // Have more than 7 days overcome since the last request
             if (currentTime.before(deadline.getTime())) {

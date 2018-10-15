@@ -2,8 +2,9 @@
     <div class="row" *ngIf="registration">
         <div style="display: flex; padding-top: 2em;">
             <div class="ui-g-1" style="margin-top: 1em; font-size: 16px; width: none !important;">
-                <a class="link-label" (click)="confirmClose()">
-                    <i class="fa fa-long-arrow-left fa-2" aria-hidden="true"></i> {{ 'shared.back.button' | translate }}
+                <a class="link-label" (click)="goBack()">
+                    <i class="fa fa-long-arrow-left fa-2" aria-hidden="true"></i> {{ 'shared.back.button' | translate
+                    }}
                 </a>
             </div>
             <div class="ui-g-12 center">
@@ -74,8 +75,8 @@
                     <div class="left">
                         <div class="fileUpload btn btn-primary">
                             <span>{{ 'benefDocs.copyMayorsID' | translate }}</span>
-                            <input #document1 id="document1" name="document1" (change)="uploadFile($event, 1)" type="file" class="upload" accept=".png, .jpg, .pdf"
-                            />
+                            <input #document1 id="document1" name="document1" (change)="uploadFile($event, 1)" type="file"
+                                class="upload" accept=".png, .jpg, .pdf" />
                         </div>
                     </div>
                     <span class="ui-g-12 row" *ngIf="registration">
@@ -85,7 +86,8 @@
                         <div class="ui-g-8">
                             <div class="margin-docs">
                                 <span *ngIf="documentFilesType1.length == 0">
-                                    <span class="attachment-label">{{ 'shared.supportingDocuments.noAttached' | translate }}</span>
+                                    <span class="attachment-label">{{ 'shared.supportingDocuments.noAttached' |
+                                        translate }}</span>
                                 </span>
                             </div>
                             <div *ngFor="let file of documentFilesType1; let i = index" class="pb-1 margin-docs">
@@ -94,7 +96,7 @@
                                     <span>{{documentFilesType1[i].fileName}}</span>
                                     <span *ngIf="!file?.uploadTime">
                                         <!-- new file -->
-                                        <a sclass="link-label" (click)="removeFile(1)">
+                                        <a sclass="link-label" (click)="openDeleteModal(1)">
                                             <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
                                     </span>
                                     <span *ngIf="file?.uploadTime">
@@ -102,11 +104,14 @@
                                         <a class="link-label" style="pointer-events:none; cursor: default; opacity: 0.6;">
                                             <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
                                         <a class="link-label" href="{{fileURL}}{{registration.id}}/{{file.id}}" target="_blank">
-                                            <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
+                                            <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' |
+                                            translate }}
                                         </a>
                                         <span class="attachment-label">
-                                            <br />{{ 'shared.supportingDocuments.attachment' | translate:{uploadTime:documentFilesType1[i].uploadTime
-                                            | date : "h:mm a, d MMM y"} }}
+                                            <br />{{ 'shared.supportingDocuments.attachment' |
+                                            translate:{date:documentFilesType1[i].uploadTime|
+                                            date : "dd/MM/yyyy", time:documentFilesType1[i].uploadTime| date : "HH:mm"}
+                                            }}
                                         </span>
                                     </span>
                                 </span>
@@ -130,8 +135,8 @@
                     <div class="left">
                         <div class="fileUpload btn btn-primary">
                             <span>{{ 'benefDocs.proofNomination' | translate }}</span>
-                            <input #document3 id="document3" name="document3" (change)="uploadFile($event, 3)" type="file" class="upload" accept=".png, .jpg, .pdf"
-                            />
+                            <input #document3 id="document3" name="document3" (change)="uploadFile($event, 3)" type="file"
+                                class="upload" accept=".png, .jpg, .pdf" />
                         </div>
                     </div>
                     <span class="ui-g-12 row" *ngIf="registration">
@@ -141,7 +146,8 @@
                         <div class="ui-g-8">
                             <div class="margin-docs">
                                 <span *ngIf="documentFilesType3.length == 0">
-                                    <span class="attachment-label">{{ 'shared.supportingDocuments.noAttached' | translate }}</span>
+                                    <span class="attachment-label">{{ 'shared.supportingDocuments.noAttached' |
+                                        translate }}</span>
                                 </span>
                             </div>
                             <div *ngFor="let file of documentFilesType3; let i = index" class="pb-1 margin-docs">
@@ -150,7 +156,7 @@
                                     <span>{{documentFilesType3[i].fileName}}</span>
                                     <span *ngIf="!file?.uploadTime">
                                         <!-- new file -->
-                                        <a sclass="link-label" (click)="removeFile(3)">
+                                        <a sclass="link-label" (click)="openDeleteModal(3)">
                                             <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
                                     </span>
                                     <span *ngIf="file?.uploadTime">
@@ -158,11 +164,12 @@
                                         <a class="link-label" style="pointer-events:none; cursor: default; opacity: 0.6;">
                                             <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
                                         <a class="link-label" href="{{fileURL}}{{registration.id}}/{{file.id}}" target="_blank">
-                                            <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
+                                            <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' |
+                                            translate }}
                                         </a>
                                         <span class="attachment-label">
-                                            <br />{{ 'shared.supportingDocuments.attachment' | translate:{uploadTime:documentFilesType3[i].uploadTime
-                                            | date : "h:mm a, d MMM y"} }}
+                                            <br />{{ 'shared.supportingDocuments.attachment' | translate:{date:documentFilesType3[i].uploadTime|
+                                            date : "dd/MM/yyyy", time:documentFilesType3[i].uploadTime| date : "shortTime"} }}
                                         </span>
                                     </span>
                                 </span>
@@ -180,6 +187,10 @@
                     </div>
                 </div>
 
+                <p class="labelModal profileData">
+                    {{ 'shared.supportingDocuments.provide.optional' | translate }}
+                </p>
+
                 <div class="col-offset-12">
                     <label class="label" for="document4" [innerHTML]="'benefPortal.request.additionalInfo.doc3.label' | translate"></label>
                 </div>
@@ -187,8 +198,8 @@
                     <div class="left">
                         <div class="fileUpload btn btn-primary">
                             <span>{{ 'benefDocs.authorisedSign' | translate }}</span>
-                            <input #document4 id="document4" name="document4" (change)="uploadFile($event, 4)" type="file" class="upload" accept=".png, .jpg, .pdf"
-                            />
+                            <input #document4 id="document4" name="document4" (change)="uploadFile($event, 4)" type="file"
+                                class="upload" accept=".png, .jpg, .pdf" />
                         </div>
                     </div>
                     <span class="ui-g-12 row" *ngIf="registration">
@@ -198,7 +209,8 @@
                         <div class="ui-g-8">
                             <div class="margin-docs">
                                 <span *ngIf="documentFilesType4.length == 0">
-                                    <span class="attachment-label">{{ 'shared.supportingDocuments.noAttached' | translate }}</span>
+                                    <span class="attachment-label">{{ 'shared.supportingDocuments.noAttached' |
+                                        translate }}</span>
                                 </span>
                             </div>
                             <div *ngFor="let file of documentFilesType4; let i = index" class="pb-1 margin-docs">
@@ -207,7 +219,7 @@
                                     <span>{{documentFilesType4[i].fileName}}</span>
                                     <span *ngIf="!file?.uploadTime">
                                         <!-- new file -->
-                                        <a sclass="link-label" (click)="removeFile(4)">
+                                        <a sclass="link-label" (click)="openDeleteModal(4)">
                                             <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
                                     </span>
                                     <span *ngIf="file?.uploadTime">
@@ -215,11 +227,15 @@
                                         <a class="link-label" style="pointer-events:none; cursor: default; opacity: 0.6;">
                                             <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
                                         <a class="link-label" href="{{fileURL}}{{registration.id}}/{{file.id}}" target="_blank">
-                                            <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
+                                            <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' |
+                                            translate }}
                                         </a>
+
                                         <span class="attachment-label">
-                                            <br />{{ 'shared.supportingDocuments.attachment' | translate:{uploadTime:documentFilesType4[i].uploadTime
-                                            | date : "h:mm a, d MMM y"} }}
+                                            <br />{{ 'shared.supportingDocuments.attachment' |
+                                            translate:{date:documentFilesType4[i].uploadTime|
+                                            date : "dd/MM/yyyy", time:documentFilesType4[i].uploadTime| date : "HH:mm"}
+                                            }}
                                         </span>
                                     </span>
                                 </span>
@@ -233,9 +249,7 @@
                     </div>
                 </div>
 
-                <p class="labelModal profileData">
-                    {{ 'shared.supportingDocuments.provide.optional' | translate }}
-                </p>
+
 
                 <div class="col-offset-12">
                     <label class="label" for="document2" [innerHTML]="'benefPortal.request.additionalInfo.doc4.label' | translate"></label>
@@ -244,8 +258,8 @@
                     <div class="left">
                         <div class="fileUpload btn btn-primary">
                             <span>{{ 'benefDocs.copyYourID' | translate }}</span>
-                            <input #document2 id="document2" name="document2" (change)="uploadFile($event, 2)" type="file" class="upload" accept=".png, .jpg, .pdf"
-                            />
+                            <input #document2 id="document2" name="document2" (change)="uploadFile($event, 2)" type="file"
+                                class="upload" accept=".png, .jpg, .pdf" />
                         </div>
                     </div>
                     <span class="ui-g-12 row" *ngIf="registration">
@@ -255,7 +269,8 @@
                         <div class="ui-g-8">
                             <div class="margin-docs">
                                 <span *ngIf="documentFilesType2.length == 0">
-                                    <span class="attachment-label">{{ 'shared.supportingDocuments.noAttached' | translate }}</span>
+                                    <span class="attachment-label">{{ 'shared.supportingDocuments.noAttached' |
+                                        translate }}</span>
                                 </span>
                             </div>
                             <div *ngFor="let file of documentFilesType2; let i = index" class="pb-1 margin-docs">
@@ -264,7 +279,7 @@
                                     <span>{{documentFilesType2[i].fileName}}</span>
                                     <span *ngIf="!file?.uploadTime">
                                         <!-- new file -->
-                                        <a sclass="link-label" (click)="removeFile(2)">
+                                        <a sclass="link-label" (click)="openDeleteModal(2)">
                                             <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
                                     </span>
                                     <span *ngIf="file?.uploadTime">
@@ -272,11 +287,14 @@
                                         <a class="link-label" style="pointer-events:none; cursor: default; opacity: 0.6;">
                                             <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
                                         <a class="link-label" href="{{fileURL}}{{registration.id}}/{{file.id}}" target="_blank">
-                                            <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
+                                            <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' |
+                                            translate }}
                                         </a>
                                         <span class="attachment-label">
-                                            <br />{{ 'shared.supportingDocuments.attachment' | translate:{uploadTime:documentFilesType2[i].uploadTime
-                                            | date : "h:mm a, d MMM y"} }}
+                                            <br />{{ 'shared.supportingDocuments.attachment' |
+                                            translate:{date:documentFilesType2[i].uploadTime|
+                                            date : "dd/MM/yyyy", time:documentFilesType2[i].uploadTime| date : "HH:mm"}
+                                            }}
                                         </span>
                                     </span>
                                 </span>
@@ -300,41 +318,22 @@
         <div class="form-group ui-g">
             <div class="ui-lg-3"></div>
             <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                <button type="button" (click)="confirmClose()" class="btn btn-primary cancel-button" [disabled]="!legalForm.form.valid || !filesUploaded">{{ 'shared.cancel.button' | translate }}
+                <button type="button" (click)="goBack()" class="btn btn-primary cancel-button" [disabled]="!legalForm.form.valid || !filesUploaded">{{
+                    'shared.cancel.button' | translate }}
                 </button>
             </div>
             <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                <button type="submit" class="btn btn-primary publish-button" [disabled]="!legalForm.form.valid || !filesUploaded">
+                <button type="submit" class="btn btn-primary publish-button" [disabled]="!legalForm.form.valid || !filesUploaded || !changedDocs > 0">
                     {{ 'shared.confirm.button' | translate }}
                 </button>
             </div>
             <div class="ui-lg-3"></div>
         </div>
     </form>
-
-    <p-dialog [(visible)]="displayConfirmClose">
-        <div class="form-group ui-g">
-            <div class="col-sm-12 center" style="padding-bottom:1em; color: #004494; font-size:20px; font-weight: bold;">
-                <span>{{ 'shared.supportingDocuments.leavePage.title' | translate}}</span>
-            </div>
-            <span style="line-height: 1.25; padding-bottom: 3em; padding-left: 2em; padding-right: 2em; font-size: 16px;">{{ 'shared.supportingDocuments.leavePage.body' | translate}}</span>
-            <div class="ui-lg-2"></div>
-            <div class="ui-g-6 ui-md-6 ui-lg-4" style="text-align: center !important">
-                <button (click)="cancelBack()" class="btn btn-primary publish-button">{{ 'shared.no' | translate }}
-                </button>
-            </div>
-            <div class="ui-g-6 ui-md-6 ui-lg-4" style="text-align: center !important">
-                <a routerLink="../.." routerLinkActive="active">
-                    <button type="button" class="btn btn-primary cancel-button">
-                        {{ 'shared.yes' | translate }}
-                    </button>
-                </a>
-            </div>
-
-            <div class="ui-lg-2"></div>
-        </div>
-    </p-dialog>
-
+    <p-confirmDialog class="form-group ui-g confirmDialogDocs" header="{{ 'shared.supportingDocuments.leavePage.title' | translate}}"
+        message="{{ 'shared.supportingDocuments.leavePage.body' | translate}}" acceptLabel="{{ 'shared.yes' | translate }}"
+        rejectLabel="{{ 'shared.no' | translate }}" closeOnEscape="false" closable="false" responsive="true">
+    </p-confirmDialog>
     <p-dialog [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
         [closable]="false" [closeOnEscape]="false">
         <p class="ModalLoaderDots">
@@ -345,5 +344,30 @@
         <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title' | translate }}</h1>
         <p class="ModalpConfirmation">{{ 'shared.loading.modal.title3' | translate }}</p>
     </p-dialog>
+
+    <p-dialog [(visible)]="displayConfirmDelete" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
+        [closable]="false" [closeOnEscape]="false">
+        <div class="form-group ui-g">
+            <div class="col-sm-12 center" style="padding-bottom:1em; color: #004494; font-size:20px; font-weight: bold;">
+                <span>{{ 'shared.supportingDocuments.removeDocument' | translate}}</span>
+            </div>
+            <div class="col-sm-12 center" style="padding-bottom:1em;">
+                <span style="line-height: 1.25; font-size: 16px;">{{ 'shared.supportingDocuments.removeModalAreYouSure'
+                    | translate}}</span>
+            </div>
+            <div class="col-sm-12 center">
+                <div class="offset-lg-2 col-sm-6 col-g-6 col-md-6 col-lg-4">
+                    <button (click)="cancelBack()" class="btn btn-primary publish-button">{{ 'shared.cancel.button' |
+                        translate }} </button>
+                </div>
+                <div class="col-sm-6 col-g-6 col-md-6 col-lg-4">
+                    <button (click)="removeFile()" type="button" class="btn btn-primary cancel-button">
+                        {{ 'shared.confirm.button' | translate }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </p-dialog>
+
     <helpdesk-form-component portal="beneficiary-additional-info"></helpdesk-form-component>
 </div>

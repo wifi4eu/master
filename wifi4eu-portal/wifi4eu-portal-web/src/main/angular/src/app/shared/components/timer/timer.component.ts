@@ -3,19 +3,21 @@ import { Observable } from 'rxjs/Rx';
 import { Http } from '@angular/http';
 import { SharedService } from '../../shared.service';
 import { CallApi } from "../../swagger/api/CallApi";
+import { environment } from 'environments/environment';
 
-@Component({ selector: 'timer-component', templateUrl: 'timer.component.html' , styleUrls: ['timer.component.scss'], providers: [CallApi]})
+@Component({ selector: 'timer-component', templateUrl: 'timer.component.html', styleUrls: ['timer.component.scss'], providers: [CallApi] })
 export class TimerComponent {
     @Output() timerEvent = new EventEmitter<any>();
-    private currentTimestamp: number;
+    private initialTime: number;
+    private initialPerformanceTime: number;
     @Input('expirationTimestamp') expirationTimestamp: number;
     private days: number;
     private hours: number;
     private minutes: number;
     private seconds: number;
-    @Input('baseURLApi') baseURLApi : string;
-    private timeGate: string = "/time";
-    private urlTime: string = "https://wifi4eu-dev-queue.everincloud.com";
+    @Input('baseURLApi') baseURLApi: string;
+    private timeGate: string = environment.applyVoucherUrl + "/time";
+    private queryParameter: string = "?time=" + new Date().getTime();
 
     constructor(private http: Http, private sharedService: SharedService, private callApi: CallApi) {
     }
@@ -24,11 +26,14 @@ export class TimerComponent {
         //we get the time from server ONCE
         this.getTime();
 
-        //every second we change the timer
-        let subscription = Observable.interval(1000).map((x) => { }).subscribe((x) => {
-            this.currentTimestamp += 1000;
-            this.toEpoch(this.expirationTimestamp - this.currentTimestamp);
-            if (this.checkIfFinished(this.expirationTimestamp - this.currentTimestamp)) {
+        let subscription = Observable.interval(300).map((x) => { }).subscribe((x) => {
+            /**
+             * initialTime: Contains the time (in ms - Epoch Time) from the queue.
+             * initialPerformanceTime: Contains the instant of time, relative to the initialization of the web app, when we retrieved the time to the server
+             */
+            let currentTimestamp = this.initialTime + (performance.now() - this.initialPerformanceTime);
+            this.toEpoch(this.expirationTimestamp - currentTimestamp);
+            if (this.checkIfFinished(this.expirationTimestamp - currentTimestamp)) {
                 subscription.unsubscribe();
             }
         });
@@ -55,12 +60,17 @@ export class TimerComponent {
     }
 
     private getTime() {
-        // let url = this.baseURLApi + this.timeGate;
-        let url = this.urlTime + this.timeGate;
+        let url = this.timeGate + this.queryParameter;
         this.http.get(url).subscribe(
             response => {
                 if (response.status == 200 && !isNaN(parseInt(response.text()))) {
-                    this.currentTimestamp = +response.text();
+                    this.initialTime = +response.text();
+                    /** We keep the instant when the time from the server is retrieved
+                     * because performance.now() returns the number of ms since the beginning
+                     * of the document lifetime, so it let us to substract the difference
+                     * from when the date was retrieved and the initialization of the angular app.
+                     */
+                    this.initialPerformanceTime = performance.now();
                 } else {
                     this.handleTimeError();
                 }
@@ -73,7 +83,6 @@ export class TimerComponent {
                 this.currentTimestamp = date;
             }
         );*/
-
     }
 
     private handleTimeError() {
@@ -82,5 +91,9 @@ export class TimerComponent {
             "shared.error.api.generic",
             "error"
         )
+    }
+
+    public validCountDown(value) {
+        return !Number.isNaN(value) && typeof value === "number";
     }
 }

@@ -1,3 +1,4 @@
+import { animate, style, transition, trigger } from "@angular/animations";
 import { Component } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { UserApi } from "../../shared/swagger/api/UserApi";
@@ -22,17 +23,35 @@ import {UserRegistrationDTOBase} from "../../shared/swagger/model/UserRegistrati
 import {UxEuLanguages, UxLanguage} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
 import { UserDetailsService } from "../../core/services/user-details.service";
 import { elementAt } from "../../../../node_modules/rxjs/operator/elementAt";
+import { CookieService } from "ngx-cookie-service";
+import { UserContactDetailsBase } from "../../shared/swagger";
 
 @Component({
     selector: 'beneficiary-profile',
     templateUrl: 'profile.component.html',
-    providers: [UserApi, RegistrationApi, MunicipalityApi, UserThreadsApi, MayorApi, ThreadApi, BeneficiaryApi]
+    styleUrls: ['profile.component.scss'],
+    providers: [UserApi, RegistrationApi, MunicipalityApi, UserThreadsApi, MayorApi, ThreadApi, BeneficiaryApi],
+    animations: [
+        trigger(
+            'enterSpinner', [
+                transition(':enter', [
+                    style({opacity: 0}),
+                    animate('200ms', style({opacity: 1}))
+                ]),
+                transition(':leave', [
+                    style({opacity: 1}),
+                    animate('200ms', style({opacity: 0}))
+                ])
+            ]
+        )
+    ]
 })
 
 export class BeneficiaryProfileComponent {
     private user: UserDTOBase = new UserDTOBase;
     // private users: UserDTOBase[] = [];
-    private users = {};
+    private userMain;
+    private users = [];
     private municipalities: MunicipalityDTOBase[] = [];
     private mayors: MayorDTOBase[] = [];
     private addUser: boolean = false;
@@ -66,104 +85,115 @@ export class BeneficiaryProfileComponent {
     protected languageRows: UxLanguage [] [];
     protected languages: UxLanguage [];
     private withdrawingRegistrationConfirmation: boolean = false;
+    private registrations: RegistrationDTOBase[] = [];
+    private nameCookieApply: string = "hasRequested";
+    private withdrawAble: boolean = false;
+    private fetchingData: boolean = false;
+    private associationName: string = null;
 
-    constructor(private beneficiaryApi: BeneficiaryApi, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
-        let storedUser = this.localStorageService.get('user');
-        this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
-        if (this.user != null) {
-            this.userApi.getUserById(this.user.id).subscribe(
-                (user: UserDTOBase) => {
-                    if (this.user != null) {
-                        this.user = user;
-                        if (this.user.type == 2 || this.user.type == 3) {
-                            Object.assign(this.editedUser, this.user);
-                            this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
-                                (registrations: RegistrationDTOBase[]) => {
-                                    for (let registration of registrations) {
-                                        if (registration.municipalityId == 0){
-                                            continue;
+    constructor(private cookieService: CookieService, private beneficiaryApi: BeneficiaryApi, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
+        this.fetchingData = true;
+        if (this.sharedService.user) {
+            this.user = this.sharedService.user;
+            this.fetchData();
+            this.loadLanguages();
+            this.checkIfWithdrawAble();
+        } else {
+            this.sharedService.loginEmitter.map(() => {
+                this.user = this.sharedService.user;
+                this.fetchData();
+                this.loadLanguages();
+                this.checkIfWithdrawAble();
+            });
+        }
+    }
+
+    private fetchData() {
+        this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
+            (registrations: RegistrationDTOBase[]) => {
+                this.registrations = registrations;
+                for (let registration of registrations) {
+                    if (registration.municipalityId == 0)
+                        continue;
+                    if (!this.associationName && registration.organisationId > 0)
+                        this.associationName = registration.associationName;
+                    this.allDocumentsUploaded.push(registration.allFilesFlag == 1);
+                    this.isRegisterHold = (registration.status == 0); // 0 status is HOLD
+                    this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
+                        (municipality: MunicipalityDTOBase) => {
+                            this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
+                                (mayor: MayorDTOBase) => {
+                                    this.municipalities.push(municipality);
+                                    this.mayors.push(mayor);
+                                    // Order the threads array with the municipalities
+                                    if (this.municipalities.length == registrations.length) {
+                                        let indexedThreads = this.userThreads.map(function(element) {return element.title});
+                                        for(let municipality of this.municipalities) {
+                                            let exists = indexedThreads.indexOf(municipality.name);
+                                            if (exists != -1)
+                                                this.orderedUserThreads.push(this.userThreads[exists]);
+                                            else
+                                                this.orderedUserThreads.push(null);
                                         }
-                                        this.allDocumentsUploaded.push(registration.allFilesFlag == 1);
-                                        this.isRegisterHold = (registration.status == 0); // 0 status is HOLD
-                                        this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
-                                            (municipality: MunicipalityDTOBase) => {
-                                                this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
-                                                    (mayor: MayorDTOBase) => {
-                                                        this.municipalities.push(municipality);                                                                                                                 
-                                                        this.mayors.push(mayor);
-                                                        // Order the threads array with the municipalities
-                                                        if(this.municipalities.length == registrations.length) {
-                                                            let indexedThreads = this.userThreads.map(function(element) { return element.title});                                                        
-                                                            for(let municipality of this.municipalities) {                
-                                                                let exists = indexedThreads.indexOf(municipality.name);                             
-                                                                if(exists != -1) {
-                                                                    this.orderedUserThreads.push(this.userThreads[exists]);
-                                                                } 
-                                                                else {
-                                                                    this.orderedUserThreads.push(null);                                                                
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                );
-                                            }
-                                        );
-                                        this.userApi.getUsersFromRegistration(registration.id).subscribe(
-                                            (users: UserDTOBase[]) => {
-                                                this.users[registration.municipalityId] = users;
-                                            }
-                                        );
                                     }
                                 }
                             );
-                        } else {
-                            this.sharedService.growlTranslation('You are not allowed to view this page.', 'shared.error.notallowed', 'warn');
-                            this.router.navigateByUrl('/home');
                         }
-                    }
-                }, error => {
-                    this.localStorageService.remove('user');
-                    this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later."', 'shared.error.api.generic', 'error');
+                    );
+                    this.userApi.getUsersFromRegistration(registration.id).subscribe(
+                        (users: UserContactDetailsBase[]) => {
+                            this.users[registration.municipalityId] = users;
+                            if (users != null)
+                                this.userMain = users.find(x => x.main === 1);
+                        }
+                    );
                 }
-            );
-            this.userThreadsApi.getUserThreadsByUserId(this.user.id).subscribe(
-                (utsByUser: UserThreadsDTOBase[]) => {
-                    for (let utByUser of utsByUser) {
-                        this.threadApi.getThreadById(utByUser.threadId).subscribe(
-                            (thread: ThreadDTOBase) => {
-                                if (thread != null) {
-                                    this.userThreadsApi.getUserThreadsByThreadId(thread.id).subscribe(
-                                        (utsByThread: UserThreadsDTOBase[]) => {
-                                            this.discussionThreads.push(thread);
-                                            if (utsByThread.length > 1) {
-                                                this.userThreads.push(thread);
-                                                 for (let i = 0; i < utsByThread.length; ++i) {
-                                                    if (utsByThread[i].userId != this.user.id) {
-                                                        this.threadsByUser.push(utsByThread[i]);
-                                                        
+                this.fetchingData = false;
+            }
+        );
+        this.userThreadsApi.getUserThreadsByUserId(this.user.id).subscribe(
+                        (utsByUser: UserThreadsDTOBase[]) => {
+                            for (let utByUser of utsByUser) {
+                                this.threadApi.getThreadById(utByUser.threadId).subscribe(
+                                    (thread: ThreadDTOBase) => {
+                                        if (thread != null) {
+                                            this.userThreadsApi.getUserThreadsByThreadId(thread.id).subscribe(
+                                                (utsByThread: UserThreadsDTOBase[]) => {
+                                                    this.discussionThreads.push(thread);
+                                                    if (utsByThread.length > 1) {
+                                                        this.userThreads.push(thread);
+                                                         for (let i = 0; i < utsByThread.length; ++i) {
+                                                            if (utsByThread[i].userId != this.user.id) {
+                                                                this.threadsByUser.push(utsByThread[i]);
+
+                                                            }
+                                                        }
                                                     }
                                                 }
-                                            }
+                                            );
                                         }
-                                    );
-                                }
+                                    }
+                                );
                             }
-                        );
-                    }
-                }, error => {
-                    console.log("service error: ", error);
-                }
-            );
-        } else {
-            this.sharedService.growlTranslation('You are not logged in!', 'shared.error.notloggedin', 'warn');
-            this.router.navigateByUrl('/home');
-        }
-
-        this.loadLanguages();
+                        }, error => {
+                            console.log("service error: ", error);
+                        }
+                    );
     }
+    
 
     private withdrawRegistration(){
         this.withdrawingRegistrationConfirmation = true;
+    }
+
+    private checkIfWithdrawAble(){
+        this.userApi.checkIfApplied().subscribe(
+            (hasApplied : ResponseDTOBase) => {
+                this.withdrawAble = hasApplied.data;
+            }, error =>{
+                console.log(error);
+            }
+        );
     }
 
     private displayModal(name: string, index?: number) {
@@ -197,22 +227,6 @@ export class BeneficiaryProfileComponent {
                 );
                 break;
         }
-    }
-
-    private saveUserChanges() {
-        if (this.editedUser.email != this.user.email) {
-            this.editedUser.email = this.user.email;
-        }
-        this.submittingData = true;
-        this.userApi.updateUserDetails(this.editedUser).subscribe(
-            (response: ResponseDTOBase) => {
-                if (response.success) {
-                    this.user = response.data;
-                    this.closeModal();
-                    this.submittingData = false;
-                }
-            }
-        );
     }
 
     private saveMunicipalityChanges() {
@@ -258,19 +272,40 @@ export class BeneficiaryProfileComponent {
         this.displayLanguageModal = false;
     }
 
+    private isVoucherApplied(idRegistration:number){
+      if (this.cookieService.check(this.nameCookieApply+"_"+idRegistration)){
+          if (this.cookieService.get(this.nameCookieApply+"_"+idRegistration) == "true"){
+              return true;
+          }
+      }
+      return false;
+    }
+
     private deleteRegistration() {
         this.withdrawingRegistrationConfirmation = false;
+        var appliedExist = this.registrations.some(registration => this.isVoucherApplied(registration.id) === true);
+        if(appliedExist){
+          this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.withdraw.existingApplication.error', 'warn');
+          return;
+        }
         if (!this.withdrawingRegistration && !this.withdrawnSuccess) {
             this.withdrawingRegistration = true;
             this.userApi.deleteUser(this.user.id).subscribe(
                 (data: ResponseDTOBase) => {
                     if (data.success) {
                         this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.deleteApplication.Success', 'success');
-                        this.sharedService.logout();
                         this.withdrawingRegistration = false;
                         this.withdrawnSuccess = true;
+                        this.localStorageService.remove('user');
+                        var port = window.location.port ? ':' + window.location.port : '';
+                        //TODO should try in other environments
+                        window.location.replace(window.location.protocol + "//" + window.location.hostname + port +'/wifi4eu/index.jsp');
                     } else {
-                        this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.deleteApplication.Failure', 'error');
+                        if(data.error != null){
+                          this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', data.error.errorMessage, 'warn');  
+                        }else{
+                          this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.deleteApplication.Failure', 'error');
+                        }
                         this.withdrawingRegistration = false;
                         this.withdrawnSuccess = true;
                     }
@@ -341,29 +376,31 @@ export class BeneficiaryProfileComponent {
     /* Language modal */
     private changeLanguage() {
         this.displayLanguageModal = true;
-       }
+    }
 
     private selectLanguage(lang) {
         this.userApi.updateLanguage(lang).subscribe(
             (data: ResponseDTOBase) => {
                 if (data.success) {
                     this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
+                    this.selectedLanguage = this.languages.find(language => language.code === lang);
+                    this.sharedService.update();
+                    this.closeModal();
                 } else {
                     this.sharedService.growlTranslation('shared.registration.update.error', 'An error occurred and your registration could not be updated.', 'error');
+                    this.closeModal();
                 }
             }, error => {
                 this.sharedService.growlTranslation('shared.registration.update.error', 'An error occurred and your registration could not be updated.', 'error');
+                this.closeModal();
             }
         );
-        const newSelectedLang = this.languages.find(language => language.code === lang);
-        this.selectedLanguage = newSelectedLang;
-        this.displayLanguageModal = false;
     }
 
     private goToEditProfile() {
         this.router.navigate(['../profile/edit-profile'], { relativeTo: this.route });
     }
-
+    /*CONTACT DETAILS ADD CONTACT MUNICIPALITY
     private addNewContactToMunicipality(municipalityId: number){
         this.idMunicipalityNewContactUser = municipalityId;
         this.addUser = true;
@@ -399,6 +436,5 @@ export class BeneficiaryProfileComponent {
         } else {
             this.sharedService.growlTranslation('Please, complete the email field to add a new contact', 'benefPortal.profile.addNewContact.empty', 'error');
         }
-    }
-
+    }*/
 }

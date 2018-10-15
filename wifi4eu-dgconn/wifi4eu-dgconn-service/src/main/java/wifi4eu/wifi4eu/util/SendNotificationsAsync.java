@@ -1,18 +1,18 @@
 package wifi4eu.wifi4eu.util;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import wifi4eu.wifi4eu.common.dto.mail.MailData;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
 import wifi4eu.wifi4eu.common.dto.model.CallDTO;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
@@ -21,23 +21,30 @@ import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentAuxiliarDTO;
 import wifi4eu.wifi4eu.common.enums.SelectionStatus;
 import wifi4eu.wifi4eu.common.enums.VoucherAssignmentStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.mail.MailHelper;
+import wifi4eu.wifi4eu.common.service.mail.MailService;
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.admin.AdminActions;
 import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
+import wifi4eu.wifi4eu.repository.admin.AdminActionsRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentRepository;
+import wifi4eu.wifi4eu.service.admin.AdminActionsService;
 import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.voucher.VoucherService;
 
+import javax.validation.Valid;
+
 /**
  * Created by rgarcita on 11/02/2017.
  */
-
 @Component
 @Scope("prototype")
 public class SendNotificationsAsync implements Runnable {
@@ -72,6 +79,9 @@ public class SendNotificationsAsync implements Runnable {
 	@Autowired
 	private MailService mailService;
 
+	@Autowired
+    private AdminActionsRepository adminActionsRepository;
+
 	public final static String FROM_ADDRESS = "no-reply@wifi4eu.eu";
 	public final static String NO_ACTION = "NO ACTION LOGGED";
 
@@ -86,11 +96,33 @@ public class SendNotificationsAsync implements Runnable {
 		this.callId = callId;
 	}
 
-	@Override
+    @Override
 	public void run() {
+	    AdminActions adminActions = null;
 		try {
+
+		    adminActions = adminActionsRepository.findOneByAction("voucher_send_notifications");
+		    if(Validator.isNull(adminActions)){
+		        adminActions = new AdminActions();
+		        adminActions.setAction("voucher_send_notifications");
+		        adminActions.setStartDate(new Date());
+		        adminActions.setRunning(true);
+		        adminActions.setUser(userMapper.toEntity(userConnected));
+				adminActions = adminActionsRepository.save(adminActions);
+            }
+            else{
+		    	if(adminActions.isRunning()){
+                    throw new AppException("Send notifications is already running");
+				}
+                adminActions.setStartDate(new Date());
+                adminActions.setRunning(true);
+                adminActions.setEndDate(null);
+                adminActions.setUser(userMapper.toEntity(userConnected));
+                adminActions = adminActionsRepository.save(adminActions);
+			}
+
 			CallDTO callDTO = callService.getCallById(callId);
-			if (callDTO == null) {
+			if (Validator.isNull(callDTO)) {
 				_log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Call does not exist with id "
 						+ callId);
 				throw new AppException("Call not found with id: " + callId);
@@ -108,7 +140,7 @@ public class SendNotificationsAsync implements Runnable {
 			VoucherAssignmentAuxiliarDTO finalVoucherAssignment = voucherService
 					.getVoucherAssignmentByCallAndStatus(callId, VoucherAssignmentStatus.FREEZE_LIST.getValue());
 
-			if (finalVoucherAssignment == null) {
+			if (Validator.isNull(finalVoucherAssignment)) {
 				throw new AppException(
 						"Notification could not be sent because there's no freeze list for call with id : " + callId);
 			}
@@ -132,21 +164,25 @@ public class SendNotificationsAsync implements Runnable {
 			for (ApplicationDTO successfulApplicant : successfulApplicants) {
 				RegistrationDTO registrationDTO = registrationService
 						.getRegistrationById(successfulApplicant.getRegistrationId());
-				UserDTO userDTO = userMapper
-						.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
-				if (userDTO.getLang() != null) {
-					locale = new Locale(userDTO.getLang());
+
+				if(Validator.isNotNull(registrationDTO)){
+					UserDTO userDTO = userMapper
+							.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
+
+					if(Validator.isNotNull(userDTO)){
+                        if (Validator.isNotNull(userDTO.getLang())) {
+                            locale = new Locale(userDTO.getLang());
+                        }
+
+                        String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/my-voucher";
+                        MailData mailData = MailHelper.buildMailVoucherApplySuccessful(
+                            userDTO.getEmail(), MailService.FROM_ADDRESS, 
+                            callDTO.getEvent(), additionalInfoUrl, registrationDTO.getMunicipalityId(), "send_notification", locale);
+                        mailService.sendMail(mailData, true);
+
+                    }
 				}
 				
-				ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-				subject = bundle.getString("mail.dgConn.voucherAssignment.subject");
-				msgBody = bundle.getString("mail.dgConn.voucherAssignment.successfulApplicant.body");
-				String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/my-voucher";
-				// subject = MessageFormat.format(subject, successfulApplicant.getCallId());
-				subject = MessageFormat.format(subject, callDTO.getEvent());
-				msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
-				// TODO: Change it to work with CNS
-				mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody, registrationDTO.getMunicipalityId());
 			}
 			_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sended to "
 					+ successfulApplicants.size() + " successful applicants");
@@ -154,19 +190,22 @@ public class SendNotificationsAsync implements Runnable {
 			for (ApplicationDTO reserveApplicant : reserveApplicants) {
 				RegistrationDTO registrationDTO = registrationService
 						.getRegistrationById(reserveApplicant.getRegistrationId());
-				UserDTO userDTO = userMapper
-						.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
-				if (userDTO.getLang() != null) {
-					locale = new Locale(userDTO.getLang());
+
+				if(Validator.isNotNull(registrationDTO)){
+					UserDTO userDTO = userMapper
+							.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
+
+                    if(Validator.isNotNull(userDTO)){
+                        if (Validator.isNotNull(userDTO.getLang())) {
+                            locale = new Locale(userDTO.getLang());
+                        }
+                        String additionalInfoUrl = userService.getBaseUrl();
+                        MailData mailData = MailHelper.buildMailVoucherApplyReserved(
+                            userDTO.getEmail(), MailService.FROM_ADDRESS, 
+                            callDTO.getEvent(), additionalInfoUrl, registrationDTO.getMunicipalityId(), "send_notification", locale);
+                        mailService.sendMail(mailData, true);
+                    }
 				}
-				ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-				subject = bundle.getString("mail.dgConn.voucherAssignment.subject");
-				msgBody = bundle.getString("mail.dgConn.voucherAssignment.reserveApplicant.body");
-				String additionalInfoUrl = userService.getBaseUrl();
-				subject = MessageFormat.format(subject, callDTO.getEvent());
-				msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
-				// TODO: Change it to work with CNS
-				mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody, registrationDTO.getMunicipalityId());
 			}
 			_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sended to "
 					+ reserveApplicants.size() + " reserve applicants");
@@ -174,38 +213,50 @@ public class SendNotificationsAsync implements Runnable {
 			for (ApplicationDTO unsuccessfulApplicant : unsuccessfulApplicants) {
 				RegistrationDTO registrationDTO = registrationService
 						.getRegistrationById(unsuccessfulApplicant.getRegistrationId());
-				UserDTO userDTO = userMapper
-						.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
-				if (userDTO.getLang() != null) {
-					locale = new Locale(userDTO.getLang());
-				}
-				ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-				subject = bundle.getString("mail.dgConn.voucherAssignment.subject");
-				msgBody = bundle.getString("mail.dgConn.voucherAssignment.unsuccesfulApplicant.body");
-				String option;
 
-				if (unsuccessfulApplicant.getInvalidateReason() != null
-						&& !unsuccessfulApplicant.getInvalidateReason().isEmpty()) {
-					option = bundle.getString("mail.dgConn.voucherAssignment.unsuccesfulApplicant.option1");
-				} else {
-					option = bundle.getString("mail.dgConn.voucherAssignment.unsuccesfulApplicant.option2");
-				}
+				if(Validator.isNotNull(registrationDTO)){
+					UserDTO userDTO = userMapper
+							.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
 
-				msgBody = MessageFormat.format(msgBody, option);
-				subject = MessageFormat.format(subject, callDTO.getEvent());
-				// TODO: Change it to work with CNS
-				mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody, registrationDTO.getMunicipalityId());
+                    if(Validator.isNotNull(userDTO)) {
+                        if (Validator.isNotNull(userDTO.getLang())) {
+                            locale = new Locale(userDTO.getLang());
+                        }
+                        
+                        boolean invalidSupportingDocuments = (unsuccessfulApplicant.getInvalidateReason() != null 
+                            && !unsuccessfulApplicant.getInvalidateReason().isEmpty());
+
+                        MailData mailData = MailHelper.buildMailVoucherApplyUnsuccessful(
+                            userDTO.getEmail(), MailService.FROM_ADDRESS, 
+                            callDTO.getEvent(), invalidSupportingDocuments, registrationDTO.getMunicipalityId(), "send_notification", locale);
+                        mailService.sendMail(mailData, true);
+                    }
+				}
 			}
 			_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sended to "
 					+ unsuccessfulApplicants.size() + " unsuccessful applicants");
 
+			Date date = new Date();
 			VoucherAssignment voucherAssignment = voucherAssignmentRepository
 					.findByCallIdAndStatusEquals(callDTO.getId(), VoucherAssignmentStatus.FREEZE_LIST.getValue());
-			voucherAssignment.setNotifiedDate(new Date().getTime());
+			voucherAssignment.setNotifiedDate(date.getTime());
 			voucherAssignmentRepository.save(voucherAssignment);
+			adminActions.setRunning(false);
+			adminActions.setEndDate(date);
+			adminActionsRepository.save(adminActions);
+		} catch (FatalBeanException fbe){
+            _log.error("It seems that Spring context is not available", fbe.getMessage());
 		} catch (Exception ex) {
 			_log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot send the message",
 					ex.getMessage());
+            if(Validator.isNotNull(adminActions)){
+                adminActions.setAction("voucher_send_notifications");
+                adminActions.setStartDate(null);
+                adminActions.setRunning(false);
+                adminActions.setEndDate(null);
+                adminActions.setUser(userMapper.toEntity(userConnected));
+                adminActionsRepository.save(adminActions);
+            }
 		}
 	}
 

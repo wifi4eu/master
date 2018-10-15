@@ -30,7 +30,7 @@ public interface VoucherSimulationRepository extends CrudRepository<VoucherSimul
 	List<VoucherSimulation> findAllByVoucherAssignmentOrderByEuRank(
 			@Param("idVoucherAssignment") int idVoucherAssignment);
 
-	@Query("SELECT vs FROM VoucherSimulation vs JOIN vs.voucherAssignment a INNER JOIN Municipality m ON m.id = vs.municipality WHERE LOWER(m.name) LIKE LOWER(CONCAT('%',:municipalityName,'%')) AND a.id =:idVoucherAssignment AND LOWER(vs.country) LIKE LOWER(CONCAT('%',:country,'%'))")
+	@Query("SELECT vs FROM VoucherSimulation vs JOIN vs.voucherAssignment a INNER JOIN vs.municipality m WHERE LOWER(m.name) LIKE LOWER(CONCAT('%',:municipalityName,'%')) AND a.id =:idVoucherAssignment AND LOWER(vs.country) LIKE LOWER(CONCAT('%',:country,'%'))")
 	Page<VoucherSimulation> findAllByVoucherAssignmentAndMunicipalityInCountryOrderedByEuRank(
 			@Param("idVoucherAssignment") int idVoucherAssignment, @Param("country") String country,
 			@Param("municipalityName") String municipalityName, Pageable pageable);
@@ -65,7 +65,7 @@ public interface VoucherSimulationRepository extends CrudRepository<VoucherSimul
 	Integer countAllByVoucherAssignmentAndMunicipalityInCountry(Integer voucherAssignmentId, String municipality,
 			String country);
 
-	@Query(value = "SELECT count(*) FROM voucher_simulations vs INNER JOIN applications a ON vs.application = a.id WHERE vs.voucher_assignment = ?1 AND (vs.num_applications > 1 OR a._status != 2)", nativeQuery = true)
+	@Query(value = "SELECT count(*) FROM voucher_simulations vs INNER JOIN applications a ON vs.application = a.id WHERE vs.voucher_assignment = ?1 AND (vs.num_applications > 1 OR a._status != 2) AND vs.selection_status != 2", nativeQuery = true)
 	Integer checkIfSimulationIsValid(int voucherAssignmentId);
 
 	@Query(value = "SELECT application FROM voucher_simulations WHERE voucher_assignment = ?1 AND selection_status = 3", nativeQuery = true)

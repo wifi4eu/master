@@ -388,12 +388,18 @@ body {
   font-size: 25px;
   font-weight: bold;
   color: $dark-blue;
+  word-break: normal;
 }
 
 .beneficiaryMayor {
   font-size: 21px;
   font-weight: bold;
   color: $dark-blue;
+  word-break: normal;
+}
+
+.ui-g-12 {
+  word-break: break-word;
 }
 
 .edit {
@@ -411,6 +417,21 @@ body {
   margin-bottom: 5px !important;
   margin-top: 29px !important;
   border: 0;
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
+  background: none;
+}
+
+.sizeBeneficiaryHr{
+  width: 98.5%;
+  margin-top: 20px !important;
+}
+
+.sizeBeneficiaryHr2{
+  width: 100%;
+  margin-top: 20px !important;
+}
+
+.registrationHr {
   border-top: 2px solid rgba(0, 0, 0, 0.1);
   background: none;
 }
@@ -448,7 +469,7 @@ body {
 
 .fa-exclamation-triangle{
   font-size: 2.5em;
-  margin-top: 25%;
+  margin-top: 12%;
   color: #fff;
 }
 
@@ -466,7 +487,7 @@ body {
 
 .changePassword {
   margin-top: 0.5em;
-  width: 71%;
+  width: 90%;
   padding-top: 15px;
   padding-bottom: 15px;
   font-size: 1.2em;
@@ -509,6 +530,7 @@ body {
 
 .profileData {
   font-weight: bold;
+  overflow-wrap: break-word;
 }
 
 .profileDataDiscussion {
@@ -867,8 +889,26 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
 }
 
 .progress-indicator {
-  padding-top: 5.3em;
-  width: 100%;
+    padding-top: 5.3em;
+    width: 100%;
+    .completed:focus {
+        color: #4caf50;
+    }
+    .completed:hover {
+        color: #4caf50;
+    }
+    .active:focus {
+        color: #004494;
+    }
+    .active:hover {
+        color: #004494;
+    }
+    li:focus {
+        color: #bdbdbd;
+    }
+    li:hover {
+        color: #bdbdbd;
+    }
 }
 
 #app-header .right-content {
@@ -1492,7 +1532,7 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   background-color: #ffffff;
   color: #004494;
   border: solid 2px #004494;
-  height: 50px;
+  height: 6em;
   font-family: Verdana;
   font-size: 1.4em;
   font-weight: bold;
@@ -1816,11 +1856,17 @@ input.email_profile::-ms-clear{
 .whitePanel {
   background-color: white;
   border: 2px solid #d2d2d2;
+  word-break: break-word;
+}
+
+.whitePanelBeneficiary{
+  background-color: white;
 }
 
 
 .whiteButton {
   font-size: 0.8em;
+  word-break: break-word;
 }
 
 .grantAgreementImg{
@@ -1892,4 +1938,175 @@ input.email_profile::-ms-clear{
   -ms-user-select: none;
   user-select: none;
   pointer-events: none;
+}
+
+.panelMunicipality{
+  font-size: 16px !important;
+  word-break: break-word;
+}
+
+.panel-header{
+  background-color: #fff !important;
+  padding: 1px 1px 0.3px 1px;
+}
+
+.panel-content{
+  padding: 0px !important;
+}
+
+.label{
+  margin-top: 1em;
+}
+
+li.panel .panel-header .toggle{
+  margin-top: 0.5em;
+}
+
+.editRegistrationsLabel{
+  margin-top: 0.3em;
+  font-size: 17px;
+}
+
+.marginSecondSectionBeneficiary{
+  margin-top: 9.80em;
+}
+
+.blueText{
+  color:#254872;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.cursorPointer{
+  cursor: pointer;
+}
+
+li.panel .panel-header .label-wrapper .label {
+  color:#254872 !important;
+}
+
+.mTopCenter{
+  text-align: center;
+  margin-top: 3em;
+}
+
+.timer-height-block {
+  height: 19rem;
+}
+
+@-moz-document url-prefix() {
+  .timer-height-block {
+    @media screen and (max-width: 750px) {
+      height: 19.50rem;
+    }
+    @media screen and (max-width: 450px) {
+      height: 25rem;
+    }
+  }
+}
+
+.forceBlueColorOnLinks a{
+  color:#254872 !important;
+}
+.whiteTableBackground {
+    background-color: #fff !important;
+}
+.whiteTableBackground:hover {
+    background-color: #fff !important;
+}
+
+.confirmDialogDocs {
+    padding: 1em 1.5em !important;
+    overflow: auto !important;
+    max-height: 40em !important;
+    width: 50% !important;
+    left: 25% !important;
+    .ui-dialog {
+        padding: 1.5% !important;
+    }
+    .ui-dialog-titlebar {
+        padding-bottom: 1em !important;
+        color: #004494 !important;
+        font-size: 20px !important;
+        font-weight: bold !important;
+        text-align: center !important;
+        margin: auto !important;
+        .ui-dialog-titlebar-icon {
+            display: none !important;
+        }
+    }
+    .ui-dialog-content {
+        line-height: 1.25 !important;
+        padding-bottom: 3em !important;
+        padding-left: 2em !important;
+        padding-right: 2em !important;
+        font-size: 16px !important;
+        border: 0 !important;
+        padding: 1em 1.5em !important;
+    }
+    .ui-dialog-buttonpane {
+        display: flex !important;
+        padding: 1em 8em !important;
+        justify-content: center !important;
+        .ui-button {
+            text-align: center !important;
+            width: 10 em !important;
+            height: 50px !important;
+            background-color: #004494 !important;
+            margin-right: 1em !important;
+            float: left !important;
+            @media screen and (min-width: 64.063em) {
+                width: 33.333% !important;
+                padding: 0.5 em !important;
+            }
+            @media screen and (min-width: 40.063em) {
+                padding: 0.5 em !important;
+            }
+        }
+        .ui-button:hover {
+            color: #fff !important;
+            background-color: #001e42 !important;
+            border-color: #001a38 !important;
+        }
+        .ui-button:active {
+            color: #fff !important;
+            background-color: #001e42 !important;
+            border-color: #001a38 !important;
+            background-image: none !important;
+        }
+        .ui-button:active {
+            background-color: #003675 !important;
+        }
+        .ui-button+.ui-button {
+            text-align: center !important;
+            width: 10 em !important;
+            height: 50px !important;
+            background-color: #ffffff !important;
+            color: #004494 !important;
+            border: solid 2px #004494 !important;
+            margin-left: 1em !important;
+            float: right !important;
+            @media screen and (min-width: 64.063em) {
+                width: 33.333% !important;
+                padding: 0.5 em !important;
+            }
+            @media screen and (min-width: 40.063em) {
+                padding: 0.5 em !important;
+            }
+        }
+        .ui-button+.ui-button:active {
+            color: #fff !important;
+            background-color: #001e42 !important;
+            border-color: #001a38 !important;
+            background-image: none !important;
+        }
+        .ui-button+.ui-button:active {
+            background-color: #003675 !important;
+        }
+        .ui-button:hover {
+            color: #fff !important;
+            background-color: #001e42 !important;
+            border-color: #001a38 !important;
+        }
+    }
 }

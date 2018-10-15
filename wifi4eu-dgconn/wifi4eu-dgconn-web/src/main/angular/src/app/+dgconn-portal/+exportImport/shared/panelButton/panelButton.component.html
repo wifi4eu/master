@@ -1,0 +1,17 @@
+<div class="ui-g-6 ui-lg-6 ui-md-12">
+
+    <div class="panelItem ui-g-12" (click)="panelClicked()" *ngIf="!panelDisabled; else disabledPanel">
+        <span class="beneficiaryMayor">{{ title }}</span>
+        <p>{{ description }}</p>
+    </div>
+
+    <ng-template #disabledPanel>
+        <div class="panelItem ui-g-12 panelDisabled">
+            <span class="beneficiaryMayor">{{ title }}</span>
+            <p>{{ description }}</p>
+        </div>
+    </ng-template>
+
+</div>
+
+

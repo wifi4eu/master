@@ -22,7 +22,7 @@
             <div class="form-group">
                 <label class="label floatLeft" for="contactName">{{ 'shared.name.label' | translate }}</label>
                 <input class="form-control paddingInput" type="text" id="contactName" name="contactName" maxlength="255"
-                       [(ngModel)]="supplier.contactName" #contactName="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
+                       [(ngModel)]="supplier.contactName" (ngModelChange)="checkButtonEnabled($event)" #contactName="ngModel" required>
                 <!--
                 <div class="alert alert-danger" [hidden]="contactName.valid || contactName.pristine">
                     {{'shared.name.required' | translate }}
@@ -40,7 +40,8 @@
                     }}</label>
                 <input class="form-control paddingInput" type="text" maxlength="255"
                        id="contactSurname" name="contactSurname" [(ngModel)]="supplier.contactSurname"
-                       #contactSurname="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
+                       (ngModelChange)="checkButtonEnabled($event)"
+                       #contactSurname="ngModel" required>
                 <!--
                 <div class="alert alert-danger" [hidden]="contactSurname.valid || contactSurname.pristine">
                     {{'shared.surname.required' | translate }}
@@ -55,11 +56,12 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-3">
             <div class="form-group">
-                <label class="label floatLeft" for="contactPhonePrefix">{{ 'suppRegistration.prefix.number' | translate
-                    }}</label>
-                <input class="form-control paddingInput" type="text" maxlength="255"
-                       id="contactPhonePrefix" name="contactPhonePrefix" pattern="[0-9]{1,4}"
-                       [(ngModel)]="supplier.contactPhonePrefix" #contactPhonePrefix="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
+                <label class="label floatLeft" for="contactPhonePrefix">
+                    {{ 'suppRegistration.prefix.number' | translate }}
+                </label>
+                <input class="form-control paddingInput" type="text" (input)="rulesPrefix($event)"
+                       id="contactPhonePrefix" name="contactPhonePrefix" [pattern]="prefixRegex"
+                       [(ngModel)]="supplier.contactPhonePrefix" #contactPhonePrefix="ngModel" required>
                 <!--
                 <div class="alert alert-danger"
                      [hidden]="contactPhonePrefix.valid || contactPhonePrefix.pristine">
@@ -70,11 +72,12 @@
         </div>
         <div class="ui-g-12 ui-md-12 ui-lg-3">
             <div class="form-group">
-                <label class="label floatLeft" for="contactPhoneNumber">{{ 'suppRegistration.phone.number' | translate
-                    }}</label>
+                <label class="label floatLeft" for="contactPhoneNumber">
+                    {{ 'suppRegistration.phone.number' | translate }}
+                </label>
                 <input class="form-control paddingInput" type="text" maxlength="255"
                        id="contactPhoneNumber" name="contactPhoneNumber" pattern="[0-9]{1,}"
-                       [(ngModel)]="supplier.contactPhoneNumber" #contactPhoneNumber="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
+                       [(ngModel)]="supplier.contactPhoneNumber" #contactPhoneNumber="ngModel" required>
                 <!--
                 <div class="alert alert-danger"
                      [hidden]="contactPhoneNumber.valid || contactPhoneNumber.pristine">
@@ -85,54 +88,55 @@
         </div>
         <div class="ui-lg-3"></div>
     </div>
-    <div class="ui-g">
-        <div class="ui-lg-3"></div>
-        <div class="ui-g-12 ui-md-12 ui-lg-6">
-            <div class="form-group">
-                <label class="label floatLeft" for="contactEmail">{{ 'shared.email.label' | translate
-                    }}</label>
-                <input class="form-control paddingInput" type="email" id="contactEmail" maxlength="255" name="contactEmail"
-                       [(ngModel)]="supplier.contactEmail" #contactEmail="ngModel"
-                       (input)="checkIfEmailMatches()" [pattern]="emailPattern" required>
-                <div class="alert alert-danger" [hidden]="contactEmail.valid || contactEmail.pristine">
-                    {{'suppRegistration.warning.emailRequired' | translate}}
+    <div *ngIf="!hasEcasEmail">
+        <div class="ui-g">
+            <div class="ui-lg-3"></div>
+            <div class="ui-g-12 ui-md-12 ui-lg-6">
+                <div class="form-group">
+                    <label class="label floatLeft" for="contactEmail">{{ 'shared.email.label' | translate
+                        }}</label>
+                    <input class="form-control paddingInput" type="email" id="contactEmail" maxlength="255" name="contactEmail"
+                        [(ngModel)]="supplier.contactEmail" #contactEmail="ngModel"
+                        (input)="checkIfEmailMatches()" [pattern]="emailPattern" required>
+                    <div class="alert alert-danger" [hidden]="contactEmail.valid || contactEmail.pristine">
+                        {{'suppRegistration.warning.emailRequired' | translate}}
+                    </div>
+                    <div class="ui-lg-3"></div>
                 </div>
-                <div class="ui-lg-3"></div>
             </div>
         </div>
-    </div>
-    <div class="ui-g">
-        <div class="ui-lg-3"></div>
-        <div class="ui-g-12 ui-md-12 ui-lg-6">
-            <div class="form-group">
-                <label class="label floatLeft" for="confirmEmail">{{ 'shared.confirmemail.label' | translate
-                    }}</label>
-                <input class="form-control paddingInput {{css_class_email}}" type="email" id="confirmEmail"
-                       name="confirmEmail"
-                       [(ngModel)]="confirmEmailField" #confirmEmail="ngModel" (paste)="preventPaste()"
-                       (input)="checkIfEmailMatches()" [pattern]="emailPattern">
-                <div class="alert alert-danger" [hidden]="confirmEmail.valid || confirmEmail.pristine">
-                    {{'suppRegistration.warning.emailRequired' | translate}}
+        <div class="ui-g">
+            <div class="ui-lg-3"></div>
+            <div class="ui-g-12 ui-md-12 ui-lg-6">
+                <div class="form-group">
+                    <label class="label floatLeft" for="confirmEmail">{{ 'shared.confirmemail.label' | translate
+                        }}</label>
+                    <input class="form-control paddingInput {{css_class_email}}" type="email" id="confirmEmail"
+                        name="confirmEmail"
+                        [(ngModel)]="confirmEmailField" #confirmEmail="ngModel" (paste)="preventPaste()"
+                        (input)="checkIfEmailMatches()" [pattern]="emailPattern">
+                    <div class="alert alert-danger" [hidden]="confirmEmail.valid || confirmEmail.pristine">
+                        {{'suppRegistration.warning.emailRequired' | translate}}
+                    </div>
+                    <div [hidden]="checkIfEmailMatches()" class="alert alert-info">
+                        {{'suppRegistration.warning.emailMatch' | translate}}
+                    </div>
+                    <div class="ui-lg-3"></div>
                 </div>
-                <div [hidden]="emailMatches || confirmEmail.pristine" class="alert alert-info">
-                    {{'suppRegistration.warning.emailMatch' | translate}}
-                </div>
-                <div class="ui-lg-3"></div>
             </div>
         </div>
     </div>
     <div class="form-group ui-g">
         <div class="ui-lg-3"></div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-            <button type="button" class="btn btn-primary cancel-button" (click)="back()">{{ 'shared.back.button' |
-                translate
-                }}
+            <button type="button" class="btn btn-primary cancel-button" (click)="back()">
+                {{ 'shared.back.button' | translate }}
             </button>
         </div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
             <button type="submit" class="btn btn-primary publish-button"
-                    [disabled]="!supplierForm.form.valid || !emailMatches || !buttonEnabled">
-                {{ 'shared.confirm.button' | translate }}
+                    [disabled]="!isButtonEnabled()">
+                {{ 'shared.next.button' | translate }}
             </button>
         </div>
         <div class="ui-lg-3"></div>

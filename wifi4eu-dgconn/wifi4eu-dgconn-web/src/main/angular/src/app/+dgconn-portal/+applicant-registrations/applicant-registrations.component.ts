@@ -10,14 +10,23 @@ import { CallDTOBase } from "../../shared/swagger/model/CallDTO";
 import { NutsDTOBase } from "../../shared/swagger/model/NutsDTO";
 import { CorrectionRequestEmailDTOBase } from "../../shared/swagger/model/CorrectionRequestEmailDTO";
 import { PagingSortingDTOBase } from "../../shared/swagger/model/PagingSortingDTO";
-import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
+import { ResponseDTOBase, ResponseDTO } from "../../shared/swagger/model/ResponseDTO";
 import * as FileSaver from "file-saver";
 import { Subscription } from "rxjs/Subscription";
 import { DataTable } from "primeng/primeng";
+import { TranslateService } from "ng2-translate/ng2-translate";
+import * as moment from 'moment';
+import 'moment-timezone';
+import{ AppConstants} from '../../shared/constants/AppConstants';
+import { AdminActionsDTO, AdminactionsApi } from "../../shared/swagger";
+import { ReplaySubject } from "rxjs/ReplaySubject";
+import { IntervalObservable } from "rxjs/observable/IntervalObservable";
+import { Observable } from "rxjs/Observable";
+import { Subject } from "rxjs";
 
 @Component({
     templateUrl: 'applicant-registrations.component.html',
-    providers: [ApplicationApi, CallApi, NutsApi],
+    providers: [ApplicationApi, CallApi, NutsApi, AdminactionsApi],
     animations: [
         trigger(
             'enterSpinner', [
@@ -63,9 +72,30 @@ export class DgConnApplicantRegistrationsComponent {
     private correctionRequestsEmailCounter: number = 0;
     private correctionRequestsEmailDate: string = null;
     private correctionRequestsEmailTime: string = null;
+    private warningTooltipMessages: string[] = [];
+    private warning1Message: string = '';
+    private warning2Message: string = '';
+    private warning3Message: string = '';
 
-    constructor(private applicationApi: ApplicationApi, private callApi: CallApi, private nutsApi: NutsApi, private activatedRoute: ActivatedRoute, private router: Router, private sharedService: SharedService) {
-        this.callApi.allCalls().subscribe(
+    private sendNotificationsPsswd: string = '';
+    private showNotificationModal: boolean = false;
+
+    private excelInterval: any;
+    private adminAction: AdminActionsDTO;
+    private subject = new Subject();
+
+    constructor(private adminActionsApi: AdminactionsApi, private applicationApi: ApplicationApi, private callApi: CallApi, private nutsApi: NutsApi, private activatedRoute: ActivatedRoute, private router: Router, private sharedService: SharedService, private translateService: TranslateService) {
+      this.excelInterval = IntervalObservable.create(15000);
+      this.adminActionsApi.getByActionName("export_municipality_applications").subscribe((response: ResponseDTO) => {
+        if (response.success) {
+          this.adminAction = response.data; 
+          if(this.adminAction.running){
+            this.downloadingList = true;
+            this.excelExportInterval();
+          }
+        } 
+      })
+      this.callApi.allCalls().subscribe(
             (calls: CallDTOBase[]) => {
                 if (calls.length > 0) {
                     this.currentCall = calls[0];
@@ -119,11 +149,52 @@ export class DgConnApplicantRegistrationsComponent {
                 }
             }
         );
+        this.translateService.get('dgConn.badge.warning1Info').subscribe(
+            (translatedString: string) => {
+                this.warning1Message = translatedString;
+            }
+        );
+        this.translateService.get('dgConn.badge.warning2Info').subscribe(
+            (translatedString: string) => {
+                this.warning2Message = translatedString;
+            }
+        );
+        this.translateService.get('dgConn.badge.warning3Info').subscribe(
+            (translatedString: string) => {
+                this.warning3Message = translatedString;
+            }
+        );
+    }
+  
+    private exportIsRunning(){
+      this.adminActionsApi.getByActionName("export_municipality_applications").subscribe((response: ResponseDTO) => {
+        if (response.success) {
+          this.adminAction = response.data; 
+          if(!this.adminAction.running){
+            this.subject.next();
+            this.applicationApi.downloadExportExcelApplicantsList().subscribe((response) => {
+              console.log(response);
+              let blob = new Blob([response], {type: 'application/vnd.ms-excel'});
+              FileSaver.saveAs(blob, `applicants.xls`);
+              this.downloadingList = false; 
+            })
+          }          
+        }                      
+      });
+    }
+
+    private excelExportInterval() {
+      this.excelInterval
+          .takeUntil(this.subject)
+          .subscribe(execution => {
+              this.exportIsRunning();              
+          });
     }
 
     private searchApplicants() {
         if (this.currentCall) {
             this.applicantListItems = [];
+            this.warningTooltipMessages = [];
             this.loadingData = true;
             let pagingAndSortingData = new PagingSortingDTOBase();
             pagingAndSortingData.offset = this.itemsPerPage * this.page;
@@ -150,6 +221,7 @@ export class DgConnApplicantRegistrationsComponent {
                                 this.filterApplicantsSearch();
                             } else {
                                 this.applicantListItems = response.data;
+                                this.updateWarningTooltipMessages();
                                 this.loadingData = false;
                             }
                         }
@@ -171,6 +243,7 @@ export class DgConnApplicantRegistrationsComponent {
                                 this.filterApplicantsSearch();
                             } else {
                                 this.applicantListItems = response.data;
+                                this.updateWarningTooltipMessages();
                                 this.loadingData = false;
                             }
                         }
@@ -252,13 +325,10 @@ export class DgConnApplicantRegistrationsComponent {
     }
 
     private sortData(event) {
-      console.log(event);
         if (event['field'] != null)
             this.sortField = event['field'];
         if (event['order'] != null)
             this.sortOrder = event['order'];
-
-        console.log(this.sortField);    
         this.filterApplicantsSearch();
     }
 
@@ -287,39 +357,36 @@ export class DgConnApplicantRegistrationsComponent {
             if (this.searchingByName) {
                 this.applicationApi.exportExcelDGConnApplicantsListSearchingName(this.currentCall.id, countryCode, this.nameSearched).subscribe(
                     (response) => {
-                        let blob = new Blob([response], {type: 'application/vnd.ms-excel'});
-                        FileSaver.saveAs(blob, 'applicants.xls');
-                        this.downloadingList = false;
+                        this.excelExportInterval();
                     }
                 );
             } else {
                 this.applicationApi.exportExcelDGConnApplicantsList(this.currentCall.id, countryCode).subscribe(
                     (response) => {
-                        let blob = new Blob([response], {type: 'application/vnd.ms-excel'});
-                        FileSaver.saveAs(blob, 'applicants.xls');
-                        this.downloadingList = false;
+                        this.excelExportInterval();
                     }
                 );
             }
+
         }
     }
 
     private displayCorrectionEmailsModal() {
-        if (this.correctionRequestsEmailAvailable)
-            this.displayCorrectionEmails = true;
+       this.showNotificationModal = true;
+       this.sendNotificationsPsswd = '';
     }
 
     private sendCorrectionEmails() {
         if (this.currentCall != null && this.correctionRequestsEmailAvailable) {
             this.sendingCorrectionEmails = true;
-            this.applicationApi.sendCorrectionEmails(this.currentCall.id).subscribe(
+            this.applicationApi.sendCorrectionEmails(this.sendNotificationsPsswd ,this.currentCall.id).subscribe(
                 (response: ResponseDTOBase) => {
                     if (response.success) {
                         if (response.data != null) {
                             let correctionRequest = response.data;
-                            let timestamp = new Date(correctionRequest.date);
-                            this.correctionRequestsEmailDate = ('0' + timestamp.getUTCDate()).slice(-2) + '/' + ('0' + (timestamp.getUTCMonth() + 1)).slice(-2) + "/" + timestamp.getUTCFullYear();
-                            this.correctionRequestsEmailTime = ('0' + (timestamp.getUTCHours() + 2)).slice(-2) + ':' + ('0' + timestamp.getUTCMinutes()).slice(-2);
+                            let timestamp = moment(correctionRequest.date).tz(AppConstants.timezone);
+                            this.correctionRequestsEmailDate = timestamp.format("DD/MM/YYYY");
+                            this.correctionRequestsEmailTime = timestamp.format("HH:mm");
                             this.correctionRequestsEmailCounter = correctionRequest.buttonPressedCounter;
                         }
                         this.applicationApi.checkIfCorrectionRequestEmailIsAvailable(this.currentCall.id).subscribe(
@@ -332,7 +399,9 @@ export class DgConnApplicantRegistrationsComponent {
                         );
                         this.sharedService.growlTranslation('An email has been sent to the representants of the legal entities to supply the legal documents for the registration.', 'dgConn.duplicatedBeneficiaryDetails.requestLegalDocuments.success', 'success');
                     } else {
-                        this.sharedService.growlTranslation('An error occurred while trying to request the legal documents of the registration. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.requestLegalDocuments.error', 'error');
+                        if(response.error.errorCode == 20){
+                          this.sharedService.growlTranslation('An error occurred while sending notifications.', response.error.errorMessage, 'error');
+                        }
                     }
                     this.closeModal();
                 }, error => {
@@ -346,6 +415,7 @@ export class DgConnApplicantRegistrationsComponent {
     private closeModal() {
         this.sendingCorrectionEmails = false;
         this.displayCorrectionEmails = false;
+        this.showNotificationModal = false;
     }
 
     private getCorrectionRequestsEmailData(callId: number) {
@@ -361,13 +431,37 @@ export class DgConnApplicantRegistrationsComponent {
             this.applicationApi.getLastCorrectionRequestEmail(callId).subscribe(
                 (correctionEmail: CorrectionRequestEmailDTOBase) => {
                     if (correctionEmail != null) {
-                        let timestamp = new Date(correctionEmail.date);
-                        this.correctionRequestsEmailDate = ('0' + timestamp.getUTCDate()).slice(-2) + '/' + ('0' + (timestamp.getUTCMonth() + 1)).slice(-2) + "/" + timestamp.getUTCFullYear();
-                        this.correctionRequestsEmailTime = ('0' + (timestamp.getUTCHours() + 2)).slice(-2) + ':' + ('0' + timestamp.getUTCMinutes()).slice(-2);
+                        let timestamp = moment(correctionEmail.date).tz(AppConstants.timezone);
+                        this.correctionRequestsEmailDate = timestamp.format("DD/MM/YYYY");
+                        this.correctionRequestsEmailTime = timestamp.format("HH:mm");
                         this.correctionRequestsEmailCounter = correctionEmail.buttonPressedCounter;
                     }
                 }
             );
+        }
+    }
+
+    private updateWarningTooltipMessages() {
+        for (let item of this.applicantListItems) {
+            let warningTooltipMessage = null;
+            if (item.warning1) {
+                warningTooltipMessage = "1) " + this.warning1Message;
+            }
+            if (item.warning2) {
+                if (warningTooltipMessage != null) {
+                    warningTooltipMessage += "<br/><br/>2) " + this.warning2Message;
+                } else {
+                    warningTooltipMessage = "2) " + this.warning2Message;
+                }
+            }
+            if (item.warning3) {
+                if (warningTooltipMessage != null) {
+                    warningTooltipMessage += "<br/><br/>3) " + this.warning3Message;
+                } else {
+                    warningTooltipMessage = "3) " + this.warning3Message;
+                }
+            }
+            this.warningTooltipMessages.push(warningTooltipMessage);
         }
     }
 }

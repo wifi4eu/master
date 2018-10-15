@@ -107,6 +107,13 @@
             <div class="form-group">
                 <label class="label" for="uploadBtn">{{ 'suppRegistration.company.logo' | translate }}</label>
                 <br>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <p class="labelModal">
+                            {{ 'suppRegistration.uploadLogo.info' | translate }}
+                        </p>
+                    </div>
+                </div>
                 <div class="ui-g-12 left">
                     <div class="fileUpload btn btn-primary">
                         <span>{{ 'suppRegistration.upload.logo' | translate }}</span>
@@ -134,13 +141,14 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
             <a href="#/home">
-                <button type="button" class="btn btn-primary cancel-button">{{ 'shared.cancel.button' | translate }}
+                <button type="button" class="btn btn-primary cancel-button">
+                    {{ 'shared.back.button' | translate }}
                 </button>
             </a>
         </div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
             <button type="submit" class="btn btn-primary publish-button" [disabled]="!supplierForm.form.valid || !buttonEnabled">
-                {{ 'shared.confirm.button' | translate }}
+                {{ 'shared.next.button' | translate }}
             </button>
         </div>
         <div class="ui-lg-3"></div>

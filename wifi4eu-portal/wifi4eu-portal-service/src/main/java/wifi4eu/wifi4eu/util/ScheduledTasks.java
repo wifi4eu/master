@@ -1,8 +1,18 @@
 package wifi4eu.wifi4eu.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Lists;
-import com.rabbitmq.client.*;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,38 +22,33 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
-import wifi4eu.wifi4eu.common.dto.model.*;
-import wifi4eu.wifi4eu.entity.application.Application;
-import wifi4eu.wifi4eu.entity.municipality.Municipality;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
+import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.Envelope;
+import com.rabbitmq.client.GetResponse;
+
+import wifi4eu.wifi4eu.common.dto.mail.MailData;
+import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
+import wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO;
+import wifi4eu.wifi4eu.common.dto.model.HelpdeskTicketDTO;
+import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.mail.MailHelper;
+import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
-import wifi4eu.wifi4eu.entity.user.User;
-import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
-import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskIssueMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
-import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
-import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
-import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.MessageFormat;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 @Configuration
 @PropertySource("classpath:env.properties")
@@ -58,22 +63,13 @@ public class ScheduledTasks {
     private HelpdeskService helpdeskService;
 
     @Autowired
-    private HelpdeskIssueMapper helpdeskIssueMapper;
-
-    @Autowired
     private RegistrationService registrationService;
 
     @Autowired
     private UserService userService;
 
     @Autowired
-    private ApplicationMapper applicationMapper;
-
-    @Autowired
     private ApplicationService applicationService;
-
-    @Autowired
-    private CallService callService;
 
     @Autowired
     private UserRepository userRepository;
@@ -83,12 +79,6 @@ public class ScheduledTasks {
 
     @Autowired
     private RegistrationUsersRepository registrationUsersRepository;
-
-    @Autowired
-    private ApplicationRepository applicationRepository;
-
-    @Autowired
-    private MunicipalityRepository municipalityRepository;
 
     private static final Logger _log = LogManager.getLogger(ScheduledTasks.class);
 
@@ -213,13 +203,12 @@ public class ScheduledTasks {
                             if (user.getLang() != null) {
                                 locale = new Locale(user.getLang());
                             }
-                            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                            String subject = bundle.getString("mail.dgConn.requestDocuments.subject");
-                            String msgBody = bundle.getString("mail.dgConn.requestDocuments.body");
+                            
                             String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/voucher";
-                            msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
-
-                            mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, registrationDTO.getMunicipalityId(), "sendDocRequest");
+                            MailData mailData = MailHelper.buildMailRequestSupportingDocumentsForRegistration(
+                            		user.getEcasEmail(), MailService.FROM_ADDRESS, additionalInfoUrl, 
+                            		registrationDTO.getMunicipalityId(), "sendDocRequest", locale);
+                        	mailService.sendMail(mailData, false);
                         }
                         int mailCounter = registrationDTO.getMailCounter() - 1;
                         registrationDTO.setMailCounter(mailCounter);

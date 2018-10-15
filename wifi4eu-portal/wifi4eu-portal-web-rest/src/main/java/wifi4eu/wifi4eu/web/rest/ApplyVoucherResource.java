@@ -43,7 +43,7 @@ public class ApplyVoucherResource {
     @ApiOperation(value = "Get data for apply for voucher by specific user id")
     @RequestMapping(value = "/data/user/{userId}/call/{callId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<ApplyVoucher> getDataForApplyVoucherByUserIdAndCallId(@PathVariable("userId") final Integer userId, @PathVariable("callId") final Integer callId, HttpServletResponse response) throws IOException {
+    public List<ApplyVoucher> getDataForApplyVoucherByUserIdAndCallId(@PathVariable("userId") final Integer userId, @PathVariable("callId") final Integer callId, @RequestParam("date") final Long timestamp, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting data for apply for voucher by user id " + userId);
@@ -64,9 +64,9 @@ public class ApplyVoucherResource {
 
     // DO NOT DELETE, DUMMY ENDPOINT TO GENERATE SWAGGER
     @ApiOperation(value = "Edit")
-    @RequestMapping(value  = "/edit", method = RequestMethod.PUT, produces = "application/json")
+    @RequestMapping(value = "/edit", method = RequestMethod.PUT, produces = "application/json")
     @ResponseBody
-    public ResponseDTO editBeneficiary(@RequestBody ApplyVoucher request){
+    public ResponseDTO editBeneficiary(@RequestBody ApplyVoucher request) {
         ResponseDTO response = new ResponseDTO();
         response.setSuccess(false);
         response.setData("Not implemented");

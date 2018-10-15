@@ -19,4 +19,8 @@ public class ApplicationAuthorizedPersonService {
     public ApplicationAuthorizedPersonDTO findByApplicationAndAuthorisedPerson(int applicationId, int authorizedPerson) {
         return applicantAuthorizedPersonMapper.toDTO(applicationAuthorizedPersonRepository.findByApplicationIdAndAuthorizedPerson(applicationId, authorizedPerson));
     }
+
+    public Boolean findByApplicationUserAuthorized(int applicationId, int userId){
+        return applicationAuthorizedPersonRepository.findByApplicationUserAuthorized(applicationId, userId);
+    }
 }
