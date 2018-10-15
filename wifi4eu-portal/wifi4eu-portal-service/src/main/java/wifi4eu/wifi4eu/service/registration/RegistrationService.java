@@ -153,6 +153,8 @@ public class RegistrationService {
     @Autowired
     AzureBlobConnector azureBlobConnector;
 
+    private static final String SUCCESS = "success";
+
     public List<RegistrationDTO> getAllRegistrations() {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
     }
@@ -224,26 +226,6 @@ public class RegistrationService {
             // if he's not applied there's no application
             //2.2  if there's no call going on we set the status to HOLD
 
-            CallDTO lastCall = callService.getLastCallClosed();
-            if(lastCall != null) {
-                Application applicationDB = applicationRepository.findTopByRegistrationIdAndCallId(registrationID, lastCall.getId());
-                if (applicationDB != null && applicationDB.getStatus() == ApplicationStatus.PENDING_FOLLOWUP.getValue()) {
-                    applicationDB.setStatus(ApplicationStatus.HOLD.getValue());
-                    applicationRepository.save(applicationDB);
-                    _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected
-                            .getEcasUsername() + " - Changing applicant status for HOLD, as it doesn't have any more documents as requested for " +
-                            "correction. Application id: " + applicationDB.getId() + ". Registration id: " + registrationID);
-                }
-            } else {
-                CallDTO currentCall = callService.getCurrentCall();
-                if(currentCall == null){
-                    //do nothing there's no application
-
-                } else {
-                    //call going on
-                    //pending to define when it's allowed to upload documents
-                }
-            }
         }
         //DUPLICATED CODE, PLEASE WHEN UNCOMMENTING THIS MAKE IT RIGHT
         // application has a correction request, set sent_email and sent_email_date to null to enable again the dgconn to validate/invalidate application according to new uploaded documents
@@ -259,7 +241,7 @@ public class RegistrationService {
 //                        "correction. Dgconn can again validate/invalidate application. Application id: " + applicationDB.getId() + ". Registration id: " + registrationID);
 //            }
 //        }
-        return new ResponseDTO(true, "sucess", null);
+        return new ResponseDTO(true, SUCCESS, null);
     }
 
     private void uploadDocument (Integer registrationID, LegalFileDTO legalFile, UserDTO userConnected, String ip) throws Exception {
