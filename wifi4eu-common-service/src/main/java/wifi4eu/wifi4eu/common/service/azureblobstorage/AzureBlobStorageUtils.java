@@ -6,6 +6,7 @@ import com.microsoft.azure.storage.blob.*;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Component;
 import wifi4eu.wifi4eu.common.Constant;
+import wifi4eu.wifi4eu.common.helper.StringPool;
 import wifi4eu.wifi4eu.common.helper.Validator;
 
 import java.net.URISyntaxException;
@@ -72,23 +73,23 @@ public class AzureBlobStorageUtils {
         long millis = System.currentTimeMillis();
         switch (currentQuery){
             case Constant.REPORTING_CALL_OPEN:
-                filename = millis+"_Calls-Open.xls";
+                filename = millis + StringPool.UNDERLINE + Constant.REPORTING_CALL_OPEN_FILENAME;
                 break;
 
             case Constant.REPORTING_PRE_SELECTION:
-                filename = millis+"_Pre-Selection.xls";
+                filename = millis + StringPool.UNDERLINE + Constant.REPORTING_PRE_SELECTION_FILENAME;
                 break;
 
             case Constant.REPORTING_NOTIFICATIONS_SENT_OUT:
-                filename = millis+"_Notifications-Sent-Out.xls";
+                filename = millis + StringPool.UNDERLINE + Constant.REPORTING_NOTIFICATIONS_SENT_OUT_FILENAME;
                 break;
 
             case Constant.REPORTING_TIME_TO_INFORM:
-                filename = millis+"_Time-To-Inform.xls";
+                filename = millis + StringPool.UNDERLINE + Constant.REPORTING_TIME_TO_INFORM_FILENAME;
                 break;
 
             case Constant.REPORTING_TYPES_INSTALLATION_REPORT:
-                filename = millis+"_Types-InstallationReport.xls";
+                filename = millis + StringPool.UNDERLINE + Constant.REPORTING_TYPES_INSTALLATION_REPORT_FILENAME;
                 break;
 
             default:
