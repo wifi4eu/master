@@ -63,11 +63,12 @@
             <p-dataTable class="my-voucher-datatable" [value]="municipalities" [responsive]="true">
                 <p-headerColumnGroup>
                     <p-row>
-                        <p-column header="{{ 'benefPortal.myVoucher.datatable.text' | translate }}" colspan="4"></p-column>
+                        <p-column header="{{ 'benefPortal.myVoucher.datatable.text' | translate }}" colspan="5"></p-column>
                     </p-row>
                     <p-row>
                         <p-column header="{{ 'shared.municipality.label' | translate }}" [sortable]="true"></p-column>
                         <p-column header="{{ 'benefPortal.myVoucher.datatable.action1' | translate }}"></p-column>
+                        <p-column header=""></p-column>
                         <p-column header="{{ 'benefPortal.myVoucher.datatable.action2' | translate }}"></p-column>
                         <p-column header="{{ 'benefPortal.myVoucher.datatable.action3' | translate }}"></p-column>
                     </p-row>
@@ -102,6 +103,16 @@
                         </div>
                     </template> 
                 </p-column>
+
+                <!--send magic link-->
+                <p-column field="" header="{{ 'benefPortal.myVoucher.datatable.action1' | translate }}" styleClass="text-center">
+                    <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
+                         <div class="beneficiarRegistrationCheck">
+                             <button class="btn btn-primary text-adjust" (click)="openSendLinkModal(i)" >{{ 'benefPortal.sendMagicEmail.button' | translate}}</button>
+                         </div>
+                     </template> 
+                 </p-column>
+                 <!--send magic link END-->
                 
                 <p-column field="" header="{{ 'benefPortal.myVoucher.datatable.action2' | translate }}" styleClass="text-center">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
