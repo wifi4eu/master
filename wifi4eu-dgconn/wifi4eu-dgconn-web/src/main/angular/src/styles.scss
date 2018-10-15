@@ -967,6 +967,10 @@ p-dataTable#tableComments tbody.ui-datatable-data.ui-widget-content > .ui-widget
   margin: 10px;
 }
 
+.hidden-input {
+  display: none;
+}
+
 .fileUpload input.upload {
   position: absolute;
   top: 0;
