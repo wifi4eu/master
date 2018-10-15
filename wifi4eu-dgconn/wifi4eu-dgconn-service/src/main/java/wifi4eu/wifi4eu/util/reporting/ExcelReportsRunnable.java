@@ -54,7 +54,6 @@ public class ExcelReportsRunnable implements Runnable {
 
     @Override
     public void run() {
-        // System.out.println("Hello from a thread! numberQuery : "+currentQuery);
         if (Validator.isNotNull(callId)) {
             this.urlFinal = reportingSystemManager.generateReportingExcel(currentQuery, callId);
         } else {
