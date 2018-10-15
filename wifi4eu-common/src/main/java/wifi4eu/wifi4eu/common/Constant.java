@@ -35,9 +35,14 @@ public abstract class Constant {
 	public static final String LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS = "sendCorrectionEmails";
 
 	public static final String REPORTING_CALL_OPEN = "call_open";
+	public static final String REPORTING_CALL_OPEN_FILENAME = "Calls-Open.xls";
 	public static final String REPORTING_PRE_SELECTION = "pre_selection";
+	public static final String REPORTING_PRE_SELECTION_FILENAME  = "Pre-Selection.xls";
 	public static final String REPORTING_NOTIFICATIONS_SENT_OUT = "notifications_sent_out";
+	public static final String REPORTING_NOTIFICATIONS_SENT_OUT_FILENAME = "Notifications-Sent-Out.xls";
 	public static final String REPORTING_TIME_TO_INFORM = "time_to_inform";
+	public static final String REPORTING_TIME_TO_INFORM_FILENAME = "Time-To-Inform.xls";
 	public static final String REPORTING_TYPES_INSTALLATION_REPORT = "types_IR";
+	public static final String REPORTING_TYPES_INSTALLATION_REPORT_FILENAME = "Types-InstallationReport.xls";
 	public final static String REPORTING_DEFAULT_LANG = "en";
 }
