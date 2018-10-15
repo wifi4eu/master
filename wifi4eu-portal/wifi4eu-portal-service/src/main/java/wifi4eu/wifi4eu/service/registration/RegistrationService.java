@@ -224,7 +224,6 @@ public class RegistrationService {
             // if he's not applied there's no application
             //2.2  if there's no call going on we set the status to HOLD
 
-            CallDTO lastCall = callService.getLastCallClosed();
         }
         //DUPLICATED CODE, PLEASE WHEN UNCOMMENTING THIS MAKE IT RIGHT
         // application has a correction request, set sent_email and sent_email_date to null to enable again the dgconn to validate/invalidate application according to new uploaded documents
