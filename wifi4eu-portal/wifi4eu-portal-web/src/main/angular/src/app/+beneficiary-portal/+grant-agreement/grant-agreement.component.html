@@ -170,3 +170,38 @@
         <div class="col-lg-2"></div>
     </div>
 </p-dialog>
+<p-dialog [(visible)]="displayConfirmSendLink" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
+  [closable]="false" [closeOnEscape]="false">
+    <p class="ModalpConfirmation profileData" style="color:blue">{{ 'benefPortal.sendMagicEmail.title' | translate:{municipality:municipalityCurrent} }}</p>
+    <p class="ModalpConfirmation profileData" style="margin: 4em 0em 4em 0em;">
+        {{ 'benefPortal.sendMagicEmail.subtitle' | translate:{municipality:municipalityCurrent} }}
+    </p>
+    <div class="row ModalpConfirmation" *ngIf="mayor">
+        <div class="col-sm-12" style="padding-bottom:1em;">
+            <span class="col-sm-6">{{ 'benefRegistration.nameMayor.label' | translate }}</span>
+            <span class="col-sm-6 profileData left"><b>{{mayor.name}}</b></span>
+        </div>
+        <div class="col-sm-12" style="padding-bottom:1em;">
+            <span class="col-sm-6">{{ 'benefRegistration.surnameMayor.label' | translate }}</span>
+            <span class="col-sm-6 profileData left"><b>{{mayor.surname}}</b></span>
+        </div>
+        <div class="col-sm-12" style="padding-bottom:3em;">
+            <span class="col-sm-6">{{ 'benefRegistration.emailMayor.label' | translate }}</span>
+            <span class="col-sm-6 profileData left"><b>{{mayor.email}}</b></span>
+        </div>
+        <div class="modal-body">
+            <div class="row center">
+                <div class="col-sm-6">
+                    <button type="submit" class="btn btn-primary cancel-button" (click)="displayConfirmSendLink = false">
+                        {{ 'shared.close' | translate }}
+                    </button>
+                </div>
+                <div class="col-sm-6">
+                    <button type="submit" class="btn btn-primary publish-button" (click)="sendMagicEmails()">
+                        {{ 'shared.confirm.button' | translate }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</p-dialog>

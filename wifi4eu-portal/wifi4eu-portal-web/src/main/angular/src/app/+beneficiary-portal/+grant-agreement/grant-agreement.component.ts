@@ -72,6 +72,9 @@ export class MyVoucherComponent {
     private hasSigned: GrantAgreementDTO [] = [];
     private date: String [] = [];
 
+    private displayConfirmSendLink: boolean = false;
+    private municipalityCurrent: String = '';
+
 
     constructor(
         private localStorage: LocalStorageService,
@@ -215,5 +218,22 @@ export class MyVoucherComponent {
                 this.sharedService.growlTranslation("An error occurred while trying to retrieve the data from the server. Please, try again later.", "shared.error.api.generic", "error");
             })
         }
+    }
+
+    private openSendLinkModal(i){
+        this.municipalityCurrent = this.municipalities[i].name;
+
+        this.mayorApi.getMayorByMunicipalityId(this.municipalities[i].id).subscribe(response=>{
+            this.mayor = response;            
+        }, error =>{
+            console.log(error)
+        });
+
+        this.displayConfirmSendLink = true;
+        
+    }
+
+    private sendMagicEmails(){
+        this.displayConfirmSendLink = false;
     }
 }
