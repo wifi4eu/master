@@ -17,12 +17,45 @@
     <div class="row">
       <div class="form-group col-md-3" *ngIf="isCallSelector(report)">
         <label for="selectCall">{{ 'reports.call.label' | translate }}</label>
-        <select class="form-control"  id="selectCall">
-          <option value="" disabled selected> {{'reports.select.placeholder' | translate}}</option>
+        <select class="form-control"  id="selectCall" [(ngModel)]="call" (ngModelChange) ="selectCallClosed($event)">
+          <option *ngFor="let call of calls" [ngValue]="call" [disabled]="calls.length < 1">
+            <span *ngIf="calls != null">
+              {{call.event}}
+            </span>
+            <span *ngIf="calls == null">
+              {{'reports.select.placeholder' | translate}}
+            </span>
+          </option>
           <!-- [compareWith]="byId"  [(ngModel)]="beneficiarySelected" (ngModelChange)="onBeneficiarySelected(this)" -->
           <!-- <option *ngFor="let bf of beneficiarySuggestions"  [ngValue]="bf" >
               {{ bf.name }}
           </option> -->
+        </select>
+      </div>
+      <div class="form-group col-md-3" *ngIf="report == 'second'">
+        <label for="selectCall">{{ 'reports.call.label' | translate }}</label>
+        <select class="form-control"  id="selectCall" [(ngModel)]="callPreSelected" (ngModelChange) ="selectCallClosed($event)">
+          <option *ngFor="let callPreSelected of callsPreSelected" [ngValue]="callPreSelected" [disabled]="callsPreSelected.length < 1">
+            <span *ngIf="callsPreSelected != null">
+              {{callPreSelected.event}}
+            </span>
+            <span *ngIf="callsPreSelected == null">
+              {{'reports.select.placeholder' | translate}}
+            </span>
+          </option>
+        </select>
+      </div>
+      <div class="form-group col-md-3" *ngIf="report == 'third'">
+        <label for="selectCall">{{ 'reports.call.label' | translate }}</label>
+        <select class="form-control"  id="selectCall" [(ngModel)]="callNotified" (ngModelChange) ="selectCallClosed($event)">
+          <option *ngFor="let callNotified of callsNotified" [ngValue]="callNotified" [disabled]="callsNotified.length < 1">
+            <span *ngIf="callsNotified != null">
+              {{callNotified.event}}
+            </span>
+            <span *ngIf="callsNotified == null">
+              {{'reports.select.placeholder' | translate}}
+            </span>
+          </option>
         </select>
       </div>
       <div class="form-group col-md-3" *ngIf="report == 'seventh'">
@@ -36,9 +69,9 @@
         </select>
       </div>
       <div class="form-group col-md-6">
-          <button type="button" class="btn btn-primary simulate-button btn-flat-link" (click)="onReport(report)">
-              {{'reports.generateReport.label' | translate}}
-            </button>
+        <button type="button" class="btn btn-primary simulate-button btn-flat-link" (click)="onReport(report)">
+          {{'reports.generateReport.label' | translate}}
+        </button>
         <!-- <ux-button [isFlat]="true" [isLarge]="true" typeClass="link" iconClass="fas fa-download" (click)="onReport(report)">{{'reports.generateReport.label' | translate}}</ux-button> -->
       </div>
     </div>

@@ -32,26 +32,44 @@ public class ReportingSystemManager {
     private static final Logger logger = LoggerFactory.getLogger(ReportingSystemManager.class);
 
 
-    public ReportingSystemManager(){
+    public ReportingSystemManager() {
     }
 
-    public String generateReportingExcel(String currentQuery){
+    public String generateReportingExcel(String currentQuery) {
         logger.debug("Generate reporting excel with arraybytes");
         String filename = azureBlobStorageUtils.generateNameFile(currentQuery);
         String urlDownload = null;
         if (Validator.isNotNull(filename)) {
             try {
-                byte[] bytesFile = generateReports.generateExcelFileBytes(currentQuery);
-                if (Validator.isNotNull(bytesFile)) {
-                    SharedAccessBlobPolicy policy = azureBlobStorageUtils.createSharedAccessPolicySeconds(
-                            EnumSet.of(SharedAccessBlobPermissions.READ), 86400);
-                    if (Validator.isNotNull(policy)) {
-                        urlDownload = azureBlobStorage.getDocumentWithTokenAzureStorage(filename, bytesFile, policy);
-                    }
+                SharedAccessBlobPolicy policy = azureBlobStorageUtils.createSharedAccessPolicySeconds(
+                        EnumSet.of(SharedAccessBlobPermissions.READ), 86400);
+                if (Validator.isNotNull(policy)) {
+                    byte[] bytesFile = generateReports.generateExcelFileBytes(currentQuery);
+                    urlDownload = azureBlobStorage.getDocumentWithTokenAzureStorage(filename, bytesFile, policy);
                 }
-            } catch (IOException e){
-                logger.debug("Exception => "+e.getMessage());
-                logger.error("ERROR => ",e);
+            } catch (IOException e) {
+                logger.debug("Exception => " + e.getMessage());
+                logger.error("ERROR => ", e);
+            }
+        }
+        return urlDownload;
+    }
+
+    public String generateReportingExcel(String currentQuery, Integer callId) {
+        logger.debug("Generate reporting excel with arraybytes");
+        String filename = azureBlobStorageUtils.generateNameFile(currentQuery);
+        String urlDownload = null;
+        if (Validator.isNotNull(filename)) {
+            try {
+                SharedAccessBlobPolicy policy = azureBlobStorageUtils.createSharedAccessPolicySeconds(
+                        EnumSet.of(SharedAccessBlobPermissions.READ), 86400);
+                if (Validator.isNotNull(policy)) {
+                    byte[] bytesFile = generateReports.generateExcelFileBytes(currentQuery, callId);
+                    urlDownload = azureBlobStorage.getDocumentWithTokenAzureStorage(filename, bytesFile, policy);
+                }
+            } catch (IOException e) {
+                logger.debug("Exception => " + e.getMessage());
+                logger.error("ERROR => ", e);
             }
         }
         return urlDownload;

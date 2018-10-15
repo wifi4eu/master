@@ -40,7 +40,7 @@ public class ReportTypesInstallation {
     @Autowired
     AccessPointRepository accessPointRepository;
 
-    static String[] fields = {"Number of beneficiaries", "Number of installation sites", "Average number of Indoor AP", "Standard deviation for Indoor AP", "Average number of Outdoor AP", "Standard deviation for Outdoor AP"};
+    final static String[] fields = {"Number of beneficiaries", "Number of installation sites", "Average number of Indoor AP", "Standard deviation for Indoor AP", "Average number of Outdoor AP", "Standard deviation for Outdoor AP"};
 
     int beneficiariesNumber = 0;
     int installationSitesNumber = 0;
