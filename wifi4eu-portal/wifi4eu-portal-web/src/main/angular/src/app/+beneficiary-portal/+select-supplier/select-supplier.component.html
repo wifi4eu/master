@@ -1,31 +1,25 @@
 <div class="container labelModal rowMarginBottom">
 
 <!-- Go back and info Status message -->
-<div class="row">
-
-  <div class="col-sm-2 col-md-2 col-lg-2">
-    <a class="link-label" routerLink="/beneficiary-portal/my-voucher" routerLinkActive="active">
-      <i class="fa fa-long-arrow-left" aria-hidden="true"></i> {{ 'shared.back.button' | translate }}
-    </a>
-  </div>
-
-  <div class="col-sm-9 col-md-10 col-lg-9 offset-sm-1 offset-md-0 offset-lg-1">
-    <div class="alert alert-info text-uppercase voucherModal">
-      <div>
-        <div *ngIf="!hasSupplierAssigned">
-          <strong>{{ 'shared.statusLabel' | translate }} </strong>{{ 'benefPortal.selectSupplier.alert.gotvoucher' | translate }}
-        </div>
-        <div *ngIf="hasSupplierAssigned && selectedSupplier">
-            <strong>{{ 'shared.statusLabel' | translate }} </strong>{{ 'benefPortal.selectSupplier.alert.companyselected' | translate }}: {{ selectedSupplier.name }}
-        </div>
-        <!-- Changed text in new BR 4.1 -->
-        <!-- <div *ngIf="hasSupplierAssigned">
-            <strong>{{ 'shared.statusLabel' | translate }} </strong>{{ 'benefPortal.selectSupplier.alert.selected' | translate }}
-        </div> -->
-      </div>
+<div class="row counterText voucherStatusAgreement" >
+    <div class="col-sm-2 col-md-2 col-lg-2">
+      <a class="link-label" routerLink="/beneficiary-portal/my-voucher" routerLinkActive="active">
+        <i class="fa fa-long-arrow-left" aria-hidden="true"></i> {{ 'shared.back.button' | translate }}
+      </a>
     </div>
-  </div>
-
+  
+    <div class="col-sm-9 col-md-10 col-lg-9 offset-sm-1 offset-md-0 offset-lg-1">
+      <ux-alert *ngIf="!hasSupplierAssigned" class="documents-info" iconClass="fa fa-exclamation-circle alert-icon">
+          {{ 'shared.statusLabel' | translate }} {{ 'benefPortal.selectSupplier.alert.signedGrantAgreement' | translate }}
+      </ux-alert>
+      <ux-alert *ngIf="hasSupplierAssigned && selectedSupplier" class="documents-info" iconClass="fa fa-exclamation-circle alert-icon">
+          {{ 'shared.statusLabel' | translate }} {{ 'benefPortal.selectSupplier.alert.companyselected' | translate }}: {{ selectedSupplier.name }}
+      </ux-alert>
+      <!-- Changed text in new BR 4.1 -->
+      <!-- <div *ngIf="hasSupplierAssigned">
+          <strong>{{ 'shared.statusLabel' | translate }} </strong>{{ 'benefPortal.selectSupplier.alert.selected' | translate }}
+      </div> -->
+    </div>
 </div>
 
 <!-- Title and explanation text -->

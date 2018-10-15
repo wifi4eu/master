@@ -325,6 +325,7 @@
   "benefPortal.selectSupplier.changeModal.text1": "Are you sure you wish to change your Wi-Fi installation company?",
   "benefPortal.selectSupplier.changeModal.text2": "By confirming, an e-mail notification will be sent to the new Wi-Fi installation company {{ currentSupplier }} informing them of this change. Your previously selected company {{ oldSupplier }} will also be notified that its selection is no longer valid. Be aware that any pending installation report will be automatically rejected.",
   "benefPortal.selectSupplier.alert.gotvoucher": "You got the voucher. Please select a Wi-Fi installation company",
+  "benefPortal.selectSupplier.alert.signedGrantAgreement": "You have signed the grant agreement. Please select Wi-Fi installation company.",
   "benefPortal.selectSupplier.alert.selected": "A Wi-Fi installation company has been selected",
   "benefPortal.selectSupplier.alert.companyselected": "You have selected the following company",
   "benefPortal.selectSupplier.feedback.selected": "Installation company selected on",  
