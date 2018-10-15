@@ -1,5 +1,7 @@
 package wifi4eu.wifi4eu.util.reporting;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -15,6 +17,8 @@ public class GenerateReports {
 
     @Autowired
     ReportingUtils reportingUtils;
+
+    private final Logger _log = LogManager.getLogger(GenerateReports.class);
 
     public byte[] generateExcelFileBytes(String currentQuery) throws IOException {
         HSSFWorkbook workbook = new HSSFWorkbook();
@@ -36,16 +40,13 @@ public class GenerateReports {
                 break;
         }
 
-        System.out.println("Your excel file has been generated!");
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        try {
+        _log.info("Your excel file has been generated!");
+        try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
             workbook.write(bos);
+            return bos.toByteArray();
         } finally {
             workbook.close();
-            bos.close();
         }
-
-        return bos.toByteArray();
     }
 
     public byte[] generateExcelFileBytes(String currentQuery, Integer callId) throws IOException {
@@ -64,16 +65,13 @@ public class GenerateReports {
                 break;
         }
 
-        System.out.println("Your excel file has been generated!");
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        try {
+        _log.info("Your excel file has been generated!");
+        try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
             workbook.write(bos);
+            return bos.toByteArray();
         } finally {
             workbook.close();
-            bos.close();
         }
-
-        return bos.toByteArray();
     }
 
 }
