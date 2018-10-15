@@ -223,7 +223,7 @@
 
                     <div class="col-sm-9 noPaddingLeft">
                         <label>{{ 'shared.streetName' | translate }}</label>
-                        <input [id]="accountName" type="text" [name]="accountName" class="form-control ui-sm-9"
+                        <input [id]="accountName" type="text" [name]="accountName" class="form-control ui-sm-9" [disabled] = "currentBankAccountDTO.sameAddressAsSupplier"
                         [(ngModel)]="currentBankAccountDTO.accountHolderStreet" maxlength="60" required  (ngModelChange)="afterChange()" [ngModelOptions]="{standalone: true}">
                     </div>
 

@@ -123,7 +123,7 @@ export class BankAccountComponent {
     private activateAddOrEditBankAccountModal(){
         this.addOrEditBankAccount = true;
         this.bankAccountDocumentDTOToUpdate = null;
-        this.enableButtonConfirm();
+        //this.enableButtonConfirm();
     }
 
     private closeModalCancel(){
@@ -132,6 +132,7 @@ export class BankAccountComponent {
 
     private closeModalOK(){
         this.addOrEditBankAccount = false;
+        this.confirmEnabled = false;
 
         this.bankAccountsApi.saveBankAccount(this.currentBankAccountDTO).subscribe(
             (responseDTO: ResponseDTOBase) => {
@@ -199,6 +200,7 @@ export class BankAccountComponent {
                                 file.fileSize = event.target.files[0].size;
                                 file.supplierId = this.supplier.id;
                                 this.bankAccountDocumentDTOToUpdate = file;
+                                this.enableButtonConfirm();
 
                                 subscription.unsubscribe();
                             }
