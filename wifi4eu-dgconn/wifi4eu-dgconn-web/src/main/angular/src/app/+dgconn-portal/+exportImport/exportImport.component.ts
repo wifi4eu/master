@@ -51,10 +51,6 @@ export class DgConnExportImportComponent {
         this.router.navigate(['lc'], { relativeTo: this.route });
     }
 
-    importDgBudgList() {
-        this.router.navigate(['dgBudg'], { relativeTo: this.route });
-    }
-
     exportBeneficiaryInformation() {
         this.processingOperation = true;
         this.exportImportApi.exportBeneficiaryInformation().subscribe(

@@ -311,49 +311,6 @@ public class ExportImportAbacServiceImpl implements ExportImportAbacService {
     }
 
     @Override
-    public boolean importDgBudgList(InputStream inputStream) throws Exception {
-        _log.debug("importDgBudgList");
-
-        try (InputStreamReader inputStreamReader = new InputStreamReader(new BOMInputStream(inputStream, ByteOrderMark.UTF_16LE), StandardCharsets.UTF_16LE)) {
-
-            CSVParser csvParser = CSVFormat.TDF.withFirstRecordAsHeader().parse(inputStreamReader);
-            csvParser.forEach(this::createAbacData);
-        }
-        return true;
-    }
-
-    // TODO: close to importLegalEntitiesFromAbac, can it be replaced?
-    private void createAbacData(CSVRecord csvRecord) {
-        Integer municipalityId = Integer.parseInt(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_PORTAL_ID));
-
-        Municipality municipality = municipalityRepository.findOne(municipalityId);
-
-        if (municipality != null) {
-            String abacName = StringUtils.defaultIfBlank(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_LATIN_NAME.getValue()), null);
-            String abacReference = StringUtils.defaultIfBlank(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_REFERENCE.getValue()), null);
-
-            if (!municipality.getMunicipalitiesAbac().isEmpty()) {
-                // If it exists, normally it should be only one.
-                for (ExportImportRegistrationData municipalitiesAbac : municipality.getMunicipalitiesAbac()) {
-                    municipalitiesAbac.setAbacStandarName(abacName);
-                    municipalitiesAbac.setAbacReference(abacReference);
-
-                    exportImportRegistrationDataRepository.save(municipalitiesAbac);
-                }
-            } else {
-                ExportImportRegistrationData municipalitiesAbac = new ExportImportRegistrationData();
-                municipalitiesAbac.setMunicipality(municipality);
-                municipalitiesAbac.setAbacStandarName(abacName);
-                municipalitiesAbac.setAbacReference(abacReference);
-
-                exportImportRegistrationDataRepository.save(municipalitiesAbac);
-            }
-        } else {
-            _log.warn("Municipality [{}] was not found. Skipped.");
-        }
-    }
-
-    @Override
     public byte[] exportBudgetaryCommitment() throws IOException {
         _log.debug("exportBudgetaryCommitment");
 

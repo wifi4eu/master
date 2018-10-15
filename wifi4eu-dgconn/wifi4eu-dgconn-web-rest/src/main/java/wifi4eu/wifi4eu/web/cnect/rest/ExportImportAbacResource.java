@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ServerErrorResponseDTO;
@@ -142,22 +141,6 @@ public class ExportImportAbacResource {
 
         logger.debug("exportLegalCommitmentInformation - csv file exported successfully");
         return responseReturn;
-    }
-
-    @RequestMapping(value = "/importDgBudgList", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public ResponseDTO importRegistrationData(@Valid @NotNull @RequestParam(IMPORT_FILE) MultipartFile file) {
-        try {
-            logger.debug("importDgBudgList");
-
-            boolean success = exportImportAbacService.importDgBudgList(file.getInputStream());
-
-            return new ResponseDTO(success);
-        } catch (Exception e) {
-            logger.error("Error in operation.", e);
-            return new ServerErrorResponseDTO(e.getMessage());
-        }
     }
 
     private HttpHeaders createHeaders(String filename, String mediaType) {

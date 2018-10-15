@@ -6,7 +6,6 @@ import { DgConnExportImportComponent } from './exportImport.component';
 import { ImportBudgetaryCommitmentComponent } from './budgetaryCommitment/importBudgetaryCommitment.component';
 import { FileSelectorComponent } from './shared/fileSelector/fileSelector.component';
 import { ImportLegalCommitmentComponent } from 'app/+dgconn-portal/+exportImport/legalCommitment/importLegalCommitment.component';
-import { ImportDgBudgFinalListComponent } from './dgBudgFinalList/importDgBudgFinalList.component';
 import { ImportFileComponent } from './shared/importFile/importFile.component';
 import { PanelButtonComponent } from './shared/panelButton/panelButton.component';
 
@@ -19,7 +18,6 @@ import { PanelButtonComponent } from './shared/panelButton/panelButton.component
         ImportLefComponent,
         ImportBudgetaryCommitmentComponent,
         ImportLegalCommitmentComponent,
-        ImportDgBudgFinalListComponent,
         DgConnExportImportComponent,
         FileSelectorComponent,
         ImportFileComponent,
