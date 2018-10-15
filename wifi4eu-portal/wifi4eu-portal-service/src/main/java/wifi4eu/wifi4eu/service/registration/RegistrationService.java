@@ -153,6 +153,8 @@ public class RegistrationService {
     @Autowired
     AzureBlobConnector azureBlobConnector;
 
+    private static final String SUCCESS = "success";
+
     public List<RegistrationDTO> getAllRegistrations() {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
     }
@@ -239,7 +241,7 @@ public class RegistrationService {
 //                        "correction. Dgconn can again validate/invalidate application. Application id: " + applicationDB.getId() + ". Registration id: " + registrationID);
 //            }
 //        }
-        return new ResponseDTO(true, "success", null);
+        return new ResponseDTO(true, SUCCESS, null);
     }
 
     private void uploadDocument (Integer registrationID, LegalFileDTO legalFile, UserDTO userConnected, String ip) throws Exception {
