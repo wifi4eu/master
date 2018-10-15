@@ -73,10 +73,10 @@
 
                 <div class="col-offset-12">
                     <div class="left">
-                        <div class="fileUpload btn btn-primary">
+                        <div class="fileUpload btn btn-primary" (click)="document1.click()">
                             <span>{{ 'benefDocs.copyMayorsID' | translate }}</span>
                             <input #document1 id="document1" name="document1" (change)="uploadFile($event, 1)" type="file"
-                                class="upload" accept=".png, .jpg, .pdf" />
+                                class="upload hidden-input" accept=".png, .jpg, .pdf" />
                         </div>
                     </div>
                     <span class="ui-g-12 row" *ngIf="registration">
@@ -133,10 +133,10 @@
                 <div class="col-offset-12">
 
                     <div class="left">
-                        <div class="fileUpload btn btn-primary">
+                        <div class="fileUpload btn btn-primary" (click)="document3.click()">
                             <span>{{ 'benefDocs.proofNomination' | translate }}</span>
                             <input #document3 id="document3" name="document3" (change)="uploadFile($event, 3)" type="file"
-                                class="upload" accept=".png, .jpg, .pdf" />
+                                class="upload hidden-input" accept=".png, .jpg, .pdf" />
                         </div>
                     </div>
                     <span class="ui-g-12 row" *ngIf="registration">
@@ -196,10 +196,10 @@
                 </div>
                 <div class="col-offset-12">
                     <div class="left">
-                        <div class="fileUpload btn btn-primary">
+                        <div class="fileUpload btn btn-primary" (click)="document4.click()">
                             <span>{{ 'benefDocs.authorisedSign' | translate }}</span>
                             <input #document4 id="document4" name="document4" (change)="uploadFile($event, 4)" type="file"
-                                class="upload" accept=".png, .jpg, .pdf" />
+                                class="upload hidden-input" accept=".png, .jpg, .pdf" />
                         </div>
                     </div>
                     <span class="ui-g-12 row" *ngIf="registration">
@@ -256,10 +256,10 @@
                 </div>
                 <div class="col-offset-12">
                     <div class="left">
-                        <div class="fileUpload btn btn-primary">
+                        <div class="fileUpload btn btn-primary" (click)="document2.click()">
                             <span>{{ 'benefDocs.copyYourID' | translate }}</span>
                             <input #document2 id="document2" name="document2" (change)="uploadFile($event, 2)" type="file"
-                                class="upload" accept=".png, .jpg, .pdf" />
+                                class="upload hidden-input" accept=".png, .jpg, .pdf" />
                         </div>
                     </div>
                     <span class="ui-g-12 row" *ngIf="registration">
